@@ -1,0 +1,17 @@
+---
+import H1 from '../components/H1.astro';
+import Layout from '../layouts/Layout.astro';
+import Main from '../components/Main.astro';
+import NewsComp from '../components/NewsComp.astro';
+import Hero from '../components/Hero.astro';
+---
+
+<Layout title="The Gathering">
+	<Main>
+		<div class="max-w-4xl">
+			<H1 text="JOIN NORWAY'S LARGEST EASTER HUT"/>
+		</div>
+		<Hero image="/images/tg23-oversikt.jpg" />
+		<NewsComp />
+	</Main>
+</Layout>

@@ -1,0 +1,53 @@
+---
+// Props for the Box component
+interface Props {
+  title?: string;
+  date?: string;
+  text?: string;
+  button?:{
+    text: string;
+    link: string;
+    color?: string;
+    border?: boolean;
+  }
+  backgroundColor?: string;
+}
+const { title, date, text, button, backgroundColor = 'bg-white' } = Astro.props;
+
+const borderProps = button?.border ? 'border-white border' : '';
+---
+
+<!-- <div class={`${backgroundColor} p-4 rounded-xl flex flex-col space-y-2 sm:max-w-xs`}>
+  {title && <h2 class="text-xl font-bold text-white">{title}</h2>}
+  {date && <p class="text-white">{date}</p>}
+  {text && <p class="text-white">{text}</p>}
+  <a href={button?.link} class={`${button?.color} ${borderProps} inline-block text-white px-4 py-2 rounded-full content-center`}>
+    {button?.text}
+  </a>
+</div> -->
+
+<div class={`${backgroundColor} p-4 rounded-xl flex flex-col space-y-2 sm:max-w-xs`}>
+  {title && (
+    <div class="flex flex-col items-start space-y-2">
+      <h2 class="text-xl font-bold text-white">{title}</h2>
+      {date && <p class="text-white">{date}</p>}
+      {text && <p class="text-white">{text}</p>}
+      {button && (
+        <a href={button.link} class={`${button?.color} ${borderProps} inline-block text-white px-4 py-2 rounded-full content-center`}>
+          {button.text}
+        </a>
+      )}
+    </div>
+  )}
+
+  {text && !title && (
+    <div class="flex items-center justify-between w-full">
+      <p class="text-white">{text}</p>
+      {button && (
+        <a href={button.link} class={`${button?.color} ${borderProps} inline-block text-white px-4 py-2 rounded-full content-center`}>
+          {button.text}
+        </a>
+      )}
+    </div>
+  )}
+</div>
