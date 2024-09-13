@@ -20,4 +20,4 @@ COPY --from=prod-build --chown=node:node /app/dist /app/dist
 ENV HOST=0.0.0.0
 ENV PORT=8080
 EXPOSE 8080
-CMD node /app/dist/server/entry.mjs
+CMD ["node", "/app/dist/server/entry.mjs"]
