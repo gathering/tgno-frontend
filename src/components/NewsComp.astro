@@ -24,9 +24,18 @@ interface Article {
   };
 }
 
+type Props = {
+	articleLimit?: number;
+};
+const { articleLimit = 0 } = Astro.props;
+
 const fetchArticles = async (): Promise<Article[]> => {
+  const baseurl = `${import.meta.env.API_URL}api/v2/news/?fields=title,tags,first_published_at,main_image&order=-first_published_at`;
+  
+  const validLimit = articleLimit >= 1 ? `&limit=${articleLimit}` : '';
+  
   const response = await fetch(
-    `${import.meta.env.API_URL}api/v2/news/?fields=title,tags,first_published_at,main_image&order=-first_published_at&limit=4`,
+    `${baseurl}${validLimit}`,
   );
   const data = await response.json();
   const articles: Article[] = data.items;
