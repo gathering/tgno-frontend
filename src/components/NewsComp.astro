@@ -41,7 +41,7 @@ const articles = await fetchArticles();
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:px-44">
     {
       articles.map((article) => (
-        <a href="#">
+        <a href={`/news/${article.meta.slug}`}>
           <article class="overflow-hidden flex flex-row p-4">
             <div class="flex-1">
               <div class="text-sm text-orange-500">
