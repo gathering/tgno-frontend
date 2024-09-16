@@ -2,77 +2,87 @@
 import  H2 from './H2.astro';
 interface Article {
   id: number;
+  meta: {
+    type: string;
+    detail_url: string;
+    html_url: string;
+    slug: string;
+    first_published_at: string;
+  };
   title: string;
-  category: string;
-  date: string;
-  thumbnail: {
+  tags: Array<{
+    id: number;
+    name: string;
+    slug: string;
+  }>;
+  main_image: {
     url: string;
+    full_url: string;
+    width: number;
+    height: number;
+    alt: string;
   };
 }
 
-const articleTest = [
-  {
-    id: 1,
-    title: 'The calm before the LAN',
-    category: 'Behind the scenes',
-    date: '2022-04-13',
-    thumbnail: {
-      url: '/images/tg23-oversikt.jpg',
-    },
-  },
-  {
-    id: 2,
-    title: 'Achivements return',
-    category: 'Activities, Achievements',
-    date: '2021-04-13',
-    thumbnail: {
-      url: '/images/tg23-oversikt.jpg',
-    },
-  },
-  {
-    id: 3,
-    title: 'Arne?',
-    category: 'Arne??',
-    date: '2020-04-13',
-    thumbnail: {
-      url: '/images/tg23-oversikt.jpg',
-    },
-  },
-  {
-    id: 4,
-    title: "New wallpaper for this year's theme",
-    category: 'Behind the scenes, Creative',
-    date: '2019-04-13',
-    thumbnail: {
-      url: '/images/tg23-oversikt.jpg',
-    },
-  },
-  ]
+type Props = {
+	articleLimit?: number;
+};
+const { articleLimit = 0 } = Astro.props;
 
 const fetchArticles = async (): Promise<Article[]> => {
-  // const response = await fetch('https://your-wagtail-site.com/api/v2/pages/?type=yourapp.ArticlePage&fields=title,category,date,thumbnail&order=-date&limit=4');
-  // const data = await response.json();
-  // return data.items;
-  return articleTest;
-}
+  const baseurl = `${import.meta.env.API_URL}api/v2/news/?fields=title,tags,first_published_at,main_image&order=-first_published_at`;
+  
+  const validLimit = articleLimit >= 1 ? `&limit=${articleLimit}` : '';
+  
+  const response = await fetch(
+    `${baseurl}${validLimit}`,
+  );
+  const data = await response.json();
+  const articles: Article[] = data.items;
+  return articles;
+};
 
 const articles = await fetchArticles();
 ---
 
 <section>
   <H2 text="News >_" />
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:px-44">
-      {articles.map(article => (
-        <a href="#">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:px-44">
+    {
+      articles.map((article) => (
+        <a href={`/news/${article.meta.slug}`}>
           <article class="overflow-hidden flex flex-row p-4">
             <div class="flex-1">
-              <span class="text-sm text-orange-500">{article.category}</span>
+              <div class="text-sm text-orange-500">
+                {article.tags
+                  .map((tag) => {
+                    return tag.name.charAt(0).toUpperCase() + tag.name.slice(1);
+                  })
+                  .join(", ")}
+              </div>
               <h3 class="text-xl text-white font-bold mt-2">{article.title}</h3>
-              <time datetime={article.date} class="text-sm text-gray-500">{new Date(article.date).toLocaleDateString()}</time>
+              <time
+                datetime={article.meta.first_published_at}
+                class="text-sm text-gray-500"
+              >
+                {new Date(article.meta.first_published_at).toLocaleDateString(
+                  "en-US",
+                  {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  },
+                )}
+              </time>
             </div>
-            <img src={article.thumbnail.url} alt={article.title} class="w-24 h-24 object-cover ml-2 rounded-lg" />
+            <img
+              src={article.main_image.full_url}
+              alt={article.main_image.alt}
+              class="w-24 h-24 object-cover ml-2 rounded-lg"
+            />
           </article>
         </a>
-      ))}
-    </div>
+      ))
+    }
+  </div>
 </section>

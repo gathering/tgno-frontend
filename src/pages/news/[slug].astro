@@ -1,0 +1,95 @@
+---
+import H1 from "../../components/H1.astro";
+import Main from "../../components/Main.astro";
+import Layout from "../../layouts/Layout.astro";
+
+interface Article {
+  id: number;
+  meta: {
+    type: string;
+    detail_url: string;
+    html_url: string;
+    slug: string;
+    first_published_at: string;
+  };
+  title: string;
+  intro: string;
+  body: string;
+  tags: Array<{
+    id: number;
+    name: string;
+    slug: string;
+  }>;
+  main_image: {
+    url: string;
+    full_url: string;
+    width: number;
+    height: number;
+    alt: string;
+  };
+}
+
+
+const { slug } = Astro.params;
+const fetchArticleIdBySlug = async (slug: string): Promise<number | null> => {
+  const response = await fetch(
+    `${import.meta.env.API_URL}api/v2/news/?&slug=${slug}`
+  );
+  const data = await response.json();
+  const articles: Article[] = data.items;
+  if (articles.length > 0) {
+    return articles[0].id;
+  } else {
+    return null;
+  }
+};
+
+if (!slug) {
+  throw new Error('Slug is not defined');
+}
+const articleId = await fetchArticleIdBySlug(slug);
+
+if (!articleId) {
+  throw new Error('Article not found');
+}
+
+const fetchArticleById = async (id: number): Promise<Article> => {
+  const response = await fetch(
+    `${import.meta.env.API_URL}api/v2/news/${id}/`
+  );
+  const data = await response.json();
+  return data;
+};
+
+const article = await fetchArticleById(articleId);
+---
+
+<Layout title=`The Gathering - ${article.title}`>
+  <Main>
+    <!-- Article Title -->
+     <H1 text=`${article.title}`/>
+    <!-- Display Tags -->
+    <p class="text-sm text-gray-600 mb-2">
+      {article.tags
+        .map((tag) => {
+          return tag.name
+            .split(' ')
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+        })
+        .join(', ')}
+    </p>
+    <!-- Publish Date -->
+    <time datetime={article.meta.first_published_at} class="text-sm text-gray-500 mb-4 block">
+      {new Date(article.meta.first_published_at).toLocaleDateString()}
+    </time>
+    <!-- Main Image -->
+    <img
+      src={article.main_image.full_url}
+      alt={article.main_image.alt}
+      class="w-auto h-auto mb-4"
+    />
+    <!-- Article Content -->
+    <div class="text-white" set:html={article.body}></div>
+  </Main>
+</Layout>
