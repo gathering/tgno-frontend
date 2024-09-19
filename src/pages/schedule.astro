@@ -1,0 +1,192 @@
+---
+import H1 from '../components/H1.astro';
+import Layout from '../layouts/Layout.astro';
+import Main from '../components/Main.astro';
+import H2 from '../components/H2.astro';
+
+interface Event {
+	id: number;
+	title: string;
+	startTime: string;
+	endTime: string;
+	place: string;
+	category: string;
+	url?: string;
+	slug?: string;
+}
+
+const days = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5'];
+const selectedDay = Astro.url.searchParams.get('day') || days[0];  // Default to 'Day 1' if no day is selected
+
+
+// const response = await fetch(`../events/${selectedDay}.json`);
+// const events = await response.json();
+
+// const events = response.json();
+
+
+
+// Mock events for each day
+const mockEvents: { [key: string]: Event[] } = {
+  'Day 1': [
+    { id: 1, title: 'Opening Ceremony', startTime: '10:00', endTime: '11:00', place: 'Main Stage', category: 'Presentation' },
+    { id: 2, title: 'Creative Workshop', startTime: '11:30', endTime: '12:30', place: 'Creative Stage', category: 'Creative' },
+    { id: 3, title: 'Cosplay Contest', startTime: '13:00', endTime: '14:30', place: 'Main Stage', category: 'Cosplay' },
+    { id: 4, title: 'Esports Match', startTime: '15:00', endTime: '17:00', place: 'Esport Stage', category: 'Esports' },
+    { id: 5, title: 'Fun & Games', startTime: '17:30', endTime: '19:00', place: 'Lounge', category: 'Fun & Games' },
+  ],
+  'Day 2': [
+    { id: 1, title: 'Coding Jam', startTime: '10:00', endTime: '11:00', place: 'Creative Stage', category: 'Creative' },
+    { id: 2, title: 'Esports Finals', startTime: '11:30', endTime: '13:00', place: 'Esport Stage', category: 'Esports' },
+    { id: 3, title: 'Presentation on AI', startTime: '13:30', endTime: '14:30', place: 'Auditorium', category: 'Presentation' },
+    { id: 4, title: 'Cosplay Photoshoot', startTime: '15:00', endTime: '16:00', place: 'Community Village', category: 'Cosplay' },
+    { id: 5, title: 'Board Games', startTime: '16:30', endTime: '18:00', place: 'Lounge', category: 'Fun & Games' },
+  ],
+  'Day 3': [
+    { id: 1, title: 'Digital Art Show', startTime: '10:00', endTime: '11:00', place: 'Creative Stage', category: 'Creative' },
+    { id: 2, title: 'Esports Round 1', startTime: '11:30', endTime: '13:00', place: 'Esport Stage', category: 'Esports' },
+    { id: 3, title: 'Cosplay Walk', startTime: '13:30', endTime: '14:30', place: 'Main Stage', category: 'Cosplay' },
+    { id: 4, title: 'Tech Talks', startTime: '15:00', endTime: '16:30', place: 'Auditorium', category: 'Presentation' },
+    { id: 5, title: 'Gaming Marathon', startTime: '17:00', endTime: '19:00', place: 'Lounge', category: 'Fun & Games' },
+  ],
+  'Day 4': [
+    { id: 1, title: 'Art Workshop', startTime: '10:00', endTime: '11:30', place: 'Creative Stage', category: 'Creative' },
+    { id: 2, title: 'Esports Semifinals', startTime: '12:00', endTime: '14:00', place: 'Esport Stage', category: 'Esports' },
+    { id: 3, title: 'Cosplay Workshop', startTime: '14:30', endTime: '16:00', place: 'Community Village', category: 'Cosplay' },
+    { id: 4, title: 'AI in Gaming', startTime: '16:30', endTime: '17:30', place: 'Auditorium', category: 'Presentation' },
+    { id: 5, title: 'Party Games', startTime: '18:00', endTime: '19:30', place: 'Lounge', category: 'Fun & Games' },
+  ],
+  'Day 5': [
+    { id: 1, title: 'Closing Ceremony', startTime: '10:00', endTime: '11:30', place: 'Main Stage', category: 'Presentation' },
+    { id: 2, title: 'Creative Showcase', startTime: '12:00', endTime: '13:00', place: 'Creative Stage', category: 'Creative' },
+    { id: 3, title: 'Esports Grand Finals', startTime: '13:30', endTime: '15:30', place: 'Esport Stage', category: 'Esports' },
+    { id: 4, title: 'Cosplay Awards', startTime: '16:00', endTime: '17:00', place: 'Main Stage', category: 'Cosplay' },
+    { id: 5, title: 'Fun Farewell', startTime: '17:30', endTime: '19:00', place: 'Lounge', category: 'Fun & Games' },
+  ]
+};
+
+const events = mockEvents[selectedDay];
+
+// Get unique locations and categories from the events
+const locations = [...new Set(events.map((event: Event) => event.place))];  // Unique locations
+const categories = [...new Set(events.map((event: Event) => event.category))];  // Unique categories
+
+// Get filter values from URL
+const selectedLocation = Astro.url.searchParams.get('location') || 'All';
+const selectedCategory = Astro.url.searchParams.get('category') || 'All';
+
+// Filter events based on location and category
+const filteredEvents = events.filter((event: Event) => {
+  const locationMatch = selectedLocation === 'All' || event.place === selectedLocation;
+  const categoryMatch = selectedCategory === 'All' || event.category === selectedCategory;
+  return locationMatch && categoryMatch;
+});
+
+---
+
+<Layout title="The Gathering - Schedule">
+	<Main>
+		<div class="max-w-4xl">
+			<H1 text="Schedule"/>
+		</div>
+
+<!-- Day navigator -->
+<nav class="day-navigator flex space-x-4 justify-center my-4">
+  {days.map(day => (
+    <a href={`?day=${day}&location=${selectedLocation}&category=${selectedCategory}`} 
+       class={`px-4 py-2 rounded-lg ${day === selectedDay ? 'bg-white text-background font-bold' : 'text-white border'} transition-colors hover:bg-gray-500`}>
+      {day}
+    </a>
+  ))}
+</nav>
+
+
+<!-- Filters for location and category -->
+<div class="flex justify-center space-x-4 mb-6">
+  <!-- Location filter -->
+  <div class="relative">
+    <select id="location-filter" 
+      class="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 pr-8 rounded-lg shadow leading-tight focus:outline-none focus:shadow-outline">
+      <option value="All">All Locations</option>
+      {locations.map(location => (
+        <option value={location} selected={location === selectedLocation}>{location}</option>
+      ))}
+    </select>
+    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+    </div>
+  </div>
+
+  <!-- Category filter -->
+  <div class="relative">
+    <select id="category-filter" 
+      class="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 pr-8 rounded-lg shadow leading-tight focus:outline-none focus:shadow-outline">
+      <option value="All">All Categories</option>
+      {categories.map(category => (
+        <option value={category} selected={category === selectedCategory}>{category}</option>
+      ))}
+    </select>
+    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+    </div>
+  </div>
+</div>
+
+<!-- Headline for the selected day -->
+ <div class="flex flex-row gap-4 mb-4">
+	 <H2 text=`${selectedDay}`/>
+	 <span class="border rounded-full w-2/3 block"></span>
+	</div>
+
+
+<!-- Event list -->
+<ul class="event-list grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-4">
+  {filteredEvents.length > 0 ? (
+    filteredEvents.map((event: Event) => (
+    <li class="event-item bg-backgroundSecondary shadow-lg rounded-lg p-4 border border-gray-200">
+        <!-- Event location with border around the text -->
+				<div class="event-place text-sm text-white inline-block border border-gray-300 p-2 rounded-lg">
+        {event.place}
+      </div>
+        <!-- Event title -->
+				<div class="event-title text-lg font-semibold text-white my-2">
+          {event.title}
+        </div>
+        <!-- Event time with calendar icon -->
+				<div class="event-time text-sm text-white flex items-center">
+          <svg class="w-4 h-4 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-Linejoin="round" stroke-Width="2" d="M8 7V3m8 4V3m-6 8h6m-6 4h6M5 12h14M5 16h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v7a2 2 0 002 2z" />
+          </svg>
+          {event.startTime} - {event.endTime}
+        </div>
+      </li>
+    ))
+  ) : (
+    <p class="text-center text-white">No events match your filters.</p>
+  )}
+</ul>
+
+
+
+
+	</Main>
+</Layout>
+
+<!-- Client-side script for updating filters -->
+<script>
+  document.getElementById('location-filter').addEventListener('change', function() {
+    const selectedDay = new URLSearchParams(window.location.search).get('day') || 'Day 1';
+    const selectedCategory = new URLSearchParams(window.location.search).get('category') || 'All';
+    const location = (this as HTMLSelectElement).value;
+    const url = `?day=${selectedDay}&location=${location}&category=${selectedCategory}`;
+    window.location.href = url;
+  });
+
+  document.getElementById('category-filter').addEventListener('change', function() {
+    const selectedDay = new URLSearchParams(window.location.search).get('day') || 'Day 1';
+    const selectedLocation = new URLSearchParams(window.location.search).get('location') || 'All';
+    const category = (this as HTMLSelectElement).value;
+    const url = `?day=${selectedDay}&location=${selectedLocation}&category=${category}`;
+    window.location.href = url;
+  });
+</script>
