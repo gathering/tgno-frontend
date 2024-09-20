@@ -174,19 +174,25 @@ const filteredEvents = events.filter((event: Event) => {
 
 <!-- Client-side script for updating filters -->
 <script>
-  document.getElementById('location-filter').addEventListener('change', function() {
-    const selectedDay = new URLSearchParams(window.location.search).get('day') || 'Day 1';
-    const selectedCategory = new URLSearchParams(window.location.search).get('category') || 'All';
-    const location = (this as HTMLSelectElement).value;
-    const url = `?day=${selectedDay}&location=${location}&category=${selectedCategory}`;
-    window.location.href = url;
-  });
+  const locationFilter = document.getElementById('location-filter');
+  if (locationFilter) {
+    locationFilter.addEventListener('change', function() {
+      const selectedDay = new URLSearchParams(window.location.search).get('day') || 'Day 1';
+      const selectedCategory = new URLSearchParams(window.location.search).get('category') || 'All';
+      const location = (this as HTMLSelectElement).value;
+      const url = `?day=${selectedDay}&location=${location}&category=${selectedCategory}`;
+      window.location.href = url;
+    });
+  }
 
-  document.getElementById('category-filter').addEventListener('change', function() {
-    const selectedDay = new URLSearchParams(window.location.search).get('day') || 'Day 1';
-    const selectedLocation = new URLSearchParams(window.location.search).get('location') || 'All';
-    const category = (this as HTMLSelectElement).value;
-    const url = `?day=${selectedDay}&location=${selectedLocation}&category=${category}`;
-    window.location.href = url;
-  });
+  const categoryFilter = document.getElementById('category-filter');
+  if (categoryFilter) {
+    categoryFilter.addEventListener('change', function() {
+      const selectedDay = new URLSearchParams(window.location.search).get('day') || 'Day 1';
+      const selectedLocation = new URLSearchParams(window.location.search).get('location') || 'All';
+      const category = (this as HTMLSelectElement).value;
+      const url = `?day=${selectedDay}&location=${selectedLocation}&category=${category}`;
+      window.location.href = url;
+    });
+  }
 </script>
