@@ -18,7 +18,7 @@ For basic installation of backend repo see [backend repo](https://github.com/gat
 Same procedure as above, but with a few extra steps:
 1. Make sure local backend is running and available on a local port
 2. Create a `.env.development.local` file in the root of the project (not `.env.local` due to how Astro prioritizes env files)
-3. Add the following line to the file: `API_URL=http://localhost:3000` (make sure the port matches the port of your local backend)
+3. Add the following line to the file: `API_URL=http://localhost:8000` (make sure the port matches the port of your local backend)
 
 ## Common issues
 
@@ -30,6 +30,7 @@ Same procedure as above, but with a few extra steps:
 
 ### No content is loading when using local backend
 
-* Make sure the backend is running and available on the correct port (try opening `API_URL` in browser)
+* Make sure the backend is running and available on the correct port (try opening `API_URL` + `/api/v2/news/` in browser)
 * If backend is running in docker, make sure the port is exposed in the docker-compose file
 * Check that backend data has been properly seeded. On first startup it might be in a broken state until initiall setup steps have been done. See backend repo for details
+
