@@ -1,3 +1,7 @@
+# Getting started
+
+See [DEVELOPMENT.md](DEVELOPMENT.md) for more detailed instructions on how to get local development setup up and running. PRs on any part of documentation is very welcome!
+
 # Astro Starter Kit: Basics
 
 ```sh
