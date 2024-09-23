@@ -15,7 +15,7 @@ interface Article {
     name: string;
     slug: string;
   }>;
-  main_image: {
+  main_image?: {
     url: string;
     full_url: string;
     width: number;
@@ -75,11 +75,11 @@ const articles = await fetchArticles();
                 )}
               </time>
             </div>
-            <img
+            {article.main_image && <img
               src={article.main_image.full_url}
               alt={article.main_image.alt}
               class="w-24 h-24 object-cover ml-2 rounded-lg"
-            />
+              />}
           </article>
         </a>
       ))

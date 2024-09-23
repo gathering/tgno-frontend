@@ -84,11 +84,11 @@ const article = await fetchArticleById(articleId);
       {new Date(article.meta.first_published_at).toLocaleDateString()}
     </time>
     <!-- Main Image -->
-    <img
+    {article.main_image && <img
       src={article.main_image.full_url}
       alt={article.main_image.alt}
       class="w-auto h-auto mb-4"
-    />
+      />}
     <!-- Article Content -->
     <div class="text-white" set:html={article.body}></div>
   </Main>
