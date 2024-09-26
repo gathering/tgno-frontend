@@ -1,0 +1,31 @@
+---
+import Box from "../Box.astro";
+
+interface Props {
+  image: string;
+}
+
+const { image } = Astro.props;
+---
+
+<section class="relative h-[500px]">
+  <img
+    src={image}
+    alt="Crew Description Image"
+    class="w-full h-full object-cover rounded-3xl"
+  />
+  <div class="absolute inset-0 flex justify-center items-center">
+    <Box
+      itemCenter={true}
+      title="Who controls the stage lights?"
+      titleColor="text-blue-500"
+      text="Well, in 2025 it could be you"
+      button={{
+        text: "Take a look at this year's crew descriptions",
+        link: "https://wannabe.gathering.org/tg25/crew",
+        color: "bg-blue-500 self-center",
+      }}
+      backgroundColor="bg-black bg-opacity-80"
+    />
+  </div>
+</section>
