@@ -1,17 +1,23 @@
 ---
-import H1 from '../components/H1.astro';
-import Layout from '../layouts/Layout.astro';
-import Main from '../components/Main.astro';
-import NewsComp from '../components/NewsComp.astro';
-import Hero from '../components/Hero.astro';
+import H1 from "../components/H1.astro";
+import Layout from "../layouts/Layout.astro";
+import Main from "../components/Main.astro";
+import NotNewsComp from "../components/NotNewsComp.astro";
+import AboutComp from "../components/sections/AboutComp.astro";
+import CrewDescriptionComp from "../components/sections/CrewDescriptionComp.astro";
+import CrewJoinComp from "../components/sections/CrewJoinComp.astro";
+import TechBlogComp from "../components/sections/TechBlogComp.astro";
 ---
 
 <Layout title="The Gathering">
-	<Main>
-		<div class="max-w-4xl">
-			<H1 text="JOIN NORWAY'S LARGEST EASTER HUT"/>
-		</div>
-		<Hero image="/images/tg23-oversikt.jpg" />
-		<NewsComp articleLimit={4} />
-	</Main>
+  <Main>
+    <div class="max-w-4xl">
+      <H1 text="JOIN NORWAY'S LARGEST EASTER HUT" />
+    </div>
+    <CrewJoinComp image="/images/tg23-oversikt.jpg" />
+    <AboutComp />
+    <TechBlogComp image="/images/tg23-oversikt.jpg" />
+    <NotNewsComp articleTag="Arne??" />
+    <CrewDescriptionComp image="/images/tg23-oversikt.jpg" />
+  </Main>
 </Layout>
