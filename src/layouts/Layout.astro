@@ -43,7 +43,9 @@ const {
           s = d.getElementsByTagName("script")[0];
         g.async = true;
         g.src = u + "matomo.js";
-        s.parentNode.insertBefore(g, s);
+        if (s.parentNode) {
+          s.parentNode.insertBefore(g, s);
+        }
       })();
     </script>
     <!-- End Matomo Code -->
