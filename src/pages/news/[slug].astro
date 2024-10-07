@@ -80,8 +80,8 @@ const finishedHtml = processEmbedTags(article.body);
     {
       article.main_image && (
         <img
-          src={article.main_image.sizes.medium.url}
-          srcset={`${article.main_image.sizes.small.url} 500w, ${article.main_image.sizes.medium.url} 1000w`}
+          src={article.main_image.sizes.large.url}
+          srcset={`${article.main_image.sizes.large.url} 500w, ${article.main_image.sizes.extra_large.url} 1000w`}
           alt={article.main_image.alt}
           class="w-auto h-auto mb-4"
         />
