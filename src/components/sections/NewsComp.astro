@@ -32,7 +32,7 @@ const { articleTags = [], limit = 6 } = Astro.props;
 const fetchArticles = async (): Promise<Article[]> => {
   const url = new URL(`${import.meta.env.API_URL}api/v2/news/`);
   url.searchParams.set("fields", "title,tags,first_published_at,main_image");
-  url.searchParams.set("limit", limit);
+  url.searchParams.set("limit", limit.toString(10));
 
   if (articleTags?.length) {
     url.searchParams.set("tags", articleTags.join(","));
