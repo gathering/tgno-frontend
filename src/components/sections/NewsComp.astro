@@ -2,7 +2,7 @@
 import { fetchArticles } from "../../utils";
 import type { FetchArticlesProps } from "../../utils";
 
-type Props = {} & FetchArticlesProps;
+type Props = {} & Omit<FetchArticlesProps, "api_url">;
 
 const articles = await fetchArticles({
   ...Astro.props,

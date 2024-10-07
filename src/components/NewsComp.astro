@@ -1,9 +1,9 @@
 ---
 import H2 from "./H2.astro";
-import { fetchArticles } from "../../utils";
-import type { FetchArticlesProps } from "../../utils";
+import { fetchArticles } from "../utils";
+import type { FetchArticlesProps } from "../utils";
 
-type Props = {} & FetchArticlesProps;
+type Props = {} & Omit<FetchArticlesProps, "api_url">;
 
 const articles = await fetchArticles({
   ...Astro.props,
