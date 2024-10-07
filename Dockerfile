@@ -1,4 +1,4 @@
-FROM node:lts AS base
+FROM node:20 AS base
 
 FROM base AS prod-build
 ENV PNPM_HOME="/pnpm"
