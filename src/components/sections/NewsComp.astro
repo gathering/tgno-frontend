@@ -7,6 +7,7 @@ type Props = {} & FetchArticlesProps;
 const articles = await fetchArticles({
   ...Astro.props,
   api_url: import.meta.env.API_URL,
+  limit: 6,
 });
 ---
 
