@@ -8,6 +8,14 @@ export interface Article {
         first_published_at: string;
     };
     title: string;
+    intro: string;
+    body: string;
+    contributors: Array<{
+        id: number;
+        name: string;
+        contribution_type: string;
+        image?: string;
+    }>;
     tags: Array<{
         id: number;
         name: string;
