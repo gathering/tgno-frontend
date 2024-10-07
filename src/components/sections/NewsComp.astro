@@ -24,14 +24,21 @@ interface Article {
   };
 }
 type Props = {
-  articleTag?: string;
+  articleTags?: string[];
+  limit?: number;
 };
-const { articleTag = "" } = Astro.props;
+const { articleTags = [], limit = 6 } = Astro.props;
 
 const fetchArticles = async (): Promise<Article[]> => {
-  const baseurl = `${import.meta.env.API_URL}api/v2/news/?fields=title,tags,first_published_at,main_image&order=-first_published_at`;
+  const url = new URL(`${import.meta.env.API_URL}api/v2/news/`);
+  url.searchParams.set("fields", "title,tags,first_published_at,main_image");
+  url.searchParams.set("limit", limit.toString(10));
 
-  const response = await fetch(`${baseurl}&tags=${articleTag}`);
+  if (articleTags?.length) {
+    url.searchParams.set("tags", articleTags.join(","));
+  }
+
+  const response = await fetch(url.toString());
   const data = await response.json();
   const articles: Article[] = data.items;
   return articles;
@@ -77,9 +84,10 @@ const articles = await fetchArticles();
                     </h3>
                     <time
                       datetime={article.meta.first_published_at}
-                      class="text-sm text-gray-500">
+                      class="text-sm text-gray-500"
+                    >
                       {new Date(
-                        article.meta.first_published_at
+                        article.meta.first_published_at,
                       ).toLocaleDateString("en-US", {
                         year: "numeric",
                         month: "long",
