@@ -1,6 +1,4 @@
 ---
-import type { Article } from "../../utils";
-
 import H1 from "../../components/H1.astro";
 import Main from "../../components/Main.astro";
 import Layout from "../../layouts/Layout.astro";
@@ -33,7 +31,7 @@ const processEmbedTags = (html: string) => {
     /<embed[^>]+embedtype="image"[^>]+id="(\d+)"[^>]+alt="([^"]+)"[^>]*>/g,
     (match, id, alt) => {
       return `<img src="${imageBaseUrl}${id}" alt="${alt}"/>`;
-    },
+    }
   );
 };
 
@@ -62,8 +60,7 @@ const finishedHtml = processEmbedTags(article.body);
     <!-- Publish Date -->
     <time
       datetime={article.meta.first_published_at}
-      class="text-sm text-gray-500 mb-2 block"
-    >
+      class="text-sm text-gray-500 mb-2 block">
       {new Date(article.meta.first_published_at).toLocaleDateString()}
     </time>
     <!-- Author -->
@@ -83,7 +80,8 @@ const finishedHtml = processEmbedTags(article.body);
     {
       article.main_image && (
         <img
-          src={article.main_image.full_url}
+          src={article.main_image.sizes.large.url}
+          srcset={`${article.main_image.sizes.large.url} 500w, ${article.main_image.sizes.extra_large.url} 1000w`}
           alt={article.main_image.alt}
           class="w-auto h-auto mb-4"
         />
