@@ -1,6 +1,4 @@
 ---
-import type { Article } from "../../utils";
-
 import H1 from "../../components/H1.astro";
 import Main from "../../components/Main.astro";
 import Layout from "../../layouts/Layout.astro";
@@ -82,7 +80,7 @@ const finishedHtml = processEmbedTags(article.body);
     {
       article.main_image && (
         <img
-          src={article.main_image.sizes.medium.url} /* Fallback for older browsers */
+          src={article.main_image.sizes.medium.url}
           srcset={`${article.main_image.sizes.small.url} 500w, ${article.main_image.sizes.medium.url} 1000w`}
           alt={article.main_image.alt}
           class="w-auto h-auto mb-4"
