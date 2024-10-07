@@ -1,5 +1,5 @@
 ---
-import Box from './Box.astro';
+import Box from "./Box.astro";
 
 // Props for the Hero component
 interface Props {
@@ -13,8 +13,8 @@ const { image } = Astro.props;
   <!-- Hero Image -->
   <img src={image} alt="Hero Image" class="w-full h-full object-cover" />
 
-  <!-- Overlay for Desktop -->
-  <div class="hidden absolute bottom-4 right-4 sm:flex sm:flex-col space-y-4 sm:bottom-8 sm:right-8">
+  <div
+    class="md:absolute md:bottom-4 md:right-4 flex flex-col space-y-4 p-4 md:p-0">
     <!-- Box 1: Title, Date, Button -->
     <Box
       title="Welcome to the Gathering - Reborn"
@@ -22,31 +22,16 @@ const { image } = Astro.props;
       button={{ text: "Tickets", link: "#", color: "bg-orange-500" }}
       backgroundColor="bg-blue-500"
     />
-
     <!-- Box 2: Text, Button -->
     <Box
       text="On Main Stage: Opening Ceremony"
-      button={{ text: "Scheduel", link: "#", color: "bg-orange-500", border: true }}
+      button={{
+        text: "Scheduel",
+        link: "#",
+        color: "bg-orange-500",
+        border: true,
+      }}
       backgroundColor="bg-orange-500"
     />
   </div>
-
-  <!-- Mobile Layout: Stack boxes vertically -->
-  <div class="sm:hidden flex flex-col space-y-4 p-4 m">
-    <!-- Box 1 -->
-    <Box
-      title="Welcome to the Gathering - Reborn"
-      date="27. - 31 March"
-      button={{ text: "Tickets", link: "#", color: "bg-orange-500" }}
-      backgroundColor="bg-blue-500"
-    />
-
-    <!-- Box 2 -->
-    <Box
-    text="On Main Stage: Opening Ceremony"
-    button={{ text: "Scheduel", link: "#", color: "bg-orange-500", border: true }}
-    backgroundColor="bg-orange-500"
-  />
-  </div>
 </section>
-

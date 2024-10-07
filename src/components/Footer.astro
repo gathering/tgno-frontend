@@ -1,74 +1,61 @@
+---
+import BrandSnapchat from "./icons/BrandSnapchat.astro";
+import BrandDiscord from "./icons/BrandDiscord.astro";
+import BrandFacebook from "./icons/BrandFacebook.astro";
+import BrandTwitter from "./icons/BrandTwitter.astro";
+import BrandInstagram from "./icons/BrandInstagram.astro";
+import BrandTwitch from "./icons/BrandTwitch.astro";
+import BrandYoutube from "./icons/BrandYoutube.astro";
+---
 
 <footer
-    class="flex flex-col gap-5 items-center mx-auto sm:flex-col sm:items-start max-w-7xl px-5 py-5 w-full"
->
-<div class="sm:flex sm:flex-row sm:gap-10">
+  class="flex flex-col gap-5 items-center mx-auto sm:flex-col sm:items-start max-w-7xl px-5 py-5 w-full">
+  <div class="sm:flex gap-10">
     <div>
-
-    <a href="/" class="flex gap-x-4 items-center">
+      <a href="/" class="flex items-center">
         <img
-        src="/images/tglogo-color.png"
-        alt="The Gathering logo"
-        width={150}
-        class="aspect-thumbnail object-cover sm:w-72"
+          src="/images/tglogo-color.png"
+          alt="The Gathering logo"
+          width={150}
+          class="aspect-thumbnail object-cover min-w-full"
         />
-    </a>
-    <div class="flex flex-row gap-4 justify-center pt-2">
-        <a href="/" class="flex gap-x-4 items-center">
-            <img
-            src="/images/icons/twitter.png"
-            alt="The Gathering logo"
-            width={24}
-            class="aspect-thumbnail object-cover"
-            />
+      </a>
+      <div class="flex flex-row gap-2 justify-center p-2">
+        <a href="https://www.facebook.com/gatheringorg">
+          <BrandFacebook />
         </a>
-        <a href="/" class="flex gap-x-4 items-center">
-            <img
-            src="/images/icons/instagram.png"
-            alt="The Gathering logo"
-            width={24}
-            class="aspect-thumbnail object-cover"
-            />
+        <a href="https://twitter.com/gatheringorg">
+          <BrandTwitter />
         </a>
-        <a href="/" class="flex gap-x-4 items-center">
-            <img
-            src="/images/icons/facebook.png"
-            alt="The Gathering logo"
-            width={24}
-            class="aspect-thumbnail object-cover"
-            />
+        <a href="https://discord.gg/gathering">
+          <BrandDiscord />
         </a>
-        <a href="/" class="flex gap-x-4 items-center">
-            <img
-            src="/images/icons/discord.png"
-            alt="The Gathering logo"
-            width={24}
-            class="aspect-thumbnail object-cover"
-            />
+        <a href="https://www.instagram.com/gatheringorg">
+          <BrandInstagram />
         </a>
+        <a href="https://www.snapchat.com/add/gatheringorg">
+          <BrandSnapchat />
+        </a>
+        <a href="https://www.twitch.tv/team/thegathering">
+          <BrandTwitch />
+        </a>
+        <a href="https://www.youtube.com/@gatheringorg">
+          <BrandYoutube />
+        </a>
+      </div>
     </div>
-</div>
-<div class="sm:flex sm:gap-10">
-    <ul class="text-white flex flex-col gap-2 items-center sm:items-start">
-        <li><a href="#" class="">Tickets</a></li>
-        <li><a href="#" class="">Schedule</a></li>
-        <li><a href="#" class="">Competitions</a></li>
-        <li><a href="/news" class="">News</a></li>
-        <li><a href="/faq" class="">FAQ</a></li>
-        <li><a href="/about" class="">About the Gathering</a></li>
-    </ul>
-    <ul class="text-white size flex flex-col gap-2 items-center sm:items-start">
+    <div class="sm:flex sm:gap-10">
+      <ul
+        class="text-white size flex flex-col gap-2 items-center sm:items-start">
         <li><a href="https://archive.gathering.org/" class="">Archives</a></li>
         <li><a href="https://tech.gathering.org/" class="">Tech Blog</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="flex justify-center w-full">
+    <ul
+      class="text-white text-sm flex flex-col sm:flex-row gap-2 items-center sm:items-start">
+      <li>The Gathering 2025 - <a href="https://www.kandu.no/">KANDU</a></li>
     </ul>
-</div>
-</div>
-<div class="flex justify-center w-full">
-    <ul class="text-white text-sm flex flex-col sm:flex-row gap-2 items-center sm:items-start">
-        <li><a href="#" class="">Statement of Availability</a></li>
-        <li><a href="#" class="">Admin - Info:Redaksjonen - info[at]tg[dot]no</a></li>
-        <li><a href="#" class="">Adjust cookie and data settings</a></li>
-        <li>The Gathering 2025 - <a href="https://www.kandu.no/">KANDU</a></li>
-    </ul>
-</div>
+  </div>
 </footer>

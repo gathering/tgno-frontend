@@ -1,0 +1,31 @@
+---
+import Box from "../Box.astro";
+
+interface Props {
+  image: string;
+}
+
+const { image } = Astro.props;
+---
+
+<section class="relative h-[500px]">
+  <img
+    src={image}
+    alt="Tech Blog Image"
+    class="w-full h-full object-cover rounded-3xl"
+  />
+  <div class="absolute inset-0 flex justify-center items-center">
+    <Box
+      itemCenter={true}
+      title="How is the network created?"
+      titleColor="text-green-500"
+      text="The answer is lots of cables, good people and a bit of luck"
+      button={{
+        text: "Read everything in the Tech-blog",
+        link: "https://tech.gathering.org",
+        color: "bg-green-500 self-center",
+      }}
+      backgroundColor="bg-black bg-opacity-80"
+    />
+  </div>
+</section>

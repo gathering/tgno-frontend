@@ -1,8 +1,9 @@
 ---
 type Props = {
-	text: string;
+  text: string;
+  color?: string;
 };
-const { text } = Astro.props;
+const { text, color = "text-white" } = Astro.props;
 ---
 
-<h2 class="text-4xl text-white font-bold mb-2">{text}</h2>
+<h2 class=`text-4xl ${color} font-bold mb-2`>{text}</h2>

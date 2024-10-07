@@ -1,36 +1,59 @@
 ---
-import Header from '../components/Header.astro';
-import Sponsors from '../components/Sponsors.astro';
-import Footer from '../components/Footer.astro';
+import Header from "../components/Header.astro";
+import Sponsors from "../components/Sponsors.astro";
+import Footer from "../components/Footer.astro";
 interface Props {
-	title: string;
-	description?: string;
-	image?: string;
+  title: string;
+  description?: string;
+  image?: string;
 }
 
-const { 
-title, 
-description = "We have hosted The Gathering since 1992 and it has always been a hub for young creative people to battle it out in many types of competitions; demo-coding, music, graphics, animation, and gaming.", 
-image = "/images/tg.jpg" 
+const {
+  title,
+  description = "We have hosted The Gathering since 1992 and it has always been a hub for young creative people to battle it out in many types of competitions; demo-coding, music, graphics, animation, and gaming.",
+  image = "/images/tg.jpg",
 } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content={description} />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<meta property="og:image" content={image} />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta property="og:image" content={image} />
 
-		<title>{title}</title>
-	</head>
-	<body class="min-h-screen bg-background sm:flex sm:flex-col">
-		<Header/>
-		<slot />
-		<Sponsors />
-		<Footer/>
-	</body>
+    <title>{title}</title>
+
+    <!-- Matomo -->
+    <script>
+      var _paq = (window._paq = window._paq || []);
+      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+      _paq.push(["disableCookies"]);
+      _paq.push(["trackPageView"]);
+      _paq.push(["enableLinkTracking"]);
+      (function () {
+        var u = "//matomo.gathering.org/";
+        _paq.push(["setTrackerUrl", u + "matomo.php"]);
+        _paq.push(["setSiteId", "2"]);
+        var d = document,
+          g = d.createElement("script"),
+          s = d.getElementsByTagName("script")[0];
+        g.async = true;
+        g.src = u + "matomo.js";
+        if (s.parentNode) {
+          s.parentNode.insertBefore(g, s);
+        }
+      })();
+    </script>
+    <!-- End Matomo Code -->
+  </head>
+  <body class="min-h-screen bg-background sm:flex sm:flex-col">
+    <Header />
+    <slot />
+    <Sponsors />
+    <Footer />
+  </body>
 </html>
