@@ -15,6 +15,8 @@ const {
 } = Astro.props;
 
 const matomoSiteId = import.meta.env.MATOMO_SITE_ID;
+const matomoInstanceUrl =
+  import.meta.env.MATOMO_INSTANCE_URL || "//matomo.gathering.org/";
 ---
 
 <!doctype html>
@@ -30,8 +32,8 @@ const matomoSiteId = import.meta.env.MATOMO_SITE_ID;
     <title>{title}</title>
 
     <!-- Matomo -->
-    <script is:inline define:vars={{ matomoSiteId }}>
-      if (!matomoSiteId) {
+    <script is:inline define:vars={{ matomoInstanceUrl, matomoSiteId }}>
+      if (!matomoSiteId || !matomoInstanceUrl) {
         // Doing this instead of conditional script tag to avoid (wrong) prettier syntax errors
         return;
       }
@@ -42,14 +44,13 @@ const matomoSiteId = import.meta.env.MATOMO_SITE_ID;
       _paq.push(["enableLinkTracking"]);
 
       (function () {
-        const u = "//matomo.gathering.org/";
-        _paq.push(["setTrackerUrl", u + "matomo.php"]);
+        _paq.push(["setTrackerUrl", matomoInstanceUrl + "matomo.php"]);
         _paq.push(["setSiteId", matomoSiteId]);
         var d = document,
           g = d.createElement("script"),
           s = d.getElementsByTagName("script")[0];
         g.async = true;
-        g.src = u + "matomo.js";
+        g.src = matomoInstanceUrl + "matomo.js";
         if (s.parentNode) {
           s.parentNode.insertBefore(g, s);
         }
