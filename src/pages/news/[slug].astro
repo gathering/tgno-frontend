@@ -25,13 +25,12 @@ const article = await fetchArticleById({
 
 // Function to replace <embed> tags with <img> tags for images
 const processEmbedTags = (html: string) => {
-  const imageBaseUrl = `${import.meta.env.API_URL}media/images/`;
-
   return html.replace(
-    /<embed[^>]+embedtype="image"[^>]+id="(\d+)"[^>]+alt="([^"]+)"[^>]*>/g,
-    (match, id, alt) => {
-      return `<img src="${imageBaseUrl}${id}" alt="${alt}"/>`;
-    }
+    /<img([^>]+)alt="([^"]+)"([^>]+)src="([^"]+)"([^>]*)>/g,
+    (match, pre, alt, mid, src, post) => {
+      const absoluteSrc = new URL(src, import.meta.env.API_URL);
+      return `<img ${pre} src="${absoluteSrc.toString()}" ${mid} alt="${alt}" ${post}/>`;
+    },
   );
 };
 
