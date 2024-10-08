@@ -23,19 +23,6 @@ const article = await fetchArticleById({
   api_url: import.meta.env.API_URL,
 });
 
-// Function to replace <embed> tags with <img> tags for images
-const processEmbedTags = (html: string) => {
-  return html.replace(
-    /<img([^>]+)alt="([^"]+)"([^>]+)src="([^"]+)"([^>]*)>/g,
-    (match, pre, alt, mid, src, post) => {
-      const absoluteSrc = new URL(src, import.meta.env.API_URL);
-      return `<img ${pre} src="${absoluteSrc.toString()}" ${mid} alt="${alt}" ${post}/>`;
-    },
-  );
-};
-
-// Process embed tags to replace them with <img> tags
-const finishedHtml = processEmbedTags(article.body);
 ---
 
 <Layout title=`The Gathering - ${article.title}`>
@@ -87,6 +74,6 @@ const finishedHtml = processEmbedTags(article.body);
       )
     }
     <!-- Article Content -->
-    <div class="prose" set:html={finishedHtml} />
+    <div class="prose" set:html={article.body} />
   </Main>
 </Layout>
