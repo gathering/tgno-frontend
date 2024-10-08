@@ -29,14 +29,15 @@ const articles = await fetchArticles({
               <h3 class="text-xl text-white font-bold mt-2">{article.title}</h3>
               <time
                 datetime={article.meta.first_published_at}
-                class="text-sm text-gray-500">
+                class="text-sm text-gray-500"
+              >
                 {new Date(article.meta.first_published_at).toLocaleDateString(
                   "en-US",
                   {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
-                  }
+                  },
                 )}
               </time>
             </div>
