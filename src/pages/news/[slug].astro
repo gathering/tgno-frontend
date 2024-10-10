@@ -30,7 +30,8 @@ const article = await fetchArticleById({
   seo_title=`${article.meta.seo_title}`
   search_description=`${article.meta.search_description}`
   introText=`${article.intro}`
-  type="article">
+  type="article"
+  image=`${article.main_image?.sizes.large.url}`>
   <Main>
     <!-- Article Title -->
     <H1 text=`${article.title}` />
