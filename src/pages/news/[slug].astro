@@ -22,10 +22,15 @@ const article = await fetchArticleById({
   id,
   api_url: import.meta.env.API_URL,
 });
-
 ---
 
-<Layout title=`The Gathering - ${article.title}`>
+<Layout
+  title=`The Gathering - ${article.title}`
+  description=`${article.meta.search_description}`
+  seo_title=`${article.meta.seo_title}`
+  search_description=`${article.meta.search_description}`
+  introText=`${article.intro}`
+  type="article">
   <Main>
     <!-- Article Title -->
     <H1 text=`${article.title}` />

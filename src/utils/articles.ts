@@ -6,6 +6,8 @@ export interface Article {
     html_url: string;
     slug: string;
     first_published_at: string;
+    seo_title: string;
+    search_description: string;
   };
   title: string;
   intro: string;
