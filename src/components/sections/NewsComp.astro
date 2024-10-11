@@ -28,8 +28,8 @@ const articles = await fetchArticles({
       );
     } else {
       return (
-        <section class="text-white p-8 rounded-3xl border-solid border-4 border-backgroundSecondary my-2">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:px-44">
+        <section class="text-white sm:p-8 rounded-3xl border-solid border-4 border-backgroundSecondary my-2">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-5 lg:px-28">
             {articles.map((article) => (
               <a href={`/news/${article.meta.slug}`}>
                 <article class="overflow-hidden flex flex-row p-4">
@@ -63,7 +63,7 @@ const articles = await fetchArticles({
                     <img
                       src={article.main_image.sizes.thumbnail.url}
                       alt={article.main_image.alt}
-                      class="w-24 h-24 object-cover ml-2 rounded-lg"
+                      class="w-24 h-24 object-cover ml-4 rounded-lg"
                     />
                   )}
                 </article>
