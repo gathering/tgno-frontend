@@ -8,6 +8,7 @@ export interface Article {
     first_published_at: string;
     seo_title: string;
     search_description: string;
+    locale?: "en" | "no";
   };
   title: string;
   intro: string;
@@ -110,7 +111,7 @@ export const fetchArticleById = async ({
   id: number;
   api_url: string;
 }): Promise<Article> => {
-  const response = await fetch(`${api_url}api/v2/news/${id}/`);
+  const response = await fetch(`${api_url}api/v2/news/${id}/?fields=locale`);
   const data = await response.json();
   return data;
 };
