@@ -13,7 +13,7 @@ const articles = await fetchArticles({
 
 <section>
   <H2 text="Nyheter >_" />
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:px-44">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-5 lg:px-28">
     {
       articles.map((article) => (
         <a href={`/news/${article.meta.slug}`}>
@@ -45,7 +45,7 @@ const articles = await fetchArticles({
               <img
                 src={article.main_image.sizes.thumbnail.url}
                 alt={article.main_image.alt}
-                class="w-24 h-24 object-cover ml-2 rounded-lg"
+                class="w-24 h-24 object-cover ml-4 rounded-lg"
               />
             )}
           </article>
