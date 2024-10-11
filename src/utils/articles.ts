@@ -111,7 +111,7 @@ export const fetchArticleById = async ({
   id: number;
   api_url: string;
 }): Promise<Article> => {
-  const response = await fetch(`${api_url}api/v2/news/${id}/`);
+  const response = await fetch(`${api_url}api/v2/news/${id}/?fields=locale`);
   const data = await response.json();
   return data;
 };
