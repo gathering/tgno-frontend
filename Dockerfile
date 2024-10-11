@@ -6,7 +6,8 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 COPY package.json pnpm-lock.yaml /app/
 WORKDIR /app
-RUN pnpm install --prod
+# --ignore-scripts is used to prevent https://github.com/pnpm/pnpm/issues/7068
+RUN pnpm install --prod --ignore-scripts
 COPY . /app
 RUN pnpm build
 
