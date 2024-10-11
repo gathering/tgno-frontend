@@ -1,0 +1,16 @@
+---
+type Props = {
+  text: string;
+  color?: string;
+};
+const { text, color = "text-white" } = Astro.props;
+---
+
+<p
+  class=`text-base/7 ${color} font-bold mb-5`
+  style={{
+    maxWidth: "65ch", // m-w-prose didn't work for some reason
+  }}
+>
+  {text}
+</p>
