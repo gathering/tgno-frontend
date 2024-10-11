@@ -36,7 +36,7 @@ const article = await fetchArticleById({
   image=`${article.main_image?.sizes.large.url}`
 >
   <Main>
-    <WideContentContainer>
+    <ContentContainer>
       <!-- Article Title -->
       <H1 text=`${article.title}` />
       <!-- Main Image -->
@@ -86,7 +86,7 @@ const article = await fetchArticleById({
           </tbody>
         </table>
       </aside>
-    </WideContentContainer>
+    </ContentContainer>
     <ContentContainer>
       <!-- Article Content -->
       <div class="prose" set:html={article.body} />
