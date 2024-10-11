@@ -1,6 +1,8 @@
 ---
 import H1 from "../../components/H1.astro";
+import Intro from "../../components/Intro.astro";
 import Main from "../../components/Main.astro";
+import ContentContainer from "../../components/ContentContainer.astro";
 import Layout from "../../layouts/Layout.astro";
 import { fetchArticleIdBySlug, fetchArticleById } from "../../utils";
 
@@ -35,54 +37,61 @@ const article = await fetchArticleById({
   image=`${article.main_image?.sizes.large.url}`
 >
   <Main>
-    <!-- Article Title -->
-    <H1 text=`${article.title}` />
-    <!-- Display Tags -->
-    <p class="text-sm text-gray-600 mb-2">
+    <ContentContainer>
+      <!-- Article Title -->
+      <H1 text=`${article.title}` />
+      <!-- Main Image -->
       {
-        article.tags
-          .filter((tag) => tag.name !== "NotNews") // Filter out the "NotNews" tag
-          .map((tag) => {
-            return tag.name
-              .split(" ")
-              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-              .join(" ");
-          })
-          .join(", ")
+        article.main_image && (
+          <img
+            src={article.main_image.sizes.large.url}
+            srcset={`${article.main_image.sizes.large.url} 500w, ${article.main_image.sizes.extra_large.url} 1000w`}
+            alt={article.main_image.alt}
+            class="w-auto rounded-3xl mb-5"
+          />
+        )
       }
-    </p>
-    <!-- Publish Date -->
-    <time
-      datetime={article.meta.first_published_at}
-      class="text-sm text-gray-500 mb-2 block"
-    >
-      {new Date(article.meta.first_published_at).toLocaleDateString()}
-    </time>
-    <!-- Author -->
-    <table class="">
-      <tbody class="text-sm text-gray-500 mb-2 block">
-        {
-          article.contributors.map((contributor) => (
-            <tr>
-              <td class="">{contributor.contribution_type}</td>
-              <td class="">| {contributor.name}</td>
-            </tr>
-          ))
-        }
-      </tbody>
-    </table>
-    <!-- Main Image -->
-    {
-      article.main_image && (
-        <img
-          src={article.main_image.sizes.large.url}
-          srcset={`${article.main_image.sizes.large.url} 500w, ${article.main_image.sizes.extra_large.url} 1000w`}
-          alt={article.main_image.alt}
-          class="w-auto h-auto mb-4"
-        />
-      )
-    }
-    <!-- Article Content -->
-    <div class="prose" set:html={article.body} />
+      <!-- Display Tags -->
+      <aside class="mb-5">
+        <p class="text-sm text-gray-600 mb-2">
+          {
+            article.tags
+              .filter((tag) => tag.name !== "NotNews") // Filter out the "NotNews" tag
+              .map((tag) => {
+                return tag.name
+                  .split(" ")
+                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(" ");
+              })
+              .join(", ")
+          }
+        </p>
+        <!-- Publish Date -->
+        <time
+          datetime={article.meta.first_published_at}
+          class="text-sm text-gray-500 mb-2 block"
+        >
+          {new Date(article.meta.first_published_at).toLocaleDateString()}
+        </time>
+        <!-- Author -->
+        <table class="">
+          <tbody class="text-sm text-gray-500 mb-2 block">
+            {
+              article.contributors.map((contributor) => (
+                <tr>
+                  <td class="">{contributor.contribution_type}</td>
+                  <td class="">| {contributor.name}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </aside>
+    </ContentContainer>
+    <ContentContainer>
+      <!-- Article Content -->
+      <Intro text={article.intro} />
+      <div class="prose" set:html={article.body} />
+    </ContentContainer>
   </Main>
 </Layout>
