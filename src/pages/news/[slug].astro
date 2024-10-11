@@ -1,5 +1,6 @@
 ---
 import H1 from "../../components/H1.astro";
+import Intro from "../../components/Intro.astro";
 import Main from "../../components/Main.astro";
 import ContentContainer from "../../components/ContentContainer.astro";
 import Layout from "../../layouts/Layout.astro";
@@ -88,6 +89,7 @@ const article = await fetchArticleById({
     </ContentContainer>
     <ContentContainer>
       <!-- Article Content -->
+      <Intro text={article.intro} />
       <div class="prose" set:html={article.body} />
     </ContentContainer>
   </Main>
