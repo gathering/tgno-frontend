@@ -15,6 +15,8 @@ For basic installation of backend repo see [backend repo](https://github.com/gat
 5. Run `pnpm dev`
 6. Frontend should now be available on `localhost:4321` serving content from `https://dev.tg.no`
 
+We use [husky](https://typicode.github.io/husky/) pre-commit for making sure all code conforms to the same formatting. This happens automatically on commit after this first time setup, if it doesn't work try a fresh `pnpm install`
+
 ## Using local backend
 
 Same procedure as above, but with a few extra steps:
