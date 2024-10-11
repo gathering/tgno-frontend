@@ -11,8 +11,9 @@ For basic installation of backend repo see [backend repo](https://github.com/gat
 1. Clone this repo
 2. Make sure you have the correct node version installed (`nvm use` then `nvm install`)
 3. Run `pnpm install`
-4. Run `pnpm dev`
-5. Frontend should now be available on `localhost:4321` serving content from `https://dev.tg.no`
+4. Run `pnpm prepare` # Setup Husky for pre-commit
+5. Run `pnpm dev`
+6. Frontend should now be available on `localhost:4321` serving content from `https://dev.tg.no`
 
 ## Using local backend
 
@@ -24,7 +25,7 @@ Same procedure as above, but with a few extra steps:
 
 ## Using production backend
 
-Identical to using local backend section above, but use `https://prod.tg.no/`/`https://tg.no/` instead of `http://localhost:8000/`
+Identical to using local backend section above, but use `https://www.tg.no/` instead of `http://localhost:8000/`
 
 ## Common issues
 
