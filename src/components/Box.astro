@@ -43,7 +43,8 @@ const buttonTextColor = button?.textcolor ? button.textcolor : "text-black";
         {button && (
           <a
             href={button.link}
-            class={`${buttonTextColor} ${button?.color} ${borderProps} inline-block px-4 py-2 rounded-full content-center`}>
+            class={`${buttonTextColor} ${button?.color} ${borderProps} inline-block px-4 py-2 rounded-full content-center`}
+          >
             {button.text}
           </a>
         )}
@@ -58,7 +59,8 @@ const buttonTextColor = button?.textcolor ? button.textcolor : "text-black";
         {button && (
           <a
             href={button.link}
-            class={`${button?.color} ${borderProps} inline-block text-white px-4 py-2 rounded-full content-center`}>
+            class={`${button?.color} ${borderProps} inline-block text-white px-4 py-2 rounded-full content-center`}
+          >
             {button.text}
           </a>
         )}
