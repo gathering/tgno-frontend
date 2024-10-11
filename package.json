@@ -7,7 +7,8 @@
     "start": "astro dev",
     "build": "astro check && export $(grep -v '^\\s*$\\|^\\s*\\#' .env.runtime) && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "prepare": "husky"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -22,7 +23,12 @@
   },
   "devDependencies": {
     "@types/dompurify": "^3.0.5",
+    "husky": ">=7",
+    "lint-staged": ">=10",
     "prettier": "^3.3.3",
     "prettier-plugin-astro": "^0.14.1"
+  },
+  "lint-staged": {
+    "*.{js,ts,mjs,css,md,astro,yaml,json}": "prettier --write"
   }
 }
