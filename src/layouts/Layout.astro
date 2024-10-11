@@ -37,7 +37,7 @@ const matomoInstanceUrl =
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={finalDescription} />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/favicon-48x48.png" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -84,7 +84,7 @@ const matomoInstanceUrl =
     </script>
     <!-- End Matomo Code -->
   </head>
-  <body class="min-h-screen bg-background sm:flex sm:flex-col">
+  <body class="min-w-96 min-h-screen bg-background sm:flex sm:flex-col">
     <Header />
     <slot />
     <Footer />
