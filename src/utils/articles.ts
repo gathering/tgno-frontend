@@ -8,6 +8,7 @@ export interface Article {
     first_published_at: string;
     seo_title: string;
     search_description: string;
+    locale?: "en" | "no";
   };
   title: string;
   intro: string;

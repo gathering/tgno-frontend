@@ -31,6 +31,7 @@ const article = await fetchArticleById({
   search_description=`${article.meta.search_description}`
   introText=`${article.intro}`
   type="article"
+  lang=`${article.meta.locale || "no"}`
   image=`${article.main_image?.sizes.large.url}`
 >
   <Main>
