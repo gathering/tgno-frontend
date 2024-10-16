@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@types/dompurify": "^3.0.5",
+    "@types/jquery": "^3.5.31",
     "husky": ">=7",
     "lint-staged": ">=10",
     "prettier": "^3.3.3",
