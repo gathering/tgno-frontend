@@ -1,25 +1,39 @@
-<header
-  class="flex justify-between items-center p-5 max-w-7xl mb-8 justify-self-center w-full mx-auto bg-backgroundSecondary sm:rounded-3xl sm:mx-5 sm:mt-4 sm:mb-8 sm:w-auto xl:mx-auto xl:w-full"
->
-  <!-- <a href="/" class="flex gap-x-4 items-center "> -->
-  <a href="/" class="sm:flex gap-x-4 items-center hidden">
-    <img
-      src="/images/tglogo-bw.png"
-      alt="The Gathering logo"
-      width={150}
-      class="aspect-thumbnail object-cover"
-    />
-  </a>
-  <a href="/" class="flex gap-x-4 items-center sm:hidden">
-    <img
-      src="/images/tglogo-tg.png"
-      alt="The Gathering logo"
-      width={75}
-      class="aspect-thumbnail object-cover"
-    />
-  </a>
-  <span class="text-l text-white flex flex-col">
-    <span>🗓 16.-20. april 2025</span>
-    <span>🌍 Vikingskipet, Hamar</span>
-  </span>
+<header class="flex flex-col-reverse">
+  <div
+    class="flex justify-between items-center p-5 max-w-7xl mb-8 justify-self-center w-full mx-auto bg-backgroundSecondary sm:rounded-3xl sm:mx-5 sm:mt-2 sm:mb-8 sm:w-auto xl:mx-auto xl:w-full"
+  >
+    <a href="/" class="sm:flex gap-x-4 items-center hidden">
+      <img
+        src="/images/tglogo-bw.png"
+        alt="The Gathering logo"
+        width={150}
+        class="aspect-thumbnail object-cover"
+      />
+    </a>
+    <a href="/" class="flex gap-x-4 items-center sm:hidden">
+      <img
+        src="/images/tglogo-tg.png"
+        alt="The Gathering logo"
+        width={75}
+        class="aspect-thumbnail object-cover"
+      />
+    </a>
+    <nav class="w-full flex items-end">
+      <ul class="w-full flex space-x-6 space-y-0 justify-end">
+        <li>
+          <a href="/contact" class="block text-white hover:text-orange-500"
+            >Kontakt oss</a
+          >
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <aside>
+    <span
+      class="flex w-full text-white justify-end py-2 px-5 max-w-7xl justify-self-center mx-auto gap-x-3 xl:px-0"
+    >
+      <span>🗓 16.-20. april 2025</span>
+      <span>🌍 Vikingskipet, Hamar</span>
+    </span>
+  </aside>
 </header>
