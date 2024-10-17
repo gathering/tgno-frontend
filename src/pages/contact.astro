@@ -1,0 +1,136 @@
+---
+import H1 from "../components/H1.astro";
+import Layout from "../layouts/Layout.astro";
+import Main from "../components/Main.astro";
+import H2 from "../components/H2.astro";
+import H3 from "../components/H3.astro";
+import ContentContainer from "../components/ContentContainer.astro";
+
+const boxStyles = [
+  "p-6",
+  "mb-6",
+  "rounded-3xl",
+  "sm:mx-auto",
+  "sm:rounded-2xl",
+  "prose",
+];
+---
+
+<script is:inline src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script
+  is:inline
+  id="zammad_form_script"
+  src="https://support.gathering.org/assets/form/form.js"></script>
+
+<script>
+  $(function () {
+    // @ts-ignore
+    $("#zammad-feedback-form").ZammadForm({
+      messageTitle: "Kontaktskjema",
+      messageSubmit: "Send inn!",
+      messageThankYou:
+        "Takk for din henvendelse (#%s)! Vi tar kontakt med deg så snart som mulig!",
+      noCSS: false,
+      attachmentSupport: true,
+    });
+  });
+</script>
+
+<style>
+  :global(.zammad-form) {
+    button {
+      background-color: #000;
+      color: #fff;
+      border: 0;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      width: 100%;
+    }
+    textarea,
+    input[type="text"],
+    input[type="email"] {
+      border: 1px solid grey;
+      padding: 0.5rem;
+      border-radius: 0.25rem;
+      .has-error & {
+        border: 1px solid #a94442;
+      }
+    }
+  }
+</style>
+
+<Layout title="The Gathering - Kontakt oss">
+  <Main>
+    <ContentContainer>
+      <section class="prose">
+        <H1 text="Kontakt oss" />
+        <div class:list={[...boxStyles, "border-white", "border"]}>
+          <H2 text="Generell informasjon" />
+          <p>
+            Våre kontaktpersoner foretrekker å få henvendelser og spørsmål via
+            skjemaet på denne siden (går via epost). Dette fordi alle som jobber
+            med The Gathering gjør dette frivillig ved siden av jobb og studier,
+            og dermed har begrenset med tid til å snakke i telefonen.
+          </p>
+
+          <p>
+            Alle nyheter vil bli publisert her på tg.no først. Dette gjelder
+            informasjon om konkurranser, billettsalg, setevalg, sceneshow osv.
+            Vennligst respekter at nettsiden er vår primære informasjonskanal.
+            Vi vil ikke kunne komme med nyheter om arrangementet som ikke
+            allerede er publisert her på tg.no.
+          </p>
+
+          <p>
+            Legg ved din riktige kontaktinformasjon når du sender inn skjemaet,
+            slik at vi kan svare på din henvendelse på enklest mulig måte.
+          </p>
+        </div>
+
+        <div class:list={[...boxStyles, "bg-white", "text-black"]}>
+          <H3 class="mb-4" color="text-black">Ta kontakt</H3>
+          <div id="zammad-feedback-form">
+            Kontaktskjema, om det ikke dukker opp ta kontakt med Hovedkontakt
+            nevnt under
+          </div>
+        </div>
+
+        <div class:list={[...boxStyles, "border-white", "border"]}>
+          <H2
+            text="Hvem svarer på forespørsler via skjemaet?"
+            class="mb-10 text-black"
+          />
+          <H3>Deltakerservice (deltakerombud)</H3>
+          <p>
+            Passer på at deltakerne våre har det godt og trygt under
+            arrangementet. Kan svare på spørsmål rundt tilrettelegging,
+            allergier, og andre praktiske spørsmål.
+          </p>
+
+          <H3>Sponsorkontakt</H3>
+          <p>
+            Passer på at sponsorer og partnere får den informasjonen de trenger.
+            Kan svare på spørsmål rundt sponsorpakker, eksponering, og andre
+            kommersielle spørsmål.
+          </p>
+
+          <H3>Pressekontakt</H3>
+          <p>
+            Pressekontakten er ansvarlig for håndtering av alle presserelaterte
+            spørsmål. Dette inkluderer forespørsler om kreditering, intervjuer,
+            og annen.
+          </p>
+          <H3>Hovedkontakt</H3>
+          <p>
+            <p>
+              Trine Haanæs er leder for Media og Kommunikasjon og svarer på
+              (eller videresender) alle spørsmål som ikke dekkes av de andre
+              rollene.
+            </p>
+          </p>
+        </div>
+      </section>
+    </ContentContainer>
+  </Main>
+</Layout>

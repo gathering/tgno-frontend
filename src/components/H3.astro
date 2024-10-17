@@ -1,0 +1,9 @@
+---
+type Props = {
+  color?: "text-white" | "text-black";
+  class?: string;
+};
+const { color = "text-white", class: classNames = "" } = Astro.props;
+---
+
+<h3 class=`text-2xl ${color} font-bold mb-2 ${classNames}`><slot /></h3>
