@@ -25,6 +25,13 @@ const {
 } = Astro.props;
 
 const hasPills = byoc || requiresTicket;
+const formattedPrizes = prizes.map((prize) =>
+  new Intl.NumberFormat("nb-NO", {
+    style: "currency",
+    currency: "NOK",
+    maximumFractionDigits: 0,
+  }).format(prize),
+);
 ---
 
 <section class={classNames}>
@@ -39,13 +46,13 @@ const hasPills = byoc || requiresTicket;
   <H2 text={title} color="" class="mt-4" />
   <slot />
   {
-    prizes.length ? (
+    formattedPrizes.length ? (
       <>
         <H3 class="mt-4" color="">
           Premipotten
         </H3>
         <ol>
-          {prizes.map((p) => (
+          {formattedPrizes.map((p) => (
             <li>{p}</li>
           ))}
         </ol>
