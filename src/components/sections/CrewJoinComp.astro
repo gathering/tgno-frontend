@@ -8,13 +8,15 @@ interface Props {
 const { image } = Astro.props;
 ---
 
-<section class="relative h-[500px]">
+<section class="relative h-[300px] sm:h-[500px]">
   <img
     src={image}
     alt="Crew beskrivelse bilde"
     class="w-full h-full object-cover rounded-3xl"
   />
-  <div class="absolute inset-0 flex justify-center items-start sm:items-center">
+  <div
+    class="absolute inset-0 flex justify-center items-start sm:items-center sm:p-4"
+  >
     <Box
       itemCenter={true}
       title="Vi søker frivillige!"

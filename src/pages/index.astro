@@ -14,10 +14,22 @@ import TechBlogComp from "../components/sections/TechBlogComp.astro";
     <div class="max-w-4xl">
       <H1 text="BLI MED I NORGES STØRSTE PÅSKEHYTTE" />
     </div>
-    <CrewJoinComp image="/images/tg23-oversikt.jpg" />
-    <AboutComp />
-    <CrewDescriptionComp image="/images/tg19-lights.jpg" />
-    <NewsComp />
-    <TechBlogComp image="/images/tg23-crew.jpg" />
+    <div class="grid sm:grid-cols-5 gap-4 w-full">
+      <div class="sm:col-span-2">
+        <CrewJoinComp image="/images/tg23-oversikt.jpg" />
+      </div>
+      <div class="sm:col-span-3 sm:order-first flex">
+        <AboutComp />
+      </div>
+      <div class="sm:col-span-5">
+        <NewsComp />
+      </div>
+      <div class="sm:col-span-2">
+        <CrewDescriptionComp image="/images/tg19-lights.jpg" />
+      </div>
+      <div class="sm:col-span-3">
+        <TechBlogComp image="/images/tg23-crew.jpg" />
+      </div>
+    </div>
   </Main>
 </Layout>
