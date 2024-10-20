@@ -1,0 +1,56 @@
+---
+import H2 from "../../components/H2.astro";
+import H3 from "../../components/H3.astro";
+import Pill from "./Pill.astro";
+
+export interface Props {
+  title: string;
+  children: any;
+  prizes: number[];
+  byoc?: boolean;
+  requiresTicket?: boolean;
+  class?: string;
+  buttonClass?: string;
+  url?: string;
+}
+
+const {
+  title,
+  prizes,
+  url,
+  class: classNames,
+  buttonClass: buttonClassNames,
+  byoc,
+  requiresTicket,
+} = Astro.props;
+
+const hasPills = byoc || requiresTicket;
+---
+
+<section class={classNames}>
+  {
+    hasPills && (
+      <div class="flex flex-row justify-end gap-2 mb-4">
+        {byoc && <Pill text="Egen maskin" color="orange" />}
+        {requiresTicket && <Pill text="I skipet" color="blue" />}
+      </div>
+    )
+  }
+  <H2 text={title} color="" class="mt-4" />
+  <slot />
+  {
+    prizes.length ? (
+      <>
+        <H3 class="mt-4" color="">
+          Premipotten
+        </H3>
+        <ol>
+          {prizes.map((p) => (
+            <li>{p}</li>
+          ))}
+        </ol>
+      </>
+    ) : null
+  }
+  {url && <button class={buttonClassNames}>Les mer</button>}
+</section>
