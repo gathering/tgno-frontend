@@ -1,0 +1,158 @@
+---
+import H1 from "../../components/H1.astro";
+import Layout from "../../layouts/Layout.astro";
+import Main from "../../components/Main.astro";
+import H2 from "../../components/H2.astro";
+import H3 from "../../components/H3.astro";
+import ContentContainer from "../../components/ContentContainer.astro";
+import SportsBox from "../../components/competitions/SportsBox.astro";
+import Pill from "../../components/competitions/Pill.astro";
+
+const boxStyles = ["p-6", "rounded-3xl", "sm:mx-auto", "sm:rounded-2xl"];
+const buttonStyles = [
+  "w-full",
+  "mt-auto",
+  "px-4",
+  "py-2",
+  "rounded-full",
+  "content-center",
+  "bg-white",
+  "text-black",
+];
+---
+
+<Layout title="The Gathering - E-Sport konkurranser">
+  <Main>
+    <ContentContainer>
+      <H1 text="E-Sport konkurranser" />
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="sm:col-span-2">
+          <section class="mb-6 prose">
+            <H2 text="Klar for å kjempe om premier?" />
+            <p>
+              Er du klar for å konkurrere i de mest spennende og intense
+              turneringene innen gaming? På The Gathering arrangerer vi en rekke
+              turneringer i noen av verdens mest populære spill! Uansett om du
+              er en erfaren spiller eller ny i e-sportens verden, vil våre
+              turneringer gi deg muligheten til å teste ferdighetene dine,
+              samarbeide med laget ditt, og kanskje til og med vinne fantastiske
+              premier!
+            </p>
+            <H3>Praktisk informasjon</H3>
+            <p>
+              <Pill text="Egen maskin" color="orange" class="mr-2" />
+              De fleste turneringene er BYOC (Bring Your Own Computer), noe som betyr
+              at du må ta med deg din egen datamaskin for å kunne delta.
+            </p>
+            <p>
+              <Pill text="I skipet" color="blue" class="mr-2" />
+              Du må, som regel, også være på plass på The Gathering for å kunne delta
+              i turneringene.
+            </p>
+          </section>
+        </div>
+        <SportsBox
+          title="Valorant"
+          class={`${boxStyles.join(" ")} bg-blue-400 text-black prose prose-headings:text-black`}
+          buttonClass={buttonStyles.join(" ")}
+          prizes={[50000, 20000, 5000]}
+          requiresTicket
+          byoc
+        >
+          <p>
+            Valorant er et 5v5 «character-based tactical shooter» spill som er
+            utviklet av Riot Games. To lag på 5 kjemper mot hverandre om å enten
+            holde gitte områder trygt fra motstanderne eller ta dem ved å plante
+            en spike og la den eksplodere. Turneringsformatet vil være bo3 –
+            best av 3 runder.
+          </p>
+          <p>
+            For å kunne delta i konkurransen må du enten ha vunnet en av
+            kvalifiseringsturneringene til klubbene vi samarbeider med, eller
+            kjøpe LAN-billett.
+          </p>
+        </SportsBox>
+        <SportsBox
+          title="CS2"
+          class={`${boxStyles.join(" ")} bg-blue-50 text-black prose prose-headings:text-black`}
+          prizes={[40000, 10000, 5000]}
+          requiresTicket
+          byoc
+        >
+          <p>
+            Counter-Strike 2 er det største tekniske spranget fremover i
+            Counter-Strikes historie, som legger til rette for nye funksjoner og
+            oppdateringer i årene som kommer. Turneringsformatet vil bli bo3
+            (best av 3).
+          </p>
+        </SportsBox>
+        <SportsBox
+          title="LoL"
+          class={`${boxStyles.join(" ")} border-blue-400 border prose`}
+          prizes={[25000, 10000, 5000]}
+          requiresTicket
+          byoc
+        >
+          <p>
+            League of Legends er et lagbasert strategispill der to lag med fem
+            mektige mestere møter hverandre for å ødelegge den andres base. Velg
+            blant over 140 mestere for å lage episke skuespill, sikre drap og ta
+            ned tårn mens du kjemper deg mot seier. Turneringen vil bli spilt
+            som bo3.
+          </p>
+        </SportsBox>
+        <SportsBox
+          title="Rocket League"
+          class={`${boxStyles.join(" ")} bg-blue-400 text-black prose prose-headings:text-black`}
+          prizes={[10000, 5000, 2000]}
+          requiresTicket
+          byoc
+        >
+          <p>
+            Spillet blir beskrevet som "en hybrid av fotball- og kjøretøysfylt
+            arkade med lettforståelige kontroller og flytende, fysikkdrevet
+            konkurranse". Spillere kontrollerer en rakettdrevet bil og bruker
+            den til å føre en ball inn i motstanderens mål. Spillere har
+            muligheten til å hoppe med bilen sin og treffe ballen i lufta. I
+            tillegg kan spillere plukke opp fartsøkningsmidler, ved å kjøre
+            bilen sin over markerte felt på arenaen. I arenaen spilles det
+            kamper mellom 2 rivaliserende lag med opptil 4 spillere på hvert
+            lag. Turneringsformatet blir 3v3 single eliminasjon bo3 og bo5 i
+            finalen.
+          </p>
+        </SportsBox>
+        <SportsBox
+          title="Trackmania"
+          class={`${boxStyles.join(" ")} bg-blue-50 text-black prose prose-headings:text-black`}
+          prizes={[5000, 2000, 1000]}
+          requiresTicket
+          byoc
+        >
+          <p>
+            Trackmania er en serie bilspill utgitt i flere versjoner utviklet av
+            franske Nadeo. Spillet går ut på å kjøre bil på baner designet av
+            andre spillere eller spillets utviklere. Racing, stunt, stor fart og
+            kreative baneutforminger er viktige elementer. Turneringsformatet
+            blir spilt som runder og samling av poeng.
+          </p>
+        </SportsBox>
+
+        <SportsBox
+          title="Ditt spill her?"
+          class={`${boxStyles.join(" ")} border border-orange-500 prose`}
+          prizes={[]}
+        >
+          <p>
+            Ta gjerne kontakt med oss på sosiale medier om det er et spesielt
+            spill du ønsker å se en turnering i, eller kunne tenkt deg å
+            arrangere!
+          </p>
+          <p>
+            Det kan også bli lansert flere mindre turneringer under TG i andre
+            spill, så følg med!
+          </p>
+        </SportsBox>
+      </div>
+    </ContentContainer>
+  </Main>
+</Layout>
