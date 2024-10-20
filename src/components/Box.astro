@@ -2,6 +2,7 @@
 // Props for the Box component
 interface Props {
   itemCenter?: boolean;
+  withMargin?: boolean;
   title?: string;
   titleColor?: string;
   date?: string;
@@ -15,10 +16,18 @@ interface Props {
     color?: string;
     border?: boolean;
   };
+  secondaryButton?: {
+    text: string;
+    textcolor?: string;
+    link: string;
+    color?: string;
+    border?: boolean;
+  };
   backgroundColor?: string;
 }
 const {
   itemCenter = false,
+  withMargin = true,
   title,
   titleColor = "text-white",
   date,
@@ -26,16 +35,18 @@ const {
   text,
   textColor = "text-white",
   button,
+  secondaryButton,
   backgroundColor = "bg-white",
 } = Astro.props;
 const itemCenterProps = itemCenter ? "items-center" : "items-start";
 const borderProps = button?.border ? "border-white border" : "";
 const buttonTextColor = button?.textcolor ? button.textcolor : "text-black";
 const textAlignmentProps = itemCenter ? "text-center" : "";
+const marginProps = withMargin ? "m-4" : "";
 ---
 
 <div
-  class={`${backgroundColor} m-4 p-4 rounded-3xl flex flex-col space-y-2 sm:m-auto sm:rounded-2xl`}
+  class={`${backgroundColor} ${marginProps} p-4 rounded-3xl flex flex-col space-y-2 sm:m-auto sm:rounded-2xl`}
 >
   {
     title && (
@@ -45,14 +56,24 @@ const textAlignmentProps = itemCenter ? "text-center" : "";
           {date && <p class={`${dateColor}`}>{date}</p>}
           {text && <p class={`${textColor}`}>{text}</p>}
         </div>
-        {button && (
-          <a
-            href={button.link}
-            class={`${buttonTextColor} ${button?.color} ${borderProps} w-full mt-6 inline-block px-4 py-2 rounded-full content-center`}
-          >
-            {button.text}
-          </a>
-        )}
+        <aside class="mt-6 w-full space-y-2">
+          {secondaryButton && (
+            <a
+              href={secondaryButton.link}
+              class={`${buttonTextColor} ${secondaryButton?.color} ${borderProps} w-full mt-6 inline-block px-4 py-2 rounded-full content-center text-center`}
+            >
+              {secondaryButton.text}
+            </a>
+          )}
+          {button && (
+            <a
+              href={button.link}
+              class={`${buttonTextColor} ${button?.color} ${borderProps} w-full inline-block px-4 py-2 rounded-full content-center text-center`}
+            >
+              {button.text}
+            </a>
+          )}
+        </aside>
       </div>
     )
   }

@@ -15,7 +15,7 @@ const boxStyles = [
   "sm:w-full",
 ];
 const buttonStyles =
-  "block bg-white text-black px-4 py-2 rounded-full content-center text-decoration-none text-center hover:bg-orange-400 hover:text-black";
+  "block px-4 py-2 rounded-full content-center text-decoration-none text-center";
 ---
 
 <Layout title="The Gathering - Billetter">
@@ -40,12 +40,12 @@ const buttonStyles =
                 >Kjøp din billett i dag og bli med på noe helt unikt!</strong
               >
             </p>
-            <a
-              class={buttonStyles}
-              href="https://www.geekevents.org/"
-              target="_blank">Kjøp billett på GeekEvents</a
-            >
           </section>
+          <a
+            class={`${buttonStyles} mt-6 border border-orange-500 bg-orange-500 text-black hover:bg-orange-200 hover:text-black`}
+            href="https://www.geekevents.org/"
+            target="_blank">Kjøp billett på GeekEvents</a
+          >
         </div>
         <section
           class={`${boxStyles.join(" ")} sm:col-start-5 sm:col-span-3 bg-blue-400 text-black prose prose-headings:text-black sm:mt-40`}
@@ -96,14 +96,14 @@ const buttonStyles =
           </div>
         </section>
         <section
-          class={`${boxStyles.join(" ")} sm:col-start-1 sm:col-span-7 border border-white`}
+          class={`${boxStyles.join(" ")} sm:col-start-1 sm:col-span-7 bg-blue-500`}
         >
           <H3>Billettypene for TG 2025</H3>
           <p>
             Vi tilbyr ulike billettyper for å tilpasse ditt behov. Velg den som
             passer deg best:
           </p>
-          <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
             <TicketBox
               timespan="til hele arrangementet"
               name="LANpass"
@@ -164,12 +164,12 @@ const buttonStyles =
           <H3>Hva venter du på?</H3>
           <p>Kjøp din billett i dag og bli med på noe helt unikt!</p>
           <a
-            class={`${buttonStyles} mt-4 bg-transparent border border-white`}
+            class={`${buttonStyles} mt-4 bg-transparent border border-white hover:bg-black/10`}
             href="https://support.gathering.org/help/no-no"
             target="_blank">Få svar på det du lurer på i FAQen</a
           >
           <a
-            class={`${buttonStyles} mt-4`}
+            class={`${buttonStyles} mt-2 bg-white border border-white text-black hover:bg-white/70 hover:text-black`}
             href="https://www.geekevents.org/"
             target="_blank">Kjøp billett på GeekEvents</a
           >

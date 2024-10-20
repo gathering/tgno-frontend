@@ -1,0 +1,23 @@
+---
+import Box from "../Box.astro";
+---
+
+<Box
+  title="Kølotteriet er åpnet!"
+  titleColor="text-black"
+  textColor="text-black"
+  text="Still deg i køen nå for å være sikret plass i trekningen når rekkefølgen avgjøres"
+  button={{
+    text: "Bli med i køen!",
+    link: "https://www.geekevents.org/",
+    color:
+      "border border-orange-500 bg-orange-500 self-center hover:bg-orange-300",
+  }}
+  secondaryButton={{
+    text: "Mer info",
+    link: "/tickets",
+    color: "border border-orange-500 hover:bg-orange-100",
+  }}
+  backgroundColor="bg-white"
+  withMargin={false}
+/>
