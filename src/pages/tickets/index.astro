@@ -1,0 +1,180 @@
+---
+import H1 from "../../components/H1.astro";
+import Layout from "../../layouts/Layout.astro";
+import Main from "../../components/Main.astro";
+import H2 from "../../components/H2.astro";
+import H3 from "../../components/H3.astro";
+import ContentContainer from "../../components/ContentContainer.astro";
+import TicketBox from "../../components/tickets/TicketBox.astro";
+
+const boxStyles = [
+  "p-6",
+  "rounded-3xl",
+  "sm:mx-auto",
+  "sm:rounded-2xl",
+  "sm:w-full",
+];
+const buttonStyles =
+  "block bg-white text-black px-4 py-2 rounded-full content-center text-decoration-none text-center hover:bg-orange-400 hover:text-black";
+---
+
+<Layout title="The Gathering - Billetter">
+  <Main>
+    <ContentContainer>
+      <H1
+        text="Velkommen til The Gathering 2025 – Sikre deg din billett i dag!"
+      />
+      <div class="grid grid-cols-1 sm:grid-cols-7 gap-x-4 gap-y-10">
+        <div class="sm:col-start-1 sm:col-span-4">
+          <section class="prose prose-strong:text-white">
+            <H2 text="Opplev Norges største dataparty!" />
+            <p>
+              The Gathering (TG) er et av de største arrangementene for gaming,
+              kreativitet og teknologi i Norge. Uansett om du er gamer,
+              utvikler, kreativ skaper eller bare nysgjerrig på den digitale
+              verdenen, er TG stedet for deg. Samle deg med 2000 deltakere for
+              en uke full av spennende aktiviteter, konkurranser og moro.
+            </p>
+            <p>
+              <strong
+                >Kjøp din billett i dag og bli med på noe helt unikt!</strong
+              >
+            </p>
+            <a
+              class={buttonStyles}
+              href="https://www.geekevents.org/"
+              target="_blank">Kjøp billett på GeekEvents</a
+            >
+          </section>
+        </div>
+        <section
+          class={`${boxStyles.join(" ")} sm:col-start-5 sm:col-span-3 bg-blue-400 text-black prose prose-headings:text-black sm:mt-40`}
+        >
+          <H3>Viktige datoer for billettkjøp</H3>
+          <p>
+            Hold øye med de følgende datoene for å sikre deg billetter til The
+            Gathering 2025:
+          </p>
+          <ul>
+            <li class="font-bold">
+              21. Oktober - Køsystemet åpner på Geekevents
+            </li>
+            <li>3. November - Køsystemet stenger</li>
+            <li>4. November - Billettsalget åpner</li>
+          </ul>
+          <p>
+            Senere i år: Ledsager- og besøkende billetter lanseres (følg med for
+            mer informasjon).
+          </p>
+        </section>
+        <section
+          class={`${boxStyles.join(" ")} sm:col-start-2 sm:col-span-4 bg-orange-500 `}
+        >
+          <div class="prose prose-headings:text-black text-black">
+            <H3>Hvordan fungerer køsystemet?</H3>
+            <p>
+              For å sikre en rettferdig billettsalgsprosess har vi valgt å
+              gjeninnføre køsystemet basert på tilbakemeldinger fra tidligere
+              deltakere. Her er hvordan det fungerer:
+            </p>
+            <ul>
+              <li>
+                <strong>Påmelding til køen:</strong> Registrer deg innen søndag 3.
+                november for å få en tildelt plass i køen.
+              </li>
+              <li>
+                <strong>Tildeling av kønummer:</strong> Mandag 4. november får du
+                et tilfeldig kønummer, som du mottar via SMS og e-post.
+              </li>
+              <li>
+                <strong>Billettsalget åpner:</strong> 4. november kl. 12.00 starter
+                billettsalget og når det er din tur, får du en SMS om at du kan kjøpe
+                billetter. (du kan fortsatt stille deg i kø, men du blir plassert
+                bakerst)
+              </li>
+            </ul>
+          </div>
+        </section>
+        <section
+          class={`${boxStyles.join(" ")} sm:col-start-1 sm:col-span-7 border border-white`}
+        >
+          <H3>Billettypene for TG 2025</H3>
+          <p>
+            Vi tilbyr ulike billettyper for å tilpasse ditt behov. Velg den som
+            passer deg best:
+          </p>
+          <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <TicketBox
+              timespan="til hele arrangementet"
+              name="LANpass"
+              price={1590}
+            >
+              <p>
+                Gir deg tilgang til hele eventet fra start til slutt. Dette er
+                den vanlige deltakerbillett for deg som vil ha en sitteplass med
+                120 cm under hele arrangementet. Du kan delta i alle
+                konkurranser med denne billetten.
+              </p>
+            </TicketBox>
+            <TicketBox
+              timespan="til hele arrangementet"
+              name="LANpass 1337 Edition"
+              price={1337}
+            >
+              <p>
+                Ekstra fancy versjon av LANpass til en ekstra god pris, kun 20
+                av disse er tilgjengelige.
+              </p>
+            </TicketBox>
+            <TicketBox
+              timespan="Onsdag til Fredag eller Fredag til Søndag"
+              name="LANpass, 2 dagers"
+              price={999}
+            >
+              <p>
+                Dette er en deltakerbillett for deg som ikke har tid eller
+                mulighet til å delta på hele partyet, men vil allikevel få med
+                deg to dager. Det vil være egne rader satt av for dette, du kan
+                altså ikke sitte med venner som har ordinære LANpass.
+              </p>
+              <p>
+                Du kan delta i alle konkurranser med denne billetten, men merk
+                at enkelte konkurranser kan kreve at du er tilstede på The
+                Gathering til gitte tidspunkter.
+              </p>
+            </TicketBox>
+            <TicketBox name="Besøksbillett" seatless>
+              <p>
+                For de som ønsker å oppleve arrangementet uten å delta i
+                hovedaktivitetene.
+              </p>
+            </TicketBox>
+            <TicketBox
+              name="Ledsagerbillett"
+              timespan="til hele arrangementet"
+              seatless
+            >
+              <p>Er kun tilgjengelig for personer med gyldig ledsagerbevis</p>
+            </TicketBox>
+          </div>
+        </section>
+        <section
+          class={`${boxStyles.join(" ")} sm:col-start-4 sm:col-span-3 bg-orange-500 text-black my-20`}
+        >
+          <H3>Hva venter du på?</H3>
+          <p>Kjøp din billett i dag og bli med på noe helt unikt!</p>
+          <a
+            class={`${buttonStyles} mt-4 bg-transparent border border-white`}
+            href="https://support.gathering.org/help/no-no"
+            target="_blank">Få svar på det du lurer på i FAQen</a
+          >
+          <a
+            class={`${buttonStyles} mt-4`}
+            href="https://www.geekevents.org/"
+            target="_blank">Kjøp billett på GeekEvents</a
+          >
+        </section>
+      </div>
+    </ContentContainer>
+  </Main>
+</Layout>
