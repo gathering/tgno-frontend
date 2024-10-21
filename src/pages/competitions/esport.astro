@@ -25,8 +25,8 @@ const buttonStyles = [
   <Main>
     <ContentContainer>
       <H1 text="E-Sport konkurranser" />
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div class="sm:col-span-2">
+      <div class="grid grid-cols-1 sm:grid-cols-5 gap-4 sm:gap-y-10">
+        <div class="sm:col-start-1 sm:col-span-3">
           <section class="mb-6 prose">
             <H2 text="Klar for å kjempe om premier?" />
             <p>
@@ -53,7 +53,7 @@ const buttonStyles = [
         </div>
         <SportsBox
           title="Valorant"
-          class={`${boxStyles.join(" ")} bg-blue-400 text-black prose prose-headings:text-black`}
+          class={`${boxStyles.join(" ")} sm:col-start-4 sm:col-span-2 sm:row-start-1 sm:mt-20 bg-blue-400 text-black prose prose-headings:text-black`}
           buttonClass={buttonStyles.join(" ")}
           prizes={[50000, 20000, 5000]}
           requiresTicket
@@ -74,7 +74,7 @@ const buttonStyles = [
         </SportsBox>
         <SportsBox
           title="CS2"
-          class={`${boxStyles.join(" ")} bg-blue-50 text-black prose prose-headings:text-black`}
+          class={`${boxStyles.join(" ")} sm:col-start-1 sm:col-span-2 sm:row-start-2 sm:-mt-20 sm:mb-20 bg-blue-50 text-black prose prose-headings:text-black`}
           prizes={[40000, 10000, 5000]}
           requiresTicket
           byoc
@@ -88,7 +88,7 @@ const buttonStyles = [
         </SportsBox>
         <SportsBox
           title="LoL"
-          class={`${boxStyles.join(" ")} border-blue-400 border prose`}
+          class={`${boxStyles.join(" ")} sm:col-start-3 sm:col-span-2 border-blue-400 border prose`}
           prizes={[25000, 10000, 5000]}
           requiresTicket
           byoc
@@ -103,7 +103,7 @@ const buttonStyles = [
         </SportsBox>
         <SportsBox
           title="Rocket League"
-          class={`${boxStyles.join(" ")} bg-blue-400 text-black prose prose-headings:text-black`}
+          class={`${boxStyles.join(" ")} sm:col-start-2 sm:col-span-2 sm:mt-32 bg-blue-400 text-black prose prose-headings:text-black`}
           prizes={[10000, 5000, 2000]}
           requiresTicket
           byoc
@@ -123,7 +123,7 @@ const buttonStyles = [
         </SportsBox>
         <SportsBox
           title="Trackmania"
-          class={`${boxStyles.join(" ")} bg-blue-50 text-black prose prose-headings:text-black`}
+          class={`${boxStyles.join(" ")} sm:col-span-2 sm:mb-32 bg-blue-50 text-black prose prose-headings:text-black`}
           prizes={[5000, 2000, 1000]}
           requiresTicket
           byoc
@@ -139,7 +139,7 @@ const buttonStyles = [
 
         <SportsBox
           title="Ditt spill her?"
-          class={`${boxStyles.join(" ")} border border-orange-500 prose`}
+          class={`${boxStyles.join(" ")} sm:col-start-1 sm:col-span-3 border border-orange-500 prose`}
           prizes={[]}
         >
           <p>
