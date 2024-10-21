@@ -1,0 +1,81 @@
+---
+import H2 from "../../components/H2.astro";
+import H3 from "../../components/H3.astro";
+
+export interface Props {
+  title: string;
+  children: any;
+  prizes: Array<{
+    name?: string;
+    price?: number | string;
+  }>;
+  byoc?: boolean;
+  requiresTicket?: boolean;
+  class?: string;
+  url?: string;
+  category?:
+    | "foto"
+    | "video"
+    | "grafikk"
+    | "musikk"
+    | "diverse"
+    | "cosplay"
+    | "utvikling";
+}
+
+const { title, prizes, url, class: classNames, category } = Astro.props;
+
+const formatPrice = (prize: number | string) =>
+  typeof prize === "string"
+    ? prize
+    : new Intl.NumberFormat("nb-NO", {
+        style: "currency",
+        currency: "NOK",
+        maximumFractionDigits: 0,
+      }).format(prize);
+
+const categoryStyles = {
+  foto: "bg-red-500",
+  video: "bg-green-500",
+  grafikk: "bg-blue-500",
+  musikk: "bg-yellow-500",
+  diverse: "bg-purple-500",
+  cosplay: "bg-indigo-500",
+  utvikling: "bg-pink-500",
+};
+
+const categoryStyle = categoryStyles[category || "diverse"];
+const hasPrices = !!prizes.length;
+---
+
+<section class={`flex flex-col ${categoryStyle} ${classNames}`}>
+  <H2 text={title} color="" />
+  <span>
+    <slot />
+  </span>
+  {
+    hasPrices ? (
+      <>
+        <dl class="divide-y divide-black/50 mt-5 last:pt-5 last:mt-auto">
+          {prizes.map(({ name, price }, index) => (
+            <div class="px-2 py-1 sm:grid sm:grid-cols-3 sm:gap-2 sm:px-0">
+              <dt class="text-sm font-bold leading-4 text-black/90">
+                {name || `${index + 1}. plass`}
+              </dt>
+              <dd class="mt-1 text-sm leading-4 text-black/70 sm:col-span-2 sm:mt-0">
+                {price ? formatPrice(price) : "TBA"}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </>
+    ) : null
+  }
+  {
+    url && (
+      <button class="w-full px-4 py-2 rounded-full content-center mt-auto bg-white border border-white hover:bg-white/70">
+        Les mer
+      </button>
+    )
+  }
+</section>
