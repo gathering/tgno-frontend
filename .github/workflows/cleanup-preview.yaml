@@ -1,0 +1,54 @@
+name: Cleanup Preview Environment
+
+on:
+  pull_request:
+    types:
+      - closed
+      - converted_to_draft
+
+env:
+  ARGOCD_APP_NAME: tgno-preview-pr${{ github.event.number }}
+  TAG: preview-pr${{ github.event.number }}
+
+concurrency:
+  group: preview-${{ github.event.number }}
+  cancel-in-progress: true
+
+jobs:
+  cleanup-preview-environment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Login to ArgoCD
+        uses: clowdhaus/argo-cd-action@v2.2.0
+        with:
+          command: login
+          options: >-
+            ${{ secrets.ARGOCD_URL }}
+            --username ${{ secrets.ARGOCD_USERNAME }}
+            --password ${{ secrets.ARGOCD_PASSWORD }}
+            --grpc-web
+            --skip-test-tls
+      - name: Delete ArgoCD Application
+        uses: clowdhaus/argo-cd-action@v2.2.0
+        with:
+          command: app delete
+          options: >-
+            ${{ env.ARGOCD_APP_NAME }}
+            --cascade
+            --yes
+            --grpc-web
+        continue-on-error: true
+      - name: Remove Docker Tag
+        uses: rafalkk/remove-dockertag-action@v1
+        with:
+          tag_name: preview-pr${{ github.event.number }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
+      - name: Allow failures
+        run: true
+      - uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: setup-preview-environment
+          message: |
+            ### Preview Environment deleted

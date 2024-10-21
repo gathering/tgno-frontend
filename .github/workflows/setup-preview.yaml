@@ -1,0 +1,82 @@
+name: Build and deploy Preview Environment
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+
+env:
+  TAG: preview-pr${{ github.event.number }}
+  ARGOCD_APP_NAME: tgno-preview-pr${{ github.event.number }}
+  KUSTOMIZE_REPO: https://github.com/gathering/k8s-iac.git
+  KUSTOMIZE_PATH: tgno/preview-frontend
+  DOMAIN: tgno-pr${{ github.event.number }}.preview.tg.no
+
+concurrency:
+  group: preview-${{ github.event.number }}
+  cancel-in-progress: true
+
+jobs:
+  # Build docker image and push it to registry
+  build:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    outputs:
+      digest: ${{ steps.docker_build_push.outputs.digest }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Log in to the Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build astro image for amd64
+        id: docker_build_push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64
+          build-args: |
+            APP_ENV=development
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}:${{ env.TAG }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  setup-preview-environment:
+    needs: build
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - run: >
+          python tools/create-preview.py
+          --argocd-url ${{ secrets.ARGOCD_URL }}
+          --argocd-user ${{ secrets.ARGOCD_USERNAME }}
+          --argocd-password ${{ secrets.ARGOCD_PASSWORD }}
+          --name ${{ env.ARGOCD_APP_NAME }}
+          --host ${{ env.DOMAIN }}
+          --kustomize-path ${{ env.KUSTOMIZE_PATH }}
+          --image ghcr.io/${{ github.repository }}@${{needs.build.outputs.digest}}
+      - uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: setup-preview-environment
+          message: |
+            ### Preview Environment created
+            ${{ github.sha }} live at https://${{ env.DOMAIN }}
+
+            ghcr.io/${{ github.repository }}:${{ env.TAG }} (${{needs.build.outputs.digest}})
+            [ArgoCD Application](https://${{ secrets.ARGOCD_URL }}/applications/${{ env.ARGOCD_APP_NAME }})
