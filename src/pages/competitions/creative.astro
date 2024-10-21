@@ -1,0 +1,324 @@
+---
+import H1 from "../../components/H1.astro";
+import Layout from "../../layouts/Layout.astro";
+import Main from "../../components/Main.astro";
+import H2 from "../../components/H2.astro";
+import H3 from "../../components/H3.astro";
+import ContentContainer from "../../components/ContentContainer.astro";
+import CreativeBox from "../../components/competitions/CreativeBox.astro";
+import Pill from "../../components/competitions/Pill.astro";
+
+const boxStyles = "p-6 rounded-3xl sm:mx-auto sm:rounded-2xl";
+---
+
+<Layout title="The Gathering - Kreative konkurranser">
+  <Main>
+    <ContentContainer>
+      <H1 text="Kreative konkurranser" />
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+      >
+        <div class="sm:col-start-1 sm:col-span-2">
+          <section class="mb-6 prose">
+            <H2 text="Hvem takler presset best?" />
+            <p>
+              Kreative impulser og klar for å vise hva du er god for?
+              Kreativitet har alltid vært en sentral del av The Gathering. Fra
+              imponerende cosplay til banebrytende musikk, TG er stedet hvor
+              fantasien får fritt spillerom. Uansett om du er en erfaren
+              deltaker eller nybegynner, vil du finne en rekke kreative
+              konkurranser som passer for deg.
+            </p>
+            <H3>Praktisk informasjon</H3>
+            <p>
+              <Pill text="Eget utstyr" color="orange" class="mr-2" />
+              Alle de kreative konkurransene krever at du har eget utstyr, som maskin,
+              tegnebrett, symaskin, kamera eller annet.
+            </p>
+            <p>
+              <Pill text="I skipet" color="blue" class="mr-2" />
+              Alle de kreative konkurransene gjennomføres og kåres i skipet, derfor
+              må du være på plass på The Gathering for å kunne delta
+            </p>
+          </section>
+        </div>
+        <CreativeBox
+          title="AI musikk"
+          class={boxStyles}
+          prizes={[{}, {}, {}]}
+          category="musikk"
+        >
+          <p>Lag musikk ved bruk av AI verktøy, flere detaljer kommer.</p>
+        </CreativeBox>
+        <CreativeBox
+          title="AI grafikk"
+          class={boxStyles}
+          prizes={[
+            {
+              price: 2000,
+            },
+            {
+              price: 1000,
+            },
+            {
+              price: 500,
+            },
+          ]}
+          category="grafikk"
+        >
+          <p>
+            Bruk kun AI verktøy, uten etterbehandling, til å lage et bilde av et
+            spesifikt tema. Tema vil bli annonsert under The Gathering 2025.
+          </p>
+        </CreativeBox>
+        <CreativeBox
+          title="Cosplay"
+          class={`${boxStyles} sm:col-span-2`}
+          prizes={[
+            {
+              name: "Grand Price",
+              price: 3000,
+            },
+            {
+              name: "Audience Award",
+              price: 1500,
+            },
+            {
+              name: "The Crafter",
+              price: 1500,
+            },
+            {
+              name: "The Tailor",
+              price: 1500,
+            },
+            {
+              name: "The Problem Solver",
+              price: 1500,
+            },
+          ]}
+          category="cosplay"
+        >
+          <p>
+            Så ta med deg ditt favoritt cosplay fra et spill, tv-serie/film,
+            manga eller animasjon. Vi gleder oss til å se deg stå på scenen og
+            vise fram ditt beste cosplay.
+          </p>
+        </CreativeBox>
+        <CreativeBox
+          title="Demo"
+          class={boxStyles}
+          prizes={[
+            {
+              price: 5000,
+            },
+            {
+              price: 3000,
+            },
+            {
+              price: 1500,
+            },
+          ]}
+          category="utvikling"
+        >
+          <p>
+            Lag et dataprogram som imponerer med kul grafikk og bra musikk.
+            Målet med konkurransen er å vise frem tekniske ferdigheter og
+            kreativitet.
+          </p>
+        </CreativeBox>
+        <CreativeBox
+          title="Themed Photo"
+          class={boxStyles}
+          prizes={[
+            {
+              price: 2000,
+            },
+            {
+              price: 1000,
+            },
+            {
+              price: 500,
+            },
+          ]}
+          category="foto"
+        >
+          <p>
+            Er du glad i å ta bilder? Da passer denne konkurransen for deg. Ut
+            fra det temaet som blir annonsert, skal du ta ditt beste bilde.
+          </p>
+        </CreativeBox>
+        <CreativeBox
+          title="Freestyle Handdrawn Graphics"
+          class={boxStyles}
+          prizes={[
+            {
+              price: 5000,
+            },
+            {
+              price: 3000,
+            },
+            {
+              price: 1500,
+            },
+          ]}
+          category="grafikk"
+        >
+          <p>Få ut kunstneren i deg å tegn ditt beste bilde.</p>
+        </CreativeBox>
+        <CreativeBox
+          title="Fast Graphics"
+          class={boxStyles}
+          prizes={[
+            {
+              price: 4000,
+            },
+            {
+              price: 2000,
+            },
+            {
+              price: 1000,
+            },
+          ]}
+          category="grafikk"
+        >
+          <p>
+            Er du glad i å tegne, vil prøve, eller bare har lyst til å delta, da
+            er dette konkurransen for deg. Ut fra det temaet som blir annonsert,
+            skal du tegne ditt beste bilde.
+          </p>
+        </CreativeBox>
+        <CreativeBox
+          title="Freestyle Music"
+          class={boxStyles}
+          prizes={[
+            {
+              price: 6000,
+            },
+            {
+              price: 3000,
+            },
+            {
+              price: 1500,
+            },
+          ]}
+          category="musikk"
+        >
+          <p>
+            Komponer ett stykke digital musikk. Har du en liten musiker i deg.
+            Da er dette din mulighet til å få vise deg fram.
+          </p>
+        </CreativeBox>
+        <CreativeBox
+          title="Fast Music Remix"
+          class={boxStyles}
+          prizes={[
+            {
+              price: 2000,
+            },
+            {
+              price: 1000,
+            },
+            {
+              price: 500,
+            },
+          ]}
+          category="musikk"
+        >
+          <p>
+            Du vil få tilgang til en samplepack og et tema for sjanger. Ut fra
+            dette skal du lage din beste låt. Tema vil bli annonsert under
+            arrangementet.
+          </p>
+        </CreativeBox>
+        <CreativeBox
+          title="Small HTML"
+          class={boxStyles}
+          prizes={[
+            {
+              price: 2000,
+            },
+            {
+              price: 1000,
+            },
+            {
+              price: 500,
+            },
+          ]}
+          category="utvikling"
+        >
+          <p>
+            Lag et stykke html så lite som mulig. Bruk alle mulige triks for å
+            forminske koden. Det skal se helt likt ut som originalen i
+            nettleseren. Minste html - fil vinner!
+          </p>
+        </CreativeBox>
+        <CreativeBox
+          title="Useless Utility"
+          class={boxStyles}
+          prizes={[{ name: "Premie", price: "Noe ubrukelig?" }]}
+          category="utvikling"
+        >
+          <p>
+            Lag et program som gjør noe som man aldri får bruk for. Kanskje en
+            app på telefon eller et program på pcen? Et helt og holdent
+            ubrukelig program.
+          </p>
+        </CreativeBox>
+        <CreativeBox
+          title="10s movie"
+          class={boxStyles}
+          prizes={[
+            {
+              price: 2000,
+            },
+            {
+              price: 1000,
+            },
+            {
+              price: 500,
+            },
+          ]}
+          category="video"
+        >
+          <p>
+            Lag den beste videoen som er 10 sekunder lang etter et spesifikt
+            tema som vil bli annonsert under arrangementet.
+          </p>
+        </CreativeBox>
+        <CreativeBox
+          title="Freestyle VFX"
+          class={boxStyles}
+          prizes={[
+            {
+              price: 5000,
+            },
+            {
+              price: 3000,
+            },
+            {
+              price: 1500,
+            },
+          ]}
+          category="video"
+        >
+          <p>
+            Konkurransen er for alle som ønsker å skape et manipulert
+            videoklipp, også kjent som visuelle effekter eller VFX.
+          </p>
+        </CreativeBox>
+        <CreativeBox
+          title="TGHACK"
+          class={`${boxStyles} sm:col-span-2`}
+          prizes={[{}, {}, {}]}
+          category="diverse"
+        >
+          <p>
+            Kjemp deg gjennom ett sett med tekniske og praktiske utfordringer
+            for å vise dine ferdigheter, individuelt eller som lag. Måtte den
+            beste hackeren vinne!
+          </p>
+        </CreativeBox>
+      </div>
+    </ContentContainer>
+  </Main>
+</Layout>
