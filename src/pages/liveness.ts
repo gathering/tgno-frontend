@@ -2,7 +2,6 @@ export const prerender = false;
 
 /**
  * GET Request with JSON response
- * @returns {Response}
  */
 export async function GET() {
   return new Response(JSON.stringify({ alive: true }), {
@@ -14,8 +13,7 @@ export async function GET() {
 }
 
 /**
- * HEAD Request
- * @returns {Response}
+ * HEAD Request. Just return 204
  */
 export function HEAD() {
   return new Response(null, {
