@@ -57,11 +57,11 @@ const hasPrices = !!prizes.length;
       <>
         <dl class="divide-y divide-black/50 mt-5 last:pt-5 last:mt-auto">
           {prizes.map(({ name, price }, index) => (
-            <div class="px-2 py-1 sm:grid sm:grid-cols-3 sm:gap-2 sm:px-0">
+            <div class="px-2 py-1 grid grid-cols-3 sm:gap-2 sm:px-0">
               <dt class="text-sm font-bold leading-4 text-black/90">
                 {name || `${index + 1}. plass`}
               </dt>
-              <dd class="mt-1 text-sm leading-4 text-black/70 sm:col-span-2 sm:mt-0">
+              <dd class="mt-1 text-sm leading-4 text-black/70 col-span-2 sm:mt-0">
                 {price ? formatPrice(price) : "TBA"}
               </dd>
             </div>
