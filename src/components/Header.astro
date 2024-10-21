@@ -1,37 +1,140 @@
+<script>
+  const mobileMenu = document.querySelector("#mobile-menu");
+  const mobileMenuButton = document.querySelector(
+    "button[aria-controls='mobile-menu']",
+  );
+
+  if (mobileMenuButton && mobileMenu) {
+    mobileMenuButton.addEventListener("click", () => {
+      const expanded =
+        mobileMenuButton.getAttribute("aria-expanded") === "true" || false;
+
+      mobileMenuButton.setAttribute("aria-expanded", String(!expanded));
+      mobileMenu.classList.toggle("hidden", expanded);
+
+      const icons = mobileMenuButton.querySelectorAll("svg");
+      icons?.[0]?.classList.toggle("hidden", !expanded);
+      icons?.[0]?.classList.toggle("block", expanded);
+      icons?.[1]?.classList.toggle("hidden", expanded);
+      icons?.[1]?.classList.toggle("block", !expanded);
+    });
+  }
+</script>
+
 <header class="flex flex-col-reverse">
   <div
-    class="flex justify-between items-center p-5 max-w-7xl mb-8 justify-self-center w-full mx-auto bg-backgroundSecondary sm:rounded-3xl sm:mx-5 sm:mt-2 sm:mb-8 sm:w-auto xl:mx-auto xl:w-full"
+    class="flex justify-between items-center py-1 px-5 max-w-7xl mb-8 justify-self-center w-full mx-auto bg-backgroundSecondary sm:rounded-xl sm:mx-5 sm:mt-2 sm:mb-8 sm:w-auto xl:mx-auto xl:w-full"
   >
-    <a href="/" class="sm:flex gap-x-4 items-center hidden">
-      <img
-        src="/images/tglogo-bw.png"
-        alt="The Gathering logo"
-        width={150}
-        class="aspect-thumbnail object-cover"
-      />
-    </a>
-    <a href="/" class="flex gap-x-4 items-center sm:hidden">
-      <img
-        src="/images/tglogo-tg.png"
-        alt="The Gathering logo"
-        width={75}
-        class="aspect-thumbnail object-cover"
-      />
-    </a>
-    <nav class="w-full flex items-end">
-      <ul class="w-full flex space-x-6 space-y-0 justify-end">
-        <li>
+    <nav class="w-full">
+      <div class="relative h-16 flex items-center">
+        <a href="/" class="sm:flex gap-x-4 items-center hidden">
+          <img
+            src="/images/tglogo-bw.png"
+            alt="The Gathering logo"
+            width={150}
+            class="aspect-thumbnail object-cover"
+          />
+        </a>
+        <a href="/" class="flex gap-x-4 items-center sm:hidden">
+          <img
+            src="/images/tglogo-tg.png"
+            alt="The Gathering logo"
+            width={75}
+            class="aspect-thumbnail object-cover"
+          />
+        </a>
+        <ul class="hidden sm:flex w-full space-x-6 space-y-0 justify-end">
+          <li>
+            <a
+              href="/competitions/creative"
+              class="block text-white hover:text-orange-500"
+              >Kreative konkurranser</a
+            >
+          </li>
+          <li>
+            <a
+              href="/competitions/esport"
+              class="block text-white hover:text-orange-500">E-sport</a
+            >
+          </li>
+          <li>
+            <a href="/contact" class="block text-white hover:text-orange-500"
+              >Kontakt oss</a
+            >
+          </li>
+          <li>
+            <a href="/tickets" class="block text-white hover:text-orange-500"
+              >Billetter</a
+            >
+          </li>
+        </ul>
+
+        <div class="absolute inset-y-0 right-0 flex items-center sm:hidden">
+          <button
+            type="button"
+            id="mobile-menu-button"
+            class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+            aria-controls="mobile-menu"
+            aria-expanded="false"
+          >
+            <span class="absolute -inset-0.5"></span>
+            <span class="sr-only">Open main menu</span>
+            <svg
+              class="block h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              aria-hidden="true"
+              data-slot="icon"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
+            </svg>
+            <svg
+              class="hidden h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              aria-hidden="true"
+              data-slot="icon"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 18 18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <!-- Mobile menu, show/hide based on menu state. -->
+      <div class="hidden" id="mobile-menu">
+        <div class="space-y-1 px-2 pb-3 pt-2">
+          <a
+            href="/competitions/creative"
+            class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-orange-500 hover:text-white"
+            >Kreative konkurranser</a
+          >
           <a
             href="/competitions/esport"
-            class="block text-white hover:text-orange-500">E-sport</a
+            class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-orange-500 hover:text-white"
+            >E-sport</a
           >
-        </li>
-        <li>
-          <a href="/tickets" class="block text-white hover:text-orange-500"
+          <a
+            href="/contact"
+            class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-orange-500 hover:text-white"
+            >Kontakt oss</a
+          >
+          <a
+            href="/tickets"
+            class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-orange-500 hover:text-white"
             >Billetter</a
           >
-        </li>
-      </ul>
+        </div>
+      </div>
     </nav>
   </div>
   <aside>
