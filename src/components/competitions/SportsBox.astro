@@ -34,30 +34,43 @@ const formattedPrizes = prizes.map((prize) =>
 );
 ---
 
-<section class={classNames}>
+<section class={`flex flex-col ${classNames}`}>
+  <div>
+    {
+      hasPills && (
+        <div class="flex flex-row justify-end gap-2 mb-4">
+          {byoc && <Pill text="Egen maskin" color="orange" />}
+          {requiresTicket && <Pill text="I skipet" color="blue" />}
+        </div>
+      )
+    }
+    <H2 text={title} color="" class="mt-4" />
+    <slot />
+  </div>
   {
-    hasPills && (
-      <div class="flex flex-row justify-end gap-2 mb-4">
-        {byoc && <Pill text="Egen maskin" color="orange" />}
-        {requiresTicket && <Pill text="I skipet" color="blue" />}
+    formattedPrizes.length ? (
+      <div class="mt-4 last:mt-auto">
+        <H3 class="mt-0 text-lg" color="">
+          Premipotten
+        </H3>
+        <dl class="divide-y divide-black/50 not-prose">
+          {formattedPrizes.map((prize, index) => (
+            <div class="px-2 py-1 grid grid-cols-3 sm:gap-2 sm:px-0">
+              <dt class="text-sm font-bold leading-4">
+                {`${index + 1}. plass`}
+              </dt>
+              <dd class="mt-1 text-sm leading-4 col-span-2 sm:mt-0">{prize}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    ) : null
+  }
+  {
+    url && (
+      <div class="last:pt-4 last:mt-auto w-full">
+        <button class={buttonClassNames}>Les mer</button>
       </div>
     )
   }
-  <H2 text={title} color="" class="mt-4" />
-  <slot />
-  {
-    formattedPrizes.length ? (
-      <>
-        <H3 class="mt-4" color="">
-          Premipotten
-        </H3>
-        <ol>
-          {formattedPrizes.map((p) => (
-            <li>{p}</li>
-          ))}
-        </ol>
-      </>
-    ) : null
-  }
-  {url && <button class={buttonClassNames}>Les mer</button>}
 </section>
