@@ -2,13 +2,20 @@
 import { fetchArticles } from "../../utils";
 import type { FetchArticlesProps } from "../../utils";
 
-type Props = {} & Omit<FetchArticlesProps, "api_url">;
+type Props = {
+  singleColumn?: boolean;
+} & Omit<FetchArticlesProps, "api_url">;
 
 const articles = await fetchArticles({
   ...Astro.props,
   api_url: import.meta.env.API_URL,
   limit: 6,
 });
+
+const { singleColumn = false } = Astro.props;
+const gridStyles = singleColumn
+  ? "grid grid-cols-1"
+  : "grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-5 lg:px-28";
 ---
 
 {
@@ -28,8 +35,8 @@ const articles = await fetchArticles({
       );
     } else {
       return (
-        <section class="text-white sm:p-8 rounded-3xl border-solid border-4 border-backgroundSecondary my-2">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-5 lg:px-28">
+        <section class="text-white sm:p-8 rounded-3xl border-solid border-4 border-backgroundSecondary">
+          <div class={gridStyles}>
             {articles.map((article) => (
               <a href={`/news/${article.meta.slug}`}>
                 <article class="overflow-hidden flex flex-row p-4">
