@@ -1,0 +1,229 @@
+---
+import H1 from "../../components/H1.astro";
+import Layout from "../../layouts/Layout.astro";
+import Main from "../../components/Main.astro";
+import H2 from "../../components/H2.astro";
+import ContentContainer from "../../components/ContentContainer.astro";
+
+const sectionStyles = [
+  "p-6",
+  "mb-6",
+  "rounded-3xl",
+  "sm:mx-auto",
+  "sm:rounded-2xl",
+  "prose",
+  "prose-strong:text-white",
+  "border-white",
+  "border",
+];
+---
+
+<Layout
+  title="The Gathering - Kjøpsvilkår"
+  description="Kjøpsvilkår for deltakelse på The Gathering"
+>
+  <Main>
+    <ContentContainer>
+      <H1 text="Kjøpsvilkår for deltakelse på The Gathering" />
+      <div class="prose">
+        <section class:list={sectionStyles}>
+          <H2 text="1. Billetter og Deltakelse" />
+          <ul>
+            <li>
+              Billettkategorier: <a
+                href="https://www.geekevents.org/tg25/#/shop"
+                target="_blank"
+                >Se vår egen side for informasjon om billetttyper og priser.</a
+              >
+            </li>
+            <li>
+              Betalingsbetingelser: Ved kjøp av billett vil du bli belastet med
+              to separate avgifter:
+              <ul>
+                <li>
+                  En <strong>ikke-refunderbar billettavgift</strong> fra vår eksterne
+                  billettleverandør GeekEvents.
+                </li>
+                <li>
+                  En <strong>ikke-refunderbar kontingent</strong> som medlemsavgift
+                  til KANDU, arrangøren bak eventet.
+                </li>
+              </ul>
+            </li>
+            <li>
+              Alle kjøp er bindende, og billetten kan ikke betraktes som gyldig
+              før full betaling er mottatt.
+            </li>
+          </ul>
+        </section>
+        <section class:list={sectionStyles}>
+          <H2 text="2. Kjøpers Forpliktelser" />
+          <ul>
+            <li>
+              Deltakere plikter å følge alle reglementer som er satt for
+              arrangementet.
+            </li>
+            <li>
+              Deltakere under 16 år må ha foreldre eller foresattes samtykke.
+              Dette skal dokumenteres via et samtykkeskjema som må fylles ut og
+              sendes inn før deltakelse.
+            </li>
+            <li>Gyldig ID må kunne fremvises ved ankomst.</li>
+          </ul>
+        </section>
+        <section class:list={sectionStyles}>
+          <H2 text="3. Refundering og Angrerett" />
+          <ul>
+            <li>
+              Du kan kansellere billetten din og få refusjon frem til <strong
+                >1. januar 2025</strong
+              >. Etter denne datoen gis det ikke refusjon, uansett årsak.
+            </li>
+            <li>
+              Gebyrer til ekstern billettleverandør og KANDU-kontingenten er
+              <strong>ikke refunderbare.</strong>
+            </li>
+            <li>
+              Refusjonsforespørsler må sendes til <a href="mailto:info@tg.no"
+                >info@tg.no</a
+              > med nødvendig informasjon om kjøpet.
+            </li>
+          </ul>
+        </section>
+        <section class:list={sectionStyles}>
+          <H2 text="4. Personopplysninger og Databehandling" />
+          <ul>
+            <li>
+              Ved kjøp av billett gir du ditt samtykke til at vi samler inn og
+              lagrer personopplysninger som navn, e-postadresse, telefonnummer
+              og annen nødvendig informasjon for å administrere deltakelsen på
+              arrangementet.
+            </li>
+            <li>
+              Personopplysninger brukes til å administrere billettkjøp,
+              deltakelse, samt andre nødvendige formål knyttet til
+              organiseringen av arrangementet. Behandlingen av
+              personopplysninger skjer i henhold til gjeldende
+              personvernlovgivning (GDPR).
+            </li>
+            <li>
+              Vi forbeholder oss retten til å kontakte deg via SMS eller e-post
+              med informasjon som vi anser relevant for ditt deltakelse på
+              arrangementet eller organisasjonens drift. Dette kan inkludere,
+              men er ikke begrenset til, påminnelser om arrangementet,
+              nyhetsbrev, medlemsinformasjon og annen kommunikasjon som anses
+              nyttig for deltakere.
+            </li>
+            <li>
+              Dine personopplysninger vil kun bli delt med
+              tredjepartsleverandører der det er nødvendig for gjennomføring av
+              billettkjøp og arrangementsadministrasjon, for eksempel
+              GeekEvents.
+            </li>
+            <li>
+              Vi kan også anonymisere dine data for statistiske formål og
+              forbedring av fremtidige arrangementer.
+            </li>
+          </ul>
+        </section>
+        <section class:list={sectionStyles}>
+          <H2 text="5. Medlemskap i Organisasjonen" />
+          <ul>
+            <li>
+              Ved kjøp av billett blir du automatisk medlem av KANDU, arrangøren
+              av dette arrangementet. Medlemskapet varer i ett år og inkluderer
+              stemmerett på KANDUs årsmøter samt andre medlemsfordeler.
+            </li>
+            <li>
+              Medlemskapet er pålagt for å delta på arrangementet og er ikke
+              refunderbart.
+            </li>
+          </ul>
+        </section>
+        <section class:list={sectionStyles}>
+          <H2 text="6. Overdragelse av Billetter" />
+          <ul>
+            <li>
+              Billetten kan overføres til en annen person ved å bruke vår
+              tredjeparts billettleverandør GeekEvents sine innebygde
+              funksjoner.
+            </li>
+            <li>
+              Hver deltaker må inneha sin egen billett for å kunne delta på
+              arrangementet. Billetten er personlig og må fremvises ved ankomst.
+            </li>
+            <li>
+              Deltakere har mulighet til å overføre ansvar for setevalg til en
+              annen person via vårt billettsystem.
+            </li>
+          </ul>
+        </section>
+        <section class:list={sectionStyles}>
+          <H2 text="7. Ansvar og Rettigheter for Arrangøren" />
+          <ul>
+            <li>
+              Arrangøren forbeholder seg retten til å endre tidspunkter,
+              lokasjon og programmet for arrangementet uten varsel.
+            </li>
+            <li>
+              Arrangøren er ikke ansvarlig for personskader, tap av eiendeler
+              eller andre hendelser som måtte oppstå under arrangementet.
+            </li>
+            <li>
+              Deltakere er selv ansvarlige for sine personlige eiendeler under
+              arrangementet.
+            </li>
+          </ul>
+        </section>
+        <section class:list={sectionStyles}>
+          <H2 text="8. Sikkerhet og Atferd" />
+          <ul>
+            <li>
+              Deltakere forventes å følge alle retningslinjer og
+              sikkerhetsregler som gjelder under arrangementet.
+            </li>
+            <li>
+              Brudd på atferdsregler kan resultere i bortvisning uten rett til
+              refusjon.
+            </li>
+            <li>
+              <a href="/event/rules">
+                For detaljerte regler, se vårt fullstendige reglement
+              </a>
+            </li>
+          </ul>
+        </section>
+        <section class:list={sectionStyles}>
+          <H2 text="9. Tilgjengelighet" />
+          <ul>
+            <li>
+              Arrangementet er lukket for allmennheten og er kun åpent for
+              medlemmer av KANDU og andre inviterte deltakere.
+            </li>
+            <li>
+              I henhold til norsk lov, vil vi sørge for at arrangementet er
+              tilgjengelig for personer med funksjonshemninger der det er mulig.
+              Ta kontakt med oss på <a href="mailto:info@tg.no">info@tg.no</a> for
+              spesifikke behov eller spørsmål.
+            </li>
+          </ul>
+        </section>
+        <section class:list={sectionStyles}>
+          <H2 text="10. Kontaktinformasjon" />
+          <ul>
+            <li>
+              For spørsmål om billettkjøp eller teknisk støtte, kan vår
+              billettleverandør GeekEvents nås på <a
+                href="mailto:support@geekevents.no">support@geekevents.no</a
+              >
+            </li>
+            <li>
+              For andre henvendelser kan arrangementet kontaktes på
+              <a href="mailto:info@tg.no">info@tg.no</a>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </ContentContainer>
+  </Main>
+</Layout>

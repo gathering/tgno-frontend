@@ -1,0 +1,616 @@
+---
+import H1 from "../../components/H1.astro";
+import Layout from "../../layouts/Layout.astro";
+import Main from "../../components/Main.astro";
+import ContentContainer from "../../components/ContentContainer.astro";
+
+const sectionStyles = [
+  "p-6",
+  "mb-6",
+  "rounded-3xl",
+  "sm:mx-auto",
+  "sm:rounded-2xl",
+  "prose",
+  "prose-strong:text-white",
+  "border-white",
+  "border",
+];
+---
+
+<Layout
+  title="The Gathering - Arrangementsreglement"
+  description="Arrangementsreglement for The Gathering"
+>
+  <Main>
+    <ContentContainer>
+      <H1 text="Arrangementsreglement" />
+      <div class="prose">
+        <section class:list={sectionStyles}>
+          <p>
+            Dette er The Gathering sitt reglement. Her finner du ulike regler og
+            retningslinjer som er satt ned for at alle skal trives på The
+            Gathering. Den er bygget opp med hensikt å sørge for at alle får en
+            så god opplevelse som mulig, både deltakere, crew,
+            samarbeidspartnere og ledelse.
+          </p>
+          <p>
+            Vennligst les gjennom vårt reglement nøye og følg det med tanke på
+            at vi alle har et felles ansvar for å sørge for at The Gathering er
+            en trygg arena og et fristed for både unge og gamle dataentusiaster.
+            Om du har tilbakemeldinger på vårt reglement, eller om du mistenker
+            at noen ikke følger vårt reglement, vennligst ta kontakt med
+            Sikkerhet. Vi vil gjerne høre fra deg, dersom du har noe på hjertet.
+            Sikkerhet er navnet på The Gathering sitt eget crew som har ansvar
+            for sikkerheten under arrangementet.
+          </p>
+          <p>
+            Disse reglene er skrevet i tråd med <a
+              href="https://www.kandu.no/"
+              target="_blank"
+            >
+              KANDU</a
+            >s Code of Conduct, og øvrige styringsdokumenter for organisasjonen.
+          </p>
+        </section>
+
+        <section class:list={sectionStyles}>
+          <h2>TL;DR?</h2>
+          <p>
+            Vi skjønner at reglementet kan være langt å lese gjennom. Derfor
+            skal det være lett å navigere seg gjennom om det er noe spesifikt du
+            vil finne frem til. Det viktigste er å ta vare på seg selv og andre,
+            være hyggelig mot de rundt deg og respektere den informasjonen som
+            kommer fra arrangementets offisielle kanaler. Husk å følge
+            anvisninger fra vaktene.
+          </p>
+        </section>
+
+        <section class:list={sectionStyles}>
+          <h2>Hvem må følge reglementet?</h2>
+          <p>
+            Vi forventer at alle som befinner seg på The Gathering følger vårt
+            reglement. Det inkluderer, men er ikke begrenset til alle deltakere,
+            crewmedlemmer, samarbeidspartnere, gjester og ledere. Brudd på dette
+            reglementet kan føre til konsekvenser som advarsler, utestengelse
+            fra arrangementet og politianmeldelse, avhengig av hvor grovt vi
+            anser bruddet å være. I noen tilfeller kan vi også ta beslag i
+            uønskede gjenstander, eller gjenstander som brukes mot vaktenes
+            anvisning, eller som strider mot arrangementsreglene. Slike
+            gjenstander, såfremt de er lovlige, med unntak av alkohol, kan
+            hentes etter arrangementet, eller i det du skal forlate hallen.
+          </p>
+          <p>
+            The Gathering forbeholder seg retten til å utestenge enhver person
+            fra arrangementet uten å refundere billett eller dekke hjemreise for
+            dem det gjelder. Dersom du av en eller annen grunn blir vist bort
+            fra arrangementsområdet, vil Sikkerhet ta beslag i og beholde
+            deltakerbåndet du fikk ved innsjekking.
+          </p>
+        </section>
+
+        <section class:list={sectionStyles}>
+          <h2>Hvem håndhever reglementet?</h2>
+          <p>
+            Det er Sikkerhet som har ansvar for å håndheve arrangementets
+            reglement. Eventuelt påførte sanksjoner og konsekvenser på grunn av
+            regelbrudd vil alltid behandles av sikkerhetsledelsen etter egne
+            føringer. Sikkerhetsvaktene kan på generelt grunnlag, også
+            subjektivt, gi advarsler og foreta beslag av uønskede gjenstander.
+            Det er Festivalsjef, Fagleder: Beredskap og Sikkerhetsansvarlig som
+            har øverste ansvar for beslutninger vedrørende sikkerhet og
+            beredskap for The Gathering, og som kan gjøre skjønnsmessige
+            vurderinger av dette underveis.
+          </p>
+          <p>
+            I de mer alvorlige sakene vil Sikkerhet kunne involvere politiet,
+            dersom dette er ansett nødvendig. Ved lov- og regelbrudd under
+            skjerpende omstendigheter, kan Sikkerhet, kun i samråd med politiet,
+            iverksette tiltak for sporing på nettverket for å finne ut hva, og
+            eventuelt hvor ulovlig materiale er delt fra, eller hvor en person
+            er plassert.
+          </p>
+        </section>
+
+        <section class:list={sectionStyles}>
+          <h2>Hva om jeg har spørsmål om reglementet?</h2>
+          <p>
+            Om du har spørsmål til noe som står i reglementet, kan du ta kontakt
+            med Sikkerhetscrewet. Sikkerhet treffer du på:
+          </p>
+          <ul>
+            <li>
+              E-post: <a href="mailto:sikkerhet@tg.no">sikkerhet@tg.no</a>
+            </li>
+          </ul>
+          <p>
+            Om nødvendig, kan Sikkerhet formidle henvendelsen din til Sponsor,
+            Deltaker- eller Crewombudet.
+          </p>
+          <p>
+            Spørsmål vedrørende hyller og konstruksjoner kan sendes til
+            Konstruksjonscrewet. Det er et eget sett med regler og føringer for
+            hyller og konstruksjoner som skal settes opp av deltakere under The
+            Gathering.
+          </p>
+          <ul>
+            <li>
+              E-post: <a href="mailto:konstruksjon@tg.no">konstruksjon@tg.no</a>
+            </li>
+          </ul>
+          <p>
+            <a href="/event/construction-rules"
+              >Se konstruksjonsreglementet ved å klikke her.</a
+            >
+          </p>
+          <p>
+            For alle andre henvendelser ta kontakt med oss via <a
+              href="/contact">kontaktskjemaet vårt</a
+            >.
+          </p>
+        </section>
+
+        <section class:list={sectionStyles}>
+          <h2>Hva om jeg oppdager brudd på reglementet?</h2>
+          <p>
+            Oppdager du at noen bryter vårt reglement, ta kontakt med
+            Sikkerhetscrewet eller et annet crewmedlem med en gang.
+          </p>
+          <p>
+            Ved brudd på norsk lov, kontakt Sikkerhet, så vi kan hjelpe deg å
+            kontakte politiet.
+          </p>
+          <p>
+            <strong>
+              Ved fare for liv og helse, kontakt alltid relevant nødetat direkte
+              på nødnummer:
+            </strong>
+          </p>
+          <ul>
+            <li>Politi: 112</li>
+            <li>Ambulanse: 113</li>
+            <li>Brann: 110</li>
+          </ul>
+          <p>
+            Varsle også Sikkerhet eller et annet Crewmedlem umiddelbart. Vi har
+            svært mye ressurser tilgjengelig i Vikingskipet som kan hjelpe til i
+            en nødsituasjon.
+          </p>
+        </section>
+
+        <section class:list={sectionStyles}>
+          <h2>Kap 1. Plikter som deltaker</h2>
+          <p>
+            På The Gathering ønsker vi at alle skal ha det bra, og respektere
+            hverandre. Derfor plikter du som deltaker å følge disse reglene.
+          </p>
+          <h3>1. Legitimasjon</h3>
+          <p>
+            Vi ber om at alle deltakere kan identifisere seg. Dette er nødvendig
+            for å ha komplett oversikt over alle deltakere, samt vite hvem som
+            faktisk er i Vikingskipet. Gyldig legitimasjon er pass, førerkort,
+            bankkort med bilde eller annet nasjonalt eller internasjonalt
+            ID-bevis godkjent av norske myndigheter. Dersom du eller ditt barn
+            som skal på The Gathering ikke har noen form for gyldig
+            legitimasjon, ber vi deg ta kontakt med oss.
+          </p>
+
+          <h3>2. Deltakere under 16 år</h3>
+          <p>
+            Deltakere som ikke har fylt 16 år innen de ankommer The Gathering må
+            ha samtykke fra foresatte for å delta på The Gathering. Dette
+            samtykket leveres i form av et signert samtykkeskjema som lastes opp
+            på GeekEvents eller tas med i fysisk form. Deltakere under 16 år som
+            ikke har foresattes samtykke vil avvises ved innsjekk.
+          </p>
+          <p>
+            Samtykkeskjema finner du ved å klikke her (kommer snart, <a
+              href="/contact"
+              >Dersom du har spørsmål ta kontakt via kontaktskjemaet vårt</a
+            >).
+          </p>
+
+          <h3>3. Vær årvåken og ta vare på hverandre</h3>
+          <p>
+            Du plikter til å være årvåken og ta vare på andre rundt deg. Ser du
+            noen som ser ut til å ikke ha det bra, snakk med personen eller
+            tilkall hjelp ved å kontakte Sikkerhet. Det minste du kan gjøre er å
+            si ifra til et Crewmedlem, slik at vi kan undersøke saken. Vi har
+            alle et felles ansvar med å ta vare på de rundt oss. Tror du det er
+            umiddelbar fare for liv og helse, ta kontakt med relevant nødetat,
+            før du varsler Crewet umiddelbart.
+          </p>
+
+          <h3>4. Ved nødsituasjon</h3>
+          <p>
+            Dersom det oppstår en situasjon der hallen må evakueres, vil dette
+            bli varslet over vårt PA-anlegg, samt at alle taklys vil bli skrudd
+            på. Eventuelle foredrag, seminarer, sceneshow etc. vil stanses.
+          </p>
+          <p>
+            Dersom du spiller musikk eller andre høye lyder, slå av denne
+            musikken eller lyden dersom det er forsvarlig å gjøre før du
+            evakuerer. Skru også av høy musikk og lyd dersom alle lys i hallen
+            tennes uten at det er varslet noe årsak til dette, dette kan være et
+            tegn på at noe vil kreve din og/eller andres oppmerksomhet.
+          </p>
+          <p>
+            Etter at en evakuering er varslet, eller at du selv forstår at en
+            evakuering er forestående, gå så til nærmeste nødutgang i et rolig
+            tempo. Ikke ta med deg din datamaskin eller annen bagasje, da dette
+            vil hindre en ordnet evakuering. Hjelp andre med å komme seg ut, og
+            følg alle instruksjoner fra Sikkerhetscrewet. Sikkerhetscrewet vil
+            være iført gule refleksvester.
+          </p>
+          <p>
+            Dersom du skulle oppdage en brann, utløs nærmeste manuelle
+            brannmelder, kontakt et crewmedlem eller ring 110 umiddelbart.
+          </p>
+          <p>
+            Følg instruksjoner fra Sikkerhet, brannmannskap og politiet, samt
+            informasjon gitt over PA-anlegget eller via megafoner.
+          </p>
+          <p>
+            Sikkerhetscrewet vil overvåke brannalarmsystemet døgnet rundt, og
+            reagerer umiddelbart hvis det oppstår avvik fra det normale.
+          </p>
+          <p>
+            For umiddelbar hjelp i nødstilfeller, kontakt et crewmedlem og be
+            disse om hjelp, eller ring nødetatene direkte dersom det er
+            umiddelbar fare for liv og helse. Husk å alltid gi beskjed til et
+            crewmedlem så raskt som mulig, dersom en nødsituasjon har oppstått -
+            dette gjelder uansett om man har varslet nødetatene direkte selv.
+            The Gathering har en stor gruppe med erfarne sikkerhetsvakter, samt
+            en medisinsk beredskap med personell og leger som har god kunnskap
+            og nødvendig utstyr til å utføre livreddende førstehjelp. Ved å
+            varsle crewet tidlig, vil disse ressursene raskt komme til stedet.
+            Sikkerhet og Førstehjelp vil alltid ha dialog med et koordinerende
+            ledd i Sikkerhetsledelsen, som også oppretter direkte dialog med
+            nødetatene ved behov.
+          </p>
+        </section>
+        <section class:list={sectionStyles}>
+          <h2>Kap 2. Uønskede gjenstander</h2>
+          <p>
+            Det er noen gjenstander som ikke er ønsket på The Gathering. Husk at
+            norsk lov gjelder også her. Vår liste over uønskede gjenstander kan
+            aldri være helt komplett, og Sikkerhetscrewet kan derfor utøve
+            skjønn ved gjenstander som ikke er beskrevet i listen nedenfor. Det
+            er uklokt å bringe med seg gjenstander som er egnet til å skremme
+            andre. Arrangementet har absolutt nulltoleranse for bæring av kniver
+            etc. uten aktverdig formål.
+          </p>
+          <h3>1. Våpen og våpenlignende gjenstander</h3>
+          <p>
+            Vi ønsker ingen slags våpen eller våpenlignende gjenstander på The
+            Gathering, dette inkluderer, men er ikke begrenset til:
+          </p>
+          <p>
+            Skytevåpen og andre innretninger designet for å avfyre prosjektiler.
+            Dette inkluderer også sprettert, pil og bue med mer.
+          </p>
+          <p>
+            Kniver, økser og andre skarpe innretninger som kan gjøre alvorlig
+            skade.
+          </p>
+          <p>
+            Slagvåpen som balltre, slåsshansker og andre stumpe gjenstander som
+            kan gjøre alvorlig skade.
+          </p>
+          <p>
+            Her kan det gjøres unntak for våpenreplikaer som tilhører cosplay og
+            som det er tydelig at ikke utgjør noen trussel. Ta kontakt med
+            Sikkerhetscrewet eller arrangør av Cosplaykonkurransen dersom du er
+            usikker. Overtredelse av ett eller flere av disse punktene vil i
+            mange tilfeller kunne resultere i en politianmeldelse og utvisning
+            fra The Gathering.
+          </p>
+          <h3>2. Hvitevarer og annet som drar mye strøm</h3>
+          <p>
+            Du kan ikke koble på hvitevarer og annet som drar mye strøm på
+            strømnettet til The Gathering. Dette inkluderer, men er ikke
+            begrenset til:
+          </p>
+          <ul>
+            <li>Vannkoker</li>
+            <li>Mikrobølgeovn</li>
+            <li>Kjøleskap/Kjøleboks</li>
+            <li>Kaffetrakter</li>
+            <li>Varmeskap/Varmeboks</li>
+            <li>
+              Lader til elektrisk sparkesykkel, hoverboard eller andre kjøretøy
+            </li>
+          </ul>
+          <p>
+            Dette gjelder uavhengig av om produktet kobles direkte på
+            strømnettet via vanlig kontakt, eller via en datamaskin ved for
+            eksempel en USB-kontakt.
+          </p>
+          <p>
+            På The Gathering skjønner vi at man har ulike behov for strøm, og at
+            man nok må lade mobiltelefonen for å sikre kontakt med foresatte og
+            verden rundt seg - husk at vi er enormt mange som må dele på strøm
+            fra strømskapene våre, og dersom alle skal ta med seg hvitevarer
+            etc, selv om disse bare trekker strøm via USB, ville det generert
+            mye - og samtidig forårsaket flere strømbrudd. Vi ønsker heller at
+            de som ønsker å lage liv og show for seg selv og de rundt, bør ha
+            den muligheten. Derfor er vi for eksempel noe mer liberale med de
+            som har med musikkanlegg og lys i hyllen, og de som lader mobilen i
+            blant. Sikkerhet kan utøve skjønn i mange tilfeller. Er du usikker
+            om du kan koble til noe på strømnettet - ta kontakt med oss!
+          </p>
+          <h3>3. Laserpekere og kraftige lommelykter</h3>
+          <p>
+            For å hindre at noen blir skadet, tillates ikke bruk av laserpekere
+            eller svært kraftige lommelykter inne i Vikingskipet.
+          </p>
+          <h3>4. Lufthorn</h3>
+          <p>
+            For å hindre skader og ubehag, tillates ikke bruk av lufthorn på The
+            Gathering.
+          </p>
+          <h3>5. Droner</h3>
+          <p>
+            Det tillates ingen bruk av droner på eiendommene vi disponerer under
+            The Gathering. Dette gjelder spesielt flyging innendørs. Ønsker du å
+            fly drone over Vikingskipet utendørs, kan du ta kontakt med
+            Sikkerhet for veiledning først. For flyging utendørs henviser vi til
+            Luftfartstilsynets regler.
+          </p>
+          <h3>6. Motoriserte kjøretøy</h3>
+          <p>
+            Elektriske hoverboard, sparkesykler, skateboards og andre
+            motoriserte kjøretøy tillates ikke innendørs. Det kan bli ganske
+            trangt mellom radene, og for å hindre ulykker kan du ikke bruke
+            eller lade slike kjøretøy innendørs.
+          </p>
+          <h3>7. Svært kalde materialer</h3>
+          <p>
+            Det er ikke tillatt å ta med, eller bruke svært kalde materialer som
+            tørris eller flytende nitrogen på The Gathering.
+          </p>
+          <h3>8. Store lydanlegg</h3>
+          <p>
+            Medbrakt lydanlegg skal plasseres på tildelt plass og ikke blokkere
+            rømningsveier og fri ferdsel mellom rader og i midtgang. Det er
+            absolutt ikke tillatt å koble lydanlegg direkte i strømskapene.
+          </p>
+          <p>
+            Sikkerhet kan dersom lydnivået fra større lydanlegg anses
+            uforsvarlig, for høyt eller på annen måte blir kilde til konflikt,
+            pålegge eier å dempe lyden. Dersom pålegg om å dempe lyd ikke
+            overholdes, kan Sikkerhet ta vital del fra anlegget i midlertidig
+            beslag inntil arrangementet er avsluttet.
+          </p>
+        </section>
+
+        <section class:list={sectionStyles}>
+          <h2>Kap 3. Uønskede handlinger</h2>
+          <p>
+            I tillegg til at vi forventer at deltakere på The Gathering følger
+            norsk lovverk og respekterer andre rundt seg, finnes det også flere
+            handlinger som ikke skal utføres på eller i tilknytning til The
+            Gathering.
+          </p>
+          <h3>1. Voldelig eller grenseoverskridende atferd</h3>
+          <p>
+            Alle deltakere skal respektere hverandre og hverandres grenser, og
+            det er viktig å ta hensyn til at personer er ulike og oppfatter
+            situasjoner ulikt. Selv om du er glad i klemmer, er det ikke sikkert
+            den som sitter ved siden av deg ønsker å få en klem av deg.
+          </p>
+          <p>
+            Ingen slags voldshandlinger eller grenseoverskridende atferd
+            aksepteres på The Gathering, og om dette oppdages vil det slås hardt
+            ned på. Dette gjelder også psykiske voldshandlinger som verbal
+            mobbing eller lignende. Vi ønsker at alle skal oppleve The Gathering
+            som et trygt og godt sted å være.
+          </p>
+          <h3>2. Salg av produkter</h3>
+          <p>
+            Salg av gjenstander som betraktes som kommersielt salg på grunn av
+            tilgjengelig antall, fremgangsmåte eller hensikt, krever særskilt
+            tillatelse fra arrangøren.
+          </p>
+          <p>
+            Nettverksmarkedsføring eller multi-level marketing business er ikke
+            tillatt.
+          </p>
+          <p>
+            Det tillates heller ikke salg eller markedsføring av
+            koffeinprodukter som ikke er godkjent for salg i Norge. Dette
+            gjelder blant annet koffeintabletter, koffeinholdige drikker og
+            andre energidrikker hvor koffeinnivået er høyere enn den lovlige
+            grensen. Dette gjelder også om det er privat fra person til person.
+            Koffeinprodukter du tar med til eget bruk, er ditt ansvar.
+            <h3>3. Alkohol</h3>
+
+            <p>
+              All alkoholholdig drikke er forbudt både på arrangementet og
+              området rundt, inkludert parkeringen. Alkohol vil bli beslaglagt
+              og tømt ut. Berusede personer vil ikke bli sluppet inn i hallen,
+              og ved forsøk på inngang i beruset tilstand, risikerer man en
+              tidsbestemt bortvisning frem til man er antatt edru igjen.
+              Personer som blir funnet beruset inne i hallen risikerer å bli
+              kastet ut av arrangementet uten refusjon av billett- eller
+              transportutgifter. .
+            </p>
+
+            <h3>4. Røyking</h3>
+            <p>
+              Røykeloven gjelder også på The Gathering. Ingen form for
+              sigaretter, heller ikke e-sigarett/vape er tillatt brukt
+              innendørs. Røyking er kun tillatt på angitt inngjerdet område
+              utenfor hovedinngangen.
+            </p>
+            <h3>5. Uautorisert inngang og adgangsbånd</h3>
+            <p>
+              Alle forsøk på å komme seg inn i hallen utenom punkter for
+              innsjekk er forbudt. Sikkerhetsvaktene patruljerer både
+              hall-området og området rundt hallen. I tillegg finnes det
+              kameraovervåkning både utendørs og innendørs som monitoreres av
+              Sikkerhet døgnet rundt. Forfalskede, eller “lånte” adgangsbånd vil
+              få konsekvenser, og man risikerer å bli avkrevd billettkostnaden
+              eller bli utvist fra arrangementet. Dersom man låner bort
+              adgangsbåndet sitt til andre, risikerer man utvisning. Brikken på
+              båndet er din personlige, og den er registrert i ditt navn og
+              linket til din konto hos vår billettleverandør. Husk at pengene vi
+              får inn fra billettene blir brukt til selve arrangementet og
+              dermed deg.
+            </p>
+            <h3>6. Tyveri</h3>
+            <p>
+              Vi anbefaler at du ikke legger penger, kamera, mobiltelefoner,
+              eksterne disker eller andre verdigjenstander som er lett å ta med
+              seg synlig. The Gathering får sjeldent inn rapporter om tyveri,
+              men vi ser at mange legger igjen eiendeler uten tilsyn. Er du
+              alene med utstyret ditt, bli kjent med de som sitter rundt deg
+              slik at dere kan hjelpe hverandre med å passe på tingene når noen
+              av dere ikke er til stede. Skriv ned serienummer, ta gjerne bilder
+              av det du tar med, slik at vi kan identifisere din eiendel dersom
+              vi får den inn.
+            </p>
+            <p>
+              Kontakt Sikkerhet om noe er stjålet, eller Deltakerservice dersom
+              du mister noe. Finner du noe som ikke er ditt, leveres dette til
+              Deltakerservice. Alt av tyveri må anmeldes på politiets nettsider
+              eller til politiet direkte.
+            </p>
+            <p>
+              The Gathering kan ikke hjelpe med anmeldelser, utover å veilede
+              med hvor dette kan gjøres.
+            </p>
+            <p>
+              Dersom du er vitne til tyveri, eller ser andre være i besittelse
+              av dine eller andres gjenstander som er meldt savnet, ta kontakt
+              med Sikkerhet umiddelbart og vi vil hjelpe deg videre.
+            </p>
+            <h3>7. “Gaffing” og frihetsberøvelse</h3>
+            <p>
+              Det tillates ikke å benytte tape, “gaffatape”, eller andre midler
+              til å feste personer fast i for eksempel stoler og bord, eller på
+              annen måte holde noen tilbake verken med eller uten personens
+              tillatelse. Dette er fordi vi til enhver tid er avhengige av å
+              kunne sørge for en effektiv og ordnet evakuering av Vikingskipet i
+              en nødsituasjon. I tillegg kan limet som finnes på enkelte typer
+              tape forårsake skade om det kommer i direkte kontakt med huden. I
+              grove tilfeller vil man risikere konsekvenser for deltakelse ved
+              arrangementet.
+            </p>
+            <h3>8. Sovende personer</h3>
+            <p>
+              Det tillates ikke at personer som sover blir utsatt for handlinger
+              som kan antas å påvirke dem negativt når de våkner, dette
+              inkluderer, men er ikke begrenset til å tegne, helle vann på,
+              bygge ting rundt, skrive på etc. Søvn er svært viktig, også på The
+              Gathering
+            </p>
+            <h3>9. Ødeleggelser og hærverk</h3>
+            <p>
+              Hærverk og ødeleggelser er ikke tillatt, og arrangementet minner
+              om de alminnelige norske lover. Personer som uaktsomt, eller
+              forsettlig ødelegger eller utfører hærverk en annen persons
+              eiendeler vil kunne stå økonomisk ansvarlig for utbedring og
+              erstatning. I tillegg risikerer man konsekvenser for deltakelse
+              ved arrangementet. Ødeleggelser eller hærverk på Vikingskipets
+              eiendom vil slås hardt ned på, og vil føre til politianmeldelse.
+              Husk at dersom stolen til naboen er hvit og fin, la den forbli
+              sånn – tegn ikke på den, før eieren uttrykkelig sier at du får lov
+              - og selv da bør du tenke, for om vedkommende etter fem minutter
+              har ombestemt seg. Vel. Da blir det kjipt etterpå allikevel. Ta
+              vare på hverandre!
+            </p>
+          </p>
+        </section>
+        <section class:list={sectionStyles}>
+          <h2>Kap 4. Billetter, refusjoner og tidlig hjemreise</h2>
+          <p>
+            Ved kjøp av billetter til The Gathering, gjelder visse regler og
+            restriksjoner. I tillegg til det som er beskrevet i norsk lovverk,
+            har vi noen tilleggsbestemmelser.
+          </p>
+          <h3>1. Refusjoner</h3>
+          <p>
+            I utgangspunktet er billetter ikke refunderbare. Likevel har vi
+            valgt å tillate refusjoner med noen restriksjoner.
+          </p>
+          <p>
+            Full refusjon (minus billettavgift) er mulig i starten av
+            billettsalget. Nøyaktig dato er beskrevet på tg.no.
+          </p>
+          <p>
+            50% refusjon (minus billettavgift) er mulig litt lenger enn full
+            refusjon. Nøyaktig dato er beskrevet på tg.no.
+          </p>
+          <p>
+            Etter disse oppgitte fristene vil ingen refusjonsforespørsler
+            godkjennes, uansett årsak.
+          </p>
+          <p>
+            Dersom du på grunn av sykdom ikke får deltatt på The Gathering, må
+            du benytte reiseforsikring eller på annet vis få dekket tapet. Vi
+            kan ikke være ansvarlig for å følge opp dette, eller vurdere slike
+            forespørsler om refusjon etter fristene som er oppgitt.
+          </p>
+          <h3>2. Refusjoner ved hjemreise på medisinsk grunnlag</h3>
+          <p>
+            Dersom du som deltaker på grunn av sykdom og/eller helse må, eller
+            blir bedt av Beredskapsledelsen om å forlate arrangementet etter
+            ankomst, gis som regel ingen refusjon. Du vil i slike tilfeller få
+            utskrevet en attest av oss som du kan benytte, dersom
+            reiseforsikringen din dekker tap eller hjemreise i slike
+            situasjoner.
+          </p>
+          <p>
+            Dersom sykdommen har oppstått på arrangementet, og man antas å være
+            en potensiell smitterisiko, vil man isoleres fra de andre deltakerne
+            og sendes hjem så snart som praktisk mulig. Mistanke om smittsom
+            sykdom er for eksempel, men ikke begrenset til omgangssyke,
+            influensa eller koronavirus. Vi har medisinsk fagpersonell og leger
+            som løpende vurderer slike situasjoner som kan oppstå underveis på
+            The Gathering. Vårt mål er å holde alle deltakerne i Vikingskipet
+            trygge, friske og raske.
+          </p>
+          <p>
+            Beredskapsledelsen, vårt medisinske personell og leger kan i flere
+            tilfeller vise skjønn og forsøke å tilpasse situasjonen for at du
+            skal få bli på arrangementet. Vi har anledning til å vurdere og
+            behandle mange ulike tilstander på stedet, med utstyret, medisiner
+            og personellet vi har tilgjengelig. Ta kontakt med oss dersom det er
+            noe du lurer på, eller du ikke føler deg bra!
+          </p>
+          <p>
+            Dersom man er under 18 år, vil Beredskapsledelsen eller Ombud ta
+            kontakt med foresatte og avtale transport og løsning videre.
+          </p>
+          <h3>3. Refusjoner ved hjemreise på annet grunnlag</h3>
+          <p>
+            Dersom du på grunn av brudd på arrangementsregler eller annet
+            grunnlag, bes om å forlate arrangementet, gis ingen refusjon eller
+            kompensasjon. Ei heller vil arrangøren dekke kostnad for eventuell
+            hjemtransport.
+          </p>
+          <p>
+            Dersom man er under 18 år, vil Beredskapsledelsen eller Ombud ta
+            kontakt med foresatte og avtale transport og løsning videre.
+          </p>
+          <h3>4. Videresalg</h3>
+          <p>
+            Videresalg av vanlige deltakerbilletter er tillatt, men kun til
+            samme eller lavere pris enn du selv kjøpte billetten for, jfr.
+            <a
+              href="https://lovdata.no/dokument/NL/lov/2007-06-29-86"
+              target="_blank">svartebørsloven</a
+            >.
+          </p>
+          <p>
+            Videresalg av billetter som er du har fått gratis er ulovlig, jfr.
+            <a
+              href="https://lovdata.no/dokument/NL/lov/2007-06-29-86"
+              target="_blank">svartebørsloven</a
+            >. Du har lov til å gi gratisbilletter videre til andre.
+          </p>
+        </section>
+      </div>
+    </ContentContainer>
+  </Main>
+</Layout>
