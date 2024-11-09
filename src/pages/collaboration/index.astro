@@ -63,7 +63,9 @@ const buttonStyles =
     <ContentContainer>
       <H1 text="Samarbeid og presse på The Gathering" />
       <div class="grid grid-cols-1 sm:grid-cols-7 gap-x-4 gap-y-4">
-        <aside class={`${boxStyles} sm:col-span-7`}>
+        <aside
+          class={`${boxStyles} sm:col-span-7 min-h-64 sm:min-h-auto sm:max-h-64`}
+        >
           <img
             src="https://www.tg.no/media/images/TG-artikler.max-1600x1600.png"
             srcset="https://www.tg.no/media/images/TG-artikler.max-1600x1600.png 500w, https://www.tg.no/media/images/TG-artikler.max-3200x3200.png 1000w"
@@ -103,27 +105,6 @@ const buttonStyles =
             >Ta kontakt og bli med på laget</a
           >
         </section>
-        <aside
-          class={`${boxStyles} p-6 order-last sm:col-start-5 sm:col-span-3 row-start-2 bg-blue-400 text-black prose prose-headings:text-black sm:mt-20`}
-        >
-          <H3>Generell info</H3>
-          <p>
-            The Gathering har gjennom alle årene vi har vært i Vikingskipet hatt
-            enkelte stander og samarbeidspartnere. I år blir det ekstra stort
-            fokus på en ny og dedikert Expo-del av Vikingskipet.
-          </p>
-          <p>
-            Gjennom årene har vi vært hyppig besøkt av presse, kjendiser og
-            myndighetspersoner som er nysgjerrige på, eller ønsker å fremme,
-            teknologi og gaming. Vi har egne grupper med frivillige som jobber
-            med å legge tilrette for presse og andre typer samarbeidspartnere.
-          </p>
-          <p>
-            Det er også fullt mulig å kombinere deltakelse på stand, med
-            sponsorat eller pressetilværelse. Eller i tillegg til vanlig
-            deltakerplass? Gi oss en lyd så finner vi en løsning som passer deg!
-          </p>
-        </aside>
         <section
           class={`${boxStyles} p-6 sm:col-start-1 sm:col-span-4 bg-white mt-auto`}
         >
@@ -193,6 +174,27 @@ const buttonStyles =
             nevnt på <a href="/contact">kontaktsiden</a>
           </div>
         </section>
+        <aside
+          class={`${boxStyles} p-6 sm:col-start-5 sm:col-span-3 sm:row-start-2 bg-blue-400 text-black prose prose-headings:text-black sm:mt-20`}
+        >
+          <H3>Generell info</H3>
+          <p>
+            The Gathering har gjennom alle årene vi har vært i Vikingskipet hatt
+            enkelte stander og samarbeidspartnere. I år blir det ekstra stort
+            fokus på en ny og dedikert Expo-del av Vikingskipet.
+          </p>
+          <p>
+            Gjennom årene har vi vært hyppig besøkt av presse, kjendiser og
+            myndighetspersoner som er nysgjerrige på, eller ønsker å fremme,
+            teknologi og gaming. Vi har egne grupper med frivillige som jobber
+            med å legge tilrette for presse og andre typer samarbeidspartnere.
+          </p>
+          <p>
+            Det er også fullt mulig å kombinere deltakelse på stand, med
+            sponsorat eller pressetilværelse. Eller i tillegg til vanlig
+            deltakerplass? Gi oss en lyd så finner vi en løsning som passer deg!
+          </p>
+        </aside>
       </div>
     </ContentContainer>
   </Main>
