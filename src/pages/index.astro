@@ -8,6 +8,7 @@ import CrewDescriptionComp from "../components/sections/CrewDescriptionComp.astr
 import CrewJoinComp from "../components/sections/CrewJoinComp.astro";
 import TechBlogComp from "../components/sections/TechBlogComp.astro";
 import TicketsComp from "../components/sections/TicketsComp.astro";
+import ExpoComp from "../components/sections/ExpoComp.astro";
 ---
 
 <Layout title="The Gathering">
@@ -19,22 +20,25 @@ import TicketsComp from "../components/sections/TicketsComp.astro";
       <div class="sm:col-start-4 sm:col-span-2 sm:row-start-1">
         <TicketsComp />
       </div>
+      <div class="sm:col-span-5 my-2">
+        <NewsComp />
+      </div>
       <div
         class="sm:col-start-1 sm:col-span-3 sm:row-start-1 sm:row-span-2 flex"
       >
         <AboutComp />
       </div>
       <div class="sm:col-start-4 sm:col-span-2 sm:row-start-2">
-        <CrewJoinComp image="/images/tg23-oversikt.jpg" />
-      </div>
-      <div class="sm:col-span-5 my-2">
-        <NewsComp />
+        <ExpoComp />
       </div>
       <div class="sm:col-span-2">
         <CrewDescriptionComp image="/images/tg19-lights.jpg" />
       </div>
       <div class="sm:col-span-3">
         <TechBlogComp image="/images/tg23-crew.jpg" />
+      </div>
+      <div class="sm:col-span-5">
+        <CrewJoinComp image="/images/tg23-oversikt.jpg" />
       </div>
     </div>
   </Main>
