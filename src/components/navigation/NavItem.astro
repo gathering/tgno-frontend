@@ -2,15 +2,17 @@
 export interface Props {
   title: string;
   path?: string;
+  subAlignment?: "left" | "right";
   subItems?: Array<{
     title: string;
     path: string;
   }>;
 }
 
-const { title, path, subItems = [] } = Astro.props;
+const { title, path, subItems = [], subAlignment = "left" } = Astro.props;
 const clickable = !!path;
 const expandable = !!subItems.length;
+
 const TextContainer = clickable ? "a" : "span";
 ---
 
@@ -47,7 +49,7 @@ const TextContainer = clickable ? "a" : "span";
   {
     expandable ? (
       <ul
-        class="hidden absolute top-0 left-0 min-w-full flex flex-col bg-backgroundSecondary space-y-1 px-2 pb-3 pt-10 rounded-b-md group-hover:flex z-0"
+        class={`hidden absolute top-0 ${subAlignment}-0 min-w-full flex flex-col bg-backgroundSecondary space-y-1 px-2 pb-3 pt-10 rounded-b-md group-hover:flex z-0`}
         id="comp-sub-nav"
         aria-role="menu"
       >
