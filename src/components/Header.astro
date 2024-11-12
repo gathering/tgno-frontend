@@ -48,7 +48,13 @@ import NavItem from "./navigation/NavItem.astro";
           />
         </a>
         <ul class="hidden sm:flex w-full space-x-6 space-y-0 justify-end">
-          <NavItem title="Konkurranser" />
+          <NavItem
+            title="Konkurranser"
+            subItems={[
+              { title: "Kreative", path: "/competitions/creative" },
+              { title: "E-sport", path: "/competitions/esport" },
+            ]}
+          />
           <li>
             <a href="/contact" class="block text-white hover:text-orange-500"
               >Kontakt oss</a
