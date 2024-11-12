@@ -1,3 +1,7 @@
+---
+import NavItem from "./navigation/NavItem.astro";
+---
+
 <script>
   const mobileMenu = document.querySelector("#mobile-menu");
   const mobileMenuButton = document.querySelector(
@@ -44,19 +48,7 @@
           />
         </a>
         <ul class="hidden sm:flex w-full space-x-6 space-y-0 justify-end">
-          <li>
-            <a
-              href="/competitions/creative"
-              class="block text-white hover:text-orange-500"
-              >Kreative konkurranser</a
-            >
-          </li>
-          <li>
-            <a
-              href="/competitions/esport"
-              class="block text-white hover:text-orange-500">E-sport</a
-            >
-          </li>
+          <NavItem title="Konkurranser" />
           <li>
             <a href="/contact" class="block text-white hover:text-orange-500"
               >Kontakt oss</a

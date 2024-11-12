@@ -1,0 +1,67 @@
+---
+export interface Props {
+  title: string;
+  path?: string;
+  subItems?: Array<{
+    title: string;
+    path: string;
+  }>;
+}
+
+const { title, path, subItems = [] } = Astro.props;
+const clickable = !!path;
+const expandable = !!subItems.length;
+const TextContainer = clickable ? "a" : "span";
+---
+
+<li class="relative group bg-backgroundSecondary">
+  <TextContainer
+    href={path}
+    class={`block text-white ${clickable ? "group-hover:text-orange-500" : "group-hover:text-gray-500"} flex z-10 relative ${clickable ? "cursor-pointer" : "cursor-default"}`}
+  >
+    {title}
+    {
+      expandable ? (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="block h-3 w-3 m-1.5 group-hover:scale-y-[-1] transition-transform duration-100 ease-out"
+          aria-hidden="false"
+          aria-haspopup="menu"
+        >
+          <>
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M6 9l6 6l6 -6" />
+          </>
+        </svg>
+      ) : null
+    }
+  </TextContainer>
+  {
+    expandable ? (
+      <ul
+        class="hidden absolute top-0 left-0 min-w-full flex flex-col bg-backgroundSecondary space-y-1 px-2 pb-3 pt-10 rounded-b-md group-hover:flex z-0"
+        id="comp-sub-nav"
+        aria-role="menu"
+      >
+        {subItems.map((subItem) => (
+          <li>
+            <a
+              href={subItem.path}
+              class="block rounded-md px-2 py-1 text-sm font-medium text-gray-300 hover:bg-orange-500 hover:text-white"
+            >
+              {subItem.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    ) : null
+  }
+</li>
