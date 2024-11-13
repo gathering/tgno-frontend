@@ -3,13 +3,15 @@ export interface Props {
   title: string;
   path?: string;
   subAlignment?: "left" | "right";
-  subItems?: Array<{
-    title: string;
-    path: string;
-  }>;
+  subItems?: SubItem[];
+}
+interface SubItem {
+  title: string;
+  path: string;
 }
 
 const { title, path, subItems = [], subAlignment = "left" } = Astro.props;
+const key = `${title.toLowerCase().replace(" ", "-")}-${path || ""}`;
 const clickable = !!path;
 const expandable = !!subItems.length;
 
@@ -17,50 +19,138 @@ const TextContainer = clickable ? "a" : "span";
 const isActive =
   path === Astro.url.pathname ||
   subItems.some((item) => item.path === Astro.url.pathname);
+
+const subItemsWithParent: Array<
+  SubItem & {
+    touchOnly?: boolean;
+  }
+> = path ? [{ path, title, touchOnly: true }, ...subItems] : subItems;
 ---
 
-<li class="relative group bg-backgroundSecondary">
-  <TextContainer
-    href={path}
-    class={`block ${isActive ? "text-orange-500" : "text-white"} ${clickable ? "group-hover:text-orange-500" : "group-hover:text-gray-500"} flex z-10 relative ${clickable ? "cursor-pointer" : "cursor-default"}`}
+<script>
+  interface SubNavComponents {
+    mainLink: HTMLElement;
+    trigger: HTMLElement;
+    subMenu: HTMLElement;
+    navItem: HTMLElement;
+  }
+
+  const isTouchDevice =
+    "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
+  const navItems: SubNavComponents[] = document
+    .querySelectorAll("[data-component='nav-item']")
+    .values()
+    .map((navItem) => {
+      const trigger = navItem.querySelector("[data-part='trigger']");
+      const subMenu = navItem.querySelector("[data-part='sub-menu']");
+      const mainLink = navItem.querySelector("[data-part='main-link']");
+      return { mainLink, trigger, subMenu, navItem };
+    })
+    .filter(
+      ({ mainLink, navItem, trigger, subMenu }) =>
+        mainLink && navItem && trigger && subMenu,
+    )
+    .toArray() as unknown as SubNavComponents[];
+
+  function expand(index: number, expanded: boolean) {
+    const { navItem, trigger, subMenu } = navItems[index] || {};
+    if (!trigger || !subMenu) {
+      return;
+    }
+    navItem.classList.toggle("expanded", expanded);
+    trigger.setAttribute("aria-expanded", String(expanded));
+    subMenu.classList.toggle("flex", expanded);
+    subMenu.classList.toggle("hidden", !expanded);
+  }
+
+  function closeAll() {
+    navItems.forEach((_, index: number) => {
+      expand(index, false);
+    });
+  }
+
+  navItems.forEach(({ mainLink, navItem, trigger, subMenu }, index: number) => {
+    navItem.classList.toggle("touch-device", isTouchDevice);
+
+    if (isTouchDevice) {
+      subMenu.querySelectorAll(".hidden").forEach((subMenu) => {
+        subMenu.classList.remove("hidden");
+      });
+      [mainLink, trigger].forEach((item) =>
+        item?.addEventListener("click", () => {
+          event?.preventDefault();
+          const expanded = !(
+            trigger.getAttribute("aria-expanded") === "true" || false
+          );
+          closeAll();
+          expand(index, expanded);
+        }),
+      );
+    } else {
+      navItem.addEventListener("mouseenter", () => {
+        closeAll();
+        expand(index, true);
+      });
+      navItem.addEventListener("mouseleave", () => {
+        expand(index, false);
+      });
+    }
+  });
+</script>
+
+<li class="relative group bg-backgroundSecondary" data-component="nav-item">
+  <div
+    class={`block ${isActive ? "text-orange-500" : "text-white"} ${clickable ? "group-[.expanded]:text-orange-500" : "group-[.expanded]:text-neutral-400"} flex z-10 relative ${clickable ? "cursor-pointer" : "cursor-default"} items-center h-6`}
   >
-    {title}
+    <TextContainer href={path} data-part="main-link">
+      {title}
+    </TextContainer>
     {
       expandable ? (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="block h-3 w-3 m-1.5 group-hover:scale-y-[-1] transition-transform duration-100 ease-out"
-          aria-hidden="false"
-          aria-haspopup="menu"
+        <button
+          type="button"
+          data-part="trigger"
+          aria-controls={`nav-item-sub-${key}`}
+          aria-expanded="false"
+          class="block p-1 ml-3 rounded group-[.touch-device]:bg-neutral-800"
         >
-          <>
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M6 9l6 6l6 -6" />
-          </>
-        </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="block h-3 w-3 m-1.5 group-[.expanded]:scale-y-[-1] transition-transform duration-100 ease-out"
+            aria-hidden="false"
+            aria-haspopup="menu"
+          >
+            <>
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M6 9l6 6l6 -6" />
+            </>
+          </svg>
+        </button>
       ) : null
     }
-  </TextContainer>
+  </div>
   {
     expandable ? (
       <ul
-        class={`hidden absolute top-0 ${subAlignment}-0 min-w-full flex flex-col bg-backgroundSecondary space-y-1 px-2 pb-3 pt-10 rounded-b-md group-hover:flex z-0`}
-        id="comp-sub-nav"
+        class={`hidden absolute top-0 ${subAlignment}-0 min-w-full flex-col bg-backgroundSecondary space-y-1 px-2 pb-3 pt-10 rounded-b-md z-0`}
+        id={`nav-item-sub-${key}`}
         aria-role="menu"
+        data-part="sub-menu"
       >
-        {subItems.map((subItem) => (
-          <li>
+        {subItemsWithParent.map((subItem, index) => (
+          <li class={`${subItem.touchOnly ? "hidden" : ""}`}>
             <a
               href={subItem.path}
-              class={`block rounded-md px-2 py-1 text-sm font-medium ${subItem.path === Astro.url.pathname ? "text-orange-500" : "text-gray-300"} hover:bg-orange-500 hover:text-white`}
+              class={`block rounded-md px-4 py-1 text-sm font-medium ${subItem.path === Astro.url.pathname ? "text-orange-500" : "text-neutral-300"} hover:bg-orange-500 hover:text-white`}
             >
               {subItem.title}
             </a>
