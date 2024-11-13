@@ -118,29 +118,33 @@ import NavItem from "./navigation/NavItem.astro";
         </div>
       </div>
       <!-- Mobile menu, show/hide based on menu state. -->
-      <div class="hidden" id="mobile-menu">
-        <div class="space-y-1 px-2 pb-3 pt-2">
-          <a
-            href="/competitions/creative"
-            class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-orange-500 hover:text-white"
-            >Kreative konkurranser</a
-          >
-          <a
-            href="/competitions/esport"
-            class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-orange-500 hover:text-white"
-            >E-sport</a
-          >
-          <a
-            href="/contact"
-            class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-orange-500 hover:text-white"
-            >Kontakt oss</a
-          >
-          <a
-            href="/tickets"
-            class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-orange-500 hover:text-white"
-            >Billetter</a
-          >
-        </div>
+      <div class="hidden md:hidden" id="mobile-menu" data-part="mobile-menu">
+        <ul class="space-y-3 px-2 pb-3 pt-2 flex flex-col">
+          <NavItem
+            title="Konkurranser"
+            subItems={[
+              { title: "Kreative", path: "/competitions/creative" },
+              { title: "Esport", path: "/competitions/esport" },
+            ]}
+          />
+          <NavItem title="Kontakt oss" path="/contact" class="h-10" />
+          <NavItem
+            title="Billetter"
+            path="/tickets"
+            subAlignment="right"
+            subItems={[
+              { title: "Vilkår", path: "/tickets/terms-and-conditions" },
+              {
+                title: "Arrangementsregler",
+                path: "/event/rules",
+              },
+              {
+                title: "Konstruksjonsregler",
+                path: "/event/construction-rules",
+              },
+            ]}
+          />
+        </ul>
       </div>
     </nav>
   </div>
