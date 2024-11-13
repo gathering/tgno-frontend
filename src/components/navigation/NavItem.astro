@@ -4,13 +4,20 @@ export interface Props {
   path?: string;
   subAlignment?: "left" | "right";
   subItems?: SubItem[];
+  class?: string;
 }
 interface SubItem {
   title: string;
   path: string;
 }
 
-const { title, path, subItems = [], subAlignment = "left" } = Astro.props;
+const {
+  title,
+  path,
+  subItems = [],
+  subAlignment = "left",
+  class: className = "",
+} = Astro.props;
 const key = `${title.toLowerCase().replace(" ", "-")}-${path || ""}`;
 const clickable = !!path;
 const expandable = !!subItems.length;
@@ -78,7 +85,7 @@ const subItemsWithParent: Array<
         subMenu.classList.remove("hidden");
       });
       [mainLink, trigger].forEach((item) =>
-        item?.addEventListener("click", () => {
+        item?.addEventListener("click", (event) => {
           event?.preventDefault();
           const expanded = !(
             trigger.getAttribute("aria-expanded") === "true" || false
@@ -99,11 +106,14 @@ const subItemsWithParent: Array<
   });
 </script>
 
-<li class="relative group bg-backgroundSecondary" data-component="nav-item">
+<li
+  class={`relative group bg-backgroundSecondary ${className}`}
+  data-component="nav-item"
+>
   <div
     class={`block ${isActive ? "text-orange-500" : "text-white"} ${clickable ? "group-[.expanded]:text-orange-500" : "group-[.expanded]:text-neutral-400"} flex z-10 relative ${clickable ? "cursor-pointer" : "cursor-default"} items-center h-6`}
   >
-    <TextContainer href={path} data-part="main-link">
+    <TextContainer href={path} data-part="main-link" class="mr-3 w-full">
       {title}
     </TextContainer>
     {
@@ -113,7 +123,7 @@ const subItemsWithParent: Array<
           data-part="trigger"
           aria-controls={`nav-item-sub-${key}`}
           aria-expanded="false"
-          class="block p-1 ml-3 rounded group-[.touch-device]:bg-neutral-800"
+          class="block p-1 ml-auto rounded group-[.touch-device]:bg-neutral-800"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -141,16 +151,16 @@ const subItemsWithParent: Array<
   {
     expandable ? (
       <ul
-        class={`hidden absolute top-0 ${subAlignment}-0 min-w-full flex-col bg-backgroundSecondary space-y-1 px-2 pb-3 pt-10 rounded-b-md z-0`}
+        class={`hidden min-w-full flex-col bg-neutral-800 md:bg-backgroundSecondary space-y-1 px-2 py-3 mt-3 z-0 md:mt-0 md:pt-10 md:rounded-b-md md:absolute md:top-0 ${subAlignment === "left" ? "md:left-0" : "md:right-0"}`}
         id={`nav-item-sub-${key}`}
         aria-role="menu"
         data-part="sub-menu"
       >
-        {subItemsWithParent.map((subItem, index) => (
+        {subItemsWithParent.map((subItem) => (
           <li class={`${subItem.touchOnly ? "hidden" : ""}`}>
             <a
               href={subItem.path}
-              class={`block rounded-md px-4 py-1 text-sm font-medium ${subItem.path === Astro.url.pathname ? "text-orange-500" : "text-neutral-300"} hover:bg-orange-500 hover:text-white`}
+              class={`block rounded-md px-2 py-1 text-sm font-medium ${subItem.path === Astro.url.pathname ? "text-orange-500" : "text-neutral-300"} hover:bg-orange-500 hover:text-white`}
             >
               {subItem.title}
             </a>
