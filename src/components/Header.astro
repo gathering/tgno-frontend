@@ -51,6 +51,14 @@ import NavItem from "./navigation/NavItem.astro";
         </a>
         <ul class="hidden sm:flex w-full space-x-6 space-y-0 justify-end">
           <NavItem
+            title="Om TG"
+            path="/about"
+            subItems={[
+              { title: "Bli utstiller", path: "/about/expo" },
+              { title: "Bli sponsor", path: "/about/sponsor" },
+            ]}
+          />
+          <NavItem
             title="Konkurranser"
             subItems={[
               { title: "Kreative", path: "/competitions/creative" },
@@ -120,6 +128,14 @@ import NavItem from "./navigation/NavItem.astro";
       <!-- Mobile menu, show/hide based on menu state. -->
       <div class="hidden md:hidden" id="mobile-menu" data-part="mobile-menu">
         <ul class="space-y-3 px-2 pb-3 pt-2 flex flex-col">
+          <NavItem
+            title="Om TG"
+            path="/about"
+            subItems={[
+              { title: "Bli utstiller", path: "/about/expo" },
+              { title: "Bli sponsor", path: "/about/sponsor" },
+            ]}
+          />
           <NavItem
             title="Konkurranser"
             subItems={[
