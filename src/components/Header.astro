@@ -1,7 +1,13 @@
+---
+import NavItem from "./navigation/NavItem.astro";
+---
+
 <script>
-  const mobileMenu = document.querySelector("#mobile-menu");
+  const mobileMenu = document.querySelector(
+    "[data-component='header'] [data-part='mobile-menu']",
+  );
   const mobileMenuButton = document.querySelector(
-    "button[aria-controls='mobile-menu']",
+    "[data-component='header'] [data-part='mobile-menu-trigger']",
   );
 
   if (mobileMenuButton && mobileMenu) {
@@ -21,7 +27,7 @@
   }
 </script>
 
-<header class="flex flex-col-reverse">
+<header class="flex flex-col-reverse md:px-5" data-component="header">
   <div
     class="flex justify-between items-center py-1 px-5 max-w-7xl mb-8 justify-self-center w-full mx-auto bg-backgroundSecondary sm:rounded-xl sm:mx-5 sm:mt-2 sm:mb-8 sm:w-auto xl:mx-auto xl:w-full"
   >
@@ -44,45 +50,36 @@
           />
         </a>
         <ul class="hidden sm:flex w-full space-x-6 space-y-0 justify-end">
-          <li>
-            <a
-              href="/competitions/creative"
-              class="block text-white hover:text-orange-500"
-              ><span class="max-md:hidden">Kreative konkurranser</span><span
-                class="md:hidden">Kreativt</span
-              ></a
-            >
-          </li>
-          <li>
-            <a
-              href="/competitions/esport"
-              class="block text-white hover:text-orange-500">E-sport</a
-            >
-          </li>
-          <li>
-            <a
-              href="/collaboration"
-              class="block text-white hover:text-orange-500"
-              ><span class="max-lg:hidden">Utstiller, sponsor og presse</span
-              ><span class="lg:hidden">Samarbeid</span></a
-            >
-          </li>
-          <li>
-            <a href="/contact" class="block text-white hover:text-orange-500"
-              >Kontakt oss</a
-            >
-          </li>
-          <li>
-            <a href="/tickets" class="block text-white hover:text-orange-500"
-              >Billetter</a
-            >
-          </li>
+          <NavItem
+            title="Konkurranser"
+            subItems={[
+              { title: "Kreative", path: "/competitions/creative" },
+              { title: "Esport", path: "/competitions/esport" },
+            ]}
+          />
+          <NavItem title="Kontakt oss" path="/contact" />
+          <NavItem
+            title="Billetter"
+            path="/tickets"
+            subAlignment="right"
+            subItems={[
+              { title: "Vilkår", path: "/tickets/terms-and-conditions" },
+              {
+                title: "Arrangementsregler",
+                path: "/event/rules",
+              },
+              {
+                title: "Konstruksjonsregler",
+                path: "/event/construction-rules",
+              },
+            ]}
+          />
         </ul>
 
         <div class="absolute inset-y-0 right-0 flex items-center sm:hidden">
           <button
             type="button"
-            id="mobile-menu-button"
+            data-part="mobile-menu-trigger"
             class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
             aria-controls="mobile-menu"
             aria-expanded="false"
@@ -121,34 +118,33 @@
         </div>
       </div>
       <!-- Mobile menu, show/hide based on menu state. -->
-      <div class="hidden sm:hidden" id="mobile-menu">
-        <div class="space-y-1 px-2 pb-3 pt-2">
-          <a
-            href="/competitions/creative"
-            class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-orange-500 hover:text-white"
-            >Kreative konkurranser</a
-          >
-          <a
-            href="/competitions/esport"
-            class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-orange-500 hover:text-white"
-            >E-sport</a
-          >
-          <a
-            href="/collaboration"
-            class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-orange-500 hover:text-white"
-            >Utstiller, sponsor og presse</a
-          >
-          <a
-            href="/contact"
-            class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-orange-500 hover:text-white"
-            >Kontakt oss</a
-          >
-          <a
-            href="/tickets"
-            class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-orange-500 hover:text-white"
-            >Billetter</a
-          >
-        </div>
+      <div class="hidden md:hidden" id="mobile-menu" data-part="mobile-menu">
+        <ul class="space-y-3 px-2 pb-3 pt-2 flex flex-col">
+          <NavItem
+            title="Konkurranser"
+            subItems={[
+              { title: "Kreative", path: "/competitions/creative" },
+              { title: "Esport", path: "/competitions/esport" },
+            ]}
+          />
+          <NavItem title="Kontakt oss" path="/contact" />
+          <NavItem
+            title="Billetter"
+            path="/tickets"
+            subAlignment="right"
+            subItems={[
+              { title: "Vilkår", path: "/tickets/terms-and-conditions" },
+              {
+                title: "Arrangementsregler",
+                path: "/event/rules",
+              },
+              {
+                title: "Konstruksjonsregler",
+                path: "/event/construction-rules",
+              },
+            ]}
+          />
+        </ul>
       </div>
     </nav>
   </div>
@@ -156,8 +152,10 @@
     <span
       class="flex w-full text-white justify-end py-2 px-5 max-w-7xl justify-self-center mx-auto gap-x-3 xl:px-0"
     >
-      <span>🗓 16.-20. april 2025</span>
-      <span>🌍 Vikingskipet, Hamar</span>
+      <span>🗓 16.-20. april<span class="max-sm:hidden"> 2025</span></span>
+      <a href="https://maps.app.goo.gl/RN5QTjwpLDaWiswh8" target="_blank"
+        >🌍 Vikingskipet<span class="max-sm:hidden">, Hamar</span></a
+      >
     </span>
   </aside>
 </header>
