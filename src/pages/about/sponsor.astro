@@ -1,0 +1,63 @@
+---
+import H1 from "../../components/H1.astro";
+import Layout from "../../layouts/Layout.astro";
+import Main from "../../components/Main.astro";
+import H2 from "../../components/H2.astro";
+import H3 from "../../components/H3.astro";
+import ContentContainer from "../../components/ContentContainer.astro";
+
+const boxStyles = "rounded-3xl sm:rounded-2xl sm:w-full sm:mx-auto";
+const buttonStyles =
+  "block px-4 py-2 rounded-full content-center text-decoration-none text-center mt-6 border border-orange-500 bg-orange-500 hover:bg-orange-200 hover:text-black";
+---
+
+<Layout
+  title="The Gathering - Bli sponsor!"
+  description="Bli sponsor på The Gathering!"
+>
+  <Main>
+    <ContentContainer>
+      <H1 text="Bli sponsor" />
+      <div class="grid grid-cols-1 sm:grid-cols-7 gap-x-4 gap-y-4">
+        <aside class={`${boxStyles} sm:col-span-3 min-h-64`}>
+          <img
+            src="https://www.tg.no/media/images/TG-artikler.max-1600x1600.png"
+            srcset="https://www.tg.no/media/images/TG-artikler.max-1600x1600.png 500w, https://www.tg.no/media/images/TG-artikler.max-3200x3200.png 1000w"
+            alt='Bilde av "Community village" fra TG 23, prototypen på Expo-området vårt'
+            class="w-full h-full object-cover rounded-3xl"
+          />
+        </aside>
+        <section class={`${boxStyles} p-6 sm:col-span-4 bg-white mt-auto`}>
+          <span class="prose text-black prose-strong:text-black">
+            <H2 text="Lyst til å støtte The Gathering?" color="text-black" />
+            <p>
+              <strong
+                >Vi setter pris på økonomisk støtte eller andre typer
+                sponsorater, og har eget opplegg for å fronte sponsorer og
+                samarbeidspartnere på våre flater. Både fysisk i skipet og i det
+                digitale.</strong
+              >
+            </p>
+            <p>
+              Ta kontakt med oss på <a href="mailto:sponsor@tg.no"
+                >sponsor@tg.no</a
+              > for å høre mer om mulighetene for å støtte The Gathering, og hva
+              vi kan tilby tilbake. Vi er åpne for mange ulike typer samarbeid, og
+              er sikre på at vi kan finne en løsning som passer for deg.
+            </p>
+          </span>
+          <a class={buttonStyles} href="mailto:sponsor@tg.no"
+            >Ta kontakt på sponsor@tg.no</a
+          >
+        </section>
+        <aside class="sm:col-span-7 my-4 prose text-white">
+          <p>
+            Egentlig mest klar for å ha stand? <a href="/about/expo">
+              Les mer om expo-mulighetene her!
+            </a>
+          </p>
+        </aside>
+      </div>
+    </ContentContainer>
+  </Main>
+</Layout>
