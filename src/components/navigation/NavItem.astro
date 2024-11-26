@@ -45,20 +45,19 @@ const subItemsWithParent: Array<
   const isTouchDevice =
     "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
-  const navItems: SubNavComponents[] = document
-    .querySelectorAll("[data-component='nav-item']")
-    .values()
+  const navItems: SubNavComponents[] = [
+    ...document.querySelectorAll("[data-component='nav-item']"),
+  ]
     .map((navItem) => {
       const trigger = navItem.querySelector("[data-part='trigger']");
       const subMenu = navItem.querySelector("[data-part='sub-menu']");
       const mainLink = navItem.querySelector("[data-part='main-link']");
-      return { mainLink, trigger, subMenu, navItem };
+      return { mainLink, trigger, subMenu, navItem } as SubNavComponents;
     })
     .filter(
       ({ mainLink, navItem, trigger, subMenu }) =>
         mainLink && navItem && trigger && subMenu,
-    )
-    .toArray() as unknown as SubNavComponents[];
+    );
 
   function expand(index: number, expanded: boolean) {
     const { navItem, trigger, subMenu } = navItems[index] || {};
