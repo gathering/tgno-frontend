@@ -1,0 +1,25 @@
+---
+interface Props {
+  href: string;
+  color?: "orange" | "white" | "blue";
+  class?: string;
+}
+
+const { href, color = "white", class: classNames = "" } = Astro.props;
+const isRelative = href.startsWith("/");
+const target = isRelative ? "_self" : "_blank";
+const colorStyles = {
+  default: "",
+  orange: "bg-orange-500 border-orange-500 hover:bg-orange-300",
+  white: "border-white hover:bg-blue-400",
+  blue: "bg-blue-500 border-blue-500 hover:bg-blue-300",
+}[color || "default"];
+---
+
+<a
+  href={href}
+  class={`inline-block px-4 py-2 rounded-full content-center text-sm border hover:bg-blue-400 ${colorStyles} ${classNames}`}
+  target={target}
+>
+  <slot />
+</a>

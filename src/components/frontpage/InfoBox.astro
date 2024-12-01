@@ -1,0 +1,24 @@
+---
+import H2 from "../H2.astro";
+
+interface Props {
+  title: string;
+  image: string;
+}
+
+const { title, image } = Astro.props;
+---
+
+<section
+  class="bg-white p-4 rounded-3xl grid sm:p-6 sm:grid-cols-2 gap-4 sm:h-full sm:m-auto sm:rounded-2xl"
+>
+  <aside
+    class="rounded-2xl overflow-hidden h-full w-full sm:rounded-xl sm:order-last"
+  >
+    <img src={image} alt="" class="object-cover h-full" />
+  </aside>
+  <div class="flex flex-col justify-end items-start">
+    <H2 text={title} color="" />
+    <slot />
+  </div>
+</section>

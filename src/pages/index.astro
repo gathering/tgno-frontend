@@ -2,14 +2,52 @@
 import H1 from "../components/H1.astro";
 import Layout from "../layouts/Layout.astro";
 import Main from "../components/Main.astro";
-import NewsComp from "../components/sections/NewsComp.astro";
-import AboutComp from "../components/sections/AboutComp.astro";
-import CrewDescriptionComp from "../components/sections/CrewDescriptionComp.astro";
-import CrewJoinComp from "../components/sections/CrewJoinComp.astro";
-import TechBlogComp from "../components/sections/TechBlogComp.astro";
-import TicketsComp from "../components/sections/TicketsComp.astro";
-import ExpoComp from "../components/sections/ExpoComp.astro";
-import Hero from "../components/Hero.astro";
+import NewsComp from "../components/frontpage/NewsComp.astro";
+import CrewDescriptionComp from "../components/frontpage/CrewDescriptionComp.astro";
+import CrewJoinComp from "../components/frontpage/CrewJoinComp.astro";
+import TechBlogComp from "../components/frontpage/TechBlogComp.astro";
+import Hero from "../components/frontpage/Hero.astro";
+import InfoBox from "../components/frontpage/InfoBox.astro";
+import FactBox from "../components/frontpage/FactBox.astro";
+import Button from "../components/Button.astro";
+import H3 from "../components/H3.astro";
+
+const TG_THEMES = {
+  "2000": "The Gathering 1900 - Follow the Flow",
+  "2001": "A Cyberspace Odyssey",
+  "2003": "The Gathering: Reloaded",
+  "2004": "Rescue of Fractalus",
+  "2005": "We Are The Robots",
+  "2006": "The Dark Side of Pluto",
+  "2007": "Still Puzzled?",
+  "2008": "Optimus Prime",
+  "2009": "Fire and Ice",
+  "2010": "Submerged",
+  "2011": "Partly Cloudy with a Chance of Lightning",
+  "2012": "At the End of the Universe",
+  "2013": "Singularity",
+  "2014": "Transylvania",
+  "2015": "The Future is Back",
+  "2016": "Switched On",
+  "2017": "#Secrets",
+  "2018": "Social Reality",
+  "2019": "Eve",
+  "2023": "Gaia",
+  "2024": "Generations",
+};
+const TG_FACTS = [
+  "Første The Gathering ble arrangert 1992 i Skedsmohallen, Lillestrøm",
+  "TG har blitt arrangert i Vikingskipet siden 1996",
+  "Community Village ble introdusert i 2023, og er forløperen til årets Expo område",
+  "Første The Gathering ble (blant annet) arrangert av demogruppen Crusaders",
+];
+
+const years = Object.keys(TG_THEMES);
+const randomYear = years[
+  Math.floor(Math.random() * years.length)
+] as keyof typeof TG_THEMES;
+const randomTheme = TG_THEMES[randomYear] || TG_THEMES["2019"];
+const randomFact = TG_FACTS[Math.floor(Math.random() * TG_FACTS.length)];
 ---
 
 <Layout title="The Gathering">
@@ -17,32 +55,54 @@ import Hero from "../components/Hero.astro";
     <div class="max-w-4xl">
       <H1 text="BLI MED I NORGES STØRSTE PÅSKEHYTTE" />
     </div>
-    <div class="grid sm:grid-cols-5 gap-4 w-full">
-      <div class="sm:col-span-5">
+    <div class="grid sm:grid-cols-9 gap-4 w-full">
+      <div class="sm:col-span-9">
         <Hero image="/images/tg19-lights.jpg" />
       </div>
-      <div class="sm:col-start-4 sm:col-span-2 sm:row-start-2">
-        <TicketsComp />
-      </div>
-      <div class="sm:col-span-5 my-2">
+      <div class="sm:col-span-9 my-2">
         <NewsComp />
       </div>
-      <div
-        class="sm:col-start-1 sm:col-span-3 sm:row-start-2 sm:row-span-2 flex"
-      >
-        <AboutComp />
-      </div>
-      <div class="sm:col-start-4 sm:col-span-2 sm:row-start-3">
-        <ExpoComp />
-      </div>
-      <div class="sm:col-span-2">
-        <CrewDescriptionComp image="/images/tg19-lights.jpg" />
-      </div>
-      <div class="sm:col-span-3">
-        <TechBlogComp image="/images/tg23-crew.jpg" />
-      </div>
-      <div class="sm:col-span-5">
-        <CrewJoinComp image="/images/tg23-oversikt.jpg" />
+      <div class="sm:col-start-1 sm:col-span-9 grid gap-2 sm:grid-cols-3">
+        <div class="sm:col-span-2">
+          <InfoBox
+            title="Norges største påskehytte"
+            image="/images/tg19-lights.jpg"
+          >
+            <p>
+              Hver påske samler vi spill- og teknologientusiaster i Vikingskipet
+              i Hamar, på en av verdens største festivaler som feirer data,
+              kreativitet og spillkultur.
+            </p>
+            <Button href="/about" color="orange" class="mt-4"> Les mer </Button>
+          </InfoBox>
+        </div>
+        <div class="sm:col-span-1">
+          <FactBox color="blue">
+            <H3 class="text-3xl font-bold">Visste du at?</H3>
+            <p>
+              {randomFact}
+            </p>
+          </FactBox>
+        </div>
+        <div class="sm:col-span-1">
+          <FactBox color="orange">
+            <p class="text-3xl font-bold">
+              {randomTheme}
+            </p>
+            <p>var temaet for TG {randomYear}</p>
+          </FactBox>
+        </div>
+        <div class="sm:col-span-2">
+          <InfoBox title="Vi søker frivillige!" image="/images/tg19-lights.jpg">
+            <p>
+              Arrangementet er helt avhengig av frivillige for å kunne
+              gjennomføres. Bli med på laget og få en opplevelse for livet.
+            </p>
+            <Button href="https://wannabe.tg.no" color="orange" class="mt-4">
+              Ta utfordringen!</Button
+            >
+          </InfoBox>
+        </div>
       </div>
     </div>
   </Main>

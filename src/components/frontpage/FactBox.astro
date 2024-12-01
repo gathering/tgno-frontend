@@ -1,0 +1,19 @@
+---
+import H2 from "../H2.astro";
+
+interface Props {
+  color?: "orange" | "blue";
+}
+
+const { color = "orange" } = Astro.props;
+const colorStyles = {
+  orange: "bg-orange-600 text-white",
+  blue: "bg-blue-600 text-white",
+}[color || "orange"];
+---
+
+<div
+  class={`p-4 rounded-3xl flex flex-col sm:h-full sm:m-auto sm:rounded-2xl justify-end ${colorStyles}`}
+>
+  <slot />
+</div>

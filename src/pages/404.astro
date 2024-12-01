@@ -4,11 +4,10 @@ import Layout from "../layouts/Layout.astro";
 import Main from "../components/Main.astro";
 import H2 from "../components/H2.astro";
 import ContentContainer from "../components/ContentContainer.astro";
-import TicketsComp from "../components/sections/TicketsComp.astro";
-import NewsComp from "../components/sections/NewsComp.astro";
-import CrewJoinComp from "../components/sections/CrewJoinComp.astro";
-import CrewDescriptionComp from "../components/sections/CrewDescriptionComp.astro";
-import TechBlogComp from "../components/sections/TechBlogComp.astro";
+import NewsComp from "../components/frontpage/NewsComp.astro";
+import CrewJoinComp from "../components/frontpage/CrewJoinComp.astro";
+import CrewDescriptionComp from "../components/frontpage/CrewDescriptionComp.astro";
+import TechBlogComp from "../components/frontpage/TechBlogComp.astro";
 ---
 
 <Layout title="The Gathering - 404">
@@ -16,11 +15,8 @@ import TechBlogComp from "../components/sections/TechBlogComp.astro";
     <ContentContainer>
       <H1 text="404 - Denne siden fant vi ikke..." />
       <H2 text="Men kanskje du er interesert i noe av dette?" />
-      <div class="grid grid-cols-1 mt-10 md:grid-cols-7 gap-4">
-        <div class="md:col-span-4">
-          <TicketsComp />
-        </div>
-        <div class="md:col-start-5 md:col-span-3 md:row-span-3">
+      <div class="grid grid-cols-1 md:grid-cols-7 gap-4 mt-10">
+        <div class="md:col-start-5 md:col-span-3 md:row-start-1 md:row-span-3">
           <NewsComp singleColumn />
         </div>
         <div class="md:col-span-4">
