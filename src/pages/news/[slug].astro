@@ -37,21 +37,22 @@ const article = await fetchArticleById({
   image=`${article.main_image?.sizes.large.url}`
 >
   <Main>
-    <ContentContainer>
-      <!-- Article Title -->
+    <ContentContainer variant="wide">
       <H1 text=`${article.title}` />
-      <!-- Main Image -->
       {
         article.main_image && (
-          <img
-            src={article.main_image.sizes.large.url}
-            srcset={`${article.main_image.sizes.large.url} 500w, ${article.main_image.sizes.extra_large.url} 1000w`}
-            alt={article.main_image.alt}
-            class="w-auto rounded-3xl mb-5"
-          />
+          <div class="flex md:max-h-[50vh]">
+            <img
+              src={article.main_image.sizes.large.url}
+              srcset={`${article.main_image.sizes.large.url} 500w, ${article.main_image.sizes.extra_large.url} 1000w`}
+              alt={article.main_image.alt}
+              class="w-auto rounded-3xl mb-5 object-cover object-center"
+            />
+          </div>
         )
       }
-      <!-- Display Tags -->
+    </ContentContainer>
+    <ContentContainer variant="narrow">
       <aside class="mb-5">
         <p class="text-sm text-gray-600 mb-2">
           {
@@ -66,14 +67,12 @@ const article = await fetchArticleById({
               .join(", ")
           }
         </p>
-        <!-- Publish Date -->
         <time
           datetime={article.meta.first_published_at}
           class="text-sm text-gray-500 mb-2 block"
         >
           {new Date(article.meta.first_published_at).toLocaleDateString()}
         </time>
-        <!-- Author -->
         <table class="">
           <tbody class="text-sm text-gray-500 mb-2 block">
             {
@@ -87,8 +86,6 @@ const article = await fetchArticleById({
           </tbody>
         </table>
       </aside>
-    </ContentContainer>
-    <ContentContainer>
       <!-- Article Content -->
       <Intro text={article.intro} />
       <div class="prose" set:html={article.body} />

@@ -2,4 +2,9 @@
 import Sponsors from "../components/Sponsors.astro";
 ---
 
-<main class="px-5 max-w-7xl xl:mx-auto"><slot /> <Sponsors /></main>
+<main class="px-5 xl:mx-auto">
+  <div class="max-w-7xl">
+    <slot />
+    <Sponsors />
+  </div>
+</main>
