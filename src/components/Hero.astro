@@ -1,7 +1,3 @@
----
-import ResponsiveImage from "./ResponsiveImage.astro";
----
-
 <section
   class="relative h-[500px] sm:h-[400px] sm:block flex flex-col rounded-3xl overflow-hidden"
 >
@@ -9,21 +5,6 @@ import ResponsiveImage from "./ResponsiveImage.astro";
     src="/images/tg19-lights.jpg"
     alt="Hero Image"
     class="w-full h-full object-cover"
-  />
-  <ResponsiveImage
-    sizes={{
-      large: {
-        url: "/images/tg19-lights.jpg",
-        width: 800,
-        height: 800,
-      },
-      extra_large: {
-        url: "/images/tg19-lights.jpg",
-        width: 800,
-        height: 800,
-      },
-    }}
-    alt="Hero Image"
   />
 
   <div
@@ -35,7 +16,7 @@ import ResponsiveImage from "./ResponsiveImage.astro";
       <div class="flex flex-col text-left">
         <div class="w-full">
           <h2 class="text-lg font-normal">Billettsalger er i gang!</h2>
-          <p class="text-2xl font-bold">16. - 20. APRIL</p>
+          <p class="text-4xl font-bold">16.-20. APRIL</p>
         </div>
         <aside class="mt-6 space-x-2">
           <a
