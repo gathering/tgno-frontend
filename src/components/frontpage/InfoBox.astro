@@ -1,0 +1,20 @@
+---
+interface Props {
+  image: string;
+}
+
+const { image } = Astro.props;
+---
+
+<section
+  class="bg-white p-4 rounded-3xl grid md:p-6 md:grid-cols-2 gap-4 md:h-full md:m-auto md:rounded-2xl"
+>
+  <aside
+    class="rounded-2xl overflow-hidden h-full w-full md:rounded-xl md:order-last"
+  >
+    <img src={image} alt="" class="object-cover h-full" />
+  </aside>
+  <div class="flex flex-col justify-end items-start">
+    <slot />
+  </div>
+</section>

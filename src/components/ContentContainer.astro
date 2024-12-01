@@ -1,3 +1,17 @@
-<section class="md:px-12">
+---
+interface Props {
+  variant?: "wide" | "narrow";
+}
+
+const VARIANTS = {
+  wide: "",
+  narrow: "md:mx-auto md:max-w-2xl",
+};
+
+const { variant = "wide" } = Astro.props;
+const variantStyles = VARIANTS[variant] || VARIANTS.wide;
+---
+
+<section class={`mb-4 ${variantStyles}`}>
   <slot />
 </section>

@@ -1,0 +1,14 @@
+---
+import type { Image } from "../types";
+
+export type Props = Image;
+
+const { sizes, alt } = Astro.props;
+---
+
+<img
+  src={sizes.large.url}
+  srcset={`${sizes.large.url} 500w, ${sizes.extra_large.url} 1000w`}
+  alt={alt}
+  class="w-auto rounded-3xl mb-5"
+/>
