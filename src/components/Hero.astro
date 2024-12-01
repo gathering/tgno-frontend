@@ -1,38 +1,70 @@
 ---
-import Box from "./Box.astro";
-
-// Props for the Hero component
-interface Props {
-  image: string;
-}
-
-const { image } = Astro.props;
+import ResponsiveImage from "./ResponsiveImage.astro";
 ---
 
-<section class="relative h-[500px] sm:h-[400px] sm:block flex flex-col">
-  <!-- Hero Image -->
-  <img src={image} alt="Hero Image" class="w-full h-full object-cover" />
+<section
+  class="relative h-[500px] sm:h-[400px] sm:block flex flex-col rounded-3xl overflow-hidden"
+>
+  <img
+    src="/images/tg19-lights.jpg"
+    alt="Hero Image"
+    class="w-full h-full object-cover"
+  />
+  <ResponsiveImage
+    sizes={{
+      large: {
+        url: "/images/tg19-lights.jpg",
+        width: 800,
+        height: 800,
+      },
+      extra_large: {
+        url: "/images/tg19-lights.jpg",
+        width: 800,
+        height: 800,
+      },
+    }}
+    alt="Hero Image"
+  />
 
   <div
-    class="md:absolute md:bottom-4 md:right-4 flex flex-col space-y-4 p-4 md:p-0"
+    class="md:absolute md:bottom-4 md:right-4 flex flex-col space-y-4 p-4 md:p-0 sm:min-w-96"
   >
-    <!-- Box 1: Title, Date, Button -->
-    <Box
-      title="Welcome to the Gathering - Reborn"
-      date="27. - 31 March"
-      button={{ text: "Billetter", link: "#", color: "bg-orange-500" }}
-      backgroundColor="bg-blue-500"
-    />
-    <!-- Box 2: Text, Button -->
-    <Box
-      text="On Main Stage: Opening Ceremony"
-      button={{
-        text: "Scheduel",
-        link: "#",
-        color: "bg-orange-500",
-        border: true,
-      }}
-      backgroundColor="bg-orange-500"
-    />
+    <div
+      class="w-full bg-blue-500 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:m-auto sm:rounded-2xl"
+    >
+      <div class="flex flex-col text-left">
+        <div class="w-full">
+          <h2 class="text-lg font-normal">Billettsalger er i gang!</h2>
+          <p class="text-2xl font-bold">16. - 20. APRIL</p>
+        </div>
+        <aside class="mt-6 space-x-2">
+          <a
+            href="https://www.geekevents.org/tg25/#/shop"
+            class="inline-block px-4 py-2 rounded-full content-center text-sm bg-orange-500 hover:bg-orange-300 border border-orange-500"
+          >
+            Kjøp billett
+          </a>
+          <a
+            href="/tickets"
+            class="inline-block px-4 py-2 rounded-full content-center text-sm border border-white hover:bg-blue-400"
+          >
+            Mer info
+          </a>
+        </aside>
+      </div>
+    </div>
+    <div
+      class="w-full bg-orange-500 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:m-auto sm:rounded-2xl"
+    >
+      <div class="flex items-center justify-between">
+        <p class="text-white">Lyst til å stille ut?</p>
+        <a
+          href="/about/expo"
+          class="inline-block px-4 py-2 rounded-full content-center text-sm hover:bg-orange-400 border border-white"
+        >
+          Les hvordan
+        </a>
+      </div>
+    </div>
   </div>
 </section>
