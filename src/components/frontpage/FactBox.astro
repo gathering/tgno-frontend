@@ -1,13 +1,13 @@
 ---
 interface Props {
-  color?: "orange" | "blue";
+  theme?: "orange" | "blue";
 }
 
-const { color = "orange" } = Astro.props;
+const { theme = "orange" } = Astro.props;
 const colorStyles = {
   orange: "bg-orange-600 text-white",
   blue: "bg-blue-600 text-white",
-}[color || "orange"];
+}[theme || "orange"];
 ---
 
 <div

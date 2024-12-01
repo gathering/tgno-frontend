@@ -1,24 +1,26 @@
 ---
+type Theme = "orange" | "blue" | "secondary";
 interface Props {
   href: string;
-  color?: "orange" | "white" | "blue";
+  theme?: Theme;
   class?: string;
 }
 
-const { href, color = "white", class: classNames = "" } = Astro.props;
+const THEMES: Record<Theme, string> = {
+  orange:
+    "border text-white bg-orange-600 border-orange-600 hover:bg-orange-500",
+  blue: "border text-white bg-blue-600 border-blue-600 hover:bg-blue-500",
+  secondary: "border text-white bg-transparent border-white hover:bg-white/20",
+};
+const { href, theme = "orange", class: classNames = "" } = Astro.props;
 const isRelative = href.startsWith("/");
 const target = isRelative ? "_self" : "_blank";
-const colorStyles = {
-  default: "",
-  orange: "bg-orange-500 border-orange-500 hover:bg-orange-300",
-  white: "border-white hover:bg-blue-400",
-  blue: "bg-blue-500 border-blue-500 hover:bg-blue-300",
-}[color || "default"];
+const colorStyles = THEMES[theme || "orange"] || THEMES.orange;
 ---
 
 <a
   href={href}
-  class={`inline-block px-4 py-2 rounded-full content-center text-sm border hover:bg-blue-400 ${colorStyles} ${classNames}`}
+  class={`inline-block px-4 py-2 rounded-full content-center text-xs font-bold ${colorStyles} ${classNames}`}
   target={target}
 >
   <slot />
