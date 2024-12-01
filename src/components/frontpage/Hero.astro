@@ -3,16 +3,16 @@ import Button from "../Button.astro";
 ---
 
 <section
-  class="relative h-[500px] sm:h-[400px] sm:block flex flex-col rounded-3xl overflow-hidden"
+  class="relative sm:h-[400px] sm:block space-y-4 flex flex-col rounded-3xl"
 >
   <img
     src="/images/tg19-lights.jpg"
     alt="Hero Image"
-    class="w-full h-full object-cover"
+    class="w-full h-full object-cover rounded-3xl"
   />
 
   <div
-    class="md:absolute md:bottom-4 md:right-4 flex flex-col space-y-4 p-4 md:p-0 sm:min-w-96"
+    class="sm:absolute sm:bottom-4 sm:right-4 flex flex-col space-y-4 sm:p-4 sm:p-0 sm:min-w-[40%]"
   >
     <div
       class="w-full bg-blue-600 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:m-auto sm:rounded-2xl"
@@ -33,7 +33,7 @@ import Button from "../Button.astro";
     <div
       class="w-full bg-orange-600 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:m-auto sm:rounded-2xl"
     >
-      <div class="flex items-center justify-between">
+      <div class="flex space-x-2 items-center justify-between">
         <p class="text-white">Lyst til å stille ut?</p>
         <Button href="/about/expo" theme="secondary">Les hvordan</Button>
       </div>

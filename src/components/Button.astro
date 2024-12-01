@@ -1,8 +1,10 @@
 ---
-type Theme = "orange" | "blue" | "secondary";
+type Theme = "orange" | "blue" | "secondary" | "white";
+type Variant = "normal" | "standalone";
 interface Props {
   href: string;
   theme?: Theme;
+  variant?: Variant;
   class?: string;
 }
 
@@ -11,16 +13,24 @@ const THEMES: Record<Theme, string> = {
     "border text-white bg-orange-600 border-orange-600 hover:bg-orange-500",
   blue: "border text-white bg-blue-600 border-blue-600 hover:bg-blue-500",
   secondary: "border text-white bg-transparent border-white hover:bg-white/20",
+  white: "border text-black bg-white border-white hover:bg-neutral-200",
 };
+const VARIANTS: Record<Variant, string> = {
+  normal: "px-4 py-2 rounded-full text-xs font-bold",
+  standalone: "p-6 rounded-3xl text-md",
+};
+
 const { href, theme = "orange", class: classNames = "" } = Astro.props;
 const isRelative = href.startsWith("/");
 const target = isRelative ? "_self" : "_blank";
 const colorStyles = THEMES[theme || "orange"] || THEMES.orange;
+const variantStyles =
+  VARIANTS[Astro.props.variant || "normal"] || VARIANTS.normal;
 ---
 
 <a
   href={href}
-  class={`inline-block px-4 py-2 rounded-full content-center text-xs font-bold ${colorStyles} ${classNames}`}
+  class={`inline-block content-center ${colorStyles} ${variantStyles} ${classNames}`}
   target={target}
 >
   <slot />
