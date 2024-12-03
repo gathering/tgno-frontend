@@ -33,26 +33,16 @@ const lastItemIndex = navigationItems.length - 1;
       return;
     }
 
-    // Store actual required width for each item, doing this initially
-    // avoids need for overflow style on container
-    // Adjust initial value to add preferred extra margin
-    let usedWidth = 0;
-    items.forEach((item) => {
-      // Adjust value to account for margin on each item
-      const margin = 24;
-      usedWidth += margin + (item?.scrollWidth || 0);
-      item.setAttribute("data-required-width", usedWidth.toString(10));
-    });
-
     return () => {
       const menuWidth = menu.clientWidth;
+      // Adjust values to add preferred extra margins
+      const margin = 24;
+      let usedWidth = 50;
       items.forEach((item) => {
         item.classList.remove("hidden");
+        usedWidth += margin + (item?.scrollWidth || 0);
 
-        if (
-          parseInt(item.getAttribute("data-required-width") || "0", 10) >=
-          menuWidth
-        ) {
+        if (usedWidth >= menuWidth) {
           item.classList.add("hidden");
         }
       });

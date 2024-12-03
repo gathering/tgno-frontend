@@ -115,9 +115,9 @@ const itemsWithParent: Array<
   data-mode={interactionMode}
 >
   <div
-    class={`block ${isActive ? "text-orange-500" : "text-white"} ${clickable ? "group-[.expanded]:text-orange-500" : "group-[.expanded]:text-neutral-400"} flex z-10 relative ${clickable ? "cursor-pointer" : "cursor-default"} items-center h-6`}
+    class={`block ${isActive ? "text-orange-500" : "text-white"} ${clickable ? "group-[.expanded]:text-orange-500" : "group-[.expanded]:text-neutral-400"} flex ${interactionMode === "hover" ? "z-20" : ""} relative ${clickable ? "cursor-pointer" : "cursor-default"} items-center h-6`}
   >
-    <TextContainer href={path} data-part="main-link" class="mr-3 w-full">
+    <TextContainer href={path} data-part="main-link" class="mr-3 w-max">
       {title}
     </TextContainer>
     {
@@ -156,10 +156,11 @@ const itemsWithParent: Array<
     expandable ? (
       <ul
         class:list={[
-          "hidden min-w-max flex-col bg-neutral-800  space-y-1 px-2 py-3 mt-3 z-0",
-          !hamburger &&
-            "md:mt-0 md:pt-10 md:rounded-b-md md:absolute md:top-0 md:bg-backgroundSecondary",
-          subAlignment === "left" ? "md:left-0" : "md:right-0",
+          "hidden min-w-max w-full flex-col space-y-1 px-2 py-3",
+          hamburger
+            ? "mt-3 bg-neutral-800"
+            : "z-10 mt-0 pt-10 rounded-b-md absolute top-0 bg-backgroundSecondary",
+          subAlignment === "left" ? "left-0" : "right-0",
         ]}
         id={`nav-item-sub-${key}`}
         aria-role="menu"
