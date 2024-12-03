@@ -4,7 +4,7 @@ import NavItemComponent from "./navigation/NavItem.astro";
 
 interface Props {
   navigationItems: NavItem[];
-  mode: "click" | "hover";
+  hamburger?: boolean;
   prioritized?: boolean;
   class?: string;
 }
@@ -12,8 +12,8 @@ interface Props {
 const {
   navigationItems,
   class: classNames = "",
-  mode,
   prioritized = false,
+  hamburger = false,
 } = Astro.props;
 
 const lastItemIndex = navigationItems.length - 1;
@@ -80,7 +80,8 @@ const lastItemIndex = navigationItems.length - 1;
         title={title}
         path={path}
         items={items}
-        mode={mode}
+        hamburger={hamburger}
+        interactionMode={hamburger ? "click" : "hover"}
         subAlignment={index === lastItemIndex ? "right" : "left"}
       />
     ))

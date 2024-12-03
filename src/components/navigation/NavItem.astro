@@ -3,7 +3,8 @@ import type { NavItem } from "../../types";
 export interface Props extends NavItem {
   class?: string;
   subAlignment?: "left" | "right";
-  mode?: "click" | "hover";
+  interactionMode?: "click" | "hover";
+  hamburger?: boolean;
 }
 
 const {
@@ -12,7 +13,8 @@ const {
   items = [],
   subAlignment = "left",
   class: className = "",
-  mode = "click",
+  interactionMode = "click",
+  hamburger = false,
 } = Astro.props;
 
 const key = `${title.toLowerCase().replace(" ", "-")}-${path || ""}`;
@@ -104,7 +106,7 @@ const itemsWithParent: Array<
 <li
   class={`relative group bg-backgroundSecondary ${className}`}
   data-component="nav-item"
-  data-mode={mode}
+  data-mode={interactionMode}
 >
   <div
     class={`block ${isActive ? "text-orange-500" : "text-white"} ${clickable ? "group-[.expanded]:text-orange-500" : "group-[.expanded]:text-neutral-400"} flex z-10 relative ${clickable ? "cursor-pointer" : "cursor-default"} items-center h-6`}
@@ -147,7 +149,12 @@ const itemsWithParent: Array<
   {
     expandable ? (
       <ul
-        class={`hidden min-w-max flex-col bg-neutral-800 md:bg-backgroundSecondary space-y-1 px-2 py-3 mt-3 z-0 md:mt-0 md:pt-10 md:rounded-b-md md:absolute md:top-0 ${subAlignment === "left" ? "md:left-0" : "md:right-0"}`}
+        class:list={[
+          "hidden min-w-max flex-col bg-neutral-800  space-y-1 px-2 py-3 mt-3 z-0",
+          !hamburger &&
+            "md:mt-0 md:pt-10 md:rounded-b-md md:absolute md:top-0 md:bg-backgroundSecondary",
+          subAlignment === "left" ? "md:left-0" : "md:right-0",
+        ]}
         id={`nav-item-sub-${key}`}
         aria-role="menu"
         data-part="sub-menu"
