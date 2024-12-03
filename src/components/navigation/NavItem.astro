@@ -72,11 +72,17 @@ const itemsWithParent: Array<
     });
   }
 
+  const isTouchDevice =
+    "ontouchstart" in window ||
+    navigator.maxTouchPoints > 0 ||
+    // @ts-ignore
+    navigator.msMaxTouchPoints > 0;
+
   navItems.forEach(({ mainLink, navItem, trigger, subMenu }, index: number) => {
     const interactionMode = navItem.getAttribute("data-mode") || "click";
     navItem.classList.add(`interaction-mode-${interactionMode}`);
 
-    if (interactionMode === "hover") {
+    if (interactionMode === "hover" && !isTouchDevice) {
       navItem.addEventListener("mouseenter", () => {
         closeAll();
         expand(index, true);
