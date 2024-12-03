@@ -1,0 +1,88 @@
+---
+import type { NavItem } from "../types";
+import NavItemComponent from "./navigation/NavItem.astro";
+
+interface Props {
+  navigationItems: NavItem[];
+  mode: "click" | "hover";
+  prioritized?: boolean;
+  class?: string;
+}
+
+const {
+  navigationItems,
+  class: classNames = "",
+  mode,
+  prioritized = false,
+} = Astro.props;
+
+const lastItemIndex = navigationItems.length - 1;
+---
+
+<script>
+  const prioritizedMenus = Array.from(
+    document.querySelectorAll('ul[data-prioritized="true"]'),
+  );
+
+  function updateVisibilityFactory(menu: Element | null) {
+    const items = Array.from(
+      menu?.querySelectorAll('[data-component="nav-item"]') || [],
+    );
+
+    if (!menu || !items) {
+      return;
+    }
+
+    // Store actual required width for each item, doing this initially
+    // avoids need for overflow style on container
+    // Adjust initial value to add preferred extra margin
+    let usedWidth = 0;
+    items.forEach((item) => {
+      // Adjust value to account for margin on each item
+      const margin = 24;
+      usedWidth += margin + (item?.scrollWidth || 0);
+      item.setAttribute("data-required-width", usedWidth.toString(10));
+    });
+
+    return () => {
+      const menuWidth = menu.clientWidth;
+      items.forEach((item) => {
+        item.classList.remove("hidden");
+
+        if (
+          parseInt(item.getAttribute("data-required-width") || "0", 10) >=
+          menuWidth
+        ) {
+          item.classList.add("hidden");
+        }
+      });
+    };
+  }
+
+  for (const menu of prioritizedMenus) {
+    const updateVisibility = updateVisibilityFactory(menu);
+    if (!updateVisibility) {
+      continue;
+    }
+    window.addEventListener("resize", updateVisibility);
+    window.addEventListener("load", updateVisibility);
+  }
+</script>
+
+<ul
+  class={classNames}
+  data-component="header-navigation"
+  data-prioritized={prioritized ? "true" : "false"}
+>
+  {
+    navigationItems.map(({ title, path, items }, index) => (
+      <NavItemComponent
+        title={title}
+        path={path}
+        items={items}
+        mode={mode}
+        subAlignment={index === lastItemIndex ? "right" : "left"}
+      />
+    ))
+  }
+</ul>
