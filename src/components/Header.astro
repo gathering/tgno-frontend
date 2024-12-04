@@ -1,5 +1,34 @@
 ---
-import NavItem from "./navigation/NavItem.astro";
+import type { NavItem } from "../types";
+import HeaderNavigation from "./HeaderNavigation.astro";
+
+const NAVIGATION: NavItem[] = [
+  {
+    title: "Om TG",
+    path: "/about",
+    items: [
+      { title: "Bli utstiller", path: "/about/expo" },
+      { title: "Bli sponsor", path: "/about/sponsor" },
+    ],
+  },
+  {
+    title: "Billetter",
+    path: "/tickets",
+    items: [
+      { title: "Vilkår", path: "/tickets/terms-and-conditions" },
+      { title: "Arrangementsregler", path: "/event/rules" },
+      { title: "Konstruksjonsregler", path: "/event/construction-rules" },
+    ],
+  },
+  {
+    title: "Konkurranser",
+    items: [
+      { title: "Kreative", path: "/competitions/creative" },
+      { title: "Esport", path: "/competitions/esport" },
+    ],
+  },
+  { title: "Kontakt oss", path: "/contact" },
+];
 ---
 
 <script>
@@ -32,7 +61,7 @@ import NavItem from "./navigation/NavItem.astro";
     class="flex justify-between items-center py-1 px-5 max-w-7xl mb-8 justify-self-center w-full mx-auto bg-backgroundSecondary sm:rounded-xl sm:mx-5 sm:mt-2 sm:mb-8 sm:w-auto xl:mx-auto xl:w-full"
   >
     <nav class="w-full">
-      <div class="relative h-16 flex items-center">
+      <div class="relative h-16 flex items-center justify-between">
         <a href="/" class="sm:flex gap-x-4 items-center hidden">
           <img
             src="/images/tglogo-bw.png"
@@ -49,42 +78,13 @@ import NavItem from "./navigation/NavItem.astro";
             class="aspect-thumbnail object-cover"
           />
         </a>
-        <ul class="hidden sm:flex w-full space-x-6 space-y-0 justify-end">
-          <NavItem
-            title="Om TG"
-            path="/about"
-            subItems={[
-              { title: "Bli utstiller", path: "/about/expo" },
-              { title: "Bli sponsor", path: "/about/sponsor" },
-            ]}
-          />
-          <NavItem
-            title="Konkurranser"
-            subItems={[
-              { title: "Kreative", path: "/competitions/creative" },
-              { title: "Esport", path: "/competitions/esport" },
-            ]}
-          />
-          <NavItem title="Kontakt oss" path="/contact" />
-          <NavItem
-            title="Billetter"
-            path="/tickets"
-            subAlignment="right"
-            subItems={[
-              { title: "Vilkår", path: "/tickets/terms-and-conditions" },
-              {
-                title: "Arrangementsregler",
-                path: "/event/rules",
-              },
-              {
-                title: "Konstruksjonsregler",
-                path: "/event/construction-rules",
-              },
-            ]}
-          />
-        </ul>
 
-        <div class="absolute inset-y-0 right-0 flex items-center sm:hidden">
+        <HeaderNavigation
+          navigationItems={NAVIGATION}
+          class="hidden sm:flex w-full space-x-6 space-y-0 justify-end"
+          prioritized
+        />
+        <div class="flex items-center">
           <button
             type="button"
             data-part="mobile-menu-trigger"
@@ -126,41 +126,12 @@ import NavItem from "./navigation/NavItem.astro";
         </div>
       </div>
       <!-- Mobile menu, show/hide based on menu state. -->
-      <div class="hidden md:hidden" id="mobile-menu" data-part="mobile-menu">
-        <ul class="space-y-3 px-2 pb-3 pt-2 flex flex-col">
-          <NavItem
-            title="Om TG"
-            path="/about"
-            subItems={[
-              { title: "Bli utstiller", path: "/about/expo" },
-              { title: "Bli sponsor", path: "/about/sponsor" },
-            ]}
-          />
-          <NavItem
-            title="Konkurranser"
-            subItems={[
-              { title: "Kreative", path: "/competitions/creative" },
-              { title: "Esport", path: "/competitions/esport" },
-            ]}
-          />
-          <NavItem title="Kontakt oss" path="/contact" />
-          <NavItem
-            title="Billetter"
-            path="/tickets"
-            subAlignment="right"
-            subItems={[
-              { title: "Vilkår", path: "/tickets/terms-and-conditions" },
-              {
-                title: "Arrangementsregler",
-                path: "/event/rules",
-              },
-              {
-                title: "Konstruksjonsregler",
-                path: "/event/construction-rules",
-              },
-            ]}
-          />
-        </ul>
+      <div class="hidden" id="mobile-menu" data-part="mobile-menu">
+        <HeaderNavigation
+          navigationItems={NAVIGATION}
+          class="space-y-3 px-2 pb-3 pt-2 flex flex-col"
+          hamburger
+        />
       </div>
     </nav>
   </div>

@@ -1,37 +1,36 @@
 ---
-export interface Props {
-  title: string;
-  path?: string;
-  subAlignment?: "left" | "right";
-  subItems?: SubItem[];
+import type { NavItem } from "../../types";
+export interface Props extends NavItem {
   class?: string;
-}
-interface SubItem {
-  title: string;
-  path: string;
+  subAlignment?: "left" | "right";
+  interactionMode?: "click" | "hover";
+  hamburger?: boolean;
 }
 
 const {
   title,
   path,
-  subItems = [],
+  items = [],
   subAlignment = "left",
   class: className = "",
+  interactionMode = "click",
+  hamburger = false,
 } = Astro.props;
+
 const key = `${title.toLowerCase().replace(" ", "-")}-${path || ""}`;
 const clickable = !!path;
-const expandable = !!subItems.length;
+const expandable = !!items.length;
 
 const TextContainer = clickable ? "a" : "span";
 const isActive =
   path === Astro.url.pathname ||
-  subItems.some((item) => item.path === Astro.url.pathname);
+  items.some((item) => item.path === Astro.url.pathname);
 
-const subItemsWithParent: Array<
-  SubItem & {
+const itemsWithParent: Array<
+  NavItem & {
     touchOnly?: boolean;
   }
-> = path ? [{ path, title, touchOnly: true }, ...subItems] : subItems;
+> = path ? [{ path, title, touchOnly: true }, ...items] : items;
 ---
 
 <script>
@@ -41,9 +40,6 @@ const subItemsWithParent: Array<
     subMenu: HTMLElement;
     navItem: HTMLElement;
   }
-
-  const isTouchDevice =
-    "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
   const navItems: SubNavComponents[] = [
     ...document.querySelectorAll("[data-component='nav-item']"),
@@ -76,24 +72,17 @@ const subItemsWithParent: Array<
     });
   }
 
-  navItems.forEach(({ mainLink, navItem, trigger, subMenu }, index: number) => {
-    navItem.classList.toggle("touch-device", isTouchDevice);
+  const isTouchDevice =
+    "ontouchstart" in window ||
+    navigator.maxTouchPoints > 0 ||
+    // @ts-ignore
+    navigator.msMaxTouchPoints > 0;
 
-    if (isTouchDevice) {
-      subMenu.querySelectorAll(".hidden").forEach((subMenu) => {
-        subMenu.classList.remove("hidden");
-      });
-      [mainLink, trigger].forEach((item) =>
-        item?.addEventListener("click", (event) => {
-          event?.preventDefault();
-          const expanded = !(
-            trigger.getAttribute("aria-expanded") === "true" || false
-          );
-          closeAll();
-          expand(index, expanded);
-        }),
-      );
-    } else {
+  navItems.forEach(({ mainLink, navItem, trigger, subMenu }, index: number) => {
+    const interactionMode = navItem.getAttribute("data-mode") || "click";
+    navItem.classList.add(`interaction-mode-${interactionMode}`);
+
+    if (interactionMode === "hover" && !isTouchDevice) {
       navItem.addEventListener("mouseenter", () => {
         closeAll();
         expand(index, true);
@@ -101,18 +90,34 @@ const subItemsWithParent: Array<
       navItem.addEventListener("mouseleave", () => {
         expand(index, false);
       });
+      return;
     }
+
+    subMenu.querySelectorAll(".hidden").forEach((subMenu) => {
+      subMenu.classList.remove("hidden");
+    });
+    [mainLink, trigger].forEach((item) =>
+      item?.addEventListener("click", (event) => {
+        event?.preventDefault();
+        const expanded = !(
+          trigger.getAttribute("aria-expanded") === "true" || false
+        );
+        closeAll();
+        expand(index, expanded);
+      }),
+    );
   });
 </script>
 
 <li
   class={`relative group bg-backgroundSecondary ${className}`}
   data-component="nav-item"
+  data-mode={interactionMode}
 >
   <div
-    class={`block ${isActive ? "text-orange-500" : "text-white"} ${clickable ? "group-[.expanded]:text-orange-500" : "group-[.expanded]:text-neutral-400"} flex z-10 relative ${clickable ? "cursor-pointer" : "cursor-default"} items-center h-6`}
+    class={`block ${isActive ? "text-orange-500" : "text-white"} ${clickable ? "group-[.expanded]:text-orange-500" : "group-[.expanded]:text-neutral-400"} flex ${interactionMode === "hover" ? "z-20" : ""} relative ${clickable ? "cursor-pointer" : "cursor-default"} items-center h-6`}
   >
-    <TextContainer href={path} data-part="main-link" class="mr-3 w-full">
+    <TextContainer href={path} data-part="main-link" class="mr-3 w-max">
       {title}
     </TextContainer>
     {
@@ -122,7 +127,7 @@ const subItemsWithParent: Array<
           data-part="trigger"
           aria-controls={`nav-item-sub-${key}`}
           aria-expanded="false"
-          class="block p-1 ml-auto rounded group-[.touch-device]:bg-neutral-800"
+          class="block p-1 ml-auto rounded group-[.interaction-mode-click]:bg-neutral-800"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -150,12 +155,18 @@ const subItemsWithParent: Array<
   {
     expandable ? (
       <ul
-        class={`hidden min-w-max flex-col bg-neutral-800 md:bg-backgroundSecondary space-y-1 px-2 py-3 mt-3 z-0 md:mt-0 md:pt-10 md:rounded-b-md md:absolute md:top-0 ${subAlignment === "left" ? "md:left-0" : "md:right-0"}`}
+        class:list={[
+          "hidden min-w-max w-full flex-col space-y-1 px-2 py-3",
+          hamburger
+            ? "mt-3 bg-neutral-800"
+            : "z-10 mt-0 pt-10 rounded-b-md absolute top-0 bg-backgroundSecondary",
+          subAlignment === "left" ? "left-0" : "right-0",
+        ]}
         id={`nav-item-sub-${key}`}
         aria-role="menu"
         data-part="sub-menu"
       >
-        {subItemsWithParent.map((subItem) => (
+        {itemsWithParent.map((subItem) => (
           <li class={`${subItem.touchOnly ? "hidden" : ""}`}>
             <a
               href={subItem.path}

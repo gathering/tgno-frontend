@@ -1,0 +1,79 @@
+---
+import type { NavItem } from "../types";
+import NavItemComponent from "./navigation/NavItem.astro";
+
+interface Props {
+  navigationItems: NavItem[];
+  hamburger?: boolean;
+  prioritized?: boolean;
+  class?: string;
+}
+
+const {
+  navigationItems,
+  class: classNames = "",
+  prioritized = false,
+  hamburger = false,
+} = Astro.props;
+
+const lastItemIndex = navigationItems.length - 1;
+---
+
+<script>
+  const prioritizedMenus = Array.from(
+    document.querySelectorAll('ul[data-prioritized="true"]'),
+  );
+
+  function updateVisibilityFactory(menu: Element | null) {
+    const items = Array.from(
+      menu?.querySelectorAll('[data-component="nav-item"]') || [],
+    );
+
+    if (!menu || !items) {
+      return;
+    }
+
+    return () => {
+      const menuWidth = menu.clientWidth;
+      // Adjust values to add preferred extra margins
+      const margin = 24;
+      let usedWidth = 50;
+      items.forEach((item) => {
+        item.classList.remove("hidden");
+        usedWidth += margin + (item?.scrollWidth || 0);
+
+        if (usedWidth >= menuWidth) {
+          item.classList.add("hidden");
+        }
+      });
+    };
+  }
+
+  for (const menu of prioritizedMenus) {
+    const updateVisibility = updateVisibilityFactory(menu);
+    if (!updateVisibility) {
+      continue;
+    }
+    window.addEventListener("resize", updateVisibility);
+    window.addEventListener("load", updateVisibility);
+  }
+</script>
+
+<ul
+  class={classNames}
+  data-component="header-navigation"
+  data-prioritized={prioritized ? "true" : "false"}
+>
+  {
+    navigationItems.map(({ title, path, items }, index) => (
+      <NavItemComponent
+        title={title}
+        path={path}
+        items={items}
+        hamburger={hamburger}
+        interactionMode={hamburger ? "click" : "hover"}
+        subAlignment={index === lastItemIndex ? "right" : "left"}
+      />
+    ))
+  }
+</ul>
