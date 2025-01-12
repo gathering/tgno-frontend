@@ -28,3 +28,17 @@ export interface Article {
   }>;
   main_image?: Image;
 }
+
+export interface FetchArticlesProps {
+  api_url: string;
+  limit?: number;
+  offset?: number;
+  tags?: string[];
+}
+
+export interface FetchArticlesResponse {
+  meta: {
+    total_count: number;
+  };
+  items: Article[];
+}

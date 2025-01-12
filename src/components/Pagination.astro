@@ -1,0 +1,81 @@
+---
+type Props = { pages: number; page: number; path: string };
+
+const { pages, path } = Astro.props;
+const page = Math.min(Math.max(Astro.props.page, 1), pages);
+const isFirstPage = page < 2;
+const isLastPage = page >= pages;
+const pageUrls = Array.from({
+  length: pages,
+}).map((_, index) => {
+  const pageIndex = index + 1;
+  return {
+    url: pageIndex > 1 ? `?page=${pageIndex}` : path,
+    label: pageIndex,
+  };
+});
+
+const disabledStyles =
+  "pointer-events-none opacity-50 shadow-none text-slate-500";
+const activeStyles = "text-black font-bold bg-orange-500";
+const inactiveStyles = "text-white";
+const styles =
+  "flex items-center border border-slate-500 py-2 px-3 text-center text-sm transition-all shadow-sm hover:shadow-lg hover:text-black hover:bg-orange-500 focus:text-black focus:bg-orange-500 active:text-black active:bg-orange-500";
+---
+
+<div class="row flex">
+  <a
+    class={`${styles} rounded-md rounded-r-none border-r-0 ${
+      isFirstPage ? disabledStyles : inactiveStyles
+    }`}
+    aria-disabled={isFirstPage}
+    href={path}
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      class="w-4 h-4"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M11.03 3.97a.75.75 0 0 1 0 1.06l-6.22 6.22H21a.75.75 0 0 1 0 1.5H4.81l6.22 6.22a.75.75 0 1 1-1.06 1.06l-7.5-7.5a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 0 1 1.06 0Z"
+        clip-rule="evenodd"></path>
+    </svg>
+  </a>
+  {
+    pageUrls.map(({ label, url }, index) => (
+      <a
+        class:list={[
+          styles,
+          "border-r-0",
+          index + 1 === page ? activeStyles : inactiveStyles,
+        ]}
+        href={url}
+      >
+        {label}
+      </a>
+    ))
+  }
+  <a
+    class:list={[
+      styles,
+      "rounded-md rounded-l-none",
+      isLastPage ? disabledStyles : inactiveStyles,
+    ]}
+    aria-disabled={isLastPage}
+    href={`?page=${pages}`}
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      class="w-4 h-4"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M12.97 3.97a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06l6.22-6.22H3a.75.75 0 0 1 0-1.5h16.19l-6.22-6.22a.75.75 0 0 1 0-1.06Z"
+        clip-rule="evenodd"></path>
+    </svg>
+  </a>
+</div>

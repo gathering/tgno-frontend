@@ -1,16 +1,20 @@
 ---
+import type { FetchArticlesProps } from "../../types";
 import { fetchArticles } from "../../utils";
-import type { FetchArticlesProps } from "../../utils";
+import Button from "../Button.astro";
 
 type Props = {
   singleColumn?: boolean;
 } & Omit<FetchArticlesProps, "api_url">;
 
-const articles = await fetchArticles({
-  ...Astro.props,
-  api_url: import.meta.env.API_URL,
-  limit: 6,
-});
+const articles =
+  (
+    await fetchArticles({
+      ...Astro.props,
+      api_url: import.meta.env.API_URL,
+      limit: 6,
+    })
+  )?.items || [];
 
 const { singleColumn = false } = Astro.props;
 const gridStyles = singleColumn
@@ -18,67 +22,53 @@ const gridStyles = singleColumn
   : "grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-5 lg:px-28";
 ---
 
-{
-  (() => {
-    if (articles.length === 0) {
-      return (
-        <section class="text-white p-8 rounded-3xl border-solid border-4 border-backgroundSecondary my-2">
-          <a href="https://wannabe.tg.no" class="container mx-auto">
-            <h1 class="text-3xl font-bold text-center mb-6">
-              Ser ut som noe mangler her...
-            </h1>
-            <h1 class="text-3xl font-bold text-center mb-6">
-              Kan du hjelpe oss å finne det?
-            </h1>
-          </a>
-        </section>
-      );
-    } else {
-      return (
-        <section class="text-white sm:p-8 rounded-3xl border-solid border-4 border-backgroundSecondary">
-          <div class={gridStyles}>
-            {articles.map((article) => (
-              <a href={`/news/${article.meta.slug}`}>
-                <article class="overflow-hidden flex flex-row p-4">
-                  <div class="flex-1">
-                    <div class="text-sm text-orange-500">
-                      {article.tags
-                        .map((tag) => {
-                          return (
-                            tag.name.charAt(0).toUpperCase() + tag.name.slice(1)
-                          );
-                        })
-                        .join(", ")}
-                    </div>
-                    <h3 class="text-xl text-white font-bold mt-2">
-                      {article.title}
-                    </h3>
-                    <time
-                      datetime={article.meta.first_published_at}
-                      class="text-sm text-gray-500"
-                    >
-                      {new Date(
-                        article.meta.first_published_at,
-                      ).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </time>
-                  </div>
-                  {article.main_image && (
-                    <img
-                      src={article.main_image.sizes.thumbnail.url}
-                      alt={article.main_image.alt}
-                      class="w-24 h-24 object-cover ml-4 rounded-lg"
-                    />
-                  )}
-                </article>
-              </a>
-            ))}
-          </div>
-        </section>
-      );
+<section
+  class="flex flex-col items-center text-white sm:p-8 rounded-3xl border-solid sm:border-4 border-backgroundSecondary"
+>
+  <div class={gridStyles}>
+    {
+      articles.map((article, index) => (
+        <a
+          href={`/news/${article.meta.slug}`}
+          class={`${index > 3 ? "hidden md:block" : ""}`}
+        >
+          <article class="overflow-hidden flex flex-row pb-4 sm:p-4">
+            <div class="flex-1">
+              <div class="text-sm text-orange-500">
+                {article.tags
+                  .map((tag) => {
+                    return tag.name.charAt(0).toUpperCase() + tag.name.slice(1);
+                  })
+                  .join(", ")}
+              </div>
+              <h3 class="text-xl text-white font-bold mt-2">{article.title}</h3>
+              <time
+                datetime={article.meta.first_published_at}
+                class="text-sm text-gray-500"
+              >
+                {new Date(article.meta.first_published_at).toLocaleDateString(
+                  "en-US",
+                  {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  },
+                )}
+              </time>
+            </div>
+            {article.main_image && (
+              <img
+                src={article.main_image.sizes.thumbnail.url}
+                alt={article.main_image.alt}
+                class="w-24 h-24 object-cover ml-4 rounded-lg"
+              />
+            )}
+          </article>
+        </a>
+      ))
     }
-  })()
-}
+  </div>
+  <Button href="/news" theme="secondary" class="w-full sm:w-fit text-center"
+    >Les alle</Button
+  >
+</section>

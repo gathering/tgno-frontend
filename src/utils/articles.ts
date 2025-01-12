@@ -1,18 +1,26 @@
-import type { Article } from "../types";
+import type {
+  Article,
+  FetchArticlesProps,
+  FetchArticlesResponse,
+} from "../types";
 
-export interface FetchArticlesProps {
-  api_url: string;
-  limit?: number;
-  offset?: number;
-  tags?: string[];
+interface TypedFetch<T> extends Response {
+  json(): Promise<T>;
 }
+
+const typedFetch = <T>(
+  request: RequestInfo,
+  init?: RequestInit | undefined,
+): Promise<TypedFetch<T>> => {
+  return fetch(request, init);
+};
 
 export const fetchArticles = async ({
   api_url,
   tags = [],
   limit = 6,
   offset = 0,
-}: FetchArticlesProps): Promise<Article[]> => {
+}: FetchArticlesProps) => {
   const url = new URL(`${api_url}api/v2/news/`);
   url.searchParams.set("fields", "title,tags,first_published_at,main_image");
   url.searchParams.set("limit", limit.toString(10));
@@ -23,10 +31,8 @@ export const fetchArticles = async ({
     url.searchParams.set("tags", tags.join(","));
   }
 
-  const response = await fetch(url.toString());
-  const data = await response.json();
-  const articles: Article[] = data.items;
-  return articles;
+  const response = await typedFetch<FetchArticlesResponse>(url.toString());
+  return await response.json();
 };
 
 export const fetchArticleIdBySlug = async ({

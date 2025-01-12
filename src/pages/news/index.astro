@@ -1,11 +1,40 @@
 ---
+import H2 from "../../components/H2.astro";
 import Main from "../../components/Main.astro";
 import NewsComp from "../../components/NewsComp.astro";
+import Pagination from "../../components/Pagination.astro";
 import Layout from "../../layouts/Layout.astro";
+import { fetchArticles } from "../../utils";
+
+const limit = 10;
+const page = parseInt(Astro.url.searchParams.get("page") || "1") || 1;
+const offset = (page - 1) * limit;
+
+if (Astro.url.searchParams.has("page") && page <= 1) {
+  return Astro.redirect(Astro.url.pathname);
+}
+
+const articles = await fetchArticles({
+  limit,
+  offset,
+  api_url: import.meta.env.API_URL,
+});
+const pages = Math.ceil(articles.meta.total_count / limit);
+
+if ((pages && page > pages) || !articles?.items) {
+  Astro.response.status = 404;
+  Astro.response.statusText = "Invalid page number";
+}
 ---
 
 <Layout title="The Gathering - News">
   <Main>
-    <NewsComp limit={20} offset={0} />
+    <section>
+      <H2 text="Nyheter >_" />
+      <NewsComp articles={articles?.items} />
+      <aside class="col-span-2 flex justify-center">
+        <Pagination pages={pages} path={Astro.url.pathname} page={page} />
+      </aside>
+    </section>
   </Main>
 </Layout>
