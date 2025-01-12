@@ -1,16 +1,19 @@
 ---
+import type { FetchArticlesProps } from "../../types";
 import { fetchArticles } from "../../utils";
-import type { FetchArticlesProps } from "../../utils";
 
 type Props = {
   singleColumn?: boolean;
 } & Omit<FetchArticlesProps, "api_url">;
 
-const articles = await fetchArticles({
-  ...Astro.props,
-  api_url: import.meta.env.API_URL,
-  limit: 6,
-});
+const articles =
+  (
+    await fetchArticles({
+      ...Astro.props,
+      api_url: import.meta.env.API_URL,
+      limit: 6,
+    })
+  )?.items || [];
 
 const { singleColumn = false } = Astro.props;
 const gridStyles = singleColumn
