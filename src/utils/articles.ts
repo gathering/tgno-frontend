@@ -3,17 +3,7 @@ import type {
   FetchArticlesProps,
   FetchArticlesResponse,
 } from "../types";
-
-interface TypedFetch<T> extends Response {
-  json(): Promise<T>;
-}
-
-const typedFetch = <T>(
-  request: RequestInfo,
-  init?: RequestInit | undefined,
-): Promise<TypedFetch<T>> => {
-  return fetch(request, init);
-};
+import { typedFetch } from "./fetching";
 
 export const fetchArticles = async ({
   api_url,

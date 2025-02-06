@@ -1,0 +1,38 @@
+---
+import H1 from "../../components/H1.astro";
+import Layout from "../../layouts/Layout.astro";
+import Main from "../../components/Main.astro";
+import { fetchInfoPageByPath } from "../../utils";
+
+const sectionPrefix = "/practical/";
+
+type Props = {
+  params?: {
+    path: string;
+  };
+};
+
+const { path } = Astro.props.params ?? Astro.params;
+
+if (typeof path !== "string") {
+  throw new Error("Invalid path");
+}
+
+const page = await fetchInfoPageByPath({
+  path: path.startsWith(sectionPrefix) ? path : `/practical/${path}`,
+  apiUrl: import.meta.env.API_URL,
+});
+
+if (!page) {
+  throw new Error("Info page not found");
+}
+---
+
+<Layout title=`The Gathering - ${page.title}`>
+  <Main>
+    <div class="prose text-white">
+      <H1 text={page.title} />
+      {page.children.map((child) => <a href={child.meta.url}>{child.title}</a>)}
+    </div>
+  </Main>
+</Layout>

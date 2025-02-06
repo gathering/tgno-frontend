@@ -1,6 +1,7 @@
 import type { Image } from "./images";
+import type { MinimalApiPage } from "./utils";
 
-export interface Article {
+export interface Article extends MinimalApiPage {
   id: number;
   meta: {
     type: string;
