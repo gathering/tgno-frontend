@@ -1,8 +1,8 @@
 ---
-import H1 from "../../components/H1.astro";
 import Layout from "../../layouts/Layout.astro";
 import Main from "../../components/Main.astro";
 import { fetchInfoPageByPath } from "../../utils";
+import PracticalPage from "../../components/practical/PracticalPage.astro";
 
 const sectionPrefix = "/practical/";
 
@@ -30,9 +30,6 @@ if (!page) {
 
 <Layout title=`The Gathering - ${page.title}`>
   <Main>
-    <div class="prose text-white">
-      <H1 text={page.title} />
-      {page.children.map((child) => <a href={child.meta.url}>{child.title}</a>)}
-    </div>
+    <PracticalPage {...page} />
   </Main>
 </Layout>

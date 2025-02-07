@@ -1,0 +1,26 @@
+---
+import type { InfoPage } from "../../types";
+import FaqItem from "./FaqItem.astro";
+import Intro from "../Intro.astro";
+
+type Props = InfoPage;
+
+const { title, pages = [], faq = [], intro, body } = Astro.props;
+---
+
+<div>
+  <h1 class="text-white text-4xl font-bold">{title}</h1>
+  {intro ? <Intro text={intro} /> : null}
+  <div class="prose" set:html={body} />
+  {
+    pages.map(({ url, title }) => (
+      <>
+        <a href={url} class="text-white">
+          {title}
+        </a>
+        <br />
+      </>
+    ))
+  }
+  {faq.map((item) => <FaqItem {...item} />)}
+</div>
