@@ -3,6 +3,8 @@ FROM node:20 AS base
 FROM base AS prod-build
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+# Fix issue with pnpm install https://vercel.com/guides/corepack-errors-github-actions
+RUN npm install -g corepack@latest
 RUN corepack enable
 COPY package.json pnpm-lock.yaml /app/
 WORKDIR /app
