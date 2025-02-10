@@ -2,25 +2,31 @@
 import type { InfoPage } from "../../types";
 import FaqItem from "./FaqItem.astro";
 import Intro from "../Intro.astro";
+import ContentContainer from "../ContentContainer.astro";
+import H1 from "../H1.astro";
+import H2 from "../H2.astro";
 
 type Props = InfoPage;
 
-const { title, pages = [], faq = [], intro, body } = Astro.props;
+const { title, faq = [], intro, body } = Astro.props;
 ---
 
-<div>
-  <h1 class="text-white text-4xl font-bold">{title}</h1>
-  {intro ? <Intro text={intro} /> : null}
-  <div class="prose" set:html={body} />
+<ContentContainer variant="wide">
+  <section class="mb-4">
+    <H1 text={title} />
+    {intro ? <Intro text={intro} /> : null}
+    <div class="prose" set:html={body} />
+  </section>
   {
-    pages.map(({ url, title }) => (
-      <>
-        <a href={url} class="text-white">
-          {title}
-        </a>
-        <br />
-      </>
-    ))
+    faq.length > 0 ? (
+      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 mt-8">
+        <H2 text="Vanlige spørsmål" class="col-span-2 lg:col-span-3" />
+        {faq.map((item) => (
+          <div class="border border-white rounded-3xl">
+            <FaqItem {...item} />
+          </div>
+        ))}
+      </section>
+    ) : null
   }
-  {faq.map((item) => <FaqItem {...item} />)}
-</div>
+</ContentContainer>

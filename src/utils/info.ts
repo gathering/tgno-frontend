@@ -11,8 +11,8 @@ export const fetchInfoPageByPath = async ({
     redirect: "follow",
   });
   const page = await response.json();
-  if (!page) {
-    throw new Error(`Page with slug ${path} not found`);
+  if (!page || !response.ok) {
+    throw new Error(`Page "${path}" not found`);
   }
 
   const children =
@@ -38,5 +38,5 @@ export const fetchInfoPageChildren = async ({
     `${apiUrl}api/v2/info/?child_of=${parentId}&fields=*`,
   );
   const data = await response.json();
-  return data.items;
+  return data.items || [];
 };

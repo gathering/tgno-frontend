@@ -28,7 +28,15 @@ if (!page) {
 }
 ---
 
-<Layout title=`The Gathering - ${page.title}`>
+<Layout
+  title=`The Gathering - ${page.title}`
+  description=`${page.meta.search_description}`
+  seo_title=`${page.meta.seo_title}`
+  search_description=`${page.meta.search_description}`
+  introText=`${page.intro}`
+  type="article"
+  lang=`${page.meta.locale || "no"}`
+>
   <Main>
     <PracticalPage {...page} />
   </Main>

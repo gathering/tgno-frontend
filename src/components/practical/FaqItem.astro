@@ -1,12 +1,15 @@
 ---
 import type { FaqSnippet } from "../../types";
+import H3 from "../H3.astro";
 
-type Props = FaqSnippet;
+type Props = FaqSnippet & {
+  class?: string;
+};
 
-const { title, body } = Astro.props;
+const { title, body, class: className } = Astro.props;
 ---
 
-<div>
-  <h1 class="text-white text-4xl font-bold">{title}</h1>
-  <div class="prose text-white" set:html={body} />
-</div>
+<section class={`prose p-4 ${className}`}>
+  <H3 class="text-4xl font-bold mb-2">{title}</H3>
+  <div class="" set:html={body} />
+</section>
