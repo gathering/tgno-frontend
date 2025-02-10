@@ -12,14 +12,17 @@ type Props = {
   };
 };
 
-const { path } = Astro.props.params ?? Astro.params;
+const path = new URL(
+  (Astro.props?.params?.path ?? Astro.params?.path) || "",
+  "http://example.com",
+).pathname;
 
 if (typeof path !== "string") {
   throw new Error("Invalid path");
 }
 
 const page = await fetchInfoPageByPath({
-  path: path.startsWith(sectionPrefix) ? path : `/practical/${path}`,
+  path: path.startsWith(sectionPrefix) ? path : `/practical${path}`,
   apiUrl: import.meta.env.API_URL,
 });
 
