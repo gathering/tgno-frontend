@@ -1,4 +1,4 @@
-import type { MinimalApiPage } from "./utils";
+import type { MinimalApiPage, PaginatedResponse } from "./utils";
 
 export interface FaqSnippet {
   title: string;
@@ -26,3 +26,6 @@ export interface FaqPage extends MinimalApiPage {
   title: string;
   body?: string;
 }
+
+export interface FetchInfoPageChildrenResponse
+  extends PaginatedResponse<FaqPage | InfoPage> {}

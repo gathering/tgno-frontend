@@ -1,5 +1,5 @@
 import type { Image } from "./images";
-import type { MinimalApiPage } from "./utils";
+import type { MinimalApiPage, PaginatedResponse } from "./utils";
 
 export interface Article extends MinimalApiPage {
   id: number;
@@ -37,9 +37,4 @@ export interface FetchArticlesProps {
   tags?: string[];
 }
 
-export interface FetchArticlesResponse {
-  meta: {
-    total_count: number;
-  };
-  items: Article[];
-}
+export interface FetchArticlesResponse extends PaginatedResponse<Article> {}
