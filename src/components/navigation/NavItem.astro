@@ -30,7 +30,8 @@ const itemsWithParent: Array<
   NavItem & {
     touchOnly?: boolean;
   }
-> = path ? [{ path, title, touchOnly: true }, ...items] : items;
+  // Add copy of head item as top item in list, for people that don't like to click a hoverable item and mobile users where hover is not an option
+> = path ? [{ path, title: "Oversikt", touchOnly: false }, ...items] : items;
 ---
 
 <script>
