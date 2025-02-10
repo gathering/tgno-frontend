@@ -9,7 +9,7 @@ import { fetchArticleIdBySlug, fetchArticleById } from "../../utils";
 const { slug } = Astro.params;
 
 if (!slug) {
-  throw new Error("Slug is not defined");
+  return Astro.rewrite("/404");
 }
 const id = await fetchArticleIdBySlug({
   slug,
@@ -17,7 +17,7 @@ const id = await fetchArticleIdBySlug({
 });
 
 if (!id) {
-  throw new Error("Article not found");
+  return Astro.rewrite("/404");
 }
 
 const article = await fetchArticleById({
