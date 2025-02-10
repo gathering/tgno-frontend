@@ -1,0 +1,46 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Main from "../../components/Main.astro";
+import { fetchInfoPageByPath } from "../../utils";
+import PracticalPage from "../../components/practical/PracticalPage.astro";
+
+const sectionPrefix = "/practical/";
+
+type Props = {
+  params?: {
+    path: string;
+  };
+};
+
+const path = new URL(
+  (Astro.props?.params?.path ?? Astro.params?.path) || "",
+  "http://example.com",
+).pathname;
+
+if (typeof path !== "string") {
+  throw new Error("Invalid path");
+}
+
+const page = await fetchInfoPageByPath({
+  path: path.startsWith(sectionPrefix) ? path : `/practical${path}`,
+  apiUrl: import.meta.env.API_URL,
+});
+
+if (!page) {
+  throw new Error("Info page not found");
+}
+---
+
+<Layout
+  title=`The Gathering - ${page.title}`
+  description=`${page.meta.search_description}`
+  seo_title=`${page.meta.seo_title}`
+  search_description=`${page.meta.search_description}`
+  introText=`${page.intro}`
+  type="article"
+  lang=`${page.meta.locale || "no"}`
+>
+  <Main>
+    <PracticalPage {...page} />
+  </Main>
+</Layout>
