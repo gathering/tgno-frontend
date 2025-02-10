@@ -12,3 +12,10 @@ export interface MinimalApiPage {
   };
   title: string;
 }
+
+export interface PaginatedResponse<T> {
+  meta: {
+    total_count: number;
+  };
+  items: T[];
+}

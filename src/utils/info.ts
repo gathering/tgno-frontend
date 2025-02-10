@@ -1,4 +1,9 @@
-import type { FaqPage, InfoPage } from "../types";
+import type {
+  FaqPage,
+  FetchInfoPageChildrenResponse,
+  InfoPage,
+} from "../types";
+import { typedFetch } from "./fetching";
 
 export const fetchInfoPageByPath = async ({
   apiUrl,
@@ -6,37 +11,14 @@ export const fetchInfoPageByPath = async ({
 }: {
   apiUrl: string;
   path?: string;
-}): Promise<InfoPage & { children: InfoPage[] }> => {
-  const response = await fetch(`${apiUrl}api/v2/info/find?html_path=${path}`, {
-    redirect: "follow",
-  });
-  const page = await response.json();
-  if (!page || !response.ok) {
-    throw new Error(`Page "${path}" not found`);
-  }
-
-  const children =
-    (await fetchInfoPageChildren({
-      apiUrl,
-      parentId: page.id,
-    })) || [];
-
-  return {
-    ...page,
-    children,
-  };
-};
-
-export const fetchInfoPageChildren = async ({
-  apiUrl,
-  parentId,
-}: {
-  apiUrl: string;
-  parentId: number;
-}): Promise<Array<InfoPage | FaqPage>> => {
-  const response = await fetch(
-    `${apiUrl}api/v2/info/?child_of=${parentId}&fields=*`,
+}): Promise<InfoPage | undefined> => {
+  const response = await typedFetch<InfoPage>(
+    `${apiUrl}api/v2/info/find?html_path=${path}`,
+    {
+      redirect: "follow",
+    },
   );
-  const data = await response.json();
-  return data.items || [];
+  const page = await response.json();
+
+  return !page || !response.ok ? undefined : page;
 };
