@@ -29,6 +29,21 @@ const page = await fetchInfoPageByPath({
 if (!page) {
   return Astro.rewrite("/404");
 }
+
+const jsonLd = !!page.faq?.length
+  ? {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: page.faq.map((item) => ({
+        "@type": "Question",
+        name: item.title,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item.body,
+        },
+      })),
+    }
+  : undefined;
 ---
 
 <Layout
@@ -37,8 +52,8 @@ if (!page) {
   seo_title=`${page.meta.seo_title}`
   search_description=`${page.meta.search_description}`
   introText=`${page.intro}`
-  type="article"
   lang=`${page.meta.locale || "no"}`
+  jsonLd={jsonLd}
 >
   <Main>
     <PracticalPage {...page} />
