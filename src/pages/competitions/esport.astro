@@ -53,12 +53,21 @@ const buttonStyles = [
         </div>
         <SportsBox
           title="Valorant"
-          class={`${boxStyles.join(" ")} sm:col-start-4 sm:col-span-2 sm:row-start-1 sm:mt-20 bg-blue-400 text-black prose prose-headings:text-black`}
+          class={`${boxStyles.join(" ")} sm:col-start-4 sm:col-span-2 sm:row-start-1 sm:mt-20 bg-blue-400 text-black prose prose-headings:text-black prose-a:text-black`}
           buttonClass={buttonStyles.join(" ")}
           prizes={[65000, 25000, 10000]}
           requiresTicket
           byoc
         >
+          <p
+            class="rounded-md border border-white/20 bg-white/20 p-4 hyphens-manual"
+          >
+            Det er nå mulig å melde seg på kvalifiserings&shy;turneringer for
+            Valorant, se <a
+              href="https://www.tg.no/news/kvalifiser-dere-til-tg-f%C3%A5-gratis-festivalpass-til-hele-laget"
+              >denne artikkelen</a
+            > for oppdatert informasjon.
+          </p>
           <p>
             Valorant er et 5v5 «character-based tactical shooter» spill som er
             utviklet av Riot Games. To lag på 5 kjemper mot hverandre om å enten
