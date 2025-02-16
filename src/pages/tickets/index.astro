@@ -16,9 +16,38 @@ const boxStyles = [
 ];
 const buttonStyles =
   "block px-4 py-2 rounded-full content-center text-decoration-none text-center";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  name: "The Gathering 2025",
+  startDate: "2025-04-16",
+  endDate: "2025-04-20",
+  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+  eventStatus: "https://schema.org/EventScheduled",
+  location: {
+    "@type": "Place",
+    name: "Vikingskipet",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Åkersvikvegen 1",
+      addressLocality: "Hamar",
+      postalCode: "2321",
+      addressRegion: "Innlandet",
+      addressCountry: "NO",
+    },
+  },
+  description:
+    "The Gathering er Norges største dataparty - Fem uforglemmelige dager i norges feteste påskehytte!",
+  organizer: {
+    "@type": "Organization",
+    name: "KANDU",
+    url: "https://www.kandu.no",
+  },
+};
 ---
 
-<Layout title="The Gathering - Billetter">
+<Layout title="The Gathering - Billetter" jsonLd={jsonLd}>
   <Main>
     <ContentContainer>
       <H1
