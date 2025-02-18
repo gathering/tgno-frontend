@@ -58,6 +58,7 @@ export const fetchArticleById = async ({
 const I18N: Record<string, Record<string, string>> = {
   no: {
     photography: "Fotografi",
+    photo: "Foto",
     text: "Tekst",
     video: "Video",
     audio: "Audio",
