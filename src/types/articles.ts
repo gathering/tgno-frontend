@@ -1,6 +1,13 @@
 import type { Image } from "./images";
 import type { MinimalApiPage, PaginatedResponse } from "./utils";
 
+export interface Contributor {
+  id: number;
+  name: string;
+  contribution_type: string;
+  image?: string;
+}
+
 export interface Article extends MinimalApiPage {
   id: number;
   meta: {
@@ -16,12 +23,7 @@ export interface Article extends MinimalApiPage {
   title: string;
   intro: string;
   body: string;
-  contributors: Array<{
-    id: number;
-    name: string;
-    contribution_type: string;
-    image?: string;
-  }>;
+  contributors: Contributor[];
   tags: Array<{
     id: number;
     name: string;

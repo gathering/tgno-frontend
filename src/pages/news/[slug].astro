@@ -4,7 +4,11 @@ import Intro from "../../components/Intro.astro";
 import Main from "../../components/Main.astro";
 import ContentContainer from "../../components/ContentContainer.astro";
 import Layout from "../../layouts/Layout.astro";
-import { fetchArticleIdBySlug, fetchArticleById } from "../../utils";
+import {
+  fetchArticleIdBySlug,
+  fetchArticleById,
+  noLocalizeContributor,
+} from "../../utils";
 
 const { slug } = Astro.params;
 
@@ -95,7 +99,6 @@ const jsonLd = {
             !!article.tags.length ? (
               <p class="text-sm mb-1">
                 {article.tags
-                  .filter((tag) => tag.name !== "NotNews") // Filter out the "NotNews" tag
                   .map((tag) => {
                     return tag.name
                       .split(" ")
@@ -113,12 +116,16 @@ const jsonLd = {
           !!article.contributors.length ? (
             <section>
               <div class="flex flex-row flex-wrap text-sm -mb-2">
-                {article.contributors.map((contributor) => (
-                  <dl class="flex flex-col mb-2 mr-4">
-                    <dt class="font-bold text-white/90">{contributor.name}</dt>
-                    <dd class="">{contributor.contribution_type}</dd>
-                  </dl>
-                ))}
+                {article.contributors
+                  .map(noLocalizeContributor)
+                  .map((contributor) => (
+                    <dl class="flex flex-col mb-2 mr-4">
+                      <dt class="font-bold text-white/90">
+                        {contributor.name}
+                      </dt>
+                      <dd class="">{contributor.contribution_type}</dd>
+                    </dl>
+                  ))}
               </div>
             </section>
           ) : null
