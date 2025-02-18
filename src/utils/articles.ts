@@ -1,5 +1,6 @@
 import type {
   Article,
+  Contributor,
   FetchArticlesProps,
   FetchArticlesResponse,
 } from "../types";
@@ -53,3 +54,30 @@ export const fetchArticleById = async ({
   const data = await response.json();
   return data;
 };
+
+const I18N: Record<string, Record<string, string>> = {
+  no: {
+    photography: "Fotografi",
+    photo: "Foto",
+    text: "Tekst",
+    video: "Video",
+    audio: "Audio",
+    illustration: "Illustrasjon",
+    animation: "Animasjon",
+    code: "Kode",
+    design: "Design",
+  },
+};
+
+export const localizeContributor = (
+  contributor: Contributor,
+  targetLocale = "no",
+): Contributor => ({
+  ...contributor,
+  contribution_type:
+    I18N[targetLocale]?.[contributor.contribution_type.toLowerCase()] ||
+    contributor.contribution_type,
+});
+
+export const noLocalizeContributor = (contributor: Contributor) =>
+  localizeContributor(contributor, "no");
