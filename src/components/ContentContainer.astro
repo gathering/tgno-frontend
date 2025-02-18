@@ -12,6 +12,6 @@ const { variant = "wide" } = Astro.props;
 const variantStyles = VARIANTS[variant] || VARIANTS.wide;
 ---
 
-<section class={`mb-4 ${variantStyles}`}>
+<section class={`mb-6 ${variantStyles}`}>
   <slot />
 </section>

@@ -61,49 +61,69 @@ const jsonLd = {
               src={article.main_image.sizes.large.url}
               srcset={`${article.main_image.sizes.large.url} 500w, ${article.main_image.sizes.extra_large.url} 1000w`}
               alt={article.main_image.alt}
-              class="w-auto rounded-3xl mb-5 object-cover object-center"
+              class="w-auto rounded-3xl object-cover object-center"
             />
           </div>
         )
       }
     </ContentContainer>
     <ContentContainer variant="narrow">
-      <aside class="mb-5">
-        <p class="text-sm text-gray-600 mb-2">
-          {
-            article.tags
-              .filter((tag) => tag.name !== "NotNews") // Filter out the "NotNews" tag
-              .map((tag) => {
-                return tag.name
-                  .split(" ")
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(" ");
-              })
-              .join(", ")
-          }
-        </p>
-        <time
-          datetime={article.meta.first_published_at}
-          class="text-sm text-gray-500 mb-2 block"
-        >
-          {new Date(article.meta.first_published_at).toLocaleDateString()}
-        </time>
-        <table class="">
-          <tbody class="text-sm text-gray-500 mb-2 block">
-            {
-              article.contributors.map((contributor) => (
-                <tr>
-                  <td class="">{contributor.contribution_type}</td>
-                  <td class="">| {contributor.name}</td>
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
-      </aside>
       <!-- Article Content -->
       <Intro text={article.intro} />
-      <div class="prose" set:html={article.body} />
+      <div class="prose mb-6" set:html={article.body} />
+      <aside
+        class="mb-6 p-5 space-y-5 text-sm text-white/70 bg-white/5 rounded"
+      >
+        <section class="space-y-1">
+          <time
+            datetime={article.meta.first_published_at}
+            class="text-sm text-white"
+          >
+            Publisert:{" "}
+            {
+              new Date(article.meta.first_published_at).toLocaleDateString(
+                "nb-NO",
+                {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                },
+              )
+            }
+          </time>
+          {
+            !!article.tags.length ? (
+              <p class="text-sm mb-1">
+                {article.tags
+                  .filter((tag) => tag.name !== "NotNews") // Filter out the "NotNews" tag
+                  .map((tag) => {
+                    return tag.name
+                      .split(" ")
+                      .map(
+                        (word) => word.charAt(0).toUpperCase() + word.slice(1),
+                      )
+                      .join(" ");
+                  })
+                  .join(", ")}
+              </p>
+            ) : null
+          }
+        </section>
+        {
+          !!article.contributors.length ? (
+            <section>
+              <div class="flex flex-row flex-wrap text-sm">
+                {article.contributors.map((contributor) => (
+                  <dl class="flex flex-col mb-2 mr-4">
+                    <dt class="font-bold text-white">{contributor.name}</dt>
+                    <dd class="">{contributor.contribution_type}</dd>
+                  </dl>
+                ))}
+              </div>
+            </section>
+          ) : null
+        }
+      </aside>
     </ContentContainer>
   </Main>
 </Layout>
