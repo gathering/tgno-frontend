@@ -72,12 +72,12 @@ const jsonLd = {
       <Intro text={article.intro} />
       <div class="prose mb-6" set:html={article.body} />
       <aside
-        class="mb-6 p-5 space-y-5 text-sm text-white/70 bg-white/5 rounded"
+        class="mb-6 p-5 space-y-5 text-sm text-white/60 bg-backgroundSecondary rounded"
       >
         <section class="space-y-1">
           <time
             datetime={article.meta.first_published_at}
-            class="text-sm text-white"
+            class="text-sm text-white/90"
           >
             Publisert:{" "}
             {
@@ -112,10 +112,10 @@ const jsonLd = {
         {
           !!article.contributors.length ? (
             <section>
-              <div class="flex flex-row flex-wrap text-sm">
+              <div class="flex flex-row flex-wrap text-sm -mb-2">
                 {article.contributors.map((contributor) => (
                   <dl class="flex flex-col mb-2 mr-4">
-                    <dt class="font-bold text-white">{contributor.name}</dt>
+                    <dt class="font-bold text-white/90">{contributor.name}</dt>
                     <dd class="">{contributor.contribution_type}</dd>
                   </dl>
                 ))}
