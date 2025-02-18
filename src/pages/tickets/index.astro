@@ -132,8 +132,8 @@ const jsonLd = {
           </p>
           <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
             <TicketBox
-              timespan="til hele arrangementet"
               name="LANpass"
+              timespan="til hele arrangementet"
               price={1590}
             >
               <p>
@@ -144,8 +144,8 @@ const jsonLd = {
               </p>
             </TicketBox>
             <TicketBox
-              timespan="til hele arrangementet"
               name="LANpass 1337 Edition"
+              timespan="til hele arrangementet"
               price={1337}
             >
               <p>
@@ -159,8 +159,8 @@ const jsonLd = {
               </div>
             </TicketBox>
             <TicketBox
-              timespan="Onsdag til Fredag eller Fredag til Søndag"
               name="LANpass, 2 dagers"
+              timespan="Onsdag til Fredag eller Fredag til Søndag"
               price={999}
             >
               <p>
@@ -177,9 +177,9 @@ const jsonLd = {
             </TicketBox>
             <TicketBox
               name="EXPOpass - Ukespass (Barn)"
-              seatless
               timespan="til hele arrangementet"
               price={349}
+              seatless
             >
               <p>
                 <strong>Denne billetter gjelder for barn under 16år.</strong>
@@ -197,9 +197,9 @@ const jsonLd = {
             </TicketBox>
             <TicketBox
               name="EXPOpass - Ukespass (Voksen)"
-              seatless
               timespan="til hele arrangementet"
               price={849}
+              seatless
             >
               <p>
                 Besøksbilett til arrangementet hele uken uten sitteplass. Du kan
@@ -213,16 +213,78 @@ const jsonLd = {
               </p>
             </TicketBox>
             <TicketBox
-              name="Ledsagerbillett"
-              timespan="til hele arrangementet"
+              name="COSPLAYpass"
+              timespan="til arrangementet på lørdag"
+              price={299}
               seatless
             >
-              <p>Er kun tilgjengelig for personer med gyldig ledsagerbevis</p>
+              <p>
+                Gir tilgang til arrangementet på lørdag og mulighet for
+                deltakelse i vår cosplay konkurranse.
+              </p>
+              <p>
+                Inngang er gyldig frem til dagsprogrammet er ferdig for dagen.
+                Gir ikke tilgang til overnattingsområdet.
+              </p>
+              <p>
+                Kan delta i mindre konkurranser og turneringer. <br />
+                Kan ikke delta i de offisielle konkurranser som er under Kreative
+                og E-sport på TG.no
+              </p>
+            </TicketBox>
+            <TicketBox
+              name="EXPOpass - Dagsbilett (Barn)"
+              timespan="til den dagen billetten kjøpes for"
+              price={99}
+              seatless
+            >
+              <p>
+                <strong>Denne billetter gjelder for barn under 16år.</strong>
+              </p>
+              <p>
+                1-dags besøksbilett til arrangementet uten sitteplass. Inngang
+                er gyldig frem til dagsprogrammet er ferdig for dagen. Gir ikke
+                tilgang til overnattingsområdet.
+              </p>
+              <p>
+                Kan delta i mindre konkurranser og turneringer. <br />
+                Kan ikke delta i de offisielle konkurranser som er under Kreative
+                og E-sport på TG.no
+              </p>
+            </TicketBox>
+            <TicketBox
+              name="EXPOpass - Dagsbilett  (Voksen)"
+              timespan="til den dagen billetten kjøpes for"
+              price={249}
+              seatless
+            >
+              <p>
+                1-dags besøksbilett til arrangementet uten sitteplass. Inngang
+                er gyldig frem til dagsprogrammet er ferdig for dagen. Gir ikke
+                tilgang til overnattingsområdet.
+              </p>
+              <p>
+                Kan delta i mindre konkurranser og turneringer. <br />
+                Kan ikke delta i de offisielle konkurranser som er under Kreative
+                og E-sport på TG.no
+              </p>
+            </TicketBox>
+            <TicketBox
+              name="Ledsagerbillett"
+              timespan="på lik linje som deltakeren du følger"
+              price={99}
+              seatless
+            >
+              <p>
+                <em>
+                  Er kun tilgjengelig for personer med gyldig ledsagerbevis
+                </em>
+              </p>
             </TicketBox>
           </div>
         </section>
         <section
-          class={`${boxStyles.join(" ")} sm:col-start-4 sm:col-span-3 bg-orange-500 text-black my-20`}
+          class={`${boxStyles.join(" ")} sm:col-start-3 sm:col-span-3 bg-orange-500 text-black mb-5`}
         >
           <H3>Hva venter du på?</H3>
           <p>Kjøp din billett i dag og bli med på noe helt unikt!</p>
