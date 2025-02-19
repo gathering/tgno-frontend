@@ -56,16 +56,21 @@ const jsonLd = {
   jsonLd={jsonLd}
 >
   <Main>
-    <ContentContainer variant="wide">
-      <H1 text=`${article.title}` />
+    <ContentContainer
+      variant={article.main_image?.uncroppable ? "narrow" : "wide"}
+    >
+      <H1 text={article.title} />
       {
         article.main_image && (
           <div class="flex md:max-h-[50vh]">
             <img
               src={article.main_image.sizes.large.url}
-              srcset={`${article.main_image.sizes.large.url} 500w, ${article.main_image.sizes.extra_large.url} 1000w`}
+              srcset={Object.values(article.main_image.sizes)
+                .sort((a, b) => a.width - b.width)
+                .map((size) => `${size.url} ${size.width}w`)
+                .join(", ")}
               alt={article.main_image.alt}
-              class="w-auto rounded-3xl object-cover object-center"
+              class="w-full rounded-3xl md:object-cover object-center"
             />
           </div>
         )

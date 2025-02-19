@@ -1,0 +1,19 @@
+---
+import type { Article } from "../../types";
+
+type Props = { image?: Article["main_image"] };
+
+const { image } = Astro.props;
+
+if (!image) {
+  return null;
+}
+
+const { uncroppable = false, sizes, alt } = image;
+---
+
+<img
+  src={uncroppable ? sizes.small.url : sizes.thumbnail.url}
+  alt={alt}
+  class={`w-24 h-24 ${uncroppable ? "object-contain bg-white/5" : "object-cover"} ml-4 rounded-lg`}
+/>
