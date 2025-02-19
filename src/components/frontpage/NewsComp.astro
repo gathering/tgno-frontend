@@ -2,6 +2,7 @@
 import type { FetchArticlesProps } from "../../types";
 import { fetchArticles } from "../../utils";
 import Button from "../Button.astro";
+import TeaserImage from "../news/TeaserImage.astro";
 
 type Props = {
   singleColumn?: boolean;
@@ -41,7 +42,9 @@ const gridStyles = singleColumn
                   })
                   .join(", ")}
               </div>
-              <h3 class="text-xl text-white font-bold mt-2">{article.title}</h3>
+              <h3 class="text-xl text-white font-bold mt-2 text-pretty">
+                {article.title}
+              </h3>
               <time
                 datetime={article.meta.first_published_at}
                 class="text-sm text-gray-500"
@@ -56,13 +59,7 @@ const gridStyles = singleColumn
                 )}
               </time>
             </div>
-            {article.main_image && (
-              <img
-                src={article.main_image.sizes.thumbnail.url}
-                alt={article.main_image.alt}
-                class="w-24 h-24 object-cover ml-4 rounded-lg"
-              />
-            )}
+            <TeaserImage image={article.main_image} />
           </article>
         </a>
       ))

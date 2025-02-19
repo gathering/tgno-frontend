@@ -1,5 +1,6 @@
 ---
 import type { Article } from "../types";
+import TeaserImage from "./news/TeaserImage.astro";
 
 type Props = { articles: Article[] };
 
@@ -8,39 +9,32 @@ const { articles } = Astro.props;
 
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-5 lg:px-28 mb-10">
   {
-    articles.map((article) => (
-      <a href={`/news/${article.meta.slug}`}>
+    articles.map(({ title, meta, main_image, tags = [] }) => (
+      <a href={`/news/${meta.slug}`}>
         <article class="overflow-hidden flex flex-row p-4">
           <div class="flex-1">
             <div class="text-sm text-orange-500">
-              {article.tags
+              {tags
                 .map((tag) => {
                   return tag.name.charAt(0).toUpperCase() + tag.name.slice(1);
                 })
                 .join(", ")}
             </div>
-            <h3 class="text-xl text-white font-bold mt-2">{article.title}</h3>
+            <h3 class="text-xl text-white font-bold mt-2 text-pretty">
+              {title}
+            </h3>
             <time
-              datetime={article.meta.first_published_at}
+              datetime={meta.first_published_at}
               class="text-sm text-gray-500"
             >
-              {new Date(article.meta.first_published_at).toLocaleDateString(
-                "en-US",
-                {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                },
-              )}
+              {new Date(meta.first_published_at).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
             </time>
           </div>
-          {article.main_image && (
-            <img
-              src={article.main_image.sizes.thumbnail.url}
-              alt={article.main_image.alt}
-              class="w-24 h-24 object-cover ml-4 rounded-lg"
-            />
-          )}
+          <TeaserImage image={main_image} />
         </article>
       </a>
     ))
