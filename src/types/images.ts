@@ -8,6 +8,7 @@ export interface Image {
   title: string;
   alt: string;
   url: string;
+  uncroppable?: boolean;
   sizes: {
     thumbnail: ImageSize;
     small: ImageSize;
