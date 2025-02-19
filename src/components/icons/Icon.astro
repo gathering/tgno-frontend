@@ -1,0 +1,30 @@
+---
+type Props = {
+  size?: number;
+  strokeWidth?: number;
+  fillColor?: string;
+  pathData: string;
+  title?: string;
+};
+
+const {
+  size = 24,
+  strokeWidth = 2,
+  fillColor = "white",
+  pathData,
+  title,
+} = Astro.props;
+---
+
+<svg
+  width={size}
+  height={size}
+  fill={fillColor}
+  stroke-width={strokeWidth}
+  role="img"
+  viewBox="0 0 24 24"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  {title && <title>{title}</title>}
+  <path d={pathData}></path>
+</svg>
