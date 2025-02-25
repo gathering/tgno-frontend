@@ -16,6 +16,7 @@ export interface Article extends MinimalApiPage {
     html_url: string;
     slug: string;
     first_published_at: string;
+    custom_published_at: string | null;
     seo_title: string;
     search_description: string;
     locale?: "en" | "no";

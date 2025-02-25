@@ -13,10 +13,12 @@ export const fetchArticles = async ({
   offset = 0,
 }: FetchArticlesProps) => {
   const url = new URL(`${api_url}api/v2/news/`);
-  url.searchParams.set("fields", "title,tags,first_published_at,main_image");
+  url.searchParams.set(
+    "fields",
+    "title,tags,first_published_at,custom_published_at,main_image",
+  );
   url.searchParams.set("limit", limit.toString(10));
   url.searchParams.set("offset", offset.toString(10));
-  url.searchParams.set("order", "-first_published_at");
 
   if (tags?.length) {
     url.searchParams.set("tags", tags.join(","));
