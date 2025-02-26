@@ -19,17 +19,26 @@ const boxStyles = "p-6 rounded-3xl sm:mx-auto sm:rounded-2xl";
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
       >
         <div class="sm:col-start-1 sm:col-span-2">
-          <section class="mb-6 prose">
+          <section class="mb-6 prose prose-strong:text-white text-white">
             <H2 text="Hvem takler presset best?" />
             <p>
-              Kreative impulser og klar for å vise hva du er god for?
-              Kreativitet har alltid vært en sentral del av The Gathering. Fra
-              imponerende cosplay til banebrytende musikk, TG er stedet hvor
-              fantasien får fritt spillerom. Uansett om du er en erfaren
-              deltaker eller nybegynner, vil du finne en rekke kreative
-              konkurranser som passer for deg.
+              Test sjansene dine for å vinne flotte premier i konkurranser innen
+              cosplay, musikk, video, grafikk og mer! Noen konkurranser kan du
+              starte på allerede i dag, mens andre vil ikke påbegynnes før vi er
+              i skipet. Se alle konkurransene på TG25 <a
+                href="https://competitions.gathering.org/"
+                target="_blank">her</a
+              >.
             </p>
             <H3>Praktisk informasjon</H3>
+            <p>
+              <Pill text="Vi er i gang!" color="yellow" class="mr-2" />
+              Enkelte av konkurransene starter allerede nå med kvalifiseringer eller
+              påmelding. Så om du er interessert i å delta, sjekk ut <a
+                href="https://competitions.gathering.org/"
+                target="_blank">konkurransesidene</a
+              > i dag for oppdatert og utfyllende informasjon.
+            </p>
             <p>
               <Pill text="Eget utstyr" color="orange" class="mr-2" />
               Alle de kreative konkurransene krever at du har eget utstyr, som maskin,
@@ -84,23 +93,23 @@ const boxStyles = "p-6 rounded-3xl sm:mx-auto sm:rounded-2xl";
           prizes={[
             {
               name: "Grand Price",
-              price: 3000,
+              price: 5000,
             },
             {
               name: "Audience Award",
-              price: 1500,
+              price: 3000,
             },
             {
               name: "The Crafter",
-              price: 1500,
+              price: 3000,
             },
             {
               name: "The Tailor",
-              price: 1500,
+              price: 3000,
             },
             {
               name: "The Problem Solver",
-              price: 1500,
+              price: 3000,
             },
           ]}
           category="cosplay"
