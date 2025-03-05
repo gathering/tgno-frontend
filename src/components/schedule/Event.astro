@@ -1,0 +1,100 @@
+---
+import type { Event } from "../../types";
+import CalendardSymbol from "../icons/CalendardSymbol.astro";
+import ClockSymbol from "../icons/ClockSymbol.astro";
+import CloseSymbol from "../icons/CloseSymbol.astro";
+
+type Props = Event & {
+  highlightedTags?: string[];
+};
+
+const AVAILABLE_STYLES = {
+  default: {
+    styles: "bg-white/5 border-blue-300/40",
+    tags: true,
+  },
+  ended: {
+    styles: "bg-green-500",
+    tags: false,
+  },
+  cancelled: {
+    styles: "bg-red-500",
+    tags: false,
+  },
+  minimal: {
+    styles: "bg-yellow-500 opacity-50",
+    tags: false,
+  },
+};
+
+const {
+  title,
+  start,
+  tags = [],
+  cancelled,
+  facts,
+  strings,
+  highlightedTags = [],
+} = Astro.props;
+let style = AVAILABLE_STYLES.default;
+
+if (facts.ended) {
+  style = AVAILABLE_STYLES.ended;
+} else if (cancelled) {
+  style = AVAILABLE_STYLES.cancelled;
+} else if (["start", "both"].includes(facts.extendingQuery)) {
+  style = AVAILABLE_STYLES.minimal;
+}
+
+let duration = strings.duration;
+let DurationSymbol = ClockSymbol;
+
+switch (facts.extendingQuery) {
+  case "start":
+    duration = `${strings.startDate} ${strings.startDate} - ${strings.endTime}`;
+    DurationSymbol = CalendardSymbol;
+    break;
+  case "end":
+    duration = `${strings.startTime} - ${strings.endDate} ${strings.endTime}`;
+    DurationSymbol = CalendardSymbol;
+    break;
+  case "both":
+    duration = `${strings.startDate} ${strings.startTime} - ${strings.endDate} ${strings.endTime}`;
+    DurationSymbol = CalendardSymbol;
+    break;
+}
+---
+
+<article
+  class={`flex flex-col p-4 border ${style.styles} 40 rounded-xl block text-white mb-4`}
+>
+  {
+    style.tags ? (
+      <div class="text-md font-bold flex flex-row mb-1">
+        {tags
+          // For now we only want to show the location tags
+          .filter(({ type }) => type === "location")
+          .map((tag) => ({
+            ...tag,
+            active: highlightedTags.includes(tag.slug),
+          }))
+          .map(({ slug, name, active }) => (
+            <a
+              href={`/schedule?tags=${slug}`}
+              data-trigger="tag"
+              data-tag={slug}
+              class={`border border-white rounded-md flex flex-row mr-2 mb-2 py-1 px-2 hover:bg-white hover:text-backgroundSecondary ${active ? "bg-white text-backgroundSecondary" : ""}`}
+            >
+              {name}
+              {active ? <CloseSymbol /> : null}
+            </a>
+          ))}
+      </div>
+    ) : null
+  }
+  <h3 class="text-lg font-bold text-pretty mb-2">{title}</h3>
+  <time datetime={start} class="text-md flex flex-row gap-3">
+    <DurationSymbol />
+    {duration}
+  </time>
+</article>
