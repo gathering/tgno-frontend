@@ -1,6 +1,12 @@
 import type { Event, FetchEventsResponse } from "../types";
 import { typedFetch } from "./fetching";
 
+const TAG_TYPE_PRIO = {
+  location: 0,
+  category: 1,
+  misc: 2,
+};
+
 export const fetchEvents = async ({
   start: reqStart,
   end: reqEnd,
@@ -37,6 +43,14 @@ export const fetchEvents = async ({
 
         const newEvent: Event = {
           ...event,
+          tags: event.tags
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .sort((a, b) => TAG_TYPE_PRIO[a.type] - TAG_TYPE_PRIO[b.type])
+            .map((tag) => ({
+              ...tag,
+              secondary: tag.type !== "location",
+              hidden: tag.slug === "meta",
+            })),
           facts: {
             immediate: event.start === event.end,
             sameDay: startObj.getDate() === endObj.getDate(),

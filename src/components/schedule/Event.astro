@@ -9,11 +9,6 @@ type Props = Event & {
   highlightedTags?: string[];
 };
 
-const TAG_TYPE_PRIO = {
-  location: 0,
-  category: 1,
-  misc: 2,
-};
 const AVAILABLE_STYLES = {
   default: {
     styles: "bg-white/5 border-blue-300/40",
@@ -130,22 +125,18 @@ switch (facts.extendingQuery) {
       style.tags ? (
         <div class="text-md font-bold flex flex-row flex-wrap mb-1">
           {tags
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .sort((a, b) => TAG_TYPE_PRIO[a.type] - TAG_TYPE_PRIO[b.type])
+            .filter((tag) => !tag.hidden)
             .map((tag) => {
-              const newTag = {
-                ...tag,
-                active: highlightedTags.includes(tag.slug),
-                secondary: tag.type !== "location",
-              };
-
-              if (newTag.active) {
-                newTag.secondary = false;
-              }
-
-              return newTag;
+              const active = highlightedTags.includes(tag.slug);
+              return active
+                ? {
+                    ...tag,
+                    active: true,
+                    secondary: false,
+                  }
+                : tag;
             })
-            .map(({ slug, name, active, secondary }) => (
+            .map(({ slug, name, active = false, secondary }) => (
               <a
                 href={`/schedule?tags=${slug}`}
                 data-part="tag-trigger"

@@ -1,3 +1,10 @@
+interface Tag {
+  id: number;
+  name: string;
+  slug: string;
+  type: "category" | "location" | "misc";
+  parent?: string;
+}
 export interface ApiEvent {
   id: number;
   title: string;
@@ -5,16 +12,15 @@ export interface ApiEvent {
   start: string;
   end: string;
   cancelled: boolean;
-  tags: Array<{
-    id: number;
-    name: string;
-    slug: string;
-    type: "category" | "location" | "misc";
-    parent?: string;
-  }>;
+  tags: Tag[];
 }
 
 export interface Event extends ApiEvent {
+  tags: (Tag & {
+    active?: boolean;
+    secondary: boolean;
+    hidden: boolean;
+  })[];
   facts: {
     immediate: Boolean;
     sameDay: Boolean;
