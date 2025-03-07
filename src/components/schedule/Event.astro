@@ -128,7 +128,7 @@ switch (facts.extendingQuery) {
   >
     {
       style.tags ? (
-        <div class="text-md font-bold flex flex-row mb-1">
+        <div class="text-md font-bold flex flex-row flex-wrap mb-1">
           {tags
             .sort((a, b) => a.name.localeCompare(b.name))
             .sort((a, b) => TAG_TYPE_PRIO[a.type] - TAG_TYPE_PRIO[b.type])
