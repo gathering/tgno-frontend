@@ -6,6 +6,7 @@ import { fetchEvents } from "../../utils";
 import Event from "../../components/schedule/Event.astro";
 import DayHeader from "../../components/schedule/DayHeader.astro";
 import CloseSymbol from "../../components/icons/CloseSymbol.astro";
+import ContentContainer from "../../components/ContentContainer.astro";
 
 // In the future we could probably fetch this from the API if we really wanted to
 const CONFIG = {
@@ -102,62 +103,64 @@ const events = await fetchEvents({
 
 <Layout title="The Gathering - Program">
   <Main>
-    <section data-component="schedule">
-      <H2 text="PROGRAM" />
-      <nav class="text-white font-bold mt-4 mb-8">
-        <ul class="flex flex-row flex-wrap gap-2 max-w-2xl">
-          {
-            CONFIG.mainFilters.map(({ slug, label }) => (
-              <li
-                class={`border border-white rounded-xl text-sm px-4 py-2 ${slug === dateFilter.slug ? "bg-white text-backgroundSecondary" : ""} hover:bg-white hover:text-backgroundSecondary`}
-              >
-                <a
-                  href={`/schedule?date=${slug}`}
-                  data-part="date-trigger"
-                  data-date={slug}
+    <ContentContainer variant="narrow">
+      <section data-component="schedule">
+        <H2 text="PROGRAM" />
+        <nav class="text-white font-bold mt-4 mb-8">
+          <ul class="flex flex-row flex-wrap gap-2 max-w-2xl">
+            {
+              CONFIG.mainFilters.map(({ slug, label }) => (
+                <li
+                  class={`border border-white rounded-xl text-sm px-4 py-2 ${slug === dateFilter.slug ? "bg-white text-backgroundSecondary" : ""} hover:bg-white hover:text-backgroundSecondary`}
                 >
-                  {label}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </nav>
-      {
-        tagsFilter.length > 0 && (
-          <a
-            href="/schedule"
-            class="flex items-center text-sm text-white mb-4 rounded-xl p-4 bg-white/5 hover:bg-white/10"
-            data-part="tag-trigger"
-            data-tag=""
-          >
-            <div class="w-90 flex flex-col md:flex-row md:items-center gap-2">
-              <p>
-                Viser bare aktiviteter som skjer på {tagsFilter.join(", ")} i
-                valgt periode.
-              </p>
-              <p class="font-bold">Klikk her for å vise alle.</p>
-            </div>
-            <aside class="min-w-10 ml-auto">
-              <CloseSymbol />
-            </aside>
-          </a>
-        )
-      }
-    </section>
-    <section data-component="schedule">
-      {
-        events.map((event, i) =>
-          event.strings.startDate !== events[i - 1]?.strings.startDate ? (
-            <>
-              <DayHeader date={event.start} />
+                  <a
+                    href={`/schedule?date=${slug}`}
+                    data-part="date-trigger"
+                    data-date={slug}
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+        {
+          tagsFilter.length > 0 && (
+            <a
+              href="/schedule"
+              class="flex items-center text-sm text-white mb-4 rounded-xl p-4 bg-white/5 hover:bg-white/10"
+              data-part="tag-trigger"
+              data-tag=""
+            >
+              <div class="w-90 flex flex-col md:flex-row md:items-center gap-2">
+                <p>
+                  Viser bare aktiviteter som skjer på {tagsFilter.join(", ")} i
+                  valgt periode.
+                </p>
+                <p class="font-bold">Klikk her for å vise alle.</p>
+              </div>
+              <aside class="min-w-10 ml-auto">
+                <CloseSymbol />
+              </aside>
+            </a>
+          )
+        }
+      </section>
+      <section data-component="schedule">
+        {
+          events.map((event, i) =>
+            event.strings.startDate !== events[i - 1]?.strings.startDate ? (
+              <>
+                <DayHeader date={event.start} />
+                <Event {...event} highlightedTags={tagsFilter} />
+              </>
+            ) : (
               <Event {...event} highlightedTags={tagsFilter} />
-            </>
-          ) : (
-            <Event {...event} highlightedTags={tagsFilter} />
-          ),
-        )
-      }
-    </section>
+            ),
+          )
+        }
+      </section>
+    </ContentContainer>
   </Main>
 </Layout>
