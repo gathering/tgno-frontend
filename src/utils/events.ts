@@ -1,7 +1,5 @@
-import { Event, FetchEventsResponse } from "../types";
+import type { Event, FetchEventsResponse } from "../types";
 import { typedFetch } from "./fetching";
-
-const DAY_IN_MS = 1000 * 60 * 60 * 24;
 
 export const fetchEvents = async ({
   start: reqStart,

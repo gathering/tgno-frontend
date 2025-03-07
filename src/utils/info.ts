@@ -1,8 +1,4 @@
-import type {
-  FaqPage,
-  FetchInfoPageChildrenResponse,
-  InfoPage,
-} from "../types";
+import type { InfoPage } from "../types";
 import { typedFetch } from "./fetching";
 
 export const fetchInfoPageByPath = async ({
