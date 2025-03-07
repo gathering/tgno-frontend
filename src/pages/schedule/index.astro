@@ -74,7 +74,7 @@ const events = await fetchEvents({
   }
 
   document
-    .querySelectorAll("[data-component='schedule'] [data-trigger='tag']")
+    .querySelectorAll("[data-component='schedule'] [data-part='tag-trigger']")
     .forEach((trigger) => {
       const tags = trigger.getAttribute("data-tag");
       if (typeof tags !== "string") {
@@ -87,7 +87,7 @@ const events = await fetchEvents({
     });
 
   document
-    .querySelectorAll("[data-component='schedule'] [data-trigger='date']")
+    .querySelectorAll("[data-component='schedule'] [data-part='date-trigger']")
     .forEach((trigger) => {
       const date = trigger.getAttribute("data-date");
       if (typeof date !== "string") {
@@ -113,7 +113,7 @@ const events = await fetchEvents({
               >
                 <a
                   href={`/schedule?date=${slug}`}
-                  data-trigger="date"
+                  data-part="date-trigger"
                   data-date={slug}
                 >
                   {label}
@@ -128,7 +128,7 @@ const events = await fetchEvents({
           <a
             href="/schedule"
             class="flex items-center text-sm text-white mb-4 rounded-xl p-4 bg-white/5 hover:bg-white/10"
-            data-trigger="tag"
+            data-part="tag-trigger"
             data-tag=""
           >
             <div class="w-90 flex flex-col md:flex-row md:items-center gap-2">

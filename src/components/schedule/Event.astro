@@ -3,11 +3,17 @@ import type { Event } from "../../types";
 import CalendardSymbol from "../icons/CalendardSymbol.astro";
 import ClockSymbol from "../icons/ClockSymbol.astro";
 import CloseSymbol from "../icons/CloseSymbol.astro";
+import ArrowSymbol from "../icons/ArrowSymbol.astro";
 
 type Props = Event & {
   highlightedTags?: string[];
 };
 
+const TAG_TYPE_PRIO = {
+  location: 0,
+  category: 1,
+  misc: 2,
+};
 const AVAILABLE_STYLES = {
   default: {
     styles: "bg-white/5 border-blue-300/40",
@@ -28,7 +34,9 @@ const AVAILABLE_STYLES = {
 };
 
 const {
+  id,
   title,
+  description,
   start,
   tags = [],
   cancelled,
@@ -65,36 +73,131 @@ switch (facts.extendingQuery) {
 }
 ---
 
-<article
-  class={`flex flex-col p-4 border ${style.styles} 40 rounded-xl block text-white mb-4`}
->
-  {
-    style.tags ? (
-      <div class="text-md font-bold flex flex-row mb-1">
-        {tags
-          // For now we only want to show the location tags
-          .filter(({ type }) => type === "location")
-          .map((tag) => ({
-            ...tag,
-            active: highlightedTags.includes(tag.slug),
-          }))
-          .map(({ slug, name, active }) => (
-            <a
-              href={`/schedule?tags=${slug}`}
-              data-trigger="tag"
-              data-tag={slug}
-              class={`border border-white rounded-md flex flex-row mr-2 mb-2 py-1 px-2 hover:bg-white hover:text-backgroundSecondary ${active ? "bg-white text-backgroundSecondary" : ""}`}
-            >
-              {name}
-              {active ? <CloseSymbol /> : null}
-            </a>
-          ))}
-      </div>
-    ) : null
-  }
-  <h3 class="text-lg font-bold text-pretty mb-2">{title}</h3>
-  <time datetime={start} class="text-md flex flex-row gap-3">
-    <DurationSymbol />
-    {duration}
-  </time>
+<script>
+  // TODO: Make generic toggle script/component?
+  const events: {
+    event: Element;
+    trigger: Element | null;
+    collapsible: Element | null;
+  }[] = [...document.querySelectorAll("[data-component='event']")].map(
+    (event) => {
+      const trigger = event.querySelector(
+        "[data-part='event-details-trigger']",
+      );
+      const collapsible = event.querySelector("[data-part='event-details']");
+      return { event, trigger, collapsible };
+    },
+  );
+
+  const collapseAllEvents = () => {
+    events.forEach(({ trigger, event }) => {
+      if (!trigger) {
+        return;
+      }
+      trigger.setAttribute("data-active", "false");
+      trigger.setAttribute("aria-expanded", "false");
+      event.classList.add("collapsed");
+    });
+  };
+
+  events.forEach(({ trigger, event }) => {
+    if (!trigger) {
+      return;
+    }
+
+    trigger.addEventListener("click", () => {
+      const active =
+        (trigger.getAttribute("data-active") || "false") === "false";
+
+      // We only allow expanding
+      if (!active) {
+        return;
+      }
+
+      collapseAllEvents();
+      trigger.setAttribute("data-active", String(active));
+      trigger.setAttribute("aria-expanded", String(active));
+      event.classList.toggle("collapsed", !active);
+    });
+  });
+</script>
+
+<article data-component="event" class="group collapsed">
+  <div
+    class={`flex flex-col p-4 border ${style.styles} 40 rounded-xl block text-white mb-4`}
+  >
+    {
+      style.tags ? (
+        <div class="text-md font-bold flex flex-row mb-1">
+          {tags
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .sort((a, b) => TAG_TYPE_PRIO[a.type] - TAG_TYPE_PRIO[b.type])
+            .map((tag) => {
+              const newTag = {
+                ...tag,
+                active: highlightedTags.includes(tag.slug),
+                secondary: tag.type !== "location",
+              };
+
+              if (newTag.active) {
+                newTag.secondary = false;
+              }
+
+              return newTag;
+            })
+            .map(({ slug, name, active, secondary }) => (
+              <a
+                href={`/schedule?tags=${slug}`}
+                data-part="tag-trigger"
+                data-tag={slug}
+                class={`border border-white rounded-md flex flex-row mr-2 mb-2 py-1 px-2 hover:bg-white hover:text-backgroundSecondary ${active ? "bg-white text-backgroundSecondary" : ""} ${secondary ? "group-[.collapsed]:hidden" : ""}`}
+              >
+                {name}
+                {active ? <CloseSymbol /> : null}
+              </a>
+            ))}
+        </div>
+      ) : null
+    }
+    <section
+      {...description
+        ? {
+            "data-part": "event-details-trigger",
+            "aria-controls": `event-${id}-details`,
+            "data-active": "false",
+            "aria-expanded": "false",
+          }
+        : {}}
+      class={`-mx-4 -mb-4 ${description ? "group-[.collapsed]:cursor-pointer group-[.collapsed]:hover:bg-white/10" : ""}`}
+    >
+      <h3 class="text-lg font-bold text-pretty mb-1 px-4">
+        {title}
+      </h3>
+      {
+        description ? (
+          <div
+            class="text-backgroundSecondary bg-white mt-3 px-4 pt-2 pb-2 group-[.collapsed]:hidden w-full"
+            data-part="event-details"
+            id={`event-${id}-details`}
+            aria-role="details"
+          >
+            <p>{description}</p>
+          </div>
+        ) : null
+      }
+      <aside
+        class={`text-md flex flex-row gap-3 px-4 pt-2 pb-3 w-full rounded-b-xl bg-white text-backgroundSecondary group-[.collapsed]:bg-transparent group-[.collapsed]:text-white`}
+      >
+        <time datetime={start} class="text-md flex flex-row gap-3">
+          <DurationSymbol />
+          {duration}
+        </time>
+        <span
+          class={`ml-auto hidden ${description ? "group-[.collapsed]:block" : ""}`}
+        >
+          <ArrowSymbol />
+        </span>
+      </aside>
+    </section>
+  </div>
 </article>
