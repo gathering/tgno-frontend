@@ -12,19 +12,28 @@ type Props = Event & {
 
 const AVAILABLE_STYLES = {
   default: {
+    class: "default",
     styles: "bg-white/5 border-blue-300/40",
     tags: true,
   },
+  active: {
+    class: "default",
+    styles: "bg-red-500/10 border-red-500/60",
+    tags: true,
+  },
   ended: {
-    styles: "bg-green-500",
+    class: "ended",
+    styles: "opacity-50",
     tags: false,
   },
   cancelled: {
-    styles: "bg-red-500",
+    class: "cancelled",
+    styles: "bg-white/5 border-blue-300/40",
     tags: false,
   },
   minimal: {
-    styles: "bg-yellow-500 opacity-50",
+    class: "minimal",
+    styles: "opacity-50",
     tags: false,
   },
 };
