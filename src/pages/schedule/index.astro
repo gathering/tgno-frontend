@@ -114,7 +114,7 @@ const events = await fetchEvents({
                   href={`/schedule?date=${slug}`}
                   data-part="date-trigger"
                   data-date={slug}
-                  class={`border border-white rounded-xl text-sm px-4 py-2 ${slug === dateFilter.slug ? "bg-white text-backgroundSecondary" : ""} hover:bg-white hover:text-backgroundSecondary`}
+                  class={`border rounded-xl capitalize text-sm px-4 py-2 ${slug === dateFilter.slug ? "bg-orange-500 text-black border-orange-500" : "border-white"} hover:bg-white hover:text-backgroundSecondary`}
                 >
                   {label}
                 </a>
@@ -142,7 +142,7 @@ const events = await fetchEvents({
               </aside>
             </a>
           ) : (
-            <p class="prose text-sm text-white bg-white/5 rounded-xl p-4 mb-4">
+            <p class="text-sm text-white bg-white/5 rounded-xl p-4 mb-4">
               Vi jobber (akkurat nå) intensivt med å få lagt ut alle aktiviteter
               på nettsidene... Følg med!
             </p>
