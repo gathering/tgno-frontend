@@ -12,6 +12,8 @@ export interface ApiEvent {
   start: string;
   end: string;
   cancelled: boolean;
+  related_url: string | null;
+  related_page: string | null;
   tags: Tag[];
 }
 

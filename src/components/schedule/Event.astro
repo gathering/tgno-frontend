@@ -4,6 +4,7 @@ import CalendardSymbol from "../icons/CalendardSymbol.astro";
 import ClockSymbol from "../icons/ClockSymbol.astro";
 import CloseSymbol from "../icons/CloseSymbol.astro";
 import ArrowSymbol from "../icons/ArrowSymbol.astro";
+import ExternalLinkSymbol from "../icons/ExternalLinkSymbol.astro";
 
 type Props = Event & {
   highlightedTags?: string[];
@@ -34,6 +35,7 @@ const {
   description,
   start,
   tags = [],
+  related_url,
   cancelled,
   facts,
   strings,
@@ -122,31 +124,41 @@ switch (facts.extendingQuery) {
     class={`flex flex-col p-4 border ${style.styles} 40 rounded-xl block text-white mb-4`}
   >
     {
-      style.tags ? (
-        <div class="text-md font-bold flex flex-row flex-wrap mb-1">
-          {tags
-            .filter((tag) => !tag.hidden)
-            .map((tag) => {
-              const active = highlightedTags.includes(tag.slug);
-              return active
-                ? {
-                    ...tag,
-                    active: true,
-                    secondary: false,
-                  }
-                : tag;
-            })
-            .map(({ slug, name, active = false, secondary }) => (
-              <a
-                href={`/schedule?tags=${slug}`}
-                data-part="tag-trigger"
-                data-tag={slug}
-                class={`border border-white rounded-md flex flex-row mr-2 mb-2 py-1 px-2 hover:bg-white hover:text-backgroundSecondary ${active ? "bg-white text-backgroundSecondary" : ""} ${secondary ? "group-[.collapsed]:hidden" : ""}`}
-              >
-                {name}
-                {active ? <CloseSymbol /> : null}
-              </a>
-            ))}
+      style.tags || related_url ? (
+        <div class="flex flex-row mb-1">
+          <div class="text-md font-bold flex flex-row flex-wrap">
+            {tags
+              .filter((tag) => !tag.hidden)
+              .map((tag) => {
+                const active = highlightedTags.includes(tag.slug);
+                return active
+                  ? {
+                      ...tag,
+                      active: true,
+                      secondary: false,
+                    }
+                  : tag;
+              })
+              .map(({ slug, name, active = false, secondary }) => (
+                <a
+                  href={`/schedule?tags=${slug}`}
+                  data-part="tag-trigger"
+                  data-tag={slug}
+                  class={`border border-white rounded-md flex flex-row mr-2 mb-2 py-1 px-2 hover:bg-white hover:text-backgroundSecondary ${active ? "bg-white text-backgroundSecondary" : ""} ${secondary ? "group-[.collapsed]:hidden" : ""}`}
+                >
+                  {name}
+                  {active ? <CloseSymbol /> : null}
+                </a>
+              ))}
+          </div>
+          {related_url ? (
+            <a
+              href={related_url}
+              class="rounded-md h-fit p-2 ml-auto hover:bg-white hover:text-backgroundSecondary"
+            >
+              <ExternalLinkSymbol />
+            </a>
+          ) : null}
         </div>
       ) : null
     }
@@ -161,7 +173,7 @@ switch (facts.extendingQuery) {
         : {}}
       class={`-mx-4 -mb-4 ${description ? "group-[.collapsed]:cursor-pointer group-[.collapsed]:hover:bg-white/10" : ""}`}
     >
-      <h3 class="text-lg font-bold text-pretty mb-1 px-4">
+      <h3 class="text-lg font-bold text-pretty mb-1 pt-1 px-4">
         {title}
       </h3>
       {
