@@ -51,11 +51,13 @@ const tagsFilter = (Astro.url.searchParams.get("tags") || "")
   .split(",")
   .filter(Boolean);
 
-const events = await fetchEvents({
-  ...dateFilter,
-  tags: tagsFilter,
-  api_url: import.meta.env.API_URL,
-});
+const events = (
+  await fetchEvents({
+    ...dateFilter,
+    tags: tagsFilter,
+    api_url: import.meta.env.API_URL,
+  })
+).filter((event) => ["none", "end"].includes(event.facts.extendingQuery));
 ---
 
 <script>
