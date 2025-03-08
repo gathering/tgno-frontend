@@ -1,0 +1,168 @@
+---
+import H2 from "../../components/H2.astro";
+import Main from "../../components/Main.astro";
+import Layout from "../../layouts/Layout.astro";
+import { fetchEvents } from "../../utils";
+import Event from "../../components/schedule/Event.astro";
+import DayHeader from "../../components/schedule/DayHeader.astro";
+import CloseSymbol from "../../components/icons/CloseSymbol.astro";
+import ContentContainer from "../../components/ContentContainer.astro";
+
+// In the future we could probably fetch this from the API if we really wanted to
+const CONFIG = {
+  mainFilters: [
+    {
+      slug: "all",
+      label: "Alle",
+      start: "2025-04-16",
+      end: "2025-04-21",
+    },
+    ...[16, 17, 18, 19, 20].map((date) => {
+      // TODO: Adjust timezone to +1 when filtering for dates outside of summer time
+      const start = `2025-04-${date} 00:00+02:00`;
+      const end = `2025-04-${date + 1} 00:00+02:00`;
+      return {
+        slug: `2025-04-${date}`,
+        label: new Date(start).toLocaleDateString("no-NO", {
+          weekday: "long",
+          day: "numeric",
+        }),
+        start,
+        end,
+      };
+    }),
+  ],
+  categoryFilters: [],
+  locationFilters: [],
+};
+
+const today = new Date();
+const requestedDate = Astro.url.searchParams.get("date");
+const todaySlug = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+const dateFilter =
+  // Try to use date-slug from url if present
+  CONFIG.mainFilters.find((f) => f.slug === requestedDate) ||
+  // otherwise try to use today's date
+  CONFIG.mainFilters.find((f) => f.slug === todaySlug) ||
+  // and if that fails use the first filter
+  CONFIG.mainFilters[0];
+
+const tagsFilter = (Astro.url.searchParams.get("tags") || "")
+  .split(",")
+  .filter(Boolean);
+
+const events = await fetchEvents({
+  ...dateFilter,
+  tags: tagsFilter,
+  api_url: import.meta.env.API_URL,
+});
+---
+
+<script>
+  function changeFilter({ tags, date }: { tags?: string; date?: string }) {
+    const currentUrl = new URL(window.location.href);
+    if (tags === currentUrl.searchParams.get("tags") || tags === "") {
+      currentUrl.searchParams.delete("tags");
+    } else if (tags) {
+      currentUrl.searchParams.set("tags", tags);
+    }
+    if (date === currentUrl.searchParams.get("date") || date === "") {
+      currentUrl.searchParams.delete("date");
+    } else if (date) {
+      currentUrl.searchParams.set("date", date);
+    }
+    window.location.href = `${currentUrl.pathname}${currentUrl.search}`;
+  }
+
+  document
+    .querySelectorAll("[data-component='schedule'] [data-part='tag-trigger']")
+    .forEach((trigger) => {
+      const tags = trigger.getAttribute("data-tag");
+      if (typeof tags !== "string") {
+        return;
+      }
+      trigger.addEventListener("click", (e) => {
+        e.preventDefault();
+        changeFilter({ tags });
+      });
+    });
+
+  document
+    .querySelectorAll("[data-component='schedule'] [data-part='date-trigger']")
+    .forEach((trigger) => {
+      const date = trigger.getAttribute("data-date");
+      if (typeof date !== "string") {
+        return;
+      }
+      trigger.addEventListener("click", (e) => {
+        e.preventDefault();
+        changeFilter({ date });
+      });
+    });
+</script>
+
+<Layout title="The Gathering - Program">
+  <Main>
+    <ContentContainer variant="narrow">
+      <section data-component="schedule">
+        <H2 text="PROGRAM" />
+        <nav class="text-white font-bold mt-4 mb-8">
+          <div class="flex flex-row flex-wrap gap-2 max-w-2xl">
+            {
+              CONFIG.mainFilters.map(({ slug, label }) => (
+                <a
+                  href={`/schedule?date=${slug}`}
+                  data-part="date-trigger"
+                  data-date={slug}
+                  class={`border rounded-xl capitalize text-sm px-4 py-2 ${slug === dateFilter.slug ? "bg-orange-500 text-black border-orange-500" : "border-white"} hover:bg-white hover:text-backgroundSecondary`}
+                >
+                  {label}
+                </a>
+              ))
+            }
+          </div>
+        </nav>
+        {
+          tagsFilter.length > 0 ? (
+            <a
+              href="/schedule"
+              class="flex items-center text-sm text-white mb-4 rounded-xl p-4 bg-white/5 hover:bg-white/10"
+              data-part="tag-trigger"
+              data-tag=""
+            >
+              <div class="w-90 flex flex-col md:flex-row md:items-center gap-2">
+                <p>
+                  Viser bare aktiviteter som skjer på {tagsFilter.join(", ")} i
+                  valgt periode.
+                </p>
+                <p class="font-bold">Klikk her for å vise alle.</p>
+              </div>
+              <aside class="min-w-10 ml-auto">
+                <CloseSymbol />
+              </aside>
+            </a>
+          ) : (
+            <p class="text-sm text-white bg-white/5 rounded-xl p-4 mb-4">
+              Vi jobber (akkurat nå) intensivt med å få lagt ut alle aktiviteter
+              på nettsidene... Følg med!
+            </p>
+          )
+        }
+      </section>
+      <section data-component="schedule">
+        {
+          events.map((event, i) =>
+            event.strings.startDate !== events[i - 1]?.strings.startDate ? (
+              <>
+                <DayHeader date={event.start} />
+                <Event {...event} highlightedTags={tagsFilter} />
+              </>
+            ) : (
+              <Event {...event} highlightedTags={tagsFilter} />
+            ),
+          )
+        }
+      </section>
+    </ContentContainer>
+  </Main>
+</Layout>
