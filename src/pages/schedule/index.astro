@@ -107,23 +107,20 @@ const events = await fetchEvents({
       <section data-component="schedule">
         <H2 text="PROGRAM" />
         <nav class="text-white font-bold mt-4 mb-8">
-          <ul class="flex flex-row flex-wrap gap-2 max-w-2xl">
+          <div class="flex flex-row flex-wrap gap-2 max-w-2xl">
             {
               CONFIG.mainFilters.map(({ slug, label }) => (
-                <li
+                <a
+                  href={`/schedule?date=${slug}`}
+                  data-part="date-trigger"
+                  data-date={slug}
                   class={`border border-white rounded-xl text-sm px-4 py-2 ${slug === dateFilter.slug ? "bg-white text-backgroundSecondary" : ""} hover:bg-white hover:text-backgroundSecondary`}
                 >
-                  <a
-                    href={`/schedule?date=${slug}`}
-                    data-part="date-trigger"
-                    data-date={slug}
-                  >
-                    {label}
-                  </a>
-                </li>
+                  {label}
+                </a>
               ))
             }
-          </ul>
+          </div>
         </nav>
         {
           tagsFilter.length > 0 && (
