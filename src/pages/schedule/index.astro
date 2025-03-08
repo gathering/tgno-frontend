@@ -123,7 +123,7 @@ const events = await fetchEvents({
           </div>
         </nav>
         {
-          tagsFilter.length > 0 && (
+          tagsFilter.length > 0 ? (
             <a
               href="/schedule"
               class="flex items-center text-sm text-white mb-4 rounded-xl p-4 bg-white/5 hover:bg-white/10"
@@ -141,6 +141,11 @@ const events = await fetchEvents({
                 <CloseSymbol />
               </aside>
             </a>
+          ) : (
+            <p class="prose text-sm text-white bg-white/5 rounded-xl p-4 mb-4">
+              Vi jobber (akkurat nå) intensivt med å få lagt ut alle aktiviteter
+              på nettsidene... Følg med!
+            </p>
           )
         }
       </section>
