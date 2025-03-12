@@ -20,7 +20,7 @@ const CONFIG = {
     ...[16, 17, 18, 19, 20].map((date) => {
       // TODO: Adjust timezone to +1 when filtering for dates outside of summer time
       const start = `2025-04-${date} 00:00+02:00`;
-      const end = `2025-04-${date + 1} 00:00+02:00`;
+      const end = `2025-04-${date + 1} 02:00+02:00`;
       return {
         slug: `2025-04-${date}`,
         label: new Date(start).toLocaleDateString("no-NO", {

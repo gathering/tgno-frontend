@@ -12,12 +12,14 @@ export interface Props {
   class?: string;
   buttonClass?: string;
   url?: string;
+  urlText?: string;
 }
 
 const {
   title,
   prizes,
   url,
+  urlText = "Les mer",
   class: classNames,
   buttonClass: buttonClassNames,
   byoc,
@@ -69,7 +71,9 @@ const formattedPrizes = prizes.map((prize) =>
   {
     url && (
       <div class="last:pt-4 last:mt-auto w-full">
-        <button class={buttonClassNames}>Les mer</button>
+        <a href={url}>
+          <button class={buttonClassNames}>{urlText}</button>
+        </a>
       </div>
     )
   }
