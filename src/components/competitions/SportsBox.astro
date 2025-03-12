@@ -71,7 +71,9 @@ const formattedPrizes = prizes.map((prize) =>
   {
     url && (
       <div class="last:pt-4 last:mt-auto w-full">
-        <button class={buttonClassNames}>{urlText}</button>
+        <a href={url}>
+          <button class={buttonClassNames}>{urlText}</button>
+        </a>
       </div>
     )
   }
