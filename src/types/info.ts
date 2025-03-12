@@ -9,7 +9,7 @@ export interface FaqSnippet {
 export interface InfoPageSnippet {
   title: string;
   url: string;
-  show_in_menu?: boolean;
+  show_in_menus?: boolean;
 }
 
 export interface InfoPage extends MinimalApiPage {
