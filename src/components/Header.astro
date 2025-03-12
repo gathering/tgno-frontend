@@ -55,10 +55,12 @@ const getNavigationItems: () => Promise<NavItem[]> = async () => {
     items
       .find((item) => item.title === "Praktisk")
       ?.items?.unshift(
-        ...practicalPage.pages.map(({ title, url }) => ({
-          title,
-          path: url,
-        })),
+        ...practicalPage.pages
+          .filter(({ show_in_menu }) => !!show_in_menu)
+          .map(({ title, url }) => ({
+            title,
+            path: url,
+          })),
       );
   }
 
