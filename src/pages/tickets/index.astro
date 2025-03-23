@@ -6,6 +6,7 @@ import H2 from "../../components/H2.astro";
 import H3 from "../../components/H3.astro";
 import ContentContainer from "../../components/ContentContainer.astro";
 import TicketBox from "../../components/tickets/TicketBox.astro";
+import ReservationGuideBox from "../../components/tickets/ReservationGuideBox.astro";
 
 const boxStyles = [
   "p-6",
@@ -47,7 +48,11 @@ const jsonLd = {
 };
 ---
 
-<Layout title="The Gathering - Billetter" jsonLd={jsonLd}>
+<Layout
+  title="The Gathering - Billetter"
+  jsonLd={jsonLd}
+  description="Opplev Norges største dataparty! Kjøp din billett til The Gathering 2025 og bli med på en uke full av spennende aktiviteter, konkurranser og moro."
+>
   <Main>
     <ContentContainer>
       <H1
@@ -76,51 +81,32 @@ const jsonLd = {
             target="_blank">Kjøp billett på GeekEvents</a
           >
         </div>
-        <section
-          class={`${boxStyles.join(" ")} sm:col-start-5 sm:col-span-3 bg-blue-400 text-black prose prose-headings:text-black sm:mt-40`}
-        >
-          <H3>Viktige datoer for billettkjøp</H3>
-          <p>
-            Hold øye med de følgende datoene for å sikre deg billetter til The
-            Gathering 2025:
-          </p>
-          <ul>
-            <li>21. Oktober - Køsystemet åpner på Geekevents</li>
-            <li>3. November - Køsystemet stenger</li>
-            <li class="font-bold">4. November - Billettsalget åpner</li>
-          </ul>
-          <p>
-            Senere i år: Ledsager- og besøkende billetter lanseres (følg med for
-            mer informasjon).
-          </p>
+        <section class={`${boxStyles.join(" ")} sm:col-span-4 bg-orange-500 `}>
+          <ReservationGuideBox
+            cta={{
+              url: "https://www.tg.no/news/plassreservasjon-åpner-26-mars",
+              text: "Lær hvordan du reserverer seter på GeekEvents",
+            }}
+          />
         </section>
         <section
-          class={`${boxStyles.join(" ")} sm:col-start-2 sm:col-span-4 bg-orange-500 `}
+          class={`${boxStyles.join(" ")} sm:col-span-3 bg-blue-400 text-black prose prose-headings:text-black sm:h-min`}
         >
-          <div class="prose prose-headings:text-black text-black">
-            <H3>Hvordan fungerer køsystemet?</H3>
-            <p>
-              For å sikre en rettferdig billettsalgsprosess har vi valgt å
-              gjeninnføre køsystemet basert på tilbakemeldinger fra tidligere
-              deltakere. Her er hvordan det fungerer:
-            </p>
-            <ul>
-              <li>
-                <strong>Påmelding til køen:</strong> Registrer deg innen søndag 3.
-                november for å få en tildelt plass i køen.
-              </li>
-              <li>
-                <strong>Tildeling av kønummer:</strong> Mandag 4. november får du
-                et tilfeldig kønummer, som du mottar via SMS og e-post.
-              </li>
-              <li>
-                <strong>Billettsalget åpner:</strong> 4. november kl. 12.00 starter
-                billettsalget og når det er din tur, får du en SMS og 72 timer på
-                å kjøpe billetter. (du kan fortsatt stille deg i kø, men du blir
-                plassert bakerst)
-              </li>
-            </ul>
-          </div>
+          <H3>Viktige datoer</H3>
+          <p>
+            Hold øye med de følgende datoene for å sikre deg billetter og de
+            setene du ønsker på The Gathering 2025:
+          </p>
+          <ul>
+            <li class="text-xs">
+              21. Oktober - Køsystemet åpner på Geekevents
+            </li>
+            <li class="text-xs">3. November - Køsystemet stenger</li>
+            <li class="text-xs">4. November - Billettsalget åpner</li>
+            <li class="font-bold">26.mars - Setereservasjon åpner</li>
+            <li class="text-xs">2.April - Forhåndsinnsjekk åpner</li>
+            <li class="text-xs">16.April - Setereservasjon stenger</li>
+          </ul>
         </section>
         <section
           class={`${boxStyles.join(" ")} sm:col-start-1 sm:col-span-7 bg-blue-500`}
@@ -131,18 +117,6 @@ const jsonLd = {
             passer deg best:
           </p>
           <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
-            <TicketBox
-              name="LANpass"
-              timespan="til hele arrangementet"
-              price={1590}
-            >
-              <p>
-                Gir deg tilgang til hele eventet fra start til slutt. Dette er
-                den vanlige deltakerbillett for deg som vil ha en sitteplass med
-                120 cm under hele arrangementet. Du kan delta i alle
-                konkurranser med denne billetten.
-              </p>
-            </TicketBox>
             <TicketBox
               name="LANpass 1337 Edition"
               timespan="til hele arrangementet"
@@ -157,6 +131,18 @@ const jsonLd = {
               >
                 Utsolgt!
               </div>
+            </TicketBox>
+            <TicketBox
+              name="LANpass"
+              timespan="til hele arrangementet"
+              price={1590}
+            >
+              <p>
+                Gir deg tilgang til hele eventet fra start til slutt. Dette er
+                den vanlige deltakerbillett for deg som vil ha en sitteplass med
+                120 cm under hele arrangementet. Du kan delta i alle
+                konkurranser med denne billetten.
+              </p>
             </TicketBox>
             <TicketBox
               name="LANpass, 2 dagers"
