@@ -1,0 +1,228 @@
+---
+import "leaflet/dist/leaflet.css";
+import type { MapItem } from "../../types";
+import HamburgerSymbol from "../icons/HamburgerSymbol.astro";
+import CloseSymbol from "../icons/CloseSymbol.astro";
+import TgMapNavItem from "./TgMapNavItem.astro";
+
+export type Props = {
+  locations: MapItem[];
+};
+
+const { locations: ssrLocations } = Astro.props;
+---
+
+<script>
+  import L from "leaflet";
+  import { pad, slugifyMapItemName } from "../../utils/map";
+  import type { PartialMapItem, MapItem } from "../../types";
+  import { isMapItem } from "../../utils";
+
+  const yx = L.latLng;
+  const xy = (x: number, y: number): L.LatLng => {
+    if (Array.isArray(x)) {
+      if (Array.isArray(x[0])) {
+        // When doing xy([[xy, xy, xy, etc])
+        return x.map((cords) => xy(cords));
+      }
+      // When doing xy([x, y]);
+      return yx(x[1], x[0]);
+    }
+    return yx(y, x); // When doing xy(x, y);
+  };
+
+  class TGMap extends HTMLElement {
+    currentTarget: string = "";
+    map?: L.Map = undefined;
+    mapBounds?: [[number, number], [number, number]] = undefined;
+    targets: Record<string, L.Rectangle> = {};
+    menu: HTMLElement | null = null;
+    menuTrigger: HTMLElement | null = null;
+    menuVisible: boolean = false;
+
+    toggleMenu(visible?: boolean) {
+      this.menuVisible = visible ?? !this.menuVisible;
+      this.menu?.classList.toggle("hidden", !this.menuVisible);
+      this.menuTrigger?.classList.toggle("active", this.menuVisible);
+      this.menuTrigger?.setAttribute(
+        "aria-expanded",
+        this.menuVisible.toString(),
+      );
+    }
+
+    resetTarget() {
+      this.currentTarget = "";
+      if (this.map && this.mapBounds) {
+        this.map?.fitBounds(this.mapBounds);
+      }
+    }
+
+    onNavigate(slug: string) {
+      this.toggleMenu(false);
+      this.goToTarget(slug);
+    }
+
+    goToTarget(slug: string) {
+      const target = this.targets[slug];
+      if (!target) {
+        console.error("No target found for slug", slug);
+        this.resetTarget();
+        return;
+      }
+      if (slug === this.currentTarget) {
+        this.resetTarget();
+        return;
+      }
+
+      this.currentTarget = slug;
+      this.map?.fitBounds(target.getBounds(), {
+        duration: 1,
+        padding: [50, 50],
+        animate: true,
+      });
+    }
+
+    connectedCallback() {
+      let locations: MapItem[] = [];
+      try {
+        locations = JSON.parse(this.dataset.locations || "").filter(isMapItem);
+      } catch (e) {
+        console.log(
+          `Unable to import map locations`,
+          this.dataset.locations,
+          e,
+        );
+      }
+
+      // Initialize the map
+      this.map = L.map("map", {
+        crs: L.CRS.Simple,
+        minZoom: -2,
+        //zoomAnimationThreshold: 100,
+        preferCanvas: true,
+        //inertiaMaxSpeed: 1000,
+        // TODO: Activate on mobile, or where we need to avoid the "pop in" effect
+        // renderer: L.canvas({ padding: 3 }),
+      });
+      this.mapBounds = [[0, 0], xy([3308, 2339])];
+
+      // Tile layer (you can use a custom image layer here too if you prefer)
+      //L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
+      //  map,
+      //);
+      //
+
+      //const mapBounds = [[0, 0], xy([3308, 2339])];
+      //L.imageOverlay("/TG25_sitemap_placeholder.jpg", mapBounds).addTo(map);
+      L.imageOverlay(
+        "/TG25_sitemap_low_res_placeholder.jpg",
+        this.mapBounds,
+      ).addTo(this.map);
+
+      locations.forEach(
+        ({
+          slug,
+          name,
+          icon,
+          pos,
+          width,
+          height,
+          presentation: { padding, rectangleProps = {} } = {},
+        }) => {
+          const bounds = [pos, [pos[0] + width, pos[1] + height]];
+          const paddedBounds = pad(
+            typeof padding === "number" ? padding : 10,
+            bounds,
+          );
+          if (!this.map) {
+            return;
+          }
+
+          const logo = L.imageOverlay(icon, xy(paddedBounds), {
+            zIndex: 201, // Polygons are 200?
+            interactive: false,
+          }).addTo(this.map);
+          const polygon = L.rectangle(xy(bounds), {
+            noClip: true,
+            color: "black",
+            weight: 1,
+            fillColor: "black",
+            fillOpacity: 0.8,
+            ...(rectangleProps as Object),
+          }).addTo(this.map);
+
+          const actualSlug = slug || slugifyMapItemName(name);
+          this.targets[actualSlug] = polygon;
+
+          polygon.on("click", () => {
+            this.goToTarget(actualSlug);
+          });
+        },
+      );
+
+      //L.rectangle(maxBounds).addTo(map);
+      this.map.fitBounds(this.mapBounds);
+      this.map.setMaxBounds(this.mapBounds);
+      //map.setMinZoom(map.getBoundsZoom(this.mapBounds));
+
+      document
+        .querySelectorAll("[data-component=tg-map] [data-part=nav-item]")
+        .forEach((el) => {
+          el.addEventListener("click", () => {
+            const target = el.getAttribute("data-target");
+            this.onNavigate(target);
+          });
+        });
+
+      document
+        .querySelectorAll("button[data-action=reset]")
+        .forEach((button) => {
+          button.addEventListener("click", this.resetTarget);
+        });
+
+      this.menuTrigger = document.querySelector(
+        "[data-component=tg-map] [data-part=nav-trigger]",
+      );
+      this.menu = document.querySelector(
+        "[data-component=tg-map] [data-part=nav]",
+      );
+
+      this.menuTrigger?.addEventListener("click", () => this.toggleMenu());
+    }
+  }
+
+  customElements.define("tg-map", TGMap);
+</script>
+
+<style>
+  tg-map {
+    .leaflet-container {
+      background-color: theme("colors.backgroundSecondary");
+    }
+  }
+</style>
+
+<tg-map data-locations={JSON.stringify(ssrLocations)} data-component="tg-map">
+  <div class="relative z-[999]">
+    <nav
+      id="tg-map-nav"
+      data-part="nav"
+      class="fixed bg-black/90 right-6 bottom-6 left-6 p-6 pb-10 hidden max-h-[80vh] overflow-y-auto rounded-3xl rounded-br-[2rem]"
+    >
+      <slot name="nav" />
+    </nav>
+    <button
+      type="button"
+      data-part="nav-trigger"
+      class="fixed rounded-full bg-orange-600 text-white p-3 right-9 bottom-9 group"
+      aria-controls="tg-map-nav"
+      aria-expanded="false"
+    >
+      <HamburgerSymbol class="group-[.active]:hidden" />
+      <CloseSymbol class="hidden group-[.active]:block" />
+    </button>
+  </div>
+  <div id="map" class="fixed bg-black top-32 right-0 bottom-0 left-0 z-[10]">
+  </div>
+  <slot />
+</tg-map>

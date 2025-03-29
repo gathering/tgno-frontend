@@ -1,0 +1,173 @@
+---
+import "leaflet/dist/leaflet.css";
+import { calculateRow } from "../../utils";
+import TgMap from "../../components/map/TgMap.astro";
+import type { MapItem } from "../../types";
+import Layout from "../../layouts/Layout.astro";
+import TgMapNavItem from "../../components/map/TgMapNavItem.astro";
+import H3 from "../../components/H3.astro";
+
+const LOCATION_TYPES = {
+  stand: {
+    presentation: {
+      padding: 40,
+      rectangleProps: {
+        color: "black",
+        weight: 1,
+        fillColor: "black",
+        fillOpacity: 1,
+      },
+    },
+  },
+  stage: {
+    presentation: {
+      padding: 40,
+      rectangleProps: {
+        color: "black",
+        weight: 1,
+        fillColor: "black",
+        fillOpacity: 1,
+      },
+    },
+  },
+};
+
+const STANDS = {
+  kia: {
+    icon: "/tg25/sponsors/kia_white.svg",
+    name: "Kia",
+  },
+  kandu: {
+    icon: "/tg25/sponsors/kandu.svg",
+    name: "KANDU",
+  },
+  nexthop: {
+    icon: "/tg25/sponsors/nexthop.svg",
+    name: "NextHop",
+  },
+  riot: {
+    icon: "/tg25/sponsors/riot_white.svg",
+    name: "Riot Games",
+  },
+  nlogic: {
+    icon: "/tg25/sponsors/nlogic.svg",
+    name: "nLogic",
+  },
+  telenor: {
+    icon: "/tg25/sponsors/telenor.svg",
+    name: "Telenor",
+  },
+};
+
+const FOOD = {
+  lorem: {
+    icon: "/tg25/food/lorem.svg",
+    name: "Lorem",
+  },
+};
+
+const STAGES = {
+  mainStage: {
+    icon: "https://www.tg.no/tg25/tg25_square_white.svg",
+    name: "Main Stage",
+    ...LOCATION_TYPES.stage,
+  },
+  creativiaStage: {
+    icon: "https://www.tg.no/tg25/tg25_square_white.svg",
+    name: "Creativia stage",
+    ...LOCATION_TYPES.stage,
+  },
+};
+
+const LOCATIONS: MapItem[] = [
+  ...calculateRow([
+    {
+      ...STANDS.kia,
+      width: 47.3,
+      height: 47.3,
+      pos: [776.3, 1494.3],
+    },
+    {
+      ...STANDS.kandu,
+      width: 94.6,
+      height: 47.3,
+    },
+    {
+      ...STANDS.nexthop,
+      width: 94.6,
+      height: 47.3,
+    },
+  ]),
+  ...calculateRow([
+    {
+      ...STANDS.riot,
+      width: 94.6,
+      height: 47.3,
+      pos: [776.3, 1447.3],
+    },
+    {
+      ...STANDS.nlogic,
+      width: 94.6,
+      height: 47.3,
+    },
+    {
+      ...STANDS.telenor,
+      width: 47.3,
+      height: 47.3,
+    },
+  ]),
+  {
+    ...STAGES.mainStage,
+    width: 280,
+    height: 350,
+    pos: [1300, 1390],
+  },
+  {
+    ...STAGES.creativiaStage,
+    width: 140,
+    height: 170,
+    pos: [2070, 1630],
+  },
+];
+
+const usedLocations = LOCATIONS.map(({ name }) => name);
+const nav = [
+  {
+    title: "Utstillere",
+    items: Object.values(STANDS).filter(({ name }) =>
+      usedLocations.includes(name),
+    ),
+  },
+  {
+    title: "Mat",
+    items: Object.values(FOOD).filter(({ name }) =>
+      usedLocations.includes(name),
+    ),
+  },
+  {
+    title: "Scener",
+    items: Object.values(STAGES).filter(({ name }) =>
+      usedLocations.includes(name),
+    ),
+  },
+].filter(({ items }) => items.length > 0);
+---
+
+<Layout title="The Gathering - Map" footerVariant="hidden">
+  <TgMap locations={LOCATIONS}>
+    <Fragment slot="nav">
+      {
+        nav.map(({ title, items }) => (
+          <>
+            <H3 class="mb-4">{title}</H3>
+            <ul class="flex flex-row flex-wrap text-md font-bold text-white gap-2 mb-6">
+              {items.map((item) => (
+                <TgMapNavItem mapItem={item} />
+              ))}
+            </ul>
+          </>
+        ))
+      }
+    </Fragment>
+  </TgMap>
+</Layout>
