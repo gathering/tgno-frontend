@@ -11,6 +11,8 @@ interface Props {
   introText?: string;
   type?: string;
   jsonLd?: unknown;
+  footerVariant?: "hidden";
+  headerVariant?: "hidden" | "compact";
 }
 
 const {
@@ -23,6 +25,8 @@ const {
   image = "https://www.tg.no/images/tg23-oversikt.jpg",
   description = "We have hosted The Gathering since 1992 and it has always been a hub for young creative people to battle it out in many types of competitions; demo-coding, music, graphics, animation, and gaming.",
   jsonLd = undefined,
+  footerVariant = "default",
+  headerVariant = "default",
 } = Astro.props;
 
 const finalTitle = seo_title || title;
@@ -96,8 +100,8 @@ const matomoInstanceUrl =
     <!-- End Matomo Code -->
   </head>
   <body class="min-w-80 min-h-screen bg-background sm:flex sm:flex-col">
-    <Header />
+    {headerVariant !== "hidden" && <Header />}
     <slot />
-    <Footer />
+    {footerVariant !== "hidden" && <Footer />}
   </body>
 </html>
