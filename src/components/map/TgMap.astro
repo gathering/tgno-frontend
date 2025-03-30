@@ -3,7 +3,6 @@ import "leaflet/dist/leaflet.css";
 import type { MapItem } from "../../types";
 import HamburgerSymbol from "../icons/HamburgerSymbol.astro";
 import CloseSymbol from "../icons/CloseSymbol.astro";
-import TgMapNavItem from "./TgMapNavItem.astro";
 
 export type Props = {
   locations: MapItem[];
@@ -15,7 +14,7 @@ const { locations: ssrLocations } = Astro.props;
 <script>
   import L from "leaflet";
   import { pad, slugifyMapItemName } from "../../utils/map";
-  import type { PartialMapItem, MapItem } from "../../types";
+  import type { MapItem } from "../../types";
   import { isMapItem } from "../../utils";
 
   const yx = L.latLng;
@@ -76,8 +75,8 @@ const { locations: ssrLocations } = Astro.props;
 
       this.currentTarget = slug;
       this.map?.fitBounds(target.getBounds(), {
-        duration: 1,
-        padding: [50, 50],
+        duration: 0.3,
+        padding: [75, 75],
         animate: true,
       });
     }
@@ -99,10 +98,11 @@ const { locations: ssrLocations } = Astro.props;
         crs: L.CRS.Simple,
         minZoom: -2,
         //zoomAnimationThreshold: 100,
-        preferCanvas: true,
+        //preferCanvas: true,
         //inertiaMaxSpeed: 1000,
         // TODO: Activate on mobile, or where we need to avoid the "pop in" effect
         // renderer: L.canvas({ padding: 3 }),
+        attributionControl: false,
       });
       this.mapBounds = [[0, 0], xy([3308, 2339])];
 
@@ -119,6 +119,7 @@ const { locations: ssrLocations } = Astro.props;
         this.mapBounds,
       ).addTo(this.map);
 
+      let polygons: L.Polygon[] = [];
       locations.forEach(
         ({
           slug,
@@ -127,7 +128,12 @@ const { locations: ssrLocations } = Astro.props;
           pos,
           width,
           height,
-          presentation: { padding, rectangleProps = {} } = {},
+          presentation: {
+            type = "unknown",
+            interactive = true,
+            calendarQuery,
+            padding,
+          } = {},
         }) => {
           const bounds = [pos, [pos[0] + width, pos[1] + height]];
           const paddedBounds = pad(
@@ -144,21 +150,50 @@ const { locations: ssrLocations } = Astro.props;
           }).addTo(this.map);
           const polygon = L.rectangle(xy(bounds), {
             noClip: true,
-            color: "black",
-            weight: 1,
-            fillColor: "black",
-            fillOpacity: 0.8,
-            ...(rectangleProps as Object),
+            className: type,
           }).addTo(this.map);
+          polygons.push(polygon);
 
           const actualSlug = slug || slugifyMapItemName(name);
           this.targets[actualSlug] = polygon;
 
-          polygon.on("click", () => {
-            this.goToTarget(actualSlug);
-          });
+          if (!interactive) {
+            return;
+          }
+
+          polygon
+            .bindPopup(
+              (_layer) => {
+                const contents = document.createElement("div");
+
+                const heading = document.createElement("h3");
+                heading.textContent = name;
+                heading.onclick = () => this.goToTarget(actualSlug);
+                contents.append(heading);
+
+                if (calendarQuery) {
+                  const calendarLink = document.createElement("a");
+                  calendarLink.classList.add("calendar-link");
+                  calendarLink.target = "_blank";
+                  calendarLink.href = `/schedule?tags=${calendarQuery.join(",")}`;
+                  calendarLink.textContent = "Se full oversikt i kalenderen";
+                  contents.append(calendarLink);
+                }
+
+                return contents;
+              },
+              {
+                className: type,
+                closeButton: false,
+              },
+            )
+            .openPopup();
         },
       );
+
+      if (polygons[0]) {
+        this.map.getRenderer(polygons[0]).options.padding = 2;
+      }
 
       //L.rectangle(maxBounds).addTo(map);
       this.map.fitBounds(this.mapBounds);
@@ -170,7 +205,9 @@ const { locations: ssrLocations } = Astro.props;
         .forEach((el) => {
           el.addEventListener("click", () => {
             const target = el.getAttribute("data-target");
-            this.onNavigate(target);
+            if (target) {
+              this.onNavigate(target);
+            }
           });
         });
 
@@ -198,6 +235,34 @@ const { locations: ssrLocations } = Astro.props;
   tg-map {
     .leaflet-container {
       background-color: theme("colors.backgroundSecondary");
+    }
+    .leaflet-interactive {
+      &.stage {
+        fill-opacity: 1;
+        fill: theme("colors.backgroundSecondary");
+        stroke: theme("colors.backgroundSecondary");
+      }
+      &.stand {
+        fill-opacity: 1;
+        fill: theme("colors.backgroundSecondary");
+        stroke: theme("colors.backgroundSecondary");
+      }
+      &.unknown {
+        fill-opacity: 1;
+        fill: theme("colors.neutral.200");
+        stroke: theme("colors.neutral.200");
+      }
+    }
+    .leaflet-popup {
+      h3 {
+        font-size: theme("fontSize.2xl");
+        font-weight: theme("fontWeight.bold");
+        margin-bottom: theme("margin.2");
+      }
+      p {
+        font-size: theme("fontSize.base");
+        margin: theme("margin.2") 0;
+      }
     }
   }
 </style>

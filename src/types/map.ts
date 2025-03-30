@@ -6,8 +6,12 @@ export interface PartialMapItem {
   slug?: string;
   name: string;
   icon: string;
-  target?: unknown;
   width: number;
   height: number;
-  presentation?: Record<string, string | number | Object>;
+  presentation?: {
+    type: "stage" | "stand" | "unknown";
+    interactive?: boolean;
+    calendarQuery?: string[];
+    padding?: number;
+  };
 }

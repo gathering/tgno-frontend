@@ -2,80 +2,90 @@
 import "leaflet/dist/leaflet.css";
 import { calculateRow } from "../../utils";
 import TgMap from "../../components/map/TgMap.astro";
-import type { MapItem } from "../../types";
+import type { MapItem, PartialMapItem } from "../../types";
 import Layout from "../../layouts/Layout.astro";
 import TgMapNavItem from "../../components/map/TgMapNavItem.astro";
 import H3 from "../../components/H3.astro";
 
-const LOCATION_TYPES = {
-  stand: {
-    presentation: {
-      padding: 40,
-      rectangleProps: {
-        color: "black",
-        weight: 1,
-        fillColor: "black",
-        fillOpacity: 1,
-      },
-    },
-  },
-  stage: {
-    presentation: {
-      padding: 40,
-      rectangleProps: {
-        color: "black",
-        weight: 1,
-        fillColor: "black",
-        fillOpacity: 1,
-      },
-    },
-  },
-};
+type MapItemBase = Pick<PartialMapItem, "icon" | "name"> &
+  Partial<Omit<PartialMapItem, "icon" | "name">>;
 
-const STANDS = {
+type LocationMap = Record<string, MapItemBase>;
+
+const STANDS: LocationMap = {
   kia: {
     icon: "/tg25/sponsors/kia_white.svg",
     name: "Kia",
+    presentation: {
+      type: "stand",
+    },
   },
   kandu: {
     icon: "/tg25/sponsors/kandu.svg",
     name: "KANDU",
+    presentation: {
+      type: "stand",
+    },
   },
   nexthop: {
     icon: "/tg25/sponsors/nexthop.svg",
     name: "NextHop",
+    presentation: {
+      type: "stand",
+    },
   },
   riot: {
     icon: "/tg25/sponsors/riot_white.svg",
     name: "Riot Games",
+    presentation: {
+      type: "stand",
+    },
   },
   nlogic: {
     icon: "/tg25/sponsors/nlogic.svg",
     name: "nLogic",
+    presentation: {
+      type: "stand",
+    },
   },
   telenor: {
     icon: "/tg25/sponsors/telenor.svg",
     name: "Telenor",
+    presentation: {
+      type: "stand",
+    },
   },
 };
 
-const FOOD = {
+const FOOD: LocationMap = {
   lorem: {
     icon: "/tg25/food/lorem.svg",
     name: "Lorem",
+    presentation: {
+      type: "unknown",
+      interactive: false,
+    },
   },
 };
 
-const STAGES = {
+const STAGES: LocationMap = {
   mainStage: {
     icon: "https://www.tg.no/tg25/tg25_square_white.svg",
-    name: "Main Stage",
-    ...LOCATION_TYPES.stage,
+    name: "Hovedscenen",
+    presentation: {
+      type: "stage",
+      calendarQuery: ["hovedscenen"],
+      padding: 40,
+    },
   },
   creativiaStage: {
     icon: "https://www.tg.no/tg25/tg25_square_white.svg",
-    name: "Creativia stage",
-    ...LOCATION_TYPES.stage,
+    name: "Kreativiascenen",
+    presentation: {
+      type: "stage",
+      calendarQuery: ["kreativiascenen"],
+      padding: 40,
+    },
   },
 };
 
