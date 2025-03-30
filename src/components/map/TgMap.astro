@@ -176,7 +176,7 @@ const { locations: ssrLocations } = Astro.props;
                   calendarLink.classList.add("calendar-link");
                   calendarLink.target = "_blank";
                   calendarLink.href = `/schedule?tags=${calendarQuery.join(",")}`;
-                  calendarLink.textContent = "Se full oversikt i kalenderen";
+                  calendarLink.textContent = "Se programmet";
                   contents.append(calendarLink);
                 }
 
@@ -254,14 +254,44 @@ const { locations: ssrLocations } = Astro.props;
       }
     }
     .leaflet-popup {
+      color: theme("colors.white");
+      .leaflet-container {
+        padding: theme("padding.4");
+      }
       h3 {
+        cursor: pointer;
         font-size: theme("fontSize.2xl");
         font-weight: theme("fontWeight.bold");
         margin-bottom: theme("margin.2");
       }
+      .calendar-link {
+        display: block;
+        padding: theme("padding.2") theme("padding.4");
+        margin: theme("margin.4") 0 theme("margin.6");
+        text-align: center;
+        font-size: theme("fontSize.base");
+        font-weight: theme("fontWeight.bold");
+        background-color: theme("colors.yellow.500");
+        color: theme("colors.black");
+        border-radius: theme("borderRadius.lg");
+      }
       p {
         font-size: theme("fontSize.base");
         margin: theme("margin.2") 0;
+      }
+      &.stand {
+        .leaflet-popup-content-wrapper,
+        .leaflet-popup-tip {
+          color: theme("colors.black");
+          background-color: theme("colors.yellow.400");
+        }
+      }
+      &.stage {
+        .leaflet-popup-content-wrapper,
+        .leaflet-popup-tip {
+          color: theme("colors.white");
+          background-color: theme("colors.backgroundSecondary");
+        }
       }
     }
   }
