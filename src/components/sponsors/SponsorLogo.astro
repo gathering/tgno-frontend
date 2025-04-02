@@ -4,9 +4,10 @@ interface Props {
   url: string;
   alt: string;
   width: number;
+  nudge?: "t" | "b" | "l" | "r";
 }
 
-const { filename, url, alt, width } = Astro.props;
+const { filename, url, alt, width, nudge } = Astro.props;
 ---
 
 <a href={url} target="_blank" class="flex justify-center md:min-w-[160px]">
@@ -14,6 +15,6 @@ const { filename, url, alt, width } = Astro.props;
     src={`/tg25/sponsors/${filename}`}
     alt={alt}
     width={width}
-    class="aspect-thumbnail object-cover"
+    class={`aspect-thumbnail object-cover ${nudge ? "m" + nudge + "-2" : ""}`}
   />
 </a>
