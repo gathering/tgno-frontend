@@ -1,0 +1,31 @@
+---
+interface Props {
+  class?: string;
+  htmlBody?: string;
+}
+
+const { class: className, htmlBody: body } = Astro.props;
+---
+
+<style>
+  .richtext-container {
+    .richtext-image {
+      &.left {
+        float: left;
+        max-width: 40%;
+        margin: 0 1rem 0.5rem 0;
+      }
+      &.right {
+        float: right;
+        max-width: 40%;
+        margin: 0 0 0.5rem 1rem;
+      }
+    }
+  }
+</style>
+
+{
+  body ? (
+    <div class={`prose richtext-container ${className}`} set:html={body} />
+  ) : null
+}
