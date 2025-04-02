@@ -5,6 +5,7 @@ import Intro from "../Intro.astro";
 import ContentContainer from "../ContentContainer.astro";
 import H1 from "../H1.astro";
 import H2 from "../H2.astro";
+import BodyText from "../BodyText.astro";
 
 type Props = InfoPage;
 
@@ -15,7 +16,7 @@ const { title, faq = [], intro, body } = Astro.props;
   <section class="mb-4">
     <H1 text={title} />
     {intro ? <Intro text={intro} /> : null}
-    <div class="prose" set:html={body} />
+    <BodyText htmlBody={body} />
   </section>
   {
     !!faq.length ? (
