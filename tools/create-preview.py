@@ -54,6 +54,10 @@ application = {
       "targetRevision": args.repo_revision
     },
     "syncPolicy": {
+        "managedNamespaceMetadata": {
+            "labels": {},
+            "annotations": {},
+        },
         "syncOptions": [
             "CreateNamespace=true",
             "ServerSideApply=true",
