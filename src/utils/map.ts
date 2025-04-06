@@ -32,7 +32,14 @@ export const calculateRow = (
   return newItems;
 };
 
-export const pad = (amount: number, cords: number[][]) => {
+export type Cords = [number, number];
+
+export const isCords = (possibleCords: unknown): possibleCords is Cords =>
+  Array.isArray(possibleCords) &&
+  possibleCords.length === 2 &&
+  typeof possibleCords[0] === "number";
+
+export const pad = (amount: number, cords: Cords[]): Cords[] => {
   return [
     [cords[0][0] + amount, cords[0][1] + amount],
     [cords[1][0] - amount, cords[1][1] - amount],

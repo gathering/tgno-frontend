@@ -9,10 +9,10 @@ type Props = {
 const { mapItem } = Astro.props;
 ---
 
-<li
+<a
   class="border border-white px-2 py-1 mb-2 rounded-xl cursor-pointer hover:bg-orange-600 focus:bg-orange-600"
   data-part="nav-item"
   data-target={mapItem.slug || slugifyMapItemName(mapItem.name)}
 >
   {mapItem.name}
-</li>
+</a>

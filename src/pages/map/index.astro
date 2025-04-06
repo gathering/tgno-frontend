@@ -78,6 +78,15 @@ const STAGES: LocationMap = {
       padding: 40,
     },
   },
+  eSportStage: {
+    icon: "https://www.tg.no/tg25/tg25_square_white.svg",
+    name: "Esportscenen",
+    presentation: {
+      type: "stage",
+      calendarQuery: ["esportscenen"],
+      padding: 40,
+    },
+  },
   creativiaStage: {
     icon: "https://www.tg.no/tg25/tg25_square_white.svg",
     name: "Kreativiascenen",
@@ -129,8 +138,14 @@ const LOCATIONS: MapItem[] = [
   {
     ...STAGES.mainStage,
     width: 280,
-    height: 350,
-    pos: [1300, 1390],
+    height: 250,
+    pos: [1300, 1310],
+  },
+  {
+    ...STAGES.eSportStage,
+    width: 280,
+    height: 190,
+    pos: [1300, 1600],
   },
   {
     ...STAGES.creativiaStage,
@@ -172,7 +187,9 @@ const nav = [
             <H3 class="mb-4">{title}</H3>
             <ul class="flex flex-row flex-wrap text-md font-bold text-white gap-2 mb-6">
               {items.map((item) => (
-                <TgMapNavItem mapItem={item} />
+                <li>
+                  <TgMapNavItem mapItem={item} />
+                </li>
               ))}
             </ul>
           </>
