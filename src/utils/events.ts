@@ -4,7 +4,7 @@ import { typedFetch } from "./fetching";
 const TAG_TYPE_PRIO = {
   location: 0,
   category: 1,
-  misc: 2,
+  meta: 2,
 };
 
 type DateOptionWithoutDate = {
@@ -39,9 +39,9 @@ export const isTag = (tag: unknown): tag is TagWithMeta =>
   !isDateOption(tag) && !!(tag as TagWithMeta).type;
 
 export const tagsOfTypes =
-  (types: Array<"location" | "category" | "misc">) =>
+  (types: Array<"location" | "category" | "meta">) =>
   (tag?: Partial<TagWithMeta>) =>
-    isTag(tag) && types.includes(tag.type || "misc");
+    isTag(tag) && types.includes(tag.type || "meta");
 
 export const DEFAULT_DATE_OPTION = {
   slug: "all",
@@ -224,6 +224,16 @@ export class Calendar {
           slug: "kreativia",
           name: "Kreativia",
           type: "category",
+        },
+        {
+          slug: "konsert",
+          name: "Konsert",
+          type: "category",
+        },
+        {
+          slug: "info",
+          name: "Info",
+          type: "meta",
         },
       ],
       locations: [

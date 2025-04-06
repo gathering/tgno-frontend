@@ -2,7 +2,7 @@ export interface Tag {
   id: number;
   name: string;
   slug: string;
-  type: "category" | "location" | "misc";
+  type: "category" | "location" | "meta";
   parent?: string;
 }
 export interface ApiEvent {
