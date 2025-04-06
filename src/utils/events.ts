@@ -1,5 +1,16 @@
+import NodeCache from "node-cache";
 import type { Event, FetchEventsResponse, Tag } from "../types";
 import { typedFetch } from "./fetching";
+
+/**
+ * Experimental cache, ideally we would be able to cache heavily in frontend or
+ * edge layer, and purge on backend changes. Most of the time event data will
+ * be completely static (similar to articles)
+ *
+ * TODO: To get this completely correct `facts.ended` should be calculated
+ * outside of cached values, for now it will remain a bit off
+ */
+const cache = new NodeCache({ stdTTL: 300 });
 
 const TAG_TYPE_PRIO = {
   location: 0,
@@ -276,11 +287,18 @@ export const fetchEvents = async ({
     url.searchParams.set("tags", tags.join(","));
   }
 
+  const cacheKey = `${url.toString()}|events`;
+  let events = cache.get<Event[]>(cacheKey);
+
+  if (events) {
+    return events;
+  }
+
   const response = await typedFetch<FetchEventsResponse>(url.toString());
   const data = await response.json();
   const pad = (number: number) => String(number).padStart(2, "0");
 
-  return data.map((event) => {
+  events = data.map((event) => {
     const startObj = new Date(event.start);
     const endObj = new Date(event.end);
     const reqStartObj = hasDates(date) ? new Date(date.start) : null;
@@ -335,4 +353,8 @@ export const fetchEvents = async ({
 
     return newEvent;
   });
+
+  cache.set(cacheKey, events);
+
+  return events;
 };
