@@ -1,5 +1,5 @@
 ---
-import type { Event } from "../../types";
+import type { Event, Tag } from "../../types";
 import CalendardSymbol from "../icons/CalendardSymbol.astro";
 import ClockSymbol from "../icons/ClockSymbol.astro";
 import CloseSymbol from "../icons/CloseSymbol.astro";
@@ -7,7 +7,13 @@ import ArrowSymbol from "../icons/ArrowSymbol.astro";
 import ExternalLinkSymbol from "../icons/ExternalLinkSymbol.astro";
 
 type Props = Event & {
-  highlightedTags?: string[];
+  expanded?: boolean;
+  location?: {
+    name: string;
+    slug: string;
+    url?: string;
+    active?: boolean;
+  };
 };
 
 const AVAILABLE_STYLES = {
@@ -44,21 +50,23 @@ const {
   title,
   description,
   start,
-  tags = [],
   related_url,
   cancelled,
   facts,
   strings,
-  highlightedTags = [],
+  expanded = false,
+  location,
 } = Astro.props;
 let style = AVAILABLE_STYLES.default;
 
-if (facts.ended) {
-  style = AVAILABLE_STYLES.ended;
-} else if (cancelled) {
-  style = AVAILABLE_STYLES.cancelled;
-} else if (["start", "both"].includes(facts.extendingQuery)) {
-  style = AVAILABLE_STYLES.minimal;
+if (!expanded) {
+  if (facts.ended) {
+    style = AVAILABLE_STYLES.ended;
+  } else if (cancelled) {
+    style = AVAILABLE_STYLES.cancelled;
+  } else if (["start", "both"].includes(facts.extendingQuery)) {
+    style = AVAILABLE_STYLES.minimal;
+  }
 }
 
 let duration = strings.duration;
@@ -77,6 +85,11 @@ switch (facts.extendingQuery) {
     duration = `${strings.startDate} ${strings.startTime} - ${strings.endDate} ${strings.endTime}`;
     DurationSymbol = CalendardSymbol;
     break;
+}
+
+if (expanded) {
+  duration = `${strings.startDate} ${strings.startTime} - ${strings.endDate} ${strings.endTime}`;
+  DurationSymbol = CalendardSymbol;
 }
 ---
 
@@ -129,44 +142,35 @@ switch (facts.extendingQuery) {
   });
 </script>
 
-<article data-component="event" class={`group collapsed ${style.class}`}>
+<article
+  data-component="event"
+  class={`group ${expanded ? "" : "collapsed"} ${style.class}`}
+>
   <div class={`flex flex-col p-4 border ${style.styles} rounded-xl block mb-4`}>
     {
-      style.tags || related_url ? (
+      location || related_url ? (
         <div class="flex flex-row mb-1">
           <div class="text-md font-bold flex flex-row flex-wrap">
-            {tags
-              .filter((tag) => !tag.hidden)
-              .map((tag) => {
-                const active = highlightedTags.includes(tag.slug);
-                return active
-                  ? {
-                      ...tag,
-                      active: true,
-                      secondary: false,
-                    }
-                  : tag;
-              })
-              .map(({ slug, name, active = false, secondary }) => (
-                <a
-                  href={`/schedule?tags=${slug}`}
-                  data-part="tag-trigger"
-                  data-tag={slug}
-                  class={`border rounded-md flex flex-row mr-2 mb-2 py-1 px-2 hover:bg-white hover:text-backgroundSecondary ${active ? "bg-orange-500 text-black border-orange-500" : "border-white"} ${secondary ? "group-[.collapsed]:hidden" : ""}`}
-                >
-                  {name}
-                  {active ? <CloseSymbol /> : null}
-                </a>
-              ))}
+            {location ? (
+              <a
+                href={location.url}
+                class={`border rounded-md flex flex-row mr-2 mb-2 py-1 px-2 ${location.url ? "hover:bg-white hover:text-backgroundSecondary" : ""} ${location.active ? "bg-orange-500 text-black border-orange-500" : "border-white"}`}
+              >
+                {location.name}
+                {location.active && location.url ? <CloseSymbol /> : null}
+              </a>
+            ) : null}
           </div>
           {related_url ? (
             <a
               href={related_url}
+              target="_blank"
               class="rounded-md h-fit p-2 ml-auto hover:bg-white hover:text-backgroundSecondary"
             >
               <ExternalLinkSymbol />
             </a>
           ) : null}
+          <slot />
         </div>
       ) : null
     }

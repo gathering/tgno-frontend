@@ -1,4 +1,4 @@
-interface Tag {
+export interface Tag {
   id: number;
   name: string;
   slug: string;
@@ -18,11 +18,7 @@ export interface ApiEvent {
 }
 
 export interface Event extends ApiEvent {
-  tags: (Tag & {
-    active?: boolean;
-    secondary: boolean;
-    hidden: boolean;
-  })[];
+  tags: Tag[];
   facts: {
     immediate: Boolean;
     sameDay: Boolean;
