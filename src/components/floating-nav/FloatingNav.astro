@@ -1,0 +1,115 @@
+---
+import CloseSymbol from "../icons/CloseSymbol.astro";
+import HamburgerSymbol from "../icons/HamburgerSymbol.astro";
+
+interface Props {
+  closeOnNavigate?: boolean;
+}
+
+const { closeOnNavigate } = Astro.props;
+//class="fixed bg-black/90 right-6 bottom-6 left-6 p-6 pb-10 hidden max-h-[80vh] overflow-y-auto rounded-3xl rounded-br-[2rem]"
+---
+
+<script>
+  class FloatingNav extends HTMLElement {
+    menu: Array<HTMLElement> = [];
+    menuTrigger: Array<HTMLElement> = [];
+    menuVisible: string = "";
+
+    toggleMenu({ placement }: { placement: string }) {
+      if (this.menuVisible && this.menuVisible === placement) {
+        this.menuVisible = "";
+      } else {
+        this.menuVisible = placement;
+      }
+
+      this.menu.forEach((menu) => {
+        menu.classList.toggle(
+          "hidden",
+          !this.menuVisible || menu.id !== placement,
+        );
+      });
+
+      this.menuTrigger?.forEach((trigger) => {
+        trigger.classList.toggle(
+          "active",
+          this.menuVisible === trigger.getAttribute("aria-controls"),
+        );
+        trigger.classList.toggle(
+          "active",
+          this.menuVisible === trigger.getAttribute("aria-controls"),
+        );
+        trigger.setAttribute("aria-expanded", this.menuVisible.toString());
+      });
+    }
+
+    onNavigate() {
+      if (this.getAttribute("close-on-navigate") === "true") {
+        this.toggleMenu({ placement: "" });
+      }
+    }
+
+    connectedCallback() {
+      this.menuTrigger = Array.from(
+        this.querySelectorAll("[data-part=floating-nav-trigger]"),
+      );
+      this.menu = Array.from(
+        this.querySelectorAll("[data-part=floating-nav-contents]"),
+      );
+
+      this.menuTrigger?.forEach((trigger) =>
+        trigger.addEventListener("click", () =>
+          this.toggleMenu({
+            placement: trigger.getAttribute("aria-controls") || "",
+          }),
+        ),
+      );
+
+      this.menu.forEach((menu) =>
+        menu.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", this.onNavigate.bind(this));
+        }),
+      );
+    }
+  }
+
+  customElements.define("floating-nav", FloatingNav);
+</script>
+
+<floating-nav
+  close-on-navigate={!!closeOnNavigate}
+  class="relative flex w-full"
+>
+  <span
+    data-part="floating-nav-trigger"
+    aria-controls="floating-nav-contents-secondary"
+    aria-expanded="false"
+  >
+    <slot name="trigger" />
+    <nav
+      id="floating-nav-contents-secondary"
+      data-part="floating-nav-contents"
+      class="absolute left-0 top-12 right-0 z-10 bg-black/90 p-6 pb-10 hidden max-h-[80vh] overflow-y-auto rounded-lg"
+    >
+      <slot name="content" />
+    </nav>
+  </span>
+  <nav
+    id="floating-nav-contents"
+    data-part="floating-nav-contents"
+    class="fixed right-6 bottom-6 max-w-26 bg-black/90 p-6 pb-10 hidden max-h-[80vh] overflow-y-auto rounded-3xl rounded-br-[2rem]"
+  >
+    <slot name="content" />
+  </nav>
+  <button
+    type="button"
+    data-part="floating-nav-trigger"
+    class="fixed rounded-full bg-orange-600 text-white p-3 right-9 bottom-9 group"
+    aria-controls="floating-nav-contents"
+    aria-expanded="false"
+  >
+    <HamburgerSymbol class="group-[.active]:hidden" />
+    <CloseSymbol class="hidden group-[.active]:block" />
+  </button>
+  <slot name="after" />
+</floating-nav>

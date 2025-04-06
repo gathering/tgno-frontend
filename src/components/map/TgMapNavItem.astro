@@ -1,0 +1,18 @@
+---
+import type { MapItem } from "../../types";
+import { slugifyMapItemName } from "../../utils";
+
+type Props = {
+  mapItem: Pick<MapItem, "name" | "slug">;
+};
+
+const { mapItem } = Astro.props;
+---
+
+<a
+  class="border border-white px-2 py-1 mb-2 rounded-xl cursor-pointer hover:bg-orange-600 focus:bg-orange-600"
+  data-part="nav-item"
+  data-target={mapItem.slug || slugifyMapItemName(mapItem.name)}
+>
+  {mapItem.name}
+</a>

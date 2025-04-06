@@ -1,0 +1,286 @@
+---
+import "leaflet/dist/leaflet.css";
+import type { MapItem } from "../../types";
+import FloatingNav from "../floating-nav/FloatingNav.astro";
+
+export type Props = {
+  locations: MapItem[];
+};
+
+const { locations: ssrLocations } = Astro.props;
+---
+
+<script>
+  import L, {
+    type LatLngBoundsExpression,
+    type LatLngBoundsLiteral,
+  } from "leaflet";
+  import { pad, slugifyMapItemName, isCords } from "../../utils/map";
+  import type { Cords } from "../../utils/map";
+  import type { MapItem } from "../../types";
+  import { isMapItem } from "../../utils";
+
+  const xyBase = (x: number, y: number): L.LatLngTuple => {
+    return [y, x];
+  };
+
+  function xy(yx: Cords): L.LatLngTuple;
+  function xy(yx: Cords[]): L.LatLngTuple[];
+  function xy(yx: Cords | Cords[]): L.LatLngTuple | L.LatLngTuple[] {
+    // Single coordinate
+    if (isCords(yx)) {
+      return xyBase(yx[0], yx[1]);
+    }
+
+    // Array of cordinates
+    if (isCords(yx[0])) {
+      return yx.map((cords) => xyBase(cords[0], cords[1]));
+    }
+
+    // Shouldn't really happen
+    return xyBase(yx[0], yx[0]);
+  }
+
+  class TGMap extends HTMLElement {
+    currentTarget: string = "";
+    map?: L.Map = undefined;
+    mapBounds?: LatLngBoundsExpression = undefined;
+    targets: Record<string, L.Rectangle> = {};
+
+    resetTarget() {
+      if (this.map && this.mapBounds) {
+        this.map.fitBounds(this.mapBounds);
+      }
+      this.currentTarget = "";
+    }
+
+    onNavigate(slug: string) {
+      this.goToTarget(slug);
+    }
+
+    goToTarget(slug: string) {
+      const target = this.targets[slug];
+      if (!target) {
+        console.error("No target found for slug", slug);
+        this.resetTarget();
+        return;
+      }
+      if (slug === this.currentTarget) {
+        this.resetTarget();
+        return;
+      }
+
+      this.currentTarget = slug;
+      this.map?.fitBounds(target.getBounds(), {
+        duration: 0.3,
+        padding: [75, 75],
+        animate: true,
+      });
+    }
+
+    connectedCallback() {
+      let locations: MapItem[] = [];
+      try {
+        locations = JSON.parse(this.dataset.locations || "").filter(isMapItem);
+      } catch (e) {
+        console.log(
+          `Unable to import map locations`,
+          this.dataset.locations,
+          e,
+        );
+      }
+
+      // Initialize the map
+      this.map = L.map("map", {
+        crs: L.CRS.Simple,
+        minZoom: -2,
+        //zoomAnimationThreshold: 100,
+        //preferCanvas: true,
+        //inertiaMaxSpeed: 1000,
+        // TODO: Activate on mobile, or where we need to avoid the "pop in" effect
+        // renderer: L.canvas({ padding: 3 }),
+        attributionControl: false,
+      });
+      this.mapBounds = [xy([0, 0]), xy([3308, 2339])];
+
+      // TODO: Replace with proper map
+      // TODO: Replace with tiled map if more performant
+      L.imageOverlay(
+        "/TG25_sitemap_low_res_placeholder.jpg",
+        this.mapBounds,
+      ).addTo(this.map);
+
+      let polygons: L.Polygon[] = [];
+      locations.forEach(
+        ({
+          slug,
+          name,
+          icon,
+          pos,
+          width,
+          height,
+          presentation: {
+            type = "unknown",
+            interactive = true,
+            calendarQuery,
+            padding,
+          } = {},
+        }) => {
+          const bounds: Cords[] = [pos, [pos[0] + width, pos[1] + height]];
+          const paddedBounds = pad(
+            typeof padding === "number" ? padding : 10,
+            bounds,
+          );
+          if (!this.map) {
+            return;
+          }
+
+          const logo = L.imageOverlay(icon, xy(paddedBounds), {
+            zIndex: 201, // Polygons are 200?
+            interactive: false,
+          }).addTo(this.map);
+          const polygon = L.rectangle(xy(bounds), {
+            noClip: true,
+            className: type,
+          }).addTo(this.map);
+          polygons.push(polygon);
+
+          const actualSlug = slug || slugifyMapItemName(name);
+          this.targets[actualSlug] = polygon;
+
+          if (!interactive) {
+            return;
+          }
+
+          polygon.on("click", () => this.goToTarget(actualSlug));
+          polygon
+            .bindPopup(
+              (_layer) => {
+                const contents = document.createElement("div");
+
+                const heading = document.createElement("h3");
+                heading.textContent = name;
+                // heading.onclick = () => this.goToTarget(actualSlug);
+                contents.append(heading);
+
+                if (calendarQuery) {
+                  const calendarLink = document.createElement("a");
+                  calendarLink.classList.add("calendar-link");
+                  calendarLink.target = "_blank";
+                  calendarLink.href = `/schedule?tags=${calendarQuery.join(",")}`;
+                  calendarLink.textContent = "Se programmet";
+                  contents.append(calendarLink);
+                }
+
+                return contents;
+              },
+              {
+                className: type,
+                closeButton: false,
+              },
+            )
+            .openPopup();
+        },
+      );
+
+      if (polygons[0]) {
+        this.map.getRenderer(polygons[0]).options.padding = 2;
+      }
+
+      this.map.fitBounds(this.mapBounds);
+      this.map.setMaxBounds(this.mapBounds);
+
+      this.querySelectorAll("[data-part=nav-item]").forEach((el) => {
+        el.addEventListener("click", () => {
+          const target = el.getAttribute("data-target");
+          if (target) {
+            this.onNavigate(target);
+          }
+        });
+      });
+
+      this.querySelectorAll("button[data-action=reset]").forEach((button) => {
+        button.addEventListener("click", this.resetTarget);
+      });
+    }
+  }
+
+  customElements.define("tg-map", TGMap);
+</script>
+
+<style>
+  tg-map {
+    .leaflet-container {
+      background-color: theme("colors.white");
+    }
+    .leaflet-interactive {
+      &.stage {
+        fill-opacity: 1;
+        fill: theme("colors.backgroundSecondary");
+        stroke: theme("colors.backgroundSecondary");
+      }
+      &.stand {
+        fill-opacity: 1;
+        fill: theme("colors.backgroundSecondary");
+        stroke: theme("colors.backgroundSecondary");
+      }
+      &.unknown {
+        fill-opacity: 1;
+        fill: theme("colors.neutral.200");
+        stroke: theme("colors.neutral.200");
+      }
+    }
+    .leaflet-popup {
+      color: theme("colors.white");
+      .leaflet-container {
+        padding: theme("padding.4");
+      }
+      h3 {
+        font-size: theme("fontSize.2xl");
+        font-weight: theme("fontWeight.bold");
+        margin-bottom: theme("margin.2");
+      }
+      .calendar-link {
+        display: block;
+        padding: theme("padding.2") theme("padding.4");
+        margin: theme("margin.4") 0 theme("margin.6");
+        text-align: center;
+        font-size: theme("fontSize.base");
+        font-weight: theme("fontWeight.bold");
+        background-color: theme("colors.yellow.500");
+        color: theme("colors.black");
+        border-radius: theme("borderRadius.lg");
+      }
+      p {
+        font-size: theme("fontSize.base");
+        margin: theme("margin.2") 0;
+      }
+      &.stand {
+        .leaflet-popup-content-wrapper,
+        .leaflet-popup-tip {
+          color: theme("colors.black");
+          background-color: theme("colors.yellow.400");
+        }
+      }
+      &.stage {
+        .leaflet-popup-content-wrapper,
+        .leaflet-popup-tip {
+          color: theme("colors.white");
+          background-color: theme("colors.backgroundSecondary");
+        }
+      }
+    }
+  }
+</style>
+
+<tg-map data-locations={JSON.stringify(ssrLocations)}>
+  <div class="relative z-[999]">
+    <FloatingNav closeOnNavigate>
+      <span slot="content">
+        <slot name="nav" />
+      </span>
+    </FloatingNav>
+  </div>
+  <div id="map" class="fixed bg-black top-32 right-0 bottom-0 left-0 z-[10]">
+  </div>
+</tg-map>
