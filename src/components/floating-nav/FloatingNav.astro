@@ -7,7 +7,6 @@ interface Props {
 }
 
 const { closeOnNavigate } = Astro.props;
-//class="fixed bg-black/90 right-6 bottom-6 left-6 p-6 pb-10 hidden max-h-[80vh] overflow-y-auto rounded-3xl rounded-br-[2rem]"
 ---
 
 <script>
@@ -97,7 +96,7 @@ const { closeOnNavigate } = Astro.props;
   <nav
     id="floating-nav-contents"
     data-part="floating-nav-contents"
-    class="fixed right-6 bottom-6 max-w-26 bg-black/90 p-6 pb-10 hidden max-h-[80vh] overflow-y-auto rounded-3xl rounded-br-[2rem]"
+    class="fixed right-6 bottom-6 ml-6 max-w-26 bg-black/90 p-6 pb-10 hidden max-h-[80vh] overflow-y-auto rounded-3xl rounded-br-[2rem]"
   >
     <slot name="content" />
   </nav>
