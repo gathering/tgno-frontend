@@ -23,6 +23,7 @@ type DateOptionWithoutDate = {
   slug: string;
   active?: boolean;
   url?: string;
+  color?: string;
   type: "date";
 };
 type DateOptionWithDate = DateOptionWithoutDate & {
@@ -34,6 +35,7 @@ export type DateOption = DateOptionWithDate | DateOptionWithoutDate;
 export type TagWithMeta = {
   active?: boolean;
   url?: string;
+  color?: string;
 } & Omit<Tag, "id" | "parent">;
 
 export interface EventQueryProperties {
@@ -230,21 +232,25 @@ export class Calendar {
           slug: "esport",
           name: "Esport",
           type: "category",
+          color: "orange",
         },
         {
           slug: "kreativia",
           name: "Kreativia",
           type: "category",
+          color: "blue",
         },
         {
           slug: "konsert",
           name: "Konsert",
           type: "category",
+          color: "purple",
         },
         {
           slug: "info",
           name: "Info",
           type: "meta",
+          color: "yellow",
         },
       ],
       locations: [
@@ -252,16 +258,19 @@ export class Calendar {
           slug: "hovedscenen",
           name: "Hovedscenen",
           type: "location",
+          color: "purple",
         },
         {
           slug: "kreativiascenen",
           name: "Kreativscenen",
           type: "location",
+          color: "blue",
         },
         {
           slug: "esportscenen",
           name: "Esportscenen",
           type: "location",
+          color: "orange",
         },
       ],
     });
@@ -325,6 +334,12 @@ export const fetchEvents = async ({
         startDate: startObj.toLocaleDateString("no-NO", {
           day: "numeric",
           weekday: "long",
+        }),
+        startDateLong: startObj.toLocaleDateString("no-NO", {
+          day: "numeric",
+          weekday: "long",
+          month: "long",
+          year: "numeric",
         }),
         endDate: endObj.toLocaleDateString("no-NO", {
           day: "numeric",

@@ -1,10 +1,11 @@
 ---
-import type { Event, Tag } from "../../types";
+import type { Event } from "../../types";
 import CalendardSymbol from "../icons/CalendardSymbol.astro";
 import ClockSymbol from "../icons/ClockSymbol.astro";
 import CloseSymbol from "../icons/CloseSymbol.astro";
 import ArrowSymbol from "../icons/ArrowSymbol.astro";
 import ExternalLinkSymbol from "../icons/ExternalLinkSymbol.astro";
+import LiveSymbol from "../icons/LiveSymbol.astro";
 
 type Props = Event & {
   expanded?: boolean;
@@ -14,35 +15,6 @@ type Props = Event & {
     url?: string;
     active?: boolean;
   };
-};
-
-const AVAILABLE_STYLES = {
-  default: {
-    class: "default",
-    styles:
-      "text-black bg-white/95 border-blue-300/40 group-[.collapsed]:bg-white/5 group-[.collapsed]:text-white group-[.collapsed]:border-blue-300/40",
-    tags: true,
-  },
-  active: {
-    class: "default",
-    styles: "text-white bg-red-500/10 border-red-500/60",
-    tags: true,
-  },
-  ended: {
-    class: "ended",
-    styles: "text-white opacity-60 border-white/20",
-    tags: false,
-  },
-  cancelled: {
-    class: "cancelled",
-    styles: "text-white bg-red-500/10 border-red-500/60",
-    tags: false,
-  },
-  minimal: {
-    class: "minimal",
-    styles: "text-white opacity-60 border-white/20",
-    tags: false,
-  },
 };
 
 const {
@@ -57,15 +29,15 @@ const {
   expanded = false,
   location,
 } = Astro.props;
-let style = AVAILABLE_STYLES.default;
+let style = "default";
 
 if (!expanded) {
   if (facts.ended) {
-    style = AVAILABLE_STYLES.ended;
+    style = "ended";
   } else if (cancelled) {
-    style = AVAILABLE_STYLES.cancelled;
+    style = "cancelled";
   } else if (["start", "both"].includes(facts.extendingQuery)) {
-    style = AVAILABLE_STYLES.minimal;
+    style = "minimal";
   }
 }
 
@@ -92,6 +64,26 @@ if (expanded) {
   DurationSymbol = CalendardSymbol;
 }
 ---
+
+<style>
+  [data-component="event"] {
+    color: theme("colors.white");
+    border-color: theme("colors.white");
+    &.default {
+    }
+    &.live {
+      .live-symbol {
+        display: flex;
+      }
+    }
+    &.ended,
+    &.cancelled {
+      background-color: theme("colors.white" / 10%);
+    }
+    &.minimal {
+    }
+  }
+</style>
 
 <script>
   // TODO: Make generic toggle script/component?
@@ -144,75 +136,85 @@ if (expanded) {
 
 <article
   data-component="event"
-  class={`group ${expanded ? "" : "collapsed"} ${style.class}`}
+  class={`group ${expanded ? "" : "collapsed"} ${style}`}
 >
-  <div class={`flex flex-col p-4 border ${style.styles} rounded-xl block mb-4`}>
-    {
-      location || related_url ? (
-        <div class="flex flex-row mb-1">
-          <div class="text-md font-bold flex flex-row flex-wrap">
-            {location ? (
+  <div class={`flex flex-row block pb-4 pt-2 border-t border-white`}>
+    <aside class="w-24 mr-4">
+      {strings.startDateLong}
+    </aside>
+    <section class="ml-4 w-full">
+      {
+        location || related_url ? (
+          <div class="flex flex-row mb-1 mt-2">
+            <div class="text-md flex flex-row flex-wrap gap-2">
+              {location ? (
+                <a
+                  href={location.url}
+                  class={`rounded-md flex flex-row py-1 px-2 ${location.color ? "bg-" + location.color + "-500 text-black" : "text-white border-white"} ${location.url ? "hover:bg-white hover:text-backgroundSecondary" : ""} ${location.active ? "" : ""}`}
+                >
+                  {location.name}
+                  {location.active && location.url ? <CloseSymbol /> : null}
+                </a>
+              ) : null}
+            </div>
+            {related_url ? (
               <a
-                href={location.url}
-                class={`border rounded-md flex flex-row mr-2 mb-2 py-1 px-2 ${location.url ? "hover:bg-white hover:text-backgroundSecondary" : ""} ${location.active ? "bg-orange-500 text-black border-orange-500" : "border-white"}`}
+                href={related_url}
+                target="_blank"
+                class="rounded-md h-fit p-2 ml-auto hover:bg-white hover:text-backgroundSecondary"
               >
-                {location.name}
-                {location.active && location.url ? <CloseSymbol /> : null}
+                <ExternalLinkSymbol />
               </a>
             ) : null}
-          </div>
-          {related_url ? (
-            <a
-              href={related_url}
-              target="_blank"
-              class="rounded-md h-fit p-2 ml-auto hover:bg-white hover:text-backgroundSecondary"
-            >
-              <ExternalLinkSymbol />
-            </a>
-          ) : null}
-          <slot />
-        </div>
-      ) : null
-    }
-    <section
-      {...description
-        ? {
-            "data-part": "event-details-trigger",
-            "aria-controls": `event-${id}-details`,
-            "data-active": "false",
-            "aria-expanded": "false",
-          }
-        : {}}
-      class={`-mx-4 -mb-4 ${description ? "group-[.collapsed]:cursor-pointer group-[.collapsed]:hover:bg-white/10" : ""}`}
-    >
-      <h3 class="text-lg font-bold text-pretty mb-1 pt-1 px-4">
-        {title}
-      </h3>
-      {
-        description ? (
-          <div
-            class="mt-3 px-4 pt-2 pb-2 group-[.collapsed]:hidden w-full"
-            data-part="event-details"
-            id={`event-${id}-details`}
-            aria-role="details"
-          >
-            <p>{description}</p>
+            <slot />
           </div>
         ) : null
       }
-      <aside
-        class={`text-md flex flex-row gap-3 px-4 pt-2 pb-3 w-full rounded-b-xl group-[.collapsed]:bg-transparent group-[.collapsed]:text-white`}
+      <section
+        {...description
+          ? {
+              "data-part": "event-details-trigger",
+              "aria-controls": `event-${id}-details`,
+              "data-active": "false",
+              "aria-expanded": "false",
+            }
+          : {}}
+        class={`text-md ${description ? "group-[.collapsed]:cursor-pointer group-[.collapsed]:hover:bg-white/10" : ""}`}
       >
-        <time datetime={start} class="text-md flex flex-row gap-3">
-          <DurationSymbol />
-          {duration}
-        </time>
-        <span
-          class={`ml-auto hidden ${description ? "group-[.collapsed]:block" : ""}`}
+        <h3 class="font-semibold text-pretty mb-1 pt-1 flex flex-row">
+          <span class="flex w-3 -ml-5 mr-2 text-red-600 live-symbol hidden">
+            <LiveSymbol />
+          </span>
+          {title}
+        </h3>
+        {
+          description ? (
+            <div
+              class="mt-3 pb-2 group-[.collapsed]:hidden w-full"
+              data-part="event-details"
+              id={`event-${id}-details`}
+              aria-role="details"
+            >
+              <p>{description}</p>
+            </div>
+          ) : null
+        }
+        <aside
+          class={`flex flex-row gap-3 pb-3 w-full rounded-b-xl group-[.collapsed]:bg-transparent group-[.collapsed]:text-white`}
         >
-          <ArrowSymbol />
-        </span>
-      </aside>
+          <time datetime={start} class="flex flex-row gap-3">
+            <span class="flex w-4">
+              <DurationSymbol />
+            </span>
+            {duration}
+          </time>
+          <span
+            class={`ml-auto hidden ${description ? "group-[.collapsed]:block" : ""}`}
+          >
+            <ArrowSymbol />
+          </span>
+        </aside>
+      </section>
     </section>
   </div>
 </article>

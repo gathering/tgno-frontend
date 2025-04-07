@@ -7,15 +7,11 @@ export interface ActiveFilter {
   slug: string;
   url: string;
   required?: boolean;
+  color?: string;
 }
 
 interface Props {
-  activeFilters: Array<{
-    name: string;
-    slug: string;
-    url: string;
-    required?: boolean;
-  }>;
+  activeFilters: ActiveFilter[];
   resetUrl?: string;
 }
 
@@ -28,10 +24,10 @@ const optionalFilters = activeFilters.filter(
 {
   activeFilters.length ? (
     <div class="flex flex-row flex-wrap gap-2 mt-4">
-      {activeFilters.map(({ name, required, url }) => (
+      {activeFilters.map(({ name, required, url, color }) => (
         <a
           href={url}
-          class="flex flex-row items-center gap-2 py-1 px-2 border rounded-md text-md font-bold bg-orange-500 text-black border-orange-500 hover:bg-white hover:text-backgroundSecondary"
+          class={`flex flex-row items-center gap-2 py-1 px-2 rounded-md text-md ${color ? "bg-" + color + "-500 text-black" : "border border-white text-white"} hover:bg-white hover:text-backgroundSecondary`}
         >
           {name}
           {!required ? <CloseSymbol /> : null}
@@ -40,7 +36,7 @@ const optionalFilters = activeFilters.filter(
       {resetUrl && optionalFilters ? (
         <a
           href={resetUrl}
-          class="flex flex-row items-center gap-2 py-1 px-2 border rounded-md text-md font-bold bg-orange-500 text-black border-orange-500 hover:bg-white hover:text-backgroundSecondary"
+          class="flex flex-row items-center gap-2 py-1 px-2 rounded-md text-md bg-orange-500 text-black hover:bg-white hover:text-backgroundSecondary"
         >
           <FilterCloseSymbol />
         </a>
