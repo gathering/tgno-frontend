@@ -17,9 +17,8 @@ const buttonStyles = [
   "rounded-full",
   "content-center",
   "bg-orange-500",
-  "text-white",
+  "text-black",
   "hover:bg-orange-200",
-  "hover:text-black",
 ];
 ---
 
@@ -163,8 +162,43 @@ const buttonStyles = [
         </SportsBox>
 
         <SportsBox
+          title="TCF: The Fertile Crescent"
+          class={`${boxStyles.join(" ")} sm:col-start-1 sm:col-span-2 sm:row-span-2 bg-blue-50 text-black prose prose-headings:text-black`}
+          prizes={[2500, 1500, 500]}
+          prizeDisclaimer="Premiene er i form av Steam-gavekort."
+          buttonClass={buttonStyles.join(" ")}
+          url="https://www.ves.gg/tfc"
+          urlText="Meld deg på her!"
+          requiresTicket
+          byoc
+        >
+          <p
+            class="rounded-md border border-black/20 bg-black/10 p-4 hyphens-manual"
+          >
+            Alle som melder seg på turneringen får gratis steam nøkkel til
+            spillet.
+          </p>
+          <p>
+            TCF: The Fertile Crescent er et norskutviklet sanntidsstrategispill
+            (RTS) som er en nytolkning av tradisjonelle basebyggingsspill som
+            Age of Empires og Starcraft. Spillet er nybegynnervenlig og lett å
+            lære. Hvis du har spilt spill som Age of Empires eller Starcraft
+            plukker du det raskt opp. Inspirert av de episke kampene for vekst,
+            fremgang og erobring i sivilisasjonens vugge, må du og motspilleren
+            sanke ressurser og avansere basene deres, hvor du etterhvert må
+            velge mellom tre legendariske sivilisasjoner fra bronsealderen for å
+            lede folket ditt til seier! Turneringsformatet 1v1 enkelutslag, best
+            av 3 kamper.
+          </p>
+          <p>
+            Ikke spilt TFC før? Ikke noe problem! Dette er i stor grad en
+            turnering for nye spillere.
+          </p>
+        </SportsBox>
+
+        <SportsBox
           title="Ditt spill her?"
-          class={`${boxStyles.join(" ")} sm:col-start-1 sm:col-span-3 border border-orange-500 prose`}
+          class={`${boxStyles.join(" ")} sm:col-start-3 sm:col-span-3 sm:sticky sm:top-4 sm:mt-32 border border-orange-500 prose`}
           prizes={[]}
         >
           <p>
