@@ -29,6 +29,7 @@ export interface Event extends ApiEvent {
     startTime: string;
     endTime: string;
     startDate: string;
+    startDateLong: string;
     endDate: string;
     duration: string;
   };
