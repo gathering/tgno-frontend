@@ -2,13 +2,13 @@
 import H2 from "../../components/H2.astro";
 import Main from "../../components/Main.astro";
 import Layout from "../../layouts/Layout.astro";
-import { Calendar, isTag, isDateOption, tagsOfTypes } from "../../utils";
+import { Calendar, isTag, isDateOption, tagsOfTypes } from "../../utils/events";
 import Event from "../../components/schedule/Event.astro";
 import DayHeader from "../../components/schedule/DayHeader.astro";
 import CloseSymbol from "../../components/icons/CloseSymbol.astro";
 import ContentContainer from "../../components/ContentContainer.astro";
 import FloatingNav from "../../components/floating-nav/FloatingNav.astro";
-import type { DateOption, TagWithMeta, Filter } from "../../utils";
+import type { DateOption, TagWithMeta, Filter } from "../../utils/events";
 import type { Tag } from "../../types";
 import ChevronDownSymbol from "../../components/icons/ChevronDownSymbol.astro";
 import ActiveFilterNav, {
