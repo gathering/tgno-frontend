@@ -55,6 +55,13 @@ const STANDS: LocationMap = {
       type: "stand",
     },
   },
+  placeholder: {
+    icon: "/tg25/sponsors/kandu.svg",
+    name: "Placeholder",
+    presentation: {
+      type: "stand",
+    },
+  },
 };
 
 const FOOD: LocationMap = {
@@ -98,43 +105,167 @@ const STAGES: LocationMap = {
   },
 };
 
+// Ex. "3"
+const stringToSize = (sizeString: string) =>
+  parseInt(sizeString || "1") * (47.3 / 3);
+// Ex. "3x3"
+const getStandSize = (
+  sizeString: string,
+): { width: number; height: number } => {
+  const [width = stringToSize("1"), height = stringToSize("1")] = sizeString
+    .split("x")
+    .map(stringToSize);
+  return { width, height };
+};
+const SIZES = {
+  small: getStandSize("3x3"),
+  medium: getStandSize("6x6"),
+  long: getStandSize("6x3"),
+  longVertical: getStandSize("3x6"),
+  superlongVertical: getStandSize("3x9"),
+};
+
 const LOCATIONS: MapItem[] = [
+  // Top left expo cluster
   ...calculateRow([
     {
-      ...STANDS.kia,
-      width: 47.3,
-      height: 47.3,
-      pos: [776.3, 1494.3],
+      ...STANDS.placeholder,
+      ...SIZES.small,
+      pos: [576.3, 1644.3],
     },
     {
-      ...STANDS.kandu,
-      width: 94.6,
-      height: 47.3,
+      ...STANDS.placeholder,
+      ...SIZES.small,
     },
     {
-      ...STANDS.nexthop,
-      width: 94.6,
-      height: 47.3,
+      ...STANDS.placeholder,
+      ...SIZES.small,
     },
   ]),
   ...calculateRow([
     {
-      ...STANDS.riot,
-      width: 94.6,
-      height: 47.3,
-      pos: [776.3, 1447.3],
+      ...STANDS.placeholder,
+      ...SIZES.small,
+      pos: [576.3, 1597.3],
     },
     {
-      ...STANDS.nlogic,
-      width: 94.6,
-      height: 47.3,
+      ...STANDS.placeholder,
+      ...SIZES.small,
     },
     {
-      ...STANDS.telenor,
-      width: 47.3,
-      height: 47.3,
+      ...STANDS.placeholder,
+      ...SIZES.small,
     },
   ]),
+  // Leftmost expo cluster
+  ...calculateRow([
+    {
+      ...STANDS.placeholder,
+      ...SIZES.longVertical,
+      pos: [376.3, 1394.3],
+    },
+  ]),
+  ...calculateRow([
+    {
+      ...STANDS.placeholder,
+      ...SIZES.longVertical,
+      pos: [376.3, 1394.3 - stringToSize("3")],
+    },
+    {
+      ...STANDS.placeholder,
+      ...SIZES.superlongVertical,
+    },
+  ]),
+  ...calculateRow([
+    {
+      ...STANDS.placeholder,
+      ...SIZES.medium,
+      pos: [376.3, 1394.3 - stringToSize("9")],
+    },
+  ]),
+  // Center big stands expo cluster
+  ...calculateRow([
+    {
+      ...STANDS.placeholder,
+      ...getStandSize("13x6"),
+      pos: [526.3, 1450.0],
+    },
+  ]),
+  ...calculateRow([
+    {
+      ...STANDS.placeholder,
+      ...getStandSize("6x12"),
+      pos: [526.3, 1450.0 - stringToSize("12")],
+    },
+  ]),
+  ...calculateRow([
+    {
+      ...STANDS.placeholder,
+      ...SIZES.small,
+      pos: [526.3, 1450.0 - stringToSize("15")],
+    },
+    {
+      ...STANDS.placeholder,
+      ...SIZES.small,
+    },
+    {
+      ...STANDS.placeholder,
+      ...getStandSize("7x15"),
+    },
+  ]),
+  // Rightmost expo cluster
+  ...calculateRow([
+    {
+      ...STANDS.placeholder,
+      ...SIZES.long,
+      pos: [826.3, 1530.0],
+    },
+    {
+      ...STANDS.placeholder,
+      ...SIZES.long,
+    },
+  ]),
+  ...calculateRow([
+    {
+      ...STANDS.placeholder,
+      ...SIZES.small,
+      pos: [826.3, 1530.0 - stringToSize("3")],
+    },
+  ]),
+  ...calculateRow([
+    {
+      ...STANDS.placeholder,
+      ...SIZES.small,
+      pos: [826.3, 1530.0 - stringToSize("6")],
+    },
+  ]),
+  ...calculateRow([
+    {
+      ...STANDS.placeholder,
+      ...SIZES.longVertical,
+      pos: [826.3, 1530.0 - stringToSize("12")],
+    },
+    {
+      ...STANDS.placeholder,
+      ...getStandSize("9x12"),
+    },
+  ]),
+  ...calculateRow([
+    {
+      ...STANDS.placeholder,
+      ...SIZES.long,
+      pos: [826.3, 1530.0 - stringToSize("15")],
+    },
+    {
+      ...STANDS.placeholder,
+      ...SIZES.small,
+    },
+    {
+      ...STANDS.placeholder,
+      ...SIZES.small,
+    },
+  ]),
+  // Testing: Rough stages
   {
     ...STAGES.mainStage,
     width: 280,
