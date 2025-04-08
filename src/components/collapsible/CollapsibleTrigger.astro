@@ -1,0 +1,16 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = "" } = Astro.props;
+---
+
+<span
+  data-part="collapsible-trigger"
+  data-active="false"
+  aria-expanded="false"
+  class={`cursor-pointer ${className}`}
+>
+  <slot />
+</span>
