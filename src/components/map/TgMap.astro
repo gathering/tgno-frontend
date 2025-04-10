@@ -11,71 +11,97 @@ const { locations: ssrLocations } = Astro.props;
 ---
 
 <script>
-  import L, {
-    type LatLngBoundsExpression,
-    type LatLngBoundsLiteral,
-  } from "leaflet";
-  import { pad, slugifyMapItemName, isCords } from "../../utils/map";
-  import type { Cords } from "../../utils/map";
+  import L, { type LatLngBoundsExpression } from "leaflet";
+  import { pad, isMapItem, toLatLngTuple } from "../../utils/map";
   import type { MapItem } from "../../types";
-  import { isMapItem } from "../../utils";
-
-  const xyBase = (x: number, y: number): L.LatLngTuple => {
-    return [y, x];
-  };
-
-  function xy(yx: Cords): L.LatLngTuple;
-  function xy(yx: Cords[]): L.LatLngTuple[];
-  function xy(yx: Cords | Cords[]): L.LatLngTuple | L.LatLngTuple[] {
-    // Single coordinate
-    if (isCords(yx)) {
-      return xyBase(yx[0], yx[1]);
-    }
-
-    // Array of cordinates
-    if (isCords(yx[0])) {
-      return yx.map((cords) => xyBase(cords[0], cords[1]));
-    }
-
-    // Shouldn't really happen
-    return xyBase(yx[0], yx[0]);
+  interface Target extends MapItem {
+    element: L.Rectangle | L.Polygon;
+    calendarQuery?: string[];
   }
 
   class TGMap extends HTMLElement {
     currentTarget: string = "";
     map?: L.Map = undefined;
     mapBounds?: LatLngBoundsExpression = undefined;
-    targets: Record<string, L.Rectangle> = {};
+    targets: Record<string, Target> = {};
+    popup?: L.Popup = undefined;
 
-    resetTarget() {
-      if (this.map && this.mapBounds) {
-        this.map.fitBounds(this.mapBounds);
+    setTarget(slug: string) {
+      let target = slug;
+
+      if (this.currentTarget === target || !this.targets[target]) {
+        target = "";
       }
-      this.currentTarget = "";
+
+      this.goToTarget(this.targets[target]);
+      this.currentTarget = target;
     }
 
-    onNavigate(slug: string) {
-      this.goToTarget(slug);
-    }
+    goToTarget(target?: Target) {
+      this.showPopup(target);
 
-    goToTarget(slug: string) {
-      const target = this.targets[slug];
       if (!target) {
-        console.error("No target found for slug", slug);
-        this.resetTarget();
-        return;
-      }
-      if (slug === this.currentTarget) {
-        this.resetTarget();
+        if (this.map && this.mapBounds) {
+          this.map.fitBounds(this.mapBounds);
+        }
         return;
       }
 
-      this.currentTarget = slug;
-      this.map?.fitBounds(target.getBounds(), {
+      this.map?.fitBounds(target.element.getBounds(), {
         duration: 0.3,
         padding: [75, 75],
         animate: true,
       });
+    }
+
+    showPopup(target?: Target) {
+      if (this.popup) {
+        this.popup.remove();
+      }
+      if (!target || !this.map) {
+        return;
+      }
+
+      const { slug, name, presentation } = target;
+      const { type, calendarQuery } = presentation || {};
+
+      this.popup = new L.Popup({
+        className: type,
+        closeButton: false,
+      })
+        .setLatLng(target.element.getBounds().getCenter())
+        .setContent((_layer) => {
+          const contents = document.createElement("div");
+
+          const heading = document.createElement("h3");
+          heading.textContent = name;
+          heading.onclick = () => this.onTargetClick(slug);
+          contents.append(heading);
+
+          if (calendarQuery) {
+            const calendarLink = document.createElement("a");
+            calendarLink.classList.add("calendar-link");
+            calendarLink.target = "_blank";
+            calendarLink.href = `/schedule?tags=${calendarQuery.join(",")}`;
+            calendarLink.textContent = "Se programmet";
+            contents.append(calendarLink);
+          }
+
+          return contents;
+        })
+        .openOn(this.map);
+    }
+
+    onNavigate(slug: string) {
+      this.setTarget(slug);
+    }
+
+    onTargetClick(slug: string) {
+      this.setTarget(slug);
+    }
+
+    onResetClick() {
+      this.setTarget("");
     }
 
     connectedCallback() {
@@ -90,105 +116,91 @@ const { locations: ssrLocations } = Astro.props;
         );
       }
 
-      // Initialize the map
-      this.map = L.map("map", {
+      // Initialize the map (local reference so that TS doesn't complain)
+      const map = L.map("map", {
         crs: L.CRS.Simple,
         minZoom: -2,
-        //zoomAnimationThreshold: 100,
-        //preferCanvas: true,
-        //inertiaMaxSpeed: 1000,
         // TODO: Activate on mobile, or where we need to avoid the "pop in" effect
         // renderer: L.canvas({ padding: 3 }),
         attributionControl: false,
       });
-      this.mapBounds = [xy([0, 0]), xy([3308, 2339])];
+      this.map = map;
+      this.mapBounds = [
+        { x: 0, y: 0 },
+        { x: 3308, y: 2339 },
+      ].map(toLatLngTuple);
 
-      // TODO: Replace with proper map
-      // TODO: Replace with tiled map if more performant
+      // TODO: Replace with proper map (tiled if better for performance)
       L.imageOverlay(
         "/TG25_sitemap_low_res_placeholder.jpg",
         this.mapBounds,
-      ).addTo(this.map);
+      ).addTo(map);
 
-      let polygons: L.Polygon[] = [];
-      locations.forEach(
-        ({
+      map.fitBounds(this.mapBounds);
+      map.setMaxBounds(this.mapBounds);
+
+      locations.forEach((location) => {
+        const {
           slug,
-          name,
-          icon,
-          pos,
           width,
           height,
-          presentation: {
-            type = "unknown",
-            interactive = true,
-            calendarQuery,
-            padding,
-          } = {},
-        }) => {
-          const bounds: Cords[] = [pos, [pos[0] + width, pos[1] + height]];
-          const paddedBounds = pad(
-            typeof padding === "number" ? padding : 10,
-            bounds,
-          );
-          if (!this.map) {
-            return;
-          }
-
-          const logo = L.imageOverlay(icon, xy(paddedBounds), {
-            zIndex: 201, // Polygons are 200?
-            interactive: false,
-          }).addTo(this.map);
-          const polygon = L.rectangle(xy(bounds), {
-            noClip: true,
-            className: type,
-          }).addTo(this.map);
-          polygons.push(polygon);
-
-          const actualSlug = slug || slugifyMapItemName(name);
-          this.targets[actualSlug] = polygon;
-
-          if (!interactive) {
-            return;
-          }
-
-          polygon.on("click", () => this.goToTarget(actualSlug));
-          polygon
-            .bindPopup(
-              (_layer) => {
-                const contents = document.createElement("div");
-
-                const heading = document.createElement("h3");
-                heading.textContent = name;
-                // heading.onclick = () => this.goToTarget(actualSlug);
-                contents.append(heading);
-
-                if (calendarQuery) {
-                  const calendarLink = document.createElement("a");
-                  calendarLink.classList.add("calendar-link");
-                  calendarLink.target = "_blank";
-                  calendarLink.href = `/schedule?tags=${calendarQuery.join(",")}`;
-                  calendarLink.textContent = "Se programmet";
-                  contents.append(calendarLink);
-                }
-
-                return contents;
-              },
+          pos,
+          polygon: rawPolygon,
+          icon,
+          presentation,
+        } = location;
+        const bounds = rawPolygon
+          ? rawPolygon.map((cords) => ({
+              x: cords.x + pos.x,
+              y: cords.y + pos.y,
+            }))
+          : [
+              pos,
               {
-                className: type,
-                closeButton: false,
+                x: pos.x + width,
+                y: pos.y + height,
               },
-            )
-            .openPopup();
-        },
-      );
+            ];
 
-      if (polygons[0]) {
-        this.map.getRenderer(polygons[0]).options.padding = 2;
-      }
+        // TODO: Dealing with polygon shapes?
+        if (icon && !rawPolygon && bounds.length === 2) {
+          L.imageOverlay(
+            icon,
+            // @ts-ignore-next-line
+            pad(presentation.padding ?? width / 10, bounds).map(toLatLngTuple),
+            {
+              zIndex: 201, // Polygons are 200?
+              interactive: false,
+            },
+          ).addTo(map);
+        }
 
-      this.map.fitBounds(this.mapBounds);
-      this.map.setMaxBounds(this.mapBounds);
+        const targetConfig = {
+          noClip: true,
+          className: presentation?.type || "unknown",
+        };
+        const target = rawPolygon
+          ? new L.Polygon(bounds.map(toLatLngTuple), targetConfig)
+          : new L.Rectangle(bounds.map(toLatLngTuple), targetConfig);
+        target.addTo(map);
+
+        this.targets[slug] = {
+          ...location,
+          element: target,
+        };
+
+        if (presentation?.interactive === false) {
+          return;
+        }
+
+        target.on("click", () => this.onTargetClick(slug));
+      });
+
+      // TODO: Only run on mobile (usage on desktop sizes tend to cause a lot of performance issues)
+      Object.values(this.targets).some((target) => {
+        map.getRenderer(target.element).options.padding = 2;
+        return true;
+      });
 
       this.querySelectorAll("[data-part=nav-item]").forEach((el) => {
         el.addEventListener("click", () => {
@@ -200,7 +212,18 @@ const { locations: ssrLocations } = Astro.props;
       });
 
       this.querySelectorAll("button[data-action=reset]").forEach((button) => {
-        button.addEventListener("click", this.resetTarget);
+        button.addEventListener("click", this.onResetClick);
+      });
+
+      map.on("click", (event) => {
+        // @ts-ignore-next-line
+        if (!window.debug) {
+          return;
+        }
+        console.log({
+          x: event.latlng.lng,
+          y: event.latlng.lat,
+        });
       });
     }
   }

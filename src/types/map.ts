@@ -1,14 +1,21 @@
+export interface Cords {
+  x: number;
+  y: number;
+}
+
 export interface MapItem extends PartialMapItem {
-  pos: [number, number];
+  pos: Cords;
 }
 
 export interface PartialMapItem {
-  slug?: string;
   name: string;
+  slug: string;
   icon: string;
   width: number;
   height: number;
+  polygon?: Cords[];
   presentation?: {
+    showInNavigation?: boolean;
     type: "stage" | "stand" | "unknown";
     interactive?: boolean;
     calendarQuery?: string[];

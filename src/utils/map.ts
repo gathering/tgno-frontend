@@ -3,7 +3,7 @@
  * any client side utils prefer just dumping them in the TgMap component
  * itself, in a script tag
  */
-import type { MapItem, PartialMapItem } from "../types";
+import type { MapItem, PartialMapItem, Cords } from "../types";
 
 export const slugifyMapItemName = (name: string): string =>
   name.toLowerCase().replace(/[^a-z0-9]/g, "-");
@@ -11,8 +11,60 @@ export const slugifyMapItemName = (name: string): string =>
 export const isMapItem = (item: PartialMapItem | MapItem): item is MapItem =>
   !!item.name && !!item.width && !!item.height && !!(item as MapItem)?.pos;
 
+// Ex. "3"
+export const stringToSize = (sizeString: string) =>
+  parseInt(sizeString || "1") * (47.3 / 3);
+// Ex. "3x3"
+export function getStandSize(sizeString: string): {
+  width: number;
+  height: number;
+} {
+  const [width = stringToSize("1"), height = stringToSize("1")] = sizeString
+    .split("x")
+    .map(stringToSize);
+  return { width, height };
+}
+
+export function getStandPolygon(sizeString: string): Cords[] {
+  const { width, height } = getStandSize(sizeString);
+  return [
+    { x: 0, y: 0 },
+    { x: width, y: 0 },
+    { x: width, y: height },
+    { x: 0, y: height },
+  ];
+}
+
+export function calculateColumn(
+  items: Array<PartialMapItem | MapItem>,
+  direction: "up" | "down" = "down",
+): MapItem[] {
+  const newItems: MapItem[] = [];
+
+  items.forEach((item, i) => {
+    if (isMapItem(item)) {
+      newItems.push(item);
+      return;
+    }
+    const previousItem = newItems[newItems.length - 1];
+    const yOffset =
+      direction === "down" ? item.height * -1 : previousItem.height;
+
+    newItems.push({
+      ...item,
+      pos: {
+        x: previousItem.pos.x,
+        y: previousItem.pos.y + yOffset,
+      },
+    });
+  });
+
+  return newItems;
+}
+
 export const calculateRow = (
   items: Array<PartialMapItem | MapItem>,
+  direction: "right" | "left" = "right",
 ): MapItem[] => {
   const newItems: MapItem[] = [];
 
@@ -21,27 +73,55 @@ export const calculateRow = (
       newItems.push(item);
       return;
     }
-    const pos = newItems[newItems.length - 1]?.pos || [0, 0];
+
+    const previousItem = newItems[newItems.length - 1];
+    const xOffset = direction === "left" ? item.width * -1 : previousItem.width;
 
     newItems.push({
       ...item,
-      pos: [pos[0] + items[i - 1]?.width || 0, pos[1]],
+      pos: {
+        x: previousItem.pos.x + xOffset,
+        y: previousItem.pos.y,
+      },
     });
   });
 
   return newItems;
 };
 
-export type Cords = [number, number];
+export function rotateCords(center: Cords, points: Cords[], yaw: number) {
+  const res = [];
+  const centerPoint = center;
+  const angle = yaw * (Math.PI / 180);
+  for (let i = 0; i < points.length; i++) {
+    const p = points[i];
+    // translate to center
+    const p2 = { y: p.y - centerPoint.y, x: p.x - centerPoint.x };
+    // rotate using matrix rotation
+    const p3 = {
+      y: Math.cos(angle) * p2.y - Math.sin(angle) * p2.x,
+      x: Math.sin(angle) * p2.y + Math.cos(angle) * p2.x,
+    };
+    // translate back to center
+    let p4 = { y: p3.y + centerPoint.y, x: p3.x + centerPoint.x };
+    // done with that point
+    res.push(p4);
+  }
+  return res;
+}
 
-export const isCords = (possibleCords: unknown): possibleCords is Cords =>
-  Array.isArray(possibleCords) &&
-  possibleCords.length === 2 &&
-  typeof possibleCords[0] === "number";
+export const toLatLngTuple = (cords: Cords): L.LatLngTuple => [
+  cords.y,
+  cords.x,
+];
 
-export const pad = (amount: number, cords: Cords[]): Cords[] => {
-  return [
-    [cords[0][0] + amount, cords[0][1] + amount],
-    [cords[1][0] - amount, cords[1][1] - amount],
-  ];
-};
+export const pad = (amount: number, cords: [Cords, Cords]): [Cords, Cords] => [
+  {
+    x: cords[0].x + amount,
+    y: cords[0].y + amount,
+  },
+  {
+    x: cords[1].x - amount,
+    y: cords[1].y - amount,
+  },
+];

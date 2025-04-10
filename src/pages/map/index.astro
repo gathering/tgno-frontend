@@ -1,6 +1,14 @@
 ---
 import "leaflet/dist/leaflet.css";
-import { calculateRow } from "../../utils";
+import {
+  calculateRow,
+  calculateColumn,
+  getStandSize,
+  stringToSize,
+  rotateCords,
+  getStandPolygon,
+  slugifyMapItemName,
+} from "../../utils/map";
 import TgMap from "../../components/map/TgMap.astro";
 import type { MapItem, PartialMapItem } from "../../types";
 import Layout from "../../layouts/Layout.astro";
@@ -75,10 +83,30 @@ const FOOD: LocationMap = {
   },
 };
 
+const ATTRACTIONS: LocationMap = {
+  streamerLounge: {
+    icon: "/tg25/sponsors/kandu.svg",
+    name: "Placeholder",
+    slug: "placeholder",
+    presentation: {
+      type: "stand",
+    },
+  },
+  streamers: {
+    icon: "/tg25/sponsors/kandu.svg",
+    name: "Placeholder",
+    slug: "streamers",
+    presentation: {
+      type: "stand",
+    },
+  },
+};
+
 const STAGES: LocationMap = {
   mainStage: {
     icon: "https://www.tg.no/tg25/tg25_square_white.svg",
     name: "Hovedscenen",
+    slug: "hovedscenen",
     presentation: {
       type: "stage",
       calendarQuery: ["hovedscenen"],
@@ -88,6 +116,7 @@ const STAGES: LocationMap = {
   eSportStage: {
     icon: "https://www.tg.no/tg25/tg25_square_white.svg",
     name: "Esportscenen",
+    slug: "esportscenen",
     presentation: {
       type: "stage",
       calendarQuery: ["esportscenen"],
@@ -97,6 +126,7 @@ const STAGES: LocationMap = {
   creativiaStage: {
     icon: "https://www.tg.no/tg25/tg25_square_white.svg",
     name: "Kreativiascenen",
+    slug: "kreativiascenen",
     presentation: {
       type: "stage",
       calendarQuery: ["kreativiascenen"],
@@ -105,18 +135,6 @@ const STAGES: LocationMap = {
   },
 };
 
-// Ex. "3"
-const stringToSize = (sizeString: string) =>
-  parseInt(sizeString || "1") * (47.3 / 3);
-// Ex. "3x3"
-const getStandSize = (
-  sizeString: string,
-): { width: number; height: number } => {
-  const [width = stringToSize("1"), height = stringToSize("1")] = sizeString
-    .split("x")
-    .map(stringToSize);
-  return { width, height };
-};
 const SIZES = {
   small: getStandSize("3x3"),
   medium: getStandSize("6x6"),
@@ -126,12 +144,53 @@ const SIZES = {
 };
 
 const LOCATIONS: MapItem[] = [
+  // Expo outer curve
+  ...[
+    {
+      ...STANDS.placeholder,
+      ...SIZES.longVertical,
+      pos: { x: 268, y: 1298 },
+    },
+    {
+      ...STANDS.placeholder,
+      ...SIZES.longVertical,
+      pos: { x: 270, y: 1398 },
+    },
+    {
+      ...STANDS.placeholder,
+      ...SIZES.longVertical,
+      pos: { x: 294.5, y: 1499 },
+    },
+    {
+      ...STANDS.placeholder,
+      ...SIZES.longVertical,
+      pos: { x: 340.5, y: 1591.5 },
+    },
+    {
+      ...STANDS.placeholder,
+      ...SIZES.longVertical,
+      pos: { x: 405, y: 1674 },
+    },
+    {
+      ...STANDS.placeholder,
+      ...SIZES.longVertical,
+      pos: { x: 485, y: 1742 },
+    },
+  ].map((item, index) => {
+    const polygon = getStandPolygon("3x6");
+
+    return {
+      ...item,
+      polygon: rotateCords(polygon[0], polygon, 12 * index),
+    };
+  }),
+
   // Top left expo cluster
   ...calculateRow([
     {
       ...STANDS.placeholder,
       ...SIZES.small,
-      pos: [576.3, 1644.3],
+      pos: { x: 576.3, y: 1644.3 },
     },
     {
       ...STANDS.placeholder,
@@ -146,7 +205,7 @@ const LOCATIONS: MapItem[] = [
     {
       ...STANDS.placeholder,
       ...SIZES.small,
-      pos: [576.3, 1597.3],
+      pos: { x: 576.3, y: 1597.3 },
     },
     {
       ...STANDS.placeholder,
@@ -158,153 +217,191 @@ const LOCATIONS: MapItem[] = [
     },
   ]),
   // Leftmost expo cluster
-  ...calculateRow([
+  ...calculateColumn([
     {
       ...STANDS.placeholder,
       ...SIZES.longVertical,
-      pos: [376.3, 1394.3],
+      pos: { x: 376.3, y: 1394.3 },
     },
-  ]),
-  ...calculateRow([
-    {
-      ...STANDS.placeholder,
-      ...SIZES.longVertical,
-      pos: [376.3, 1394.3 - stringToSize("3")],
-    },
-    {
-      ...STANDS.placeholder,
-      ...SIZES.superlongVertical,
-    },
-  ]),
-  ...calculateRow([
+    ...calculateRow([
+      {
+        ...STANDS.placeholder,
+        ...SIZES.longVertical,
+        pos: { x: 376.3, y: 1394.3 - stringToSize("3") },
+      },
+      {
+        ...STANDS.placeholder,
+        ...SIZES.superlongVertical,
+      },
+    ]),
     {
       ...STANDS.placeholder,
       ...SIZES.medium,
-      pos: [376.3, 1394.3 - stringToSize("9")],
+      pos: { x: 376.3, y: 1394.3 - stringToSize("9") },
     },
   ]),
   // Center big stands expo cluster
-  ...calculateRow([
+  ...calculateColumn([
     {
       ...STANDS.placeholder,
       ...getStandSize("13x6"),
-      pos: [526.3, 1450.0],
+      pos: { x: 526.3, y: 1450.0 },
     },
-  ]),
-  ...calculateRow([
     {
       ...STANDS.placeholder,
       ...getStandSize("6x12"),
-      pos: [526.3, 1450.0 - stringToSize("12")],
     },
-  ]),
-  ...calculateRow([
-    {
-      ...STANDS.placeholder,
-      ...SIZES.small,
-      pos: [526.3, 1450.0 - stringToSize("15")],
-    },
-    {
-      ...STANDS.placeholder,
-      ...SIZES.small,
-    },
-    {
-      ...STANDS.placeholder,
-      ...getStandSize("7x15"),
-    },
+    ...calculateRow([
+      {
+        ...STANDS.placeholder,
+        ...SIZES.small,
+        pos: { x: 526.3, y: 1450.0 - stringToSize("15") },
+      },
+      {
+        ...STANDS.placeholder,
+        ...SIZES.small,
+      },
+      {
+        ...STANDS.placeholder,
+        ...getStandSize("7x15"),
+      },
+    ]),
   ]),
   // Rightmost expo cluster
-  ...calculateRow([
-    {
-      ...STANDS.placeholder,
-      ...SIZES.long,
-      pos: [826.3, 1530.0],
-    },
-    {
-      ...STANDS.placeholder,
-      ...SIZES.long,
-    },
-  ]),
-  ...calculateRow([
-    {
-      ...STANDS.placeholder,
-      ...SIZES.small,
-      pos: [826.3, 1530.0 - stringToSize("3")],
-    },
-  ]),
-  ...calculateRow([
+  ...calculateColumn([
+    ...calculateRow([
+      {
+        ...STANDS.placeholder,
+        ...SIZES.long,
+        pos: { x: 826.3, y: 1530.0 },
+      },
+      {
+        ...STANDS.placeholder,
+        ...SIZES.long,
+      },
+    ]),
     {
       ...STANDS.placeholder,
       ...SIZES.small,
-      pos: [826.3, 1530.0 - stringToSize("6")],
+      pos: { x: 826.3, y: 1530.0 - stringToSize("3") },
+    },
+    {
+      ...STANDS.placeholder,
+      ...SIZES.small,
+    },
+    ...calculateRow([
+      {
+        ...STANDS.placeholder,
+        ...SIZES.longVertical,
+        pos: { x: 826.3, y: 1530.0 - stringToSize("12") },
+      },
+      {
+        ...STANDS.placeholder,
+        ...getStandSize("9x12"),
+      },
+    ]),
+    ...calculateRow([
+      {
+        ...STANDS.placeholder,
+        ...SIZES.long,
+        pos: { x: 826.3, y: 1530.0 - stringToSize("15") },
+      },
+      {
+        ...STANDS.placeholder,
+        ...SIZES.small,
+      },
+      {
+        ...STANDS.placeholder,
+        ...SIZES.small,
+      },
+    ]),
+  ]),
+  // Streamer cluster
+  ...calculateRow([
+    {
+      ...ATTRACTIONS.streamerLounge,
+      ...getStandSize("10x10"),
+      pos: { x: 786.3, y: 1680.0 },
+    },
+  ]),
+  ...calculateRow([
+    {
+      ...ATTRACTIONS.streamers,
+      ...getStandSize("10x3"),
+      pos: { x: 786.3, y: 1680.0 - stringToSize("3") },
+    },
+  ]),
+  // TG Shop, lower left
+  {
+    ...STANDS.placeholder,
+    ...getStandSize("12x20"),
+    pos: { x: 694, y: 736 },
+  },
+  // Left stage (stage right) cluster
+  ...calculateRow([
+    {
+      ...STANDS.placeholder,
+      ...getStandSize("10x18"),
+      pos: { x: 1056.3, y: 1420.0 },
     },
   ]),
   ...calculateRow([
     {
       ...STANDS.placeholder,
-      ...SIZES.longVertical,
-      pos: [826.3, 1530.0 - stringToSize("12")],
+      ...getStandSize("10x6"),
+      pos: { x: 1056.3, y: 1420.0 - stringToSize("6") },
+    },
+  ]),
+  // Creativia cluster right of stage (stage left)
+  ...calculateColumn([
+    {
+      ...STAGES.creativiaStage,
+      ...getStandSize("9x12"),
+      pos: { x: 2070, y: 1640 },
+    },
+    {
+      ...STANDS.placeholder,
+      ...getStandSize("9x6"),
     },
     {
       ...STANDS.placeholder,
       ...getStandSize("9x12"),
     },
   ]),
-  ...calculateRow([
-    {
-      ...STANDS.placeholder,
-      ...SIZES.long,
-      pos: [826.3, 1530.0 - stringToSize("15")],
-    },
-    {
-      ...STANDS.placeholder,
-      ...SIZES.small,
-    },
-    {
-      ...STANDS.placeholder,
-      ...SIZES.small,
-    },
-  ]),
+  // 2073, y: 1329
   // Testing: Rough stages
   {
     ...STAGES.mainStage,
     width: 280,
     height: 250,
-    pos: [1300, 1310],
+    pos: { x: 1300, y: 1310 },
   },
   {
     ...STAGES.eSportStage,
     width: 280,
     height: 190,
-    pos: [1300, 1600],
+    pos: { x: 1300, y: 1600 },
   },
-  {
-    ...STAGES.creativiaStage,
-    width: 140,
-    height: 170,
-    pos: [2070, 1630],
-  },
-];
+].map((item, index) => ({
+  ...item,
+  slug: item.slug ?? `${slugifyMapItemName(item.name)}-${index}`,
+}));
 
-const usedLocations = LOCATIONS.map(({ name }) => name);
+const usedLocations = LOCATIONS.flatMap(({ name, slug }) => [name, slug]);
+const isUsed = ({ name, slug }: MapItemBase) =>
+  usedLocations.includes(slug || "") || usedLocations.includes(name);
 const nav = [
   {
     title: "Utstillere",
-    items: Object.values(STANDS).filter(({ name }) =>
-      usedLocations.includes(name),
-    ),
+    items: Object.values(STANDS).filter(isUsed),
   },
   {
     title: "Mat",
-    items: Object.values(FOOD).filter(({ name }) =>
-      usedLocations.includes(name),
-    ),
+    items: Object.values(FOOD).filter(isUsed),
   },
   {
     title: "Scener",
-    items: Object.values(STAGES).filter(({ name }) =>
-      usedLocations.includes(name),
-    ),
+    items: Object.values(STAGES).filter(isUsed),
   },
 ].filter(({ items }) => items.length > 0);
 ---
