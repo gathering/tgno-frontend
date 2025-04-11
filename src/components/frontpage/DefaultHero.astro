@@ -15,14 +15,13 @@ const { class: classNames } = Astro.props;
     class="rounded-3xl"
     title="The Gathering 2025 - TG:RE - Trailer"
     videoId="B8khsj7usxc"
-    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen=""
-    cookie
-    frameborder="0"
+    allow="autoplay"
     embedParams={{
       autoplay: 1,
-      showinfo: 0,
+      playslinline: 1,
       rel: 0,
+      // @ts-ignore
+      mute: 1,
     }}
     slot="overlay"
   />
