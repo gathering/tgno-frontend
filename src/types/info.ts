@@ -1,3 +1,4 @@
+import type { Image } from "./images";
 import type { MinimalApiPage, PaginatedResponse } from "./utils";
 
 export interface FaqSnippet {
@@ -21,6 +22,7 @@ export interface InfoPage extends MinimalApiPage {
   intro?: string;
   pages?: InfoPageSnippet[];
   faq?: FaqSnippet[];
+  main_image?: Image;
 }
 
 export interface FaqPage extends MinimalApiPage {
