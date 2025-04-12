@@ -10,13 +10,13 @@ export interface MapItem extends PartialMapItem {
 export interface PartialMapItem {
   name: string;
   slug: string;
-  icon: string;
+  icon?: string;
   width: number;
   height: number;
   polygon?: Cords[];
   presentation?: {
     showInNavigation?: boolean;
-    type: "stage" | "stand" | "unknown";
+    type: "stage" | "stand" | "food" | "placeholder" | "unknown";
     interactive?: boolean;
     calendarQuery?: string[];
     padding?: number;

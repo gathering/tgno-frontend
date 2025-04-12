@@ -240,17 +240,23 @@ const { locations: ssrLocations } = Astro.props;
       &.stage {
         fill-opacity: 1;
         fill: theme("colors.backgroundSecondary");
-        stroke: theme("colors.backgroundSecondary");
+        stroke: blue;
       }
       &.stand {
         fill-opacity: 1;
         fill: theme("colors.backgroundSecondary");
-        stroke: theme("colors.backgroundSecondary");
+        stroke: red;
       }
+      &.food {
+        fill-opacity: 1;
+        fill: theme("colors.backgroundSecondary");
+        stroke: green;
+      }
+      &.placeholder,
       &.unknown {
         fill-opacity: 1;
-        fill: theme("colors.neutral.200");
-        stroke: theme("colors.neutral.200");
+        fill: hotpink;
+        stroke: black;
       }
     }
     .leaflet-popup {
