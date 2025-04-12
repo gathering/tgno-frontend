@@ -262,7 +262,7 @@ export class Calendar {
         },
         {
           slug: "kreativiascenen",
-          name: "Kreativscenen",
+          name: "Kreativiascenen",
           type: "location",
           color: "blue",
         },
