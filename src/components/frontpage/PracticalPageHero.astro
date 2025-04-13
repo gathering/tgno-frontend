@@ -15,6 +15,8 @@ const path = "/practical/frontpage-test";
 const page = await fetchInfoPageByPath({
   path,
   apiUrl: import.meta.env.API_URL,
+}).catch((e) => {
+  console.error(e.message);
 });
 
 const { intro, main_image, title, body, meta } = page || {};
