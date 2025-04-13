@@ -137,10 +137,11 @@ const { locations: ssrLocations } = Astro.props;
       ].map(toLatLngTuple);
 
       // TODO: Replace with proper map (tiled if better for performance)
-      L.imageOverlay(
-        "/TG25_sitemap_low_res_placeholder.jpg",
-        this.mapBounds,
-      ).addTo(map);
+      L.imageOverlay("/tg25_map_background.jpg", this.mapBounds).addTo(map);
+      //L.imageOverlay(
+      //  "/TG25_sitemap_low_res_placeholder.jpg",
+      //  this.mapBounds,
+      //).addTo(map);
 
       map.fitBounds(this.mapBounds);
       map.setMaxBounds(this.mapBounds);
@@ -169,8 +170,23 @@ const { locations: ssrLocations } = Astro.props;
               },
             ];
 
+        const targetConfig = {
+          noClip: true,
+          className: presentation?.type || "unknown",
+        };
+
+        const target = rawPolygon
+          ? new L.Polygon(bounds.map(toLatLngTuple), targetConfig)
+          : new L.Rectangle(bounds.map(toLatLngTuple), targetConfig);
+        target.addTo(map);
+
         // TODO: Dealing with polygon shapes?
-        if (icon && !rawPolygon && bounds.length === 2) {
+        if (
+          icon &&
+          presentation?.mapIcon &&
+          !rawPolygon &&
+          bounds.length === 2
+        ) {
           L.imageOverlay(
             icon,
             // @ts-ignore-next-line
@@ -180,16 +196,18 @@ const { locations: ssrLocations } = Astro.props;
               interactive: false,
             },
           ).addTo(map);
+          target.bindTooltip(name);
+        } else if (
+          !["placeholder", "unknown"].includes(presentation?.type || "")
+        ) {
+          L.marker(target.getBounds().getCenter(), {
+            icon: L.divIcon({
+              className: "label",
+              html: name,
+            }),
+            zIndexOffset: 202,
+          }).addTo(map);
         }
-
-        const targetConfig = {
-          noClip: true,
-          className: presentation?.type || "unknown",
-        };
-        const target = rawPolygon
-          ? new L.Polygon(bounds.map(toLatLngTuple), targetConfig)
-          : new L.Rectangle(bounds.map(toLatLngTuple), targetConfig);
-        target.addTo(map);
 
         this.targets[slug] = {
           slug,
@@ -242,29 +260,48 @@ const { locations: ssrLocations } = Astro.props;
 <style>
   tg-map {
     .leaflet-container {
-      background-color: theme("colors.white");
+      background-color: #211f20;
+      .label {
+        font-size: 0.8rem;
+        color: black;
+        background-color: rgba(255, 255, 255, 0.8);
+        display: flex;
+        width: auto !important;
+        height: auto !important;
+        padding: 0.2rem;
+      }
     }
     .leaflet-interactive {
       &.stage {
         fill-opacity: 1;
-        fill: theme("colors.backgroundSecondary");
-        stroke: blue;
+        fill: theme("colors.orange.500");
+        stroke-width: 1;
+        stroke: theme("colors.black");
       }
       &.stand {
         fill-opacity: 1;
-        fill: theme("colors.backgroundSecondary");
-        stroke: red;
+        fill: theme("colors.blue.500");
+        stroke-width: 1;
+        stroke: theme("colors.black");
       }
       &.food {
         fill-opacity: 1;
-        fill: theme("colors.backgroundSecondary");
-        stroke: green;
+        fill: theme("colors.red.500");
+        stroke-width: 1;
+        stroke: theme("colors.black");
+      }
+      &.attraction {
+        fill-opacity: 1;
+        fill: theme("colors.purple.500");
+        stroke-width: 1;
+        stroke: theme("colors.black");
       }
       &.placeholder,
       &.unknown {
-        fill-opacity: 1;
-        fill: hotpink;
-        stroke: black;
+        fill-opacity: 0.1;
+        fill: white;
+        stroke-width: 1;
+        stroke: theme("colors.black");
       }
     }
     .leaflet-popup {

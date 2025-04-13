@@ -28,31 +28,37 @@ const STANDS = {
     },
   },
   eHeroic: {
-    name: "E-Heroic",
+    name: "Heroic",
     presentation: {
       type: "stand",
     },
   },
   eNidaros: {
-    name: "E-Nidaros",
+    name: "Nidaros",
     presentation: {
       type: "stand",
     },
   },
   eHamar: {
-    name: "E-Hamar",
+    name: "Hamar",
     presentation: {
       type: "stand",
     },
   },
   eUiaKraken: {
-    name: "E-UiA Kraken",
+    name: "UiA Kraken",
     presentation: {
       type: "stand",
     },
   },
   eEinHerjar: {
-    name: "E-Einherjar",
+    name: "Einherjar",
+    presentation: {
+      type: "stand",
+    },
+  },
+  eDMG: {
+    name: "DMG",
     presentation: {
       type: "stand",
     },
@@ -260,49 +266,84 @@ const ATTRACTIONS = {
     name: "Streamers",
     presentation: {
       type: "stand",
+      showInNavigation: true,
     },
   },
   chillout: {
     icon: "/tg25/sponsors/kandu.svg",
     name: "Chillout",
-    slug: "chillout",
     presentation: {
-      type: "stand",
+      type: "attraction",
+      showInNavigation: true,
     },
   },
   tgHack: {
     name: "TG:Hack",
-    slug: "tghack",
     presentation: {
-      type: "stand",
+      type: "attraction",
+      showInNavigation: true,
     },
   },
   compoInfo: {
     name: "Creative og Game infodesk",
-    slug: "compoinfo",
     presentation: {
-      type: "stand",
+      type: "attraction",
+      showInNavigation: true,
     },
   },
   tgShop: {
     name: "TG Shop",
-    slug: "tgshop",
     presentation: {
-      type: "stand",
+      type: "attraction",
+      showInNavigation: true,
     },
   },
   infodesk: {
     name: "Informasjon (Infodesk)",
-    slug: "infodesk",
     presentation: {
-      type: "stand",
+      type: "attraction",
+      showInNavigation: true,
     },
   },
   support: {
     name: "Techsupport",
-    slug: "support",
     presentation: {
-      type: "stand",
+      type: "attraction",
+      showInNavigation: true,
+    },
+  },
+  toilet: {
+    name: "Toalett",
+    presentation: {
+      type: "attraction",
+      //showInNavigation: true,
+    },
+  },
+  showers: {
+    name: "Toaletter og dusjer",
+    presentation: {
+      type: "attraction",
+      //showInNavigation: true,
+    },
+  },
+  sektor: {
+    name: "sektor",
+    presentation: {
+      type: "attraction",
+      showInNavigation: true,
+    },
+  },
+  sleepingArea: {
+    name: "Soveområde",
+    presentation: {
+      type: "attraction",
+      showInNavigation: true,
+    },
+  },
+  crewArea: {
+    name: "Crewområde",
+    presentation: {
+      type: "placeholder",
     },
   },
 } as const satisfies LocationMap;
@@ -311,9 +352,10 @@ const STAGES = {
   mainStage: {
     icon: "https://www.tg.no/tg25/tg25_square_white.svg",
     name: "Hovedscenen",
-    slug: "hovedscenen",
     presentation: {
       type: "stage",
+      showInNavigation: true,
+      mapIcon: true,
       calendarQuery: ["hovedscenen"],
       padding: 40,
     },
@@ -321,9 +363,10 @@ const STAGES = {
   eSportStage: {
     icon: "https://www.tg.no/tg25/tg25_square_white.svg",
     name: "Esportscenen",
-    slug: "esportscenen",
     presentation: {
       type: "stage",
+      showInNavigation: true,
+      mapIcon: true,
       calendarQuery: ["esportscenen"],
       padding: 40,
     },
@@ -331,9 +374,10 @@ const STAGES = {
   creativiaStage: {
     icon: "https://www.tg.no/tg25/tg25_square_white.svg",
     name: "Kreativiascenen",
-    slug: "kreativiascenen",
     presentation: {
       type: "stage",
+      showInNavigation: true,
+      mapIcon: true,
       calendarQuery: ["kreativiascenen"],
       padding: 40,
     },
@@ -350,34 +394,39 @@ const SIZES = {
 
 const LOCATIONS: MapItem[] = [
   // Expo outer curve
+  {
+    ...STANDS.amberTattoo,
+    ...SIZES.longVertical,
+    pos: { x: 269, y: 1154 },
+  },
   ...[
     {
-      ...STANDS.amberTattoo,
+      ...STANDS.eHeroic,
       ...SIZES.longVertical,
       pos: { x: 268, y: 1298 },
     },
     {
-      ...STANDS.eHeroic,
+      ...STANDS.eNidaros,
       ...SIZES.longVertical,
       pos: { x: 270, y: 1398 },
     },
     {
-      ...STANDS.eNidaros,
+      ...STANDS.eHamar,
       ...SIZES.longVertical,
       pos: { x: 294.5, y: 1499 },
     },
     {
-      ...STANDS.eHamar,
+      ...STANDS.eUiaKraken,
       ...SIZES.longVertical,
       pos: { x: 340.5, y: 1591.5 },
     },
     {
-      ...STANDS.eUiaKraken,
+      ...STANDS.eEinHerjar,
       ...SIZES.longVertical,
       pos: { x: 405, y: 1674 },
     },
     {
-      ...STANDS.eEinHerjar,
+      ...STANDS.eDMG,
       ...SIZES.longVertical,
       pos: { x: 485, y: 1742 },
     },
@@ -579,6 +628,30 @@ const LOCATIONS: MapItem[] = [
       ...getStandSize("9x12"),
     },
   ]),
+  // Food cluster
+  {
+    ...FOOD.monkys,
+    ...SIZES.small,
+    polygon: rotateCords({ x: 0, y: 0 }, getStandPolygon("3x3"), -20),
+    pos: { x: 365 - 50, y: 935 },
+  },
+  {
+    ...FOOD.gordita,
+    ...getStandSize("3x6"),
+    polygon: rotateCords({ x: 0, y: 0 }, getStandPolygon("3x6"), -45),
+    pos: { x: 455 - 50, y: 840 },
+  },
+  {
+    ...FOOD.pizzabakeren,
+    ...getStandSize("8x4"),
+    pos: { x: 489 - 50, y: 801 },
+  },
+  {
+    ...FOOD.waffleFactory,
+    ...getStandSize("3x6"),
+    pos: { x: 615.25 - 50, y: 863.75 },
+  },
+  // Stages
   {
     ...STAGES.mainStage,
     width: 280,
@@ -591,26 +664,129 @@ const LOCATIONS: MapItem[] = [
     height: 190,
     pos: { x: 1300, y: 1600 },
   },
+  // Toilets and showers
+  // toilets - top
+  {
+    ...ATTRACTIONS.toilet,
+    ...getStandSize("10x3"),
+    pos: { x: 1506, y: 1901 },
+  },
+  {
+    ...ATTRACTIONS.toilet,
+    ...getStandSize("10x3"),
+    pos: { x: 1775, y: 1901 },
+  },
+  // toilets - right
+  {
+    ...ATTRACTIONS.toilet,
+    ...getStandSize("3x10"),
+    pos: { x: 3132, y: 1344 },
+  },
+  {
+    ...ATTRACTIONS.toilet,
+    ...getStandSize("3x10"),
+    pos: { x: 3132, y: 1030 },
+  },
+  // toilets - left
+  {
+    ...ATTRACTIONS.toilet,
+    ...getStandSize("3x10"),
+    pos: { x: 116, y: 1344 },
+  },
+  {
+    ...ATTRACTIONS.toilet,
+    ...getStandSize("3x10"),
+    pos: { x: 116, y: 1030 },
+  },
+  // toilets - bottom
+  {
+    ...ATTRACTIONS.toilet,
+    ...getStandSize("3x3"),
+    pos: { x: 2306, y: 548 },
+  },
+  {
+    ...ATTRACTIONS.toilet,
+    ...getStandSize("3x3"),
+    pos: { x: 883, y: 548 },
+  },
+  {
+    ...ATTRACTIONS.showers,
+    ...getStandSize("30x3"),
+    pos: { x: 1050, y: 620 },
+  },
+  {
+    ...ATTRACTIONS.showers,
+    ...getStandSize("30x3"),
+    pos: { x: 1750, y: 620 },
+  },
+  // Seating and sleeping sectors
+  {
+    ...ATTRACTIONS.sektor,
+    name: "Sektor 3",
+    ...getStandSize("16x30"),
+    pos: { x: 920, y: 735 },
+  },
+  {
+    ...ATTRACTIONS.sektor,
+    name: "Sektor 2",
+    ...getStandSize("30x30"),
+    pos: { x: 920 + stringToSize("18"), y: 735 },
+  },
+  {
+    ...ATTRACTIONS.sektor,
+    name: "Sektor 4 - Stillesone",
+    ...getStandSize("30x30"),
+    pos: { x: 920 + stringToSize("50"), y: 735 },
+  },
+  {
+    ...ATTRACTIONS.sleepingArea,
+    ...getStandSize("40x30"),
+    pos: { x: 920 + stringToSize("90"), y: 735 },
+  },
+  {
+    ...ATTRACTIONS.sektor,
+    name: "Sektor 1",
+    ...getStandSize("16x30"),
+    pos: { x: 1776, y: 1330 },
+  },
+  {
+    ...ATTRACTIONS.crewArea,
+    ...getStandSize("40x30"),
+    pos: { x: 920 + stringToSize("90"), y: 735 + stringToSize("35") },
+  },
+  // TODO: Add foodstands
 ].map((item, index) => ({
   ...item,
-  slug: (item as MapItem)?.slug ?? `${slugifyMapItemName(item.name)}-${index}`,
+  slug: (item as MapItem)?.slug || `${slugifyMapItemName(item.name)}-${index}`,
 }));
 
-const usedLocations = LOCATIONS.flatMap(({ name, slug }) => [name, slug]);
-const isUsed = ({ name, slug }: MapItemBase) =>
-  usedLocations.includes(slug || "") || usedLocations.includes(name);
 const nav = [
   {
     title: "Utstillere",
-    items: Object.values(STANDS).filter(isUsed),
+    items: LOCATIONS.filter(
+      ({ presentation }) => presentation?.type === "stand",
+    ),
   },
   {
     title: "Mat",
-    items: Object.values(FOOD).filter(isUsed),
+    items: LOCATIONS.filter(
+      ({ presentation }) =>
+        presentation?.showInNavigation && presentation?.type === "food",
+    ),
   },
   {
     title: "Scener",
-    items: Object.values(STAGES).filter(isUsed),
+    items: LOCATIONS.filter(
+      ({ presentation }) =>
+        presentation?.showInNavigation && presentation?.type === "stage",
+    ),
+  },
+  {
+    title: "Viktig",
+    items: LOCATIONS.filter(
+      ({ presentation }) =>
+        presentation?.showInNavigation && presentation?.type === "attraction",
+    ),
   },
 ].filter(({ items }) => items.length > 0);
 ---

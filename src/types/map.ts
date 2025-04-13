@@ -16,7 +16,8 @@ export interface PartialMapItem {
   polygon?: Cords[];
   presentation?: {
     showInNavigation?: boolean;
-    type: "stage" | "stand" | "food" | "placeholder" | "unknown";
+    mapIcon?: boolean;
+    type: "stage" | "stand" | "food" | "attraction" | "placeholder" | "unknown";
     interactive?: boolean;
     calendarQuery?: string[];
     padding?: number;
