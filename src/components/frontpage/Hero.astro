@@ -14,11 +14,15 @@ const hideMobileImage = Astro.slots.has("overlay");
   <img
     src={image}
     alt="Hero Image"
-    class={`${hideMobileImage ? "hidden" : ""} sm:block sm:absolute left-0 top-0 w-full h-full object-cover rounded-3xl z-0`}
+    class={`${hideMobileImage ? "hidden" : ""} sm:block sm:absolute sm:left-0 sm:top-0 w-full sm:h-full object-cover rounded-3xl sm:z-0`}
   />
-  <div class="z-10 relative rounded-3xl flex flex-col col-span-3">
-    <slot name="overlay" />
-  </div>
+  {
+    hideMobileImage ? (
+      <div class="z-10 relative rounded-3xl flex flex-col col-span-3">
+        <slot name="overlay" />
+      </div>
+    ) : null
+  }
 
   <div class="z-10 relative flex flex-col justify-end col-span-2 space-y-4">
     <div
