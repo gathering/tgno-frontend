@@ -41,7 +41,7 @@ export function calculateColumn(
 ): MapItem[] {
   const newItems: MapItem[] = [];
 
-  items.forEach((item, i) => {
+  items.forEach((item) => {
     if (isMapItem(item)) {
       newItems.push(item);
       return;
@@ -68,7 +68,7 @@ export const calculateRow = (
 ): MapItem[] => {
   const newItems: MapItem[] = [];
 
-  items.forEach((item, i) => {
+  items.forEach((item) => {
     if (isMapItem(item)) {
       newItems.push(item);
       return;

@@ -593,7 +593,7 @@ const LOCATIONS: MapItem[] = [
   },
 ].map((item, index) => ({
   ...item,
-  slug: item.slug ?? `${slugifyMapItemName(item.name)}-${index}`,
+  slug: (item as MapItem)?.slug ?? `${slugifyMapItemName(item.name)}-${index}`,
 }));
 
 const usedLocations = LOCATIONS.flatMap(({ name, slug }) => [name, slug]);

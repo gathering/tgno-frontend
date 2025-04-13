@@ -12,9 +12,15 @@ const { locations: ssrLocations } = Astro.props;
 
 <script>
   import L, { type LatLngBoundsExpression } from "leaflet";
-  import { pad, isMapItem, toLatLngTuple } from "../../utils/map";
+  import {
+    pad,
+    isMapItem,
+    toLatLngTuple,
+    slugifyMapItemName,
+  } from "../../utils/map";
   import type { MapItem } from "../../types";
   interface Target extends MapItem {
+    slug: string;
     element: L.Rectangle | L.Polygon;
     calendarQuery?: string[];
   }
@@ -139,9 +145,9 @@ const { locations: ssrLocations } = Astro.props;
       map.fitBounds(this.mapBounds);
       map.setMaxBounds(this.mapBounds);
 
-      locations.forEach((location) => {
+      locations.forEach((location, index) => {
         const {
-          slug,
+          name,
           width,
           height,
           pos,
@@ -149,6 +155,7 @@ const { locations: ssrLocations } = Astro.props;
           icon,
           presentation,
         } = location;
+        const slug = `${slugifyMapItemName(name)}-${index}`;
         const bounds = rawPolygon
           ? rawPolygon.map((cords) => ({
               x: cords.x + pos.x,
@@ -185,6 +192,7 @@ const { locations: ssrLocations } = Astro.props;
         target.addTo(map);
 
         this.targets[slug] = {
+          slug,
           ...location,
           element: target,
         };

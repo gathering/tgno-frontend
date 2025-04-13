@@ -9,7 +9,7 @@ export interface MapItem extends PartialMapItem {
 
 export interface PartialMapItem {
   name: string;
-  slug: string;
+  slug?: string;
   icon?: string;
   width: number;
   height: number;
