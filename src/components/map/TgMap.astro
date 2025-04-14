@@ -238,7 +238,7 @@ const { locations: ssrLocations } = Astro.props;
             ?.getElement()
             ?.style.setProperty(
               "--width",
-              `${presentation.labelWidth ?? name.length * 0.7}em`,
+              `${presentation?.labelWidth ?? name.length * 0.7}em`,
             );
         }
 
