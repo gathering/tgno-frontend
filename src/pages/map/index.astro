@@ -115,6 +115,7 @@ const STANDS = {
     name: "Telenor",
     presentation: {
       type: "stand",
+      //showPopup: true,
     },
   },
   hamarKommune: {
@@ -356,6 +357,22 @@ const ATTRACTIONS = {
     name: "Crewområde",
     presentation: {
       type: "placeholder",
+    },
+  },
+  security: {
+    name: "Sikkerhet",
+    presentation: {
+      type: "attraction",
+      showInNavigation: true,
+      stickyLabel: true,
+    },
+  },
+  medic: {
+    name: "Medic",
+    presentation: {
+      type: "attraction",
+      showInNavigation: true,
+      stickyLabel: true,
     },
   },
 } as const satisfies LocationMap;
@@ -717,17 +734,36 @@ const LOCATIONS: MapItem[] = [
   {
     ...ATTRACTIONS.toilet,
     ...getStandSize("6x6"),
-    pos: { x: 2306, y: 548 },
+    pos: { x: 2156, y: 450 },
+    presentation: {
+      ...ATTRACTIONS.toilet.presentation,
+      stickyLabel: false,
+    },
   },
   {
     ...ATTRACTIONS.toilet,
     ...getStandSize("6x6"),
-    pos: { x: 883, y: 548 },
+    pos: { x: 850, y: 360 },
+    presentation: {
+      ...ATTRACTIONS.toilet.presentation,
+      stickyLabel: false,
+    },
   },
   {
     ...ATTRACTIONS.showers,
     ...getStandSize("60x6"),
     pos: { x: 1150, y: 490 },
+  },
+  // Security and medic
+  {
+    ...ATTRACTIONS.security,
+    ...getStandSize("10x6"),
+    pos: { x: 2306, y: 550 },
+  },
+  {
+    ...ATTRACTIONS.medic,
+    ...getStandSize("10x6"),
+    pos: { x: 883, y: 500 },
   },
   // Seating and sleeping sectors
   {
