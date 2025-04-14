@@ -30,7 +30,8 @@ const { locations: ssrLocations } = Astro.props;
   const ZOOM_LEVELS = [
     [3, "high"],
     [0, "medium"],
-    [-10, "low"],
+    [-1, "low"],
+    [-10, "none"],
   ] as const;
 
   class TGMap extends HTMLElement {
@@ -330,8 +331,18 @@ const { locations: ssrLocations } = Astro.props;
       .tooltip {
       }
 
+      &[zoom-level="none"] {
+        .label {
+          display: none;
+        }
+      }
       &[zoom-level="low"] {
         .label {
+          display: flex;
+          font-size: 0.5rem;
+          padding: theme("padding.1") theme("padding.1");
+        }
+        .tooltip {
           display: none;
         }
       }
