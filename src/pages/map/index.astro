@@ -612,22 +612,22 @@ const LOCATIONS: MapItem[] = [
   ]),
   // TG Shop cluster, lower left above reception
   {
-    ...ATTRACTIONS.infodesk,
-    ...getStandSize("4x10"),
-    pos: { x: 694, y: 736 + stringToSize("14") },
-  },
-  {
     ...ATTRACTIONS.support,
-    ...getStandSize("4x10"),
-    pos: { x: 694 + stringToSize("8"), y: 736 + stringToSize("14") },
+    ...getStandSize("5x5"),
+    pos: { x: 694, y: 736 + stringToSize("14") },
     presentation: {
       ...ATTRACTIONS.support.presentation,
       labelWidth: 7,
     },
   },
   {
+    ...ATTRACTIONS.infodesk,
+    ...getStandSize("5x5"),
+    pos: { x: 694 + stringToSize("7"), y: 736 + stringToSize("14") },
+  },
+  {
     ...ATTRACTIONS.tgShop,
-    ...getStandSize("12x10"),
+    ...getStandSize("12x12"),
     pos: { x: 694, y: 736 },
   },
   // Left stage (stage right) cluster
