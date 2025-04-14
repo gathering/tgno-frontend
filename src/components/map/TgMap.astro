@@ -243,12 +243,14 @@ const { locations: ssrLocations } = Astro.props;
             );
         }
 
-        const tooltip = target
-          .bindTooltip(name, {
-            content: name,
-            className: "tooltip",
-          })
-          .getTooltip();
+        const tooltip = !presentation?.stickyLabel
+          ? target
+              .bindTooltip(name, {
+                content: name,
+                className: "tooltip",
+              })
+              .getTooltip()
+          : undefined;
 
         this.targets[slug] = {
           slug,
