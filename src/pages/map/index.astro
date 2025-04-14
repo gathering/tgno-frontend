@@ -620,6 +620,10 @@ const LOCATIONS: MapItem[] = [
     ...ATTRACTIONS.support,
     ...getStandSize("4x10"),
     pos: { x: 694 + stringToSize("8"), y: 736 + stringToSize("14") },
+    presentation: {
+      ...ATTRACTIONS.support.presentation,
+      labelWidth: 7,
+    },
   },
   {
     ...ATTRACTIONS.tgShop,
@@ -655,6 +659,10 @@ const LOCATIONS: MapItem[] = [
     {
       ...ATTRACTIONS.compoInfo,
       ...getStandSize("9x12"),
+      presentation: {
+        ...ATTRACTIONS.compoInfo.presentation,
+        labelWidth: 13,
+      },
     },
   ]),
   // Food cluster
