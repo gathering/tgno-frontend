@@ -316,6 +316,14 @@ const ATTRACTIONS = {
       showInNavigation: true,
     },
   },
+  reception: {
+    name: "Resepsjon",
+    presentation: {
+      type: "attraction",
+      showInNavigation: true,
+      stickyLabel: true,
+    },
+  },
   support: {
     name: "Techsupport",
     presentation: {
@@ -629,6 +637,11 @@ const LOCATIONS: MapItem[] = [
     ...ATTRACTIONS.tgShop,
     ...getStandSize("12x12"),
     pos: { x: 694, y: 736 },
+  },
+  {
+    ...ATTRACTIONS.reception,
+    ...getStandSize("6x8"),
+    pos: { x: 850, y: 206 },
   },
   // Left stage (stage right) cluster
   ...calculateRow([
