@@ -11,71 +11,128 @@ const { locations: ssrLocations } = Astro.props;
 ---
 
 <script>
-  import L, {
-    type LatLngBoundsExpression,
-    type LatLngBoundsLiteral,
-  } from "leaflet";
-  import { pad, slugifyMapItemName, isCords } from "../../utils/map";
-  import type { Cords } from "../../utils/map";
+  import L, { type LatLngBoundsExpression } from "leaflet";
+  import {
+    pad,
+    isMapItem,
+    toLatLngTuple,
+    slugifyMapItemName,
+  } from "../../utils/map";
   import type { MapItem } from "../../types";
-  import { isMapItem } from "../../utils";
-
-  const xyBase = (x: number, y: number): L.LatLngTuple => {
-    return [y, x];
-  };
-
-  function xy(yx: Cords): L.LatLngTuple;
-  function xy(yx: Cords[]): L.LatLngTuple[];
-  function xy(yx: Cords | Cords[]): L.LatLngTuple | L.LatLngTuple[] {
-    // Single coordinate
-    if (isCords(yx)) {
-      return xyBase(yx[0], yx[1]);
-    }
-
-    // Array of cordinates
-    if (isCords(yx[0])) {
-      return yx.map((cords) => xyBase(cords[0], cords[1]));
-    }
-
-    // Shouldn't really happen
-    return xyBase(yx[0], yx[0]);
+  interface Target extends MapItem {
+    slug: string;
+    tooltip: L.Tooltip | undefined;
+    element: L.Rectangle | L.Polygon;
+    calendarQuery?: string[];
   }
+
+  // Arbitrary number based on map design
+  const ZOOM_LEVELS = [
+    [3, "high"],
+    [0, "medium"],
+    [-10, "low"],
+  ] as const;
 
   class TGMap extends HTMLElement {
     currentTarget: string = "";
     map?: L.Map = undefined;
     mapBounds?: LatLngBoundsExpression = undefined;
-    targets: Record<string, L.Rectangle> = {};
+    targets: Record<string, Target> = {};
+    popup?: L.Popup = undefined;
 
-    resetTarget() {
-      if (this.map && this.mapBounds) {
-        this.map.fitBounds(this.mapBounds);
+    setTarget(slug: string) {
+      let target = slug;
+
+      if (this.currentTarget === target || !this.targets[target]) {
+        target = "";
       }
-      this.currentTarget = "";
+
+      this.goToTarget(this.targets[target]);
+      this.currentTarget = target;
     }
 
-    onNavigate(slug: string) {
-      this.goToTarget(slug);
-    }
+    goToTarget(target?: Target) {
+      this.showPopup(target);
 
-    goToTarget(slug: string) {
-      const target = this.targets[slug];
       if (!target) {
-        console.error("No target found for slug", slug);
-        this.resetTarget();
-        return;
-      }
-      if (slug === this.currentTarget) {
-        this.resetTarget();
+        this.map?.zoomOut();
         return;
       }
 
-      this.currentTarget = slug;
-      this.map?.fitBounds(target.getBounds(), {
+      this.map?.fitBounds(target.element.getBounds(), {
         duration: 0.3,
         padding: [75, 75],
         animate: true,
       });
+    }
+
+    showPopup(target?: Target) {
+      if (this.popup) {
+        this.popup.remove();
+      }
+      if (
+        !target ||
+        !this.map ||
+        !target.presentation?.showPopup ||
+        target.presentation?.interactive === false
+      ) {
+        return;
+      }
+
+      const { slug, name, presentation } = target;
+      const { type, calendarQuery } = presentation || {};
+
+      this.popup = new L.Popup({
+        className: type,
+        closeButton: false,
+      })
+        .setLatLng(target.element.getBounds().getCenter())
+        .setContent((_layer) => {
+          const contents = document.createElement("div");
+
+          const heading = document.createElement("h3");
+          heading.textContent = name;
+          heading.onclick = () => this.onTargetClick(slug);
+          contents.append(heading);
+
+          if (calendarQuery) {
+            const calendarLink = document.createElement("a");
+            calendarLink.classList.add("calendar-link");
+            calendarLink.target = "_blank";
+            calendarLink.href = `/schedule?tags=${calendarQuery.join(",")}`;
+            calendarLink.textContent = "Se programmet";
+            contents.append(calendarLink);
+          }
+
+          return contents;
+        })
+        .openOn(this.map);
+    }
+
+    onNavigate(slug: string) {
+      this.setTarget(slug);
+    }
+
+    onTargetClick(slug: string) {
+      this.setTarget(slug);
+    }
+
+    onResetClick() {
+      this.setTarget("");
+    }
+
+    onZoomChange() {
+      const container = this.map?.getContainer();
+      const zoomLevel = this.map?.getZoom() || 0;
+      if (!container) {
+        return;
+      }
+
+      const zoomLevelClass =
+        ZOOM_LEVELS.find(([level]) => zoomLevel >= level)?.[1] || "low";
+
+      container.setAttribute("zoom-level", zoomLevelClass);
+      container.setAttribute("zoom-value", String(zoomLevel));
     }
 
     connectedCallback() {
@@ -90,105 +147,127 @@ const { locations: ssrLocations } = Astro.props;
         );
       }
 
-      // Initialize the map
-      this.map = L.map("map", {
+      // Initialize the map (local reference so that TS doesn't complain)
+      const map = L.map("map", {
         crs: L.CRS.Simple,
         minZoom: -2,
-        //zoomAnimationThreshold: 100,
-        //preferCanvas: true,
-        //inertiaMaxSpeed: 1000,
         // TODO: Activate on mobile, or where we need to avoid the "pop in" effect
         // renderer: L.canvas({ padding: 3 }),
         attributionControl: false,
       });
-      this.mapBounds = [xy([0, 0]), xy([3308, 2339])];
+      this.map = map;
+      this.mapBounds = [
+        { x: 0, y: 0 },
+        { x: 3308, y: 2339 },
+      ].map(toLatLngTuple);
 
-      // TODO: Replace with proper map
-      // TODO: Replace with tiled map if more performant
-      L.imageOverlay(
-        "/TG25_sitemap_low_res_placeholder.jpg",
-        this.mapBounds,
-      ).addTo(this.map);
+      // TODO: Replace with proper map (tiled if better for performance)
+      L.imageOverlay("/tg25_map_background.jpg", this.mapBounds).addTo(map);
+      //L.imageOverlay(
+      //  "/TG25_sitemap_low_res_placeholder.jpg",
+      //  this.mapBounds,
+      //).addTo(map);
 
-      let polygons: L.Polygon[] = [];
-      locations.forEach(
-        ({
-          slug,
+      map.fitBounds(this.mapBounds);
+      map.setMaxBounds(this.mapBounds);
+
+      locations.forEach((location, index) => {
+        const {
           name,
-          icon,
-          pos,
           width,
           height,
-          presentation: {
-            type = "unknown",
-            interactive = true,
-            calendarQuery,
-            padding,
-          } = {},
-        }) => {
-          const bounds: Cords[] = [pos, [pos[0] + width, pos[1] + height]];
-          const paddedBounds = pad(
-            typeof padding === "number" ? padding : 10,
-            bounds,
-          );
-          if (!this.map) {
-            return;
-          }
-
-          const logo = L.imageOverlay(icon, xy(paddedBounds), {
-            zIndex: 201, // Polygons are 200?
-            interactive: false,
-          }).addTo(this.map);
-          const polygon = L.rectangle(xy(bounds), {
-            noClip: true,
-            className: type,
-          }).addTo(this.map);
-          polygons.push(polygon);
-
-          const actualSlug = slug || slugifyMapItemName(name);
-          this.targets[actualSlug] = polygon;
-
-          if (!interactive) {
-            return;
-          }
-
-          polygon.on("click", () => this.goToTarget(actualSlug));
-          polygon
-            .bindPopup(
-              (_layer) => {
-                const contents = document.createElement("div");
-
-                const heading = document.createElement("h3");
-                heading.textContent = name;
-                // heading.onclick = () => this.goToTarget(actualSlug);
-                contents.append(heading);
-
-                if (calendarQuery) {
-                  const calendarLink = document.createElement("a");
-                  calendarLink.classList.add("calendar-link");
-                  calendarLink.target = "_blank";
-                  calendarLink.href = `/schedule?tags=${calendarQuery.join(",")}`;
-                  calendarLink.textContent = "Se programmet";
-                  contents.append(calendarLink);
-                }
-
-                return contents;
-              },
+          pos,
+          polygon: rawPolygon,
+          icon,
+          presentation,
+        } = location;
+        const slug = `${slugifyMapItemName(name)}-${index}`;
+        const bounds = rawPolygon
+          ? rawPolygon.map((cords) => ({
+              x: cords.x + pos.x,
+              y: cords.y + pos.y,
+            }))
+          : [
+              pos,
               {
-                className: type,
-                closeButton: false,
+                x: pos.x + width,
+                y: pos.y + height,
               },
-            )
-            .openPopup();
-        },
-      );
+            ];
 
-      if (polygons[0]) {
-        this.map.getRenderer(polygons[0]).options.padding = 2;
-      }
+        const targetConfig = {
+          noClip: true,
+          className: presentation?.type || "unknown",
+        };
 
-      this.map.fitBounds(this.mapBounds);
-      this.map.setMaxBounds(this.mapBounds);
+        const target = rawPolygon
+          ? new L.Polygon(bounds.map(toLatLngTuple), targetConfig)
+          : new L.Rectangle(bounds.map(toLatLngTuple), targetConfig);
+        target.addTo(map);
+
+        // TODO: Dealing with polygon shapes?
+        if (
+          icon &&
+          presentation?.mapIcon &&
+          !rawPolygon &&
+          bounds.length === 2
+        ) {
+          L.imageOverlay(
+            icon,
+            // @ts-ignore-next-line
+            pad(presentation.padding ?? width / 10, bounds).map(toLatLngTuple),
+            {
+              zIndex: 201, // Polygons are 200?
+              interactive: false,
+            },
+          ).addTo(map);
+        } else if (
+          !["placeholder", "unknown"].includes(presentation?.type || "")
+        ) {
+          const marker = L.marker(target.getBounds().getCenter(), {
+            icon: L.divIcon({
+              className: `label ${presentation?.stickyLabel ? "sticky" : ""}`,
+              html: name,
+              iconSize: [0, 0],
+              iconAnchor: [0, 0],
+            }),
+            zIndexOffset: 202,
+          }).addTo(map);
+          // Guesstimate hack to semi-align labels
+          marker
+            ?.getElement()
+            ?.style.setProperty(
+              "--width",
+              `${presentation?.labelWidth ?? name.length * 0.7}em`,
+            );
+        }
+
+        const tooltip = target
+          .bindTooltip(name, {
+            content: name,
+            className: "tooltip",
+          })
+          .getTooltip();
+
+        this.targets[slug] = {
+          slug,
+          ...location,
+          element: target,
+          tooltip,
+        };
+
+        if (presentation?.interactive === false) {
+          return;
+        }
+
+        target.on("click", () => this.onTargetClick(slug));
+      });
+
+      // TODO: Only run on mobile (usage on desktop sizes tend to cause a lot of performance issues)
+      Object.values(this.targets).some((target) => {
+        map.getRenderer(target.element).options.padding = 2;
+        return true;
+      });
 
       this.querySelectorAll("[data-part=nav-item]").forEach((el) => {
         el.addEventListener("click", () => {
@@ -200,7 +279,20 @@ const { locations: ssrLocations } = Astro.props;
       });
 
       this.querySelectorAll("button[data-action=reset]").forEach((button) => {
-        button.addEventListener("click", this.resetTarget);
+        button.addEventListener("click", this.onResetClick);
+      });
+
+      this.onZoomChange();
+      map.on("zoomend", this.onZoomChange.bind(this));
+      map.on("click", (event) => {
+        // @ts-ignore-next-line
+        if (!window.debug) {
+          return;
+        }
+        console.log({
+          x: event.latlng.lng,
+          y: event.latlng.lat,
+        });
       });
     }
   }
@@ -211,23 +303,89 @@ const { locations: ssrLocations } = Astro.props;
 <style>
   tg-map {
     .leaflet-container {
-      background-color: theme("colors.white");
+      background-color: #1d1918;
+      .label {
+        font-size: theme("fontSize.base");
+        width: max-content !important;
+        height: auto !important;
+        padding: theme("padding.1") theme("padding.2");
+        display: none;
+        left: calc((var(--width) / 2) * -1);
+        top: -1em;
+        border-radius: theme("borderRadius.lg");
+        background-color: theme("colors.white");
+        font-weight: theme("fontWeight.bold");
+        color: theme("colors.black");
+        box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.2);
+
+        &.sticky {
+          display: flex !important;
+        }
+      }
+      .tooltip {
+      }
+
+      &[zoom-level="low"] {
+        .label {
+          display: none;
+        }
+      }
+      &[zoom-level="medium"] {
+        .label {
+          display: flex;
+        }
+        .tooltip {
+          display: none;
+        }
+      }
+      &[zoom-level="high"] {
+        .label {
+          display: flex;
+          padding: theme("padding.2") theme("padding.4");
+          font-size: theme("fontSize.lg");
+        }
+        .tooltip {
+          display: none;
+        }
+      }
     }
     .leaflet-interactive {
       &.stage {
         fill-opacity: 1;
-        fill: theme("colors.backgroundSecondary");
-        stroke: theme("colors.backgroundSecondary");
+        fill: theme("colors.orange.500");
+        stroke-width: 1;
+        stroke: theme("colors.black");
       }
       &.stand {
         fill-opacity: 1;
-        fill: theme("colors.backgroundSecondary");
-        stroke: theme("colors.backgroundSecondary");
+        fill: theme("colors.blue.500");
+        stroke-width: 1;
+        stroke: theme("colors.black");
       }
-      &.unknown {
+      &.food {
         fill-opacity: 1;
-        fill: theme("colors.neutral.200");
-        stroke: theme("colors.neutral.200");
+        fill: theme("colors.red.500");
+        stroke-width: 1;
+        stroke: theme("colors.black");
+      }
+      &.hygiene {
+        fill-opacity: 1;
+        fill: theme("colors.green.500");
+        stroke-width: 1;
+        stroke: theme("colors.black");
+      }
+      &.attraction {
+        fill-opacity: 1;
+        fill: theme("colors.purple.500");
+        stroke-width: 1;
+        stroke: theme("colors.black");
+      }
+      &.placeholder,
+      &.unknown {
+        fill-opacity: 0.1;
+        fill: white;
+        stroke-width: 1;
+        stroke: theme("colors.black");
       }
     }
     .leaflet-popup {
