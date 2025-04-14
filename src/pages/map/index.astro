@@ -310,7 +310,7 @@ const ATTRACTIONS = {
     },
   },
   infodesk: {
-    name: "Informasjon (Infodesk)",
+    name: "Infodesk",
     presentation: {
       type: "attraction",
       showInNavigation: true,
@@ -610,25 +610,26 @@ const LOCATIONS: MapItem[] = [
       ...getStandSize("10x3"),
     },
   ]),
-  // TG Shop cluser, lower left above reception
-  ...calculateColumn(
-    [
-      {
-        ...ATTRACTIONS.tgShop,
-        ...getStandSize("12x10"),
-        pos: { x: 694, y: 736 },
-      },
-      {
-        ...ATTRACTIONS.infodesk,
-        ...getStandSize("12x5"),
-      },
-      {
-        ...ATTRACTIONS.support,
-        ...getStandSize("12x5"),
-      },
-    ],
-    "up",
-  ),
+  // TG Shop cluster, lower left above reception
+  {
+    ...ATTRACTIONS.support,
+    ...getStandSize("5x5"),
+    pos: { x: 694, y: 736 + stringToSize("14") },
+    presentation: {
+      ...ATTRACTIONS.support.presentation,
+      labelWidth: 7,
+    },
+  },
+  {
+    ...ATTRACTIONS.infodesk,
+    ...getStandSize("5x5"),
+    pos: { x: 694 + stringToSize("7"), y: 736 + stringToSize("14") },
+  },
+  {
+    ...ATTRACTIONS.tgShop,
+    ...getStandSize("12x12"),
+    pos: { x: 694, y: 736 },
+  },
   // Left stage (stage right) cluster
   ...calculateRow([
     {
@@ -658,6 +659,10 @@ const LOCATIONS: MapItem[] = [
     {
       ...ATTRACTIONS.compoInfo,
       ...getStandSize("9x12"),
+      presentation: {
+        ...ATTRACTIONS.compoInfo.presentation,
+        labelWidth: 13,
+      },
     },
   ]),
   // Food cluster
@@ -819,20 +824,15 @@ function getIsItemOfTypes(types: string | string[]) {
 }
 
 const sortByName = (a: MapItem, b: MapItem) => a.name.localeCompare(b.name);
+const sortByType = (a: MapItem, b: MapItem) => {
+  return (a.presentation?.type || "unknown").localeCompare(
+    b.presentation?.type || "unknown",
+  );
+};
 
 const showInMenus = (item: MapItem) => item.presentation?.showInNavigation;
 
 const nav = [
-  {
-    title: "Utstillere",
-    items: LOCATIONS.filter(getIsItemOfTypes("stand")).sort(sortByName),
-  },
-  {
-    title: "Mat",
-    items: LOCATIONS.filter(showInMenus)
-      .filter(getIsItemOfTypes("food"))
-      .sort(sortByName),
-  },
   {
     title: "Scener",
     items: LOCATIONS.filter(showInMenus)
@@ -843,7 +843,14 @@ const nav = [
     title: "Praktisk",
     items: LOCATIONS.filter(showInMenus)
       .filter(getIsItemOfTypes(["attraction", "hygiene"]))
-      .sort(sortByName),
+      .sort(sortByName)
+      .sort(sortByType),
+  },
+  {
+    title: "Utstillere",
+    items: LOCATIONS.filter(getIsItemOfTypes(["stand", "food"]))
+      .sort(sortByName)
+      .sort(sortByType),
   },
 ].filter(({ items }) => items.length > 0);
 ---

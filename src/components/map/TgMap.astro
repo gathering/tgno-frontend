@@ -30,7 +30,8 @@ const { locations: ssrLocations } = Astro.props;
   const ZOOM_LEVELS = [
     [3, "high"],
     [0, "medium"],
-    [-10, "low"],
+    [-1, "low"],
+    [-10, "none"],
   ] as const;
 
   class TGMap extends HTMLElement {
@@ -242,12 +243,14 @@ const { locations: ssrLocations } = Astro.props;
             );
         }
 
-        const tooltip = target
-          .bindTooltip(name, {
-            content: name,
-            className: "tooltip",
-          })
-          .getTooltip();
+        const tooltip = !presentation?.stickyLabel
+          ? target
+              .bindTooltip(name, {
+                content: name,
+                className: "tooltip",
+              })
+              .getTooltip()
+          : undefined;
 
         this.targets[slug] = {
           slug,
@@ -302,6 +305,11 @@ const { locations: ssrLocations } = Astro.props;
 
 <style>
   tg-map {
+    .leaflet-control-container {
+      .leaflet-control-zoom {
+        margin-top: theme("margin.10");
+      }
+    }
     .leaflet-container {
       background-color: #1d1918;
       .label {
@@ -325,8 +333,18 @@ const { locations: ssrLocations } = Astro.props;
       .tooltip {
       }
 
+      &[zoom-level="none"] {
+        .label {
+          display: none;
+        }
+      }
       &[zoom-level="low"] {
         .label {
+          display: flex;
+          font-size: 0.5rem;
+          padding: theme("padding.1") theme("padding.1");
+        }
+        .tooltip {
           display: none;
         }
       }
