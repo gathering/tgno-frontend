@@ -20,6 +20,16 @@ type MapItemBase = Pick<PartialMapItem, "name"> &
 
 type LocationMap = Record<string, MapItemBase>;
 
+const TYPE_COLORS = {
+  attraction: "purple",
+  hygiene: "green",
+  food: "red",
+  stand: "blue",
+  stage: "orange",
+  unknown: "gray",
+  placeholder: "gray",
+};
+
 const STANDS = {
   amberTattoo: {
     name: "Amber Tattoo",
@@ -313,17 +323,17 @@ const ATTRACTIONS = {
     },
   },
   toilet: {
-    name: "Toalett",
+    name: "Toaletter",
     presentation: {
-      type: "attraction",
-      //showInNavigation: true,
+      type: "hygiene",
+      stickyLabel: true,
     },
   },
   showers: {
-    name: "Toaletter og dusjer",
+    name: "Dusjer",
     presentation: {
-      type: "attraction",
-      //showInNavigation: true,
+      type: "hygiene",
+      showInNavigation: true,
     },
   },
   sektor: {
@@ -331,6 +341,7 @@ const ATTRACTIONS = {
     presentation: {
       type: "attraction",
       showInNavigation: true,
+      stickyLabel: true,
     },
   },
   sleepingArea: {
@@ -338,6 +349,7 @@ const ATTRACTIONS = {
     presentation: {
       type: "attraction",
       showInNavigation: true,
+      stickyLabel: true,
     },
   },
   crewArea: {
@@ -350,33 +362,36 @@ const ATTRACTIONS = {
 
 const STAGES = {
   mainStage: {
-    icon: "https://www.tg.no/tg25/tg25_square_white.svg",
+    icon: "https://www.tg.no/tg25/tg25_icon_white.svg",
     name: "Hovedscenen",
     presentation: {
       type: "stage",
       showInNavigation: true,
+      showPopup: true,
       mapIcon: true,
       calendarQuery: ["hovedscenen"],
       padding: 40,
     },
   },
   eSportStage: {
-    icon: "https://www.tg.no/tg25/tg25_square_white.svg",
+    icon: "https://www.tg.no/tg25/tg25_icon_white.svg",
     name: "Esportscenen",
     presentation: {
       type: "stage",
       showInNavigation: true,
+      showPopup: true,
       mapIcon: true,
       calendarQuery: ["esportscenen"],
       padding: 40,
     },
   },
   creativiaStage: {
-    icon: "https://www.tg.no/tg25/tg25_square_white.svg",
+    icon: "https://www.tg.no/tg25/tg25_icon_white.svg",
     name: "Kreativiascenen",
     presentation: {
       type: "stage",
       showInNavigation: true,
+      showPopup: true,
       mapIcon: true,
       calendarQuery: ["kreativiascenen"],
       padding: 40,
@@ -668,56 +683,51 @@ const LOCATIONS: MapItem[] = [
   // toilets - top
   {
     ...ATTRACTIONS.toilet,
-    ...getStandSize("10x3"),
-    pos: { x: 1506, y: 1901 },
+    ...getStandSize("10x6"),
+    pos: { x: 1400, y: 1941 },
   },
   {
     ...ATTRACTIONS.toilet,
-    ...getStandSize("10x3"),
-    pos: { x: 1775, y: 1901 },
+    ...getStandSize("10x6"),
+    pos: { x: 1830, y: 1941 },
   },
   // toilets - right
   {
     ...ATTRACTIONS.toilet,
-    ...getStandSize("3x10"),
-    pos: { x: 3132, y: 1344 },
+    ...getStandSize("6x10"),
+    pos: { x: 3200, y: 1344 },
   },
   {
     ...ATTRACTIONS.toilet,
-    ...getStandSize("3x10"),
-    pos: { x: 3132, y: 1030 },
+    ...getStandSize("6x10"),
+    pos: { x: 3200, y: 1030 },
   },
   // toilets - left
   {
     ...ATTRACTIONS.toilet,
-    ...getStandSize("3x10"),
-    pos: { x: 116, y: 1344 },
+    ...getStandSize("6x10"),
+    pos: { x: 60, y: 1344 },
   },
   {
     ...ATTRACTIONS.toilet,
-    ...getStandSize("3x10"),
-    pos: { x: 116, y: 1030 },
+    ...getStandSize("6x10"),
+    pos: { x: 60, y: 1030 },
   },
-  // toilets - bottom
+  // toilets and showers - bottom
   {
     ...ATTRACTIONS.toilet,
-    ...getStandSize("3x3"),
+    ...getStandSize("6x6"),
     pos: { x: 2306, y: 548 },
   },
   {
     ...ATTRACTIONS.toilet,
-    ...getStandSize("3x3"),
+    ...getStandSize("6x6"),
     pos: { x: 883, y: 548 },
   },
   {
     ...ATTRACTIONS.showers,
-    ...getStandSize("30x3"),
-    pos: { x: 1050, y: 620 },
-  },
-  {
-    ...ATTRACTIONS.showers,
-    ...getStandSize("30x3"),
-    pos: { x: 1750, y: 620 },
+    ...getStandSize("60x6"),
+    pos: { x: 1150, y: 490 },
   },
   // Seating and sleeping sectors
   {
@@ -737,6 +747,10 @@ const LOCATIONS: MapItem[] = [
     name: "Sektor 4 - Stillesone",
     ...getStandSize("30x30"),
     pos: { x: 920 + stringToSize("50"), y: 735 },
+    presentation: {
+      ...ATTRACTIONS.sektor.presentation,
+      labelWidth: 10,
+    },
   },
   {
     ...ATTRACTIONS.sleepingArea,
@@ -754,39 +768,46 @@ const LOCATIONS: MapItem[] = [
     ...getStandSize("40x30"),
     pos: { x: 920 + stringToSize("90"), y: 735 + stringToSize("35") },
   },
-  // TODO: Add foodstands
 ].map((item, index) => ({
   ...item,
   slug: (item as MapItem)?.slug || `${slugifyMapItemName(item.name)}-${index}`,
 }));
 
+const isItemOfTypes = (item: MapItem, types: string | string[]) =>
+  (Array.isArray(types) ? types : [types]).includes(
+    item.presentation?.type || "",
+  );
+
+function getIsItemOfTypes(types: string | string[]) {
+  return (item: MapItem) => isItemOfTypes(item, types);
+}
+
+const sortByName = (a: MapItem, b: MapItem) => a.name.localeCompare(b.name);
+
+const showInMenus = (item: MapItem) => item.presentation?.showInNavigation;
+
 const nav = [
   {
     title: "Utstillere",
-    items: LOCATIONS.filter(
-      ({ presentation }) => presentation?.type === "stand",
-    ),
+    items: LOCATIONS.filter(getIsItemOfTypes("stand")).sort(sortByName),
   },
   {
     title: "Mat",
-    items: LOCATIONS.filter(
-      ({ presentation }) =>
-        presentation?.showInNavigation && presentation?.type === "food",
-    ),
+    items: LOCATIONS.filter(showInMenus)
+      .filter(getIsItemOfTypes("food"))
+      .sort(sortByName),
   },
   {
     title: "Scener",
-    items: LOCATIONS.filter(
-      ({ presentation }) =>
-        presentation?.showInNavigation && presentation?.type === "stage",
-    ),
+    items: LOCATIONS.filter(showInMenus)
+      .filter(getIsItemOfTypes("stage"))
+      .sort(sortByName),
   },
   {
-    title: "Viktig",
-    items: LOCATIONS.filter(
-      ({ presentation }) =>
-        presentation?.showInNavigation && presentation?.type === "attraction",
-    ),
+    title: "Praktisk",
+    items: LOCATIONS.filter(showInMenus)
+      .filter(getIsItemOfTypes(["attraction", "hygiene"]))
+      .sort(sortByName),
   },
 ].filter(({ items }) => items.length > 0);
 ---
@@ -802,7 +823,10 @@ const nav = [
             <ul class="flex flex-row flex-wrap text-md font-bold text-white gap-2 mb-6">
               {items.map((item) => (
                 <li>
-                  <TgMapNavItem mapItem={item} />
+                  <TgMapNavItem
+                    mapItem={item}
+                    color={TYPE_COLORS[item.presentation?.type || "unknown"]}
+                  />
                 </li>
               ))}
             </ul>

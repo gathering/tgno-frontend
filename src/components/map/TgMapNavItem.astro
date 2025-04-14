@@ -4,13 +4,18 @@ import { slugifyMapItemName } from "../../utils/map";
 
 type Props = {
   mapItem: Pick<MapItem, "name" | "slug">;
+  color?: string;
 };
 
-const { mapItem } = Astro.props;
+const getColors = ({ color }: { color?: string }) => {
+  return color ? `bg-${color}-500 text-black` : "bg-orange-500 text-black";
+};
+
+const { color, mapItem } = Astro.props;
 ---
 
 <a
-  class="border border-white px-2 py-1 mb-2 rounded-xl cursor-pointer hover:bg-orange-600 focus:bg-orange-600"
+  class={`${color ? getColors({ color }) : ""} flex flex-row cursor-pointer items-center gap-2 py-1 px-2 rounded-md text-md hover:bg-white hover:text-backgroundSecondary`}
   data-part="nav-item"
   data-target={mapItem.slug || slugifyMapItemName(mapItem.name)}
 >

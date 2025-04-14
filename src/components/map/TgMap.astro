@@ -21,9 +21,17 @@ const { locations: ssrLocations } = Astro.props;
   import type { MapItem } from "../../types";
   interface Target extends MapItem {
     slug: string;
+    tooltip: L.Tooltip | undefined;
     element: L.Rectangle | L.Polygon;
     calendarQuery?: string[];
   }
+
+  // Arbitrary number based on map design
+  const ZOOM_LEVELS = [
+    [3, "high"],
+    [0, "medium"],
+    [-10, "low"],
+  ] as const;
 
   class TGMap extends HTMLElement {
     currentTarget: string = "";
@@ -47,9 +55,7 @@ const { locations: ssrLocations } = Astro.props;
       this.showPopup(target);
 
       if (!target) {
-        if (this.map && this.mapBounds) {
-          this.map.fitBounds(this.mapBounds);
-        }
+        this.map?.zoomOut();
         return;
       }
 
@@ -64,7 +70,12 @@ const { locations: ssrLocations } = Astro.props;
       if (this.popup) {
         this.popup.remove();
       }
-      if (!target || !this.map) {
+      if (
+        !target ||
+        !this.map ||
+        !target.presentation?.showPopup ||
+        target.presentation?.interactive === false
+      ) {
         return;
       }
 
@@ -108,6 +119,20 @@ const { locations: ssrLocations } = Astro.props;
 
     onResetClick() {
       this.setTarget("");
+    }
+
+    onZoomChange() {
+      const container = this.map?.getContainer();
+      const zoomLevel = this.map?.getZoom() || 0;
+      if (!container) {
+        return;
+      }
+
+      const zoomLevelClass =
+        ZOOM_LEVELS.find(([level]) => zoomLevel >= level)?.[1] || "low";
+
+      container.setAttribute("zoom-level", zoomLevelClass);
+      container.setAttribute("zoom-value", String(zoomLevel));
     }
 
     connectedCallback() {
@@ -196,23 +221,39 @@ const { locations: ssrLocations } = Astro.props;
               interactive: false,
             },
           ).addTo(map);
-          target.bindTooltip(name);
         } else if (
           !["placeholder", "unknown"].includes(presentation?.type || "")
         ) {
-          L.marker(target.getBounds().getCenter(), {
+          const marker = L.marker(target.getBounds().getCenter(), {
             icon: L.divIcon({
-              className: "label",
+              className: `label ${presentation?.stickyLabel ? "sticky" : ""}`,
               html: name,
+              iconSize: [0, 0],
+              iconAnchor: [0, 0],
             }),
             zIndexOffset: 202,
           }).addTo(map);
+          // Guesstimate hack to semi-align labels
+          marker
+            ?.getElement()
+            ?.style.setProperty(
+              "--width",
+              `${presentation.labelWidth ?? name.length * 0.7}em`,
+            );
         }
+
+        const tooltip = target
+          .bindTooltip(name, {
+            content: name,
+            className: "tooltip",
+          })
+          .getTooltip();
 
         this.targets[slug] = {
           slug,
           ...location,
           element: target,
+          tooltip,
         };
 
         if (presentation?.interactive === false) {
@@ -241,6 +282,8 @@ const { locations: ssrLocations } = Astro.props;
         button.addEventListener("click", this.onResetClick);
       });
 
+      this.onZoomChange();
+      map.on("zoomend", this.onZoomChange.bind(this));
       map.on("click", (event) => {
         // @ts-ignore-next-line
         if (!window.debug) {
@@ -262,13 +305,48 @@ const { locations: ssrLocations } = Astro.props;
     .leaflet-container {
       background-color: #211f20;
       .label {
-        font-size: 0.8rem;
-        color: black;
-        background-color: rgba(255, 255, 255, 0.8);
-        display: flex;
-        width: auto !important;
+        font-size: theme("fontSize.base");
+        width: max-content !important;
         height: auto !important;
-        padding: 0.2rem;
+        padding: theme("padding.1") theme("padding.2");
+        display: none;
+        left: calc((var(--width) / 2) * -1);
+        top: -1em;
+        border-radius: theme("borderRadius.lg");
+        background-color: theme("colors.white");
+        font-weight: theme("fontWeight.bold");
+        color: theme("colors.black");
+        box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.2);
+
+        &.sticky {
+          display: flex !important;
+        }
+      }
+      .tooltip {
+      }
+
+      &[zoom-level="low"] {
+        .label {
+          display: none;
+        }
+      }
+      &[zoom-level="medium"] {
+        .label {
+          display: flex;
+        }
+        .tooltip {
+          display: none;
+        }
+      }
+      &[zoom-level="high"] {
+        .label {
+          display: flex;
+          padding: theme("padding.2") theme("padding.4");
+          font-size: theme("fontSize.lg");
+        }
+        .tooltip {
+          display: none;
+        }
       }
     }
     .leaflet-interactive {
@@ -287,6 +365,12 @@ const { locations: ssrLocations } = Astro.props;
       &.food {
         fill-opacity: 1;
         fill: theme("colors.red.500");
+        stroke-width: 1;
+        stroke: theme("colors.black");
+      }
+      &.hygiene {
+        fill-opacity: 1;
+        fill: theme("colors.green.500");
         stroke-width: 1;
         stroke: theme("colors.black");
       }
