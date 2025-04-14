@@ -834,6 +834,12 @@ const showInMenus = (item: MapItem) => item.presentation?.showInNavigation;
 
 const nav = [
   {
+    title: "Scener",
+    items: LOCATIONS.filter(showInMenus)
+      .filter(getIsItemOfTypes("stage"))
+      .sort(sortByName),
+  },
+  {
     title: "Praktisk",
     items: LOCATIONS.filter(showInMenus)
       .filter(getIsItemOfTypes(["attraction", "hygiene"]))
@@ -845,12 +851,6 @@ const nav = [
     items: LOCATIONS.filter(getIsItemOfTypes(["stand", "food"]))
       .sort(sortByName)
       .sort(sortByType),
-  },
-  {
-    title: "Scener",
-    items: LOCATIONS.filter(showInMenus)
-      .filter(getIsItemOfTypes("stage"))
-      .sort(sortByName),
   },
 ].filter(({ items }) => items.length > 0);
 ---
