@@ -824,30 +824,32 @@ function getIsItemOfTypes(types: string | string[]) {
 }
 
 const sortByName = (a: MapItem, b: MapItem) => a.name.localeCompare(b.name);
+const sortByType = (a: MapItem, b: MapItem) => {
+  return (a.presentation?.type || "unknown").localeCompare(
+    b.presentation?.type || "unknown",
+  );
+};
 
 const showInMenus = (item: MapItem) => item.presentation?.showInNavigation;
 
 const nav = [
   {
-    title: "Utstillere",
-    items: LOCATIONS.filter(getIsItemOfTypes("stand")).sort(sortByName),
+    title: "Praktisk",
+    items: LOCATIONS.filter(showInMenus)
+      .filter(getIsItemOfTypes(["attraction", "hygiene"]))
+      .sort(sortByName)
+      .sort(sortByType),
   },
   {
-    title: "Mat",
-    items: LOCATIONS.filter(showInMenus)
-      .filter(getIsItemOfTypes("food"))
-      .sort(sortByName),
+    title: "Utstillere",
+    items: LOCATIONS.filter(getIsItemOfTypes(["stand", "food"]))
+      .sort(sortByName)
+      .sort(sortByType),
   },
   {
     title: "Scener",
     items: LOCATIONS.filter(showInMenus)
       .filter(getIsItemOfTypes("stage"))
-      .sort(sortByName),
-  },
-  {
-    title: "Praktisk",
-    items: LOCATIONS.filter(showInMenus)
-      .filter(getIsItemOfTypes(["attraction", "hygiene"]))
       .sort(sortByName),
   },
 ].filter(({ items }) => items.length > 0);
