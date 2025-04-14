@@ -302,6 +302,11 @@ const { locations: ssrLocations } = Astro.props;
 
 <style>
   tg-map {
+    .leaflet-control-container {
+      .leaflet-control-zoom {
+        margin-top: theme("margin.10");
+      }
+    }
     .leaflet-container {
       background-color: #1d1918;
       .label {
