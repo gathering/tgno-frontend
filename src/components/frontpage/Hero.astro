@@ -24,7 +24,9 @@ const hideMobileImage = Astro.slots.has("overlay");
     ) : null
   }
 
-  <div class="z-10 relative flex flex-col justify-end col-span-2 space-y-4">
+  <div
+    class="z-10 relative flex flex-col justify-end col-span-2 space-y-4 sm:col-start-4"
+  >
     <div
       class="w-full bg-blue-600 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:rounded-2xl"
     >
