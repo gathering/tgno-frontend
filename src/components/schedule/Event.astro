@@ -80,7 +80,7 @@ if (expanded) {
     }
     &.ended,
     &.cancelled {
-      background-color: theme("colors.white" / 10%);
+      opacity: 0.5;
     }
     &.minimal {
     }
@@ -186,7 +186,7 @@ if (expanded) {
         class={`text-md ${description ? "group-[.collapsed]:cursor-pointer group-[.collapsed]:hover:bg-white/10" : ""}`}
       >
         <h3 class="font-semibold text-pretty mb-1 pt-1 flex flex-row">
-          <span class="flex w-3 -ml-5 mr-2 text-red-600 live-symbol hidden">
+          <span class="w-3 -ml-5 mr-2 text-red-600 live-symbol hidden">
             <LiveSymbol />
           </span>
           {title}

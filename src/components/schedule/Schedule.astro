@@ -1,5 +1,7 @@
 ---
-
+export interface Schedule extends HTMLElement {
+  attachScrollToTriggers(query: string): void;
+}
 ---
 
 <script>
@@ -8,11 +10,12 @@
     start: number;
     end: number;
   }
-
   class Schedule extends HTMLElement {
     events: Event[] = [];
     timer: number | null = null;
     debugOffset: number = 0;
+    isLive: boolean = false;
+    scrollTriggers: HTMLElement[] = [];
 
     setDebugOffset(offset: number) {
       this.debugOffset = offset;
@@ -40,8 +43,46 @@
       return "default";
     }
 
+    attachScrollToTriggers(
+      query: string,
+      root: HTMLElement | Document = document,
+    ) {
+      root.querySelectorAll(query).forEach((trigger) => {
+        this.scrollTriggers.push(trigger as HTMLElement);
+        trigger.addEventListener("click", () => {
+          this.scrollToLive();
+        });
+      });
+    }
+
+    scrollToLive() {
+      this.events.some((event) => {
+        if (
+          event.element.classList.contains("live") ||
+          event.element.classList.contains("default")
+        ) {
+          event.element.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+            inline: "center",
+          });
+          return true;
+        }
+        return false;
+      });
+    }
+
+    updateScrollToLiveButtons() {
+      this.scrollTriggers.forEach((trigger) => {
+        trigger.classList.toggle("hidden", !this.isLive);
+        trigger.classList.toggle("flex", this.isLive);
+      });
+    }
+
     onTick() {
       const now = new Date(Date.now() + this.debugOffset);
+      let hadNonDefault = false;
+
       this.events.forEach((event) => {
         event.element.classList.remove(
           "live",
@@ -50,14 +91,22 @@
           "minimal",
           "default",
         );
-        event.element.classList.add(
-          this.getStatus({
-            start: event.start,
-            end: event.end,
-            now: now.getTime(),
-          }),
-        );
+
+        const status = this.getStatus({
+          start: event.start,
+          end: event.end,
+          now: now.getTime(),
+        });
+
+        if (status !== "default") {
+          hadNonDefault = true;
+        }
+
+        event.element.classList.add(status);
       });
+
+      this.isLive = hadNonDefault;
+      this.updateScrollToLiveButtons();
     }
 
     connectedCallback() {
@@ -69,16 +118,20 @@
         end: Date.parse(element.getAttribute("data-end") || ""),
       }));
 
+      this.attachScrollToTriggers("[data-part=scroll-to-live-trigger]", this);
+
       this.timer = setInterval(() => {
         this.onTick();
-      }, 5000);
+      }, 60000);
 
       this.onTick();
+
+      this.dispatchEvent(new Event("schedule:loaded"));
     }
   }
   customElements.define("tg-schedule", Schedule);
 </script>
 
-<tg-schedule data-component="schedule">
+<tg-schedule data-component="tg-schedule">
   <slot />
 </tg-schedule>

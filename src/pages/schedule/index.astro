@@ -124,6 +124,21 @@ const filter = calendar.getFilter();
 const navigation = calendar.getNavigation();
 ---
 
+<script>
+  import type { Schedule } from "../../components/schedule/Schedule.astro";
+  import { callOnceAvailable } from "../../utils/components";
+
+  callOnceAvailable({
+    element: document.querySelector<Schedule>(
+      "[data-component='schedule'] tg-schedule",
+    ),
+    callback: (schedule) =>
+      schedule.attachScrollToTriggers("[data-part='scroll-to-live-trigger']"),
+    check: (schedule) => !!schedule?.attachScrollToTriggers,
+    readyEvent: "schedule:loaded",
+  });
+</script>
+
 <Layout
   title="The Gathering - Program"
   description="Her finner du programmet for hva som skjer innenfor E-Sport, Kreativia, konserter og mer under The Gathering 2025."
@@ -183,8 +198,20 @@ const navigation = calendar.getNavigation();
               class="flex flex-row gap-2 text-neutral-300 bg-white/10 py-2 px-3 rounded-lg"
               >Filtrer <ChevronDownSymbol /></button
             >
+            <button
+              data-part="scroll-to-live-trigger"
+              slot="after-trigger"
+              class="hidden flex-row gap-2 ml-2 text-neutral-300 bg-black/20 py-2 px-3 rounded-lg"
+              >Scroll to Live</button
+            >
             <span slot="content">
               <FullFilterNav navigation={navigation} />
+              <button
+                data-part="scroll-to-live-trigger"
+                slot="after-trigger"
+                class="hidden flex-row gap-2 ml-2 text-neutral-300 bg-black/20 py-2 px-3 rounded-lg"
+                >Scroll to Live</button
+              >
             </span>
           </FloatingNav>
           <ActiveFilterNav
@@ -203,27 +230,27 @@ const navigation = calendar.getNavigation();
             }).toString()}
           />
         </nav>
-      </section>
-      <Schedule>
-        {
-          events.length ? (
-            events.map((event, i) =>
-              event.strings.startDate !== events[i - 1]?.strings.startDate ? (
-                <>
-                  <DayHeader date={event.start} />
+        <Schedule>
+          {
+            events.length ? (
+              events.map((event, i) =>
+                event.strings.startDate !== events[i - 1]?.strings.startDate ? (
+                  <>
+                    <DayHeader date={event.start} />
+                    <Event {...event} location={getLocation(event.tags)} />
+                  </>
+                ) : (
                   <Event {...event} location={getLocation(event.tags)} />
-                </>
-              ) : (
-                <Event {...event} location={getLocation(event.tags)} />
-              ),
+                ),
+              )
+            ) : (
+              <p class="text-white text-md">
+                No events found... Perhaps try removing one or more filters?
+              </p>
             )
-          ) : (
-            <p class="text-white text-md">
-              No events found... Perhaps try removing one or more filters?
-            </p>
-          )
-        }
-      </Schedule>
+          }
+        </Schedule>
+      </section>
     </ContentContainer>
   </Main>
 </Layout>
