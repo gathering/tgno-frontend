@@ -8,9 +8,7 @@ interface Props {
 }
 
 const { class: classNames } = Astro.props;
-const path = "/practical/frontpage-test";
-//const path = "/practical/brev-fra-sikkerhetsansvarlig";
-//const path = "/practical/packing-list";
+const path = "/practical/alt-om-innsjekk-og-ankomst-til-tg25/";
 
 const page = await fetchInfoPageByPath({
   path,
@@ -26,7 +24,7 @@ const { intro, main_image, title, body, meta } = page || {};
   page ? (
     <Hero
       image={main_image?.sizes.large.url || "/images/tg19-lights.jpg"}
-      class={`${classNames} min-h-[600px]`}
+      class={`${classNames} min-h-[30vh] sm:min-h-[600px]`}
     >
       <div class="flex flex-col text-left">
         <div class="w-full p-2">
@@ -47,7 +45,7 @@ const { intro, main_image, title, body, meta } = page || {};
       </div>
       <Fragment slot="cta">
         <p class="text-white">Besøke oss i påsken?</p>
-        <Button href="https://www.geekevents.org/tg25/#/shop" theme="secondary">
+        <Button href="/tickets" theme="secondary">
           Kjøp dagsbillett
         </Button>
       </Fragment>
