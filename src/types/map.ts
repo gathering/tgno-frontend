@@ -24,6 +24,10 @@ export interface PartialMapItem {
      */
     showPopup?: boolean;
     /**
+     * Show custom text in popup when clicked
+     */
+    popupText?: string;
+    /**
      * Control if icon should be shown in normal map view
      */
     mapIcon?: boolean;

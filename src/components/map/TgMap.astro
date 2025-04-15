@@ -81,7 +81,7 @@ const { locations: ssrLocations } = Astro.props;
       }
 
       const { slug, name, presentation } = target;
-      const { type, calendarQuery } = presentation || {};
+      const { type, calendarQuery, popupText } = presentation || {};
 
       this.popup = new L.Popup({
         className: type,
@@ -95,6 +95,12 @@ const { locations: ssrLocations } = Astro.props;
           heading.textContent = name;
           heading.onclick = () => this.onTargetClick(slug);
           contents.append(heading);
+
+          if (popupText) {
+            const text = document.createElement("p");
+            text.textContent = popupText;
+            contents.append(text);
+          }
 
           if (calendarQuery) {
             const calendarLink = document.createElement("a");
@@ -297,6 +303,9 @@ const { locations: ssrLocations } = Astro.props;
           y: event.latlng.lat,
         });
       });
+      console.log(
+        "Looking for a kode_? Then you are on the right track, but this one requires a bit of map exploration. If you find it you might be crew material.",
+      );
     }
   }
 
