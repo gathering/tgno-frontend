@@ -100,7 +100,7 @@ const { locations: ssrLocations } = Astro.props;
             const calendarLink = document.createElement("a");
             calendarLink.classList.add("calendar-link");
             calendarLink.target = "_blank";
-            calendarLink.href = `/schedule?tags=${calendarQuery.join(",")}`;
+            calendarLink.href = `/schedule?locations=${calendarQuery.join(",")}`;
             calendarLink.textContent = "Se programmet";
             contents.append(calendarLink);
           }
