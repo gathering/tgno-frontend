@@ -272,6 +272,12 @@ export class Calendar {
           type: "location",
           color: "orange",
         },
+        {
+          slug: "hovedscenen",
+          name: "Lounge",
+          type: "location",
+          color: "green",
+        },
       ],
     });
   };
