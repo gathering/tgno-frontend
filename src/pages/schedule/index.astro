@@ -15,6 +15,7 @@ import ActiveFilterNav, {
   type ActiveFilter,
 } from "../../components/schedule/ActiveFilterNav.astro";
 import FullFilterNav from "../../components/schedule/FullFilterNav.astro";
+import Schedule from "../../components/schedule/Schedule.astro";
 
 type Nullablefilter = Omit<Filter, "date"> & {
   date?: Filter["date"];
@@ -203,7 +204,7 @@ const navigation = calendar.getNavigation();
           />
         </nav>
       </section>
-      <section data-component="schedule">
+      <Schedule>
         {
           events.length ? (
             events.map((event, i) =>
@@ -222,7 +223,7 @@ const navigation = calendar.getNavigation();
             </p>
           )
         }
-      </section>
+      </Schedule>
     </ContentContainer>
   </Main>
 </Layout>

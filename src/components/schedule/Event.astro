@@ -23,6 +23,7 @@ const {
   title,
   description,
   start,
+  end,
   related_url,
   cancelled,
   facts,
@@ -138,6 +139,8 @@ if (expanded) {
 <article
   data-component="event"
   class={`group ${expanded ? "" : "collapsed"} ${style}`}
+  data-start={start}
+  data-end={end}
 >
   <div class={`flex flex-row block pb-4 pt-2 border-t border-white`}>
     <aside class="w-24 mr-4">

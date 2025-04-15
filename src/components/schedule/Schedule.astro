@@ -1,0 +1,84 @@
+---
+
+---
+
+<script>
+  interface Event {
+    element: HTMLElement;
+    start: number;
+    end: number;
+  }
+
+  class Schedule extends HTMLElement {
+    events: Event[] = [];
+    timer: number | null = null;
+    debugOffset: number = 0;
+
+    setDebugOffset(offset: number) {
+      this.debugOffset = offset;
+      console.log(
+        `Debug offset set to ${offset}. Time is now ${new Date(Date.now() + offset)}`,
+      );
+      this.onTick();
+    }
+
+    getStatus({
+      start,
+      end,
+      now,
+    }: {
+      now: number;
+      start: number;
+      end: number;
+    }): "live" | "ended" | "cancelled" | "minimal" | "default" {
+      if (start <= now && end > now) {
+        return "live";
+      }
+      if (end < now) {
+        return "ended";
+      }
+      return "default";
+    }
+
+    onTick() {
+      const now = new Date(Date.now() + this.debugOffset);
+      this.events.forEach((event) => {
+        event.element.classList.remove(
+          "live",
+          "ended",
+          "cancelled",
+          "minimal",
+          "default",
+        );
+        event.element.classList.add(
+          this.getStatus({
+            start: event.start,
+            end: event.end,
+            now: now.getTime(),
+          }),
+        );
+      });
+    }
+
+    connectedCallback() {
+      this.events = Array.from(
+        this.querySelectorAll("[data-component=event]"),
+      ).map((element) => ({
+        element: element as HTMLElement,
+        start: Date.parse(element.getAttribute("data-start") || ""),
+        end: Date.parse(element.getAttribute("data-end") || ""),
+      }));
+
+      this.timer = setInterval(() => {
+        this.onTick();
+      }, 5000);
+
+      this.onTick();
+    }
+  }
+  customElements.define("tg-schedule", Schedule);
+</script>
+
+<tg-schedule data-component="schedule">
+  <slot />
+</tg-schedule>
