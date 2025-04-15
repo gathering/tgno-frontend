@@ -1,21 +1,27 @@
 ---
 interface Props {
   image: string;
+  imageHref?: string;
   class?: string;
 }
 
-const { class: classNames, image } = Astro.props;
+const { class: classNames, image, imageHref } = Astro.props;
 const hideMobileImage = Astro.slots.has("overlay");
+const imageClass = `${hideMobileImage ? "hidden" : ""} sm:block sm:absolute sm:left-0 sm:top-0 w-full sm:h-full object-cover rounded-3xl sm:z-0`;
 ---
 
 <section
   class={`relative rounded-3xl sm:grid sm:grid-cols-5 gap-4 sm:p-4 space-y-4 sm:space-y-0 ${classNames}`}
 >
-  <img
-    src={image}
-    alt="Hero Image"
-    class={`${hideMobileImage ? "hidden" : ""} sm:block sm:absolute sm:left-0 sm:top-0 w-full sm:h-full object-cover rounded-3xl sm:z-0`}
-  />
+  {
+    imageHref ? (
+      <a href={imageHref}>
+        <img src={image} alt="Hero Image" class={imageClass} />
+      </a>
+    ) : (
+      <img src={image} alt="Hero Image" class={imageClass} />
+    )
+  }
   {
     hideMobileImage ? (
       <div class="z-10 relative rounded-3xl flex flex-col col-span-3">

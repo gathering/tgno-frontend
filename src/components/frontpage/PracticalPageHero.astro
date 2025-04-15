@@ -24,6 +24,7 @@ const { intro, main_image, title, body, meta } = page || {};
   page ? (
     <Hero
       image={main_image?.sizes.large.url || "/images/tg19-lights.jpg"}
+      imageHref={meta?.url}
       class={`${classNames} min-h-[30vh] sm:min-h-[600px]`}
     >
       <div class="flex flex-col text-left">
