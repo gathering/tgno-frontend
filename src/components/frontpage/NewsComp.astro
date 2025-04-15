@@ -14,6 +14,8 @@ const articles =
       ...Astro.props,
       api_url: import.meta.env.API_URL,
       limit: 10,
+    }).catch((e) => {
+      console.error(e.message);
     })
   )?.items || [];
 

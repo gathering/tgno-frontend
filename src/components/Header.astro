@@ -16,6 +16,10 @@ const getNavigationItems: () => Promise<NavItem[]> = async () => {
       path: "/schedule",
     },
     {
+      title: "Kart",
+      path: "/map",
+    },
+    {
       title: "Om TG",
       path: "/about",
       items: [
@@ -54,6 +58,8 @@ const getNavigationItems: () => Promise<NavItem[]> = async () => {
   const practicalPage = await fetchInfoPageByPath({
     path: "/practical",
     apiUrl: import.meta.env.API_URL,
+  }).catch((e) => {
+    console.error(e.message);
   });
 
   if (practicalPage?.pages) {
