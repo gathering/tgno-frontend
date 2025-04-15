@@ -273,7 +273,7 @@ export class Calendar {
           color: "orange",
         },
         {
-          slug: "hovedscenen",
+          slug: "lounge",
           name: "Lounge",
           type: "location",
           color: "green",
