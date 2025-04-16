@@ -2,7 +2,13 @@
 import H2 from "../../components/H2.astro";
 import Main from "../../components/Main.astro";
 import Layout from "../../layouts/Layout.astro";
-import { Calendar, isTag, isDateOption, tagsOfTypes } from "../../utils/events";
+import {
+  Calendar,
+  isTag,
+  isDateOption,
+  tagsOfTypes,
+  DEFAULT_DATE_OPTION,
+} from "../../utils/events";
 import Event from "../../components/schedule/Event.astro";
 import DayHeader from "../../components/schedule/DayHeader.astro";
 import CloseSymbol from "../../components/icons/CloseSymbol.astro";
@@ -49,7 +55,7 @@ const getAdjustedFilter = (
   const newFilter = {
     date: date
       ? date.slug === currentFilter.date?.slug
-        ? undefined
+        ? DEFAULT_DATE_OPTION
         : date
       : currentFilter.date,
     // For now we just disallow more than one tag per location and category
@@ -219,12 +225,13 @@ const navigation = calendar.getNavigation();
               filter.date && {
                 ...filter.date,
                 url: getAdjustedUrl({ date: filter.date }).toString(),
-                required: filter.date.slug === "all",
+                required: filter.date.slug === DEFAULT_DATE_OPTION.slug,
               },
               ...filter.locations.map(calendar.getDecoratedTag),
               ...filter.categories.map(calendar.getDecoratedTag),
             ].filter(Boolean) as ActiveFilter[]}
             resetUrl={getUrl({
+              date: DEFAULT_DATE_OPTION,
               locations: [],
               categories: [],
             }).toString()}
