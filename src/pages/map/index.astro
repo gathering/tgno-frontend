@@ -216,7 +216,18 @@ const STANDS = {
       type: "stand",
     },
   },
-  // TODO....
+  ntnu: {
+    name: "NTNU",
+    presentation: {
+      type: "stand",
+    },
+  },
+  torst: {
+    name: "Tørst",
+    presentation: {
+      type: "stand",
+    },
+  },
   kandu: {
     icon: "/tg25/sponsors/kandu.svg",
     name: "KANDU",
@@ -517,29 +528,33 @@ const LOCATIONS: MapItem[] = [
     },
   ]),
   // Leftmost expo cluster
-  ...calculateColumn([
+  ...calculateRow([
     {
       ...STANDS.smashNorge,
-      ...SIZES.longVertical,
-      pos: { x: 376.3, y: 1394.3 },
+      ...SIZES.small,
+      pos: { x: 376.3, y: 1394.3 + stringToSize("3") },
     },
-    ...calculateRow([
-      {
-        ...STANDS.bjerkely,
-        ...SIZES.longVertical,
-        pos: { x: 376.3, y: 1394.3 - stringToSize("3") },
-      },
-      {
-        ...STANDS.placeholder,
-        ...SIZES.superlongVertical,
-      },
-    ]),
     {
-      ...STANDS.nettpatruljen,
-      ...SIZES.medium,
-      pos: { x: 376.3, y: 1394.3 - stringToSize("9") },
+      ...STANDS.torst,
+      ...SIZES.small,
     },
   ]),
+  ...calculateRow([
+    {
+      ...STANDS.bjerkely,
+      ...SIZES.longVertical,
+      pos: { x: 376.3, y: 1394.3 - stringToSize("3") },
+    },
+    {
+      ...STANDS.ntnu,
+      ...SIZES.longVertical,
+    },
+  ]),
+  {
+    ...STANDS.nettpatruljen,
+    ...SIZES.medium,
+    pos: { x: 376.3, y: 1394.3 - stringToSize("9") },
+  },
   // Center big stands expo cluster
   ...calculateColumn([
     {
