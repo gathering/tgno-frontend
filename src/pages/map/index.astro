@@ -107,7 +107,7 @@ const STANDS = {
   hellRobotics: {
     name: "Hell Robotics",
     presentation: {
-      type: "stand",
+      type: "placeholder",
     },
   },
   telenor: {
@@ -139,7 +139,7 @@ const STANDS = {
   nordmore: {
     name: "Nordmøre",
     presentation: {
-      type: "stand",
+      type: "placeholder",
     },
   },
   trust: {
@@ -195,7 +195,7 @@ const STANDS = {
   tineMRiis: {
     name: "Tine M. Riis",
     presentation: {
-      type: "stand",
+      type: "placeholder",
     },
   },
   spillexpo: {
@@ -225,7 +225,7 @@ const STANDS = {
   torst: {
     name: "Tørst",
     presentation: {
-      type: "stand",
+      type: "placeholder",
     },
   },
   kandu: {
@@ -495,6 +495,11 @@ const LOCATIONS: MapItem[] = [
       polygon: rotateCords(polygon[0], polygon, 12 * index),
     };
   }),
+  {
+    ...STANDS.kia,
+    ...SIZES.long,
+    pos: { x: 485 + stringToSize("8"), y: 1742 + stringToSize("1") },
+  },
 
   // Top left expo cluster
   ...calculateRow([
@@ -504,7 +509,8 @@ const LOCATIONS: MapItem[] = [
       pos: { x: 576.3, y: 1644.3 },
     },
     {
-      ...STANDS.placeholder,
+      ...STANDS.smashNorge,
+      name: "Smash Norge - Stasjon",
       ...SIZES.small,
     },
     {
@@ -519,7 +525,7 @@ const LOCATIONS: MapItem[] = [
       pos: { x: 576.3, y: 1597.3 },
     },
     {
-      ...STANDS.placeholder,
+      ...STANDS.eNidaros,
       ...SIZES.small,
     },
     {
@@ -528,33 +534,32 @@ const LOCATIONS: MapItem[] = [
     },
   ]),
   // Leftmost expo cluster
-  ...calculateRow([
+  ...calculateColumn([
     {
       ...STANDS.smashNorge,
-      ...SIZES.small,
-      pos: { x: 376.3, y: 1394.3 + stringToSize("3") },
+      ...getStandSize("3x5"),
+      pos: { x: 376.3, y: 1394.3 },
     },
+    {
+      ...STANDS.bjerkely,
+      ...getStandSize("3x5"),
+    },
+    {
+      ...STANDS.nettpatruljen,
+      ...getStandSize("6x4"),
+    },
+  ]),
+  ...calculateColumn([
     {
       ...STANDS.torst,
       ...SIZES.small,
-    },
-  ]),
-  ...calculateRow([
-    {
-      ...STANDS.bjerkely,
-      ...SIZES.longVertical,
-      pos: { x: 376.3, y: 1394.3 - stringToSize("3") },
+      pos: { x: 376.3 + stringToSize("3"), y: 1394.3 + stringToSize("2") },
     },
     {
       ...STANDS.ntnu,
-      ...SIZES.longVertical,
+      ...getStandSize("3x7"),
     },
   ]),
-  {
-    ...STANDS.nettpatruljen,
-    ...SIZES.medium,
-    pos: { x: 376.3, y: 1394.3 - stringToSize("9") },
-  },
   // Center big stands expo cluster
   ...calculateColumn([
     {
@@ -619,11 +624,7 @@ const LOCATIONS: MapItem[] = [
       },
       {
         ...STANDS.tech,
-        ...SIZES.small,
-      },
-      {
-        ...STANDS.nlogic,
-        ...SIZES.small,
+        ...SIZES.long,
       },
     ]),
   ]),
@@ -639,6 +640,16 @@ const LOCATIONS: MapItem[] = [
       ...getStandSize("10x3"),
     },
   ]),
+  // Right of Streamer cluster
+  {
+    ...STANDS.hado,
+    ...getStandSize("9x6"),
+    pos: { x: 786.3 + stringToSize("10"), y: 1680.0 + stringToSize("2") },
+    presentation: {
+      ...STANDS.hado.presentation,
+      labelWidth: 4,
+    },
+  },
   // TG Shop cluster, lower left above reception
   {
     ...ATTRACTIONS.support,
