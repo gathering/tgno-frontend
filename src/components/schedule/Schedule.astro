@@ -57,10 +57,12 @@ export interface Schedule extends HTMLElement {
     }
 
     scrollToLive() {
+      let previous: HTMLElement | null = null;
       this.events.some((event) => {
         if (
           event.element.classList.contains("is-live") ||
-          event.element.classList.contains("default")
+          (!event.element.classList.contains("has-ended") &&
+            previous?.classList.contains("has-ended"))
         ) {
           event.element.scrollIntoView({
             behavior: "smooth",
@@ -68,6 +70,8 @@ export interface Schedule extends HTMLElement {
             inline: "center",
           });
           return true;
+        } else {
+          previous = event.element;
         }
         return false;
       });
