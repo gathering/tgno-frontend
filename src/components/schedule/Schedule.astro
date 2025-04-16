@@ -33,14 +33,14 @@ export interface Schedule extends HTMLElement {
       now: number;
       start: number;
       end: number;
-    }): "live" | "ended" | "cancelled" | "minimal" | "default" {
+    }): "is-live" | "has-ended" | "is-cancelled" | "has-notice" | "" {
       if (start <= now && end > now) {
-        return "live";
+        return "is-live";
       }
       if (end < now) {
-        return "ended";
+        return "has-ended";
       }
-      return "default";
+      return "";
     }
 
     attachScrollToTriggers(
@@ -59,7 +59,7 @@ export interface Schedule extends HTMLElement {
     scrollToLive() {
       this.events.some((event) => {
         if (
-          event.element.classList.contains("live") ||
+          event.element.classList.contains("is-live") ||
           event.element.classList.contains("default")
         ) {
           event.element.scrollIntoView({
@@ -82,16 +82,10 @@ export interface Schedule extends HTMLElement {
 
     onTick() {
       const now = new Date(Date.now() + this.debugOffset);
-      let hadNonDefault = false;
+      let isLive = false;
 
       this.events.forEach((event) => {
-        event.element.classList.remove(
-          "live",
-          "ended",
-          "cancelled",
-          "minimal",
-          "default",
-        );
+        event.element.classList.remove("is-live", "has-ended", "is-cancelled");
 
         const status = this.getStatus({
           start: event.start,
@@ -99,14 +93,16 @@ export interface Schedule extends HTMLElement {
           now: now.getTime(),
         });
 
-        if (status !== "default") {
-          hadNonDefault = true;
+        if (["is-live", "has-ended"].includes(status)) {
+          isLive = true;
         }
 
-        event.element.classList.add(status);
+        if (status) {
+          event.element.classList.add(status);
+        }
       });
 
-      this.isLive = hadNonDefault;
+      this.isLive = isLive;
       this.updateScrollToLiveButtons();
     }
 

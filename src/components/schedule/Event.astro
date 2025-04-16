@@ -30,18 +30,21 @@ const {
   strings,
   expanded = false,
   location,
+  tags,
 } = Astro.props;
-let style = "default";
+let style = "";
 
 if (!expanded) {
   if (facts.ended) {
-    style = "ended";
+    style = "has-ended";
   } else if (cancelled) {
-    style = "cancelled";
+    style = "is-cancelled";
   } else if (["start", "both"].includes(facts.extendingQuery)) {
     style = "minimal";
   }
 }
+
+const hasNotice = tags.some((tag) => tag.slug === "notice");
 
 let duration = strings.duration;
 let DurationSymbol = ClockSymbol;
@@ -71,18 +74,22 @@ if (expanded) {
   [data-component="event"] {
     color: theme("colors.white");
     border-color: theme("colors.white");
-    &.default {
+    &.minimal {
     }
-    &.live {
+    &.has-ended,
+    &.is-cancelled {
+      opacity: 0.5;
+    }
+    &.is-live {
       .live-symbol {
         display: flex;
       }
     }
-    &.ended,
-    &.cancelled {
-      opacity: 0.5;
-    }
-    &.minimal {
+    &.has-notice {
+      .live-symbol {
+        display: flex;
+        color: theme("colors.yellow.600");
+      }
     }
   }
 </style>
@@ -138,7 +145,7 @@ if (expanded) {
 
 <article
   data-component="event"
-  class={`group ${expanded ? "" : "collapsed"} ${style}`}
+  class={`group ${expanded ? "" : "collapsed"} ${style} ${hasNotice ? "has-notice" : ""}`}
   data-start={start}
   data-end={end}
 >
