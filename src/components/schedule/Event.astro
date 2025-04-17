@@ -2,6 +2,7 @@
 import type { Event } from "../../types";
 import CalendardSymbol from "../icons/CalendardSymbol.astro";
 import ClockSymbol from "../icons/ClockSymbol.astro";
+import CancelSymbol from "../icons/CancelSymbol.astro";
 import CloseSymbol from "../icons/CloseSymbol.astro";
 import ArrowSymbol from "../icons/ArrowSymbol.astro";
 import ExternalLinkSymbol from "../icons/ExternalLinkSymbol.astro";
@@ -37,14 +38,14 @@ let style = "";
 if (!expanded) {
   if (facts.ended) {
     style = "has-ended";
-  } else if (cancelled) {
-    style = "is-cancelled";
   } else if (["start", "both"].includes(facts.extendingQuery)) {
     style = "minimal";
   }
 }
 
 const hasNotice = tags.some((tag) => tag.slug === "notice");
+// Let's rely on tag signal for now, but looking for unused signal in case it shows up
+const isCancelled = cancelled || tags.some((tag) => tag.slug === "cancelled");
 
 let duration = strings.duration;
 let DurationSymbol = ClockSymbol;
@@ -68,6 +69,11 @@ if (expanded) {
   duration = `${strings.startDate} ${strings.startTime} - ${strings.endDate} ${strings.endTime}`;
   DurationSymbol = CalendardSymbol;
 }
+
+if (isCancelled) {
+  duration = "Avlyst";
+  DurationSymbol = CancelSymbol;
+}
 ---
 
 <style>
@@ -76,8 +82,7 @@ if (expanded) {
     border-color: theme("colors.white");
     &.minimal {
     }
-    &.has-ended,
-    &.is-cancelled {
+    &.has-ended {
       opacity: 0.5;
     }
     &.is-live {
@@ -89,6 +94,15 @@ if (expanded) {
       .live-symbol {
         display: flex;
         color: theme("colors.yellow.600");
+      }
+    }
+    &.is-cancelled {
+      .live-symbol {
+        display: flex;
+        color: theme("colors.yellow.600");
+      }
+      .date {
+        text-decoration: line-through;
       }
     }
   }
@@ -145,12 +159,12 @@ if (expanded) {
 
 <article
   data-component="event"
-  class={`group ${expanded ? "" : "collapsed"} ${style} ${hasNotice ? "has-notice" : ""}`}
+  class={`group ${expanded ? "" : "collapsed"} ${style} ${hasNotice ? "has-notice" : ""} ${isCancelled ? "is-cancelled" : ""}`}
   data-start={start}
   data-end={end}
 >
   <div class={`flex flex-row block pb-4 pt-2 border-t border-white`}>
-    <aside class="w-24 mr-4">
+    <aside class="w-24 mr-4 date">
       {strings.startDateLong}
     </aside>
     <section class="ml-4 w-full">
