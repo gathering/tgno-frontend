@@ -206,8 +206,8 @@ if (isCancelled) {
           : {}}
         class={`text-md ${description ? "group-[.collapsed]:cursor-pointer group-[.collapsed]:hover:bg-white/10" : ""}`}
       >
-        <h3 class="font-semibold text-pretty mb-1 pt-1 flex flex-row">
-          <span class="w-3 -ml-5 mr-2 text-red-600 live-symbol hidden">
+        <h3 class="font-semibold text-3xl text-pretty mb-1 pt-1 flex flex-row">
+          <span class="w-6 -ml-10 mr-5 mt-2 text-red-600 live-symbol hidden">
             <LiveSymbol />
           </span>
           {title}
@@ -228,7 +228,7 @@ if (isCancelled) {
           class={`flex flex-row gap-3 pb-3 w-full rounded-b-xl group-[.collapsed]:bg-transparent group-[.collapsed]:text-white`}
         >
           <time datetime={start} class="flex flex-row gap-3">
-            <span class="flex w-4">
+            <span class="flex w-6 mt-1">
               <DurationSymbol />
             </span>
             {duration}
