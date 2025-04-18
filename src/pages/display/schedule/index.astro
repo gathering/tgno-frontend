@@ -10,15 +10,17 @@ import { fetchEvents } from "../../../utils/events";
 import type { Tag } from "../../../types";
 import DisplayEvent from "../../../components/schedule/DisplayEvent.astro";
 
-const dateTimeNow = new Date();
-const dateDay =
-  dateTimeNow.getDate() < 10
-    ? `0${dateTimeNow.getDate()}`
-    : dateTimeNow.getDate();
-const startDate = `2025-04-${dateDay}`;
+const dateTimeNow = new Date(
+  Date.now() - 2 * 60 * 60 * 1000, // 2 hours in the past
+);
+const dateTimeFuture = new Date(
+  Date.now() + 4 * 60 * 60 * 1000, // 2 hours in the future
+);
+
+const startDate = `2025-04-${dateTimeNow.getDate()}`;
 const startTime = `${dateTimeNow.getHours() - 2}:${dateTimeNow.getMinutes()}:00`;
-const endDate = `2025-04-${dateDay}`;
-const endTime = `${dateTimeNow.getHours() + 2}:${dateTimeNow.getMinutes()}:00`;
+const endDate = `2025-04-${dateTimeFuture.getDate()}`;
+const endTime = `${dateTimeFuture.getHours()}:${dateTimeFuture.getMinutes()}:00`;
 
 const eventDate: DateOption = {
   start: `${startDate}T${startTime}`,
