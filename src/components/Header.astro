@@ -1,52 +1,84 @@
 ---
 import type { NavItem } from "../types";
+import { fetchInfoPageByPath } from "../utils";
 import HeaderNavigation from "./HeaderNavigation.astro";
+import CloseSymbol from "./icons/CloseSymbol.astro";
+import HamburgerSymbol from "./icons/HamburgerSymbol.astro";
 
-const NAVIGATION: NavItem[] = [
-  {
-    title: "Aktuelt",
-    path: "/news",
-  },
-  {
-    title: "Om TG",
-    path: "/about",
-    items: [
-      { title: "Bli utstiller", path: "/about/expo" },
-      { title: "Bli sponsor", path: "/about/sponsor" },
-    ],
-  },
-  {
-    title: "Program",
-    path: "/schedule",
-  },
-  {
-    title: "Praktisk",
+const getNavigationItems: () => Promise<NavItem[]> = async () => {
+  const items = [
+    {
+      title: "Aktuelt",
+      path: "/news",
+    },
+    {
+      title: "Program",
+      path: "/schedule",
+    },
+    {
+      title: "Kart",
+      path: "/map",
+    },
+    {
+      title: "Om TG",
+      path: "/about",
+      items: [
+        { title: "Bli utstiller", path: "/about/expo" },
+        { title: "Bli sponsor", path: "/about/sponsor" },
+      ],
+    },
+    {
+      title: "Praktisk",
+      path: "/practical",
+      items: [
+        { title: "Arrangementsregler", path: "/event/rules" },
+        { title: "Konstruksjonsregler", path: "/event/construction-rules" },
+      ],
+    },
+    {
+      title: "Billetter",
+      path: "/tickets",
+      items: [
+        { title: "Vilkår", path: "/tickets/terms-and-conditions" },
+        { title: "Arrangementsregler", path: "/event/rules" },
+        { title: "Konstruksjonsregler", path: "/event/construction-rules" },
+      ],
+    },
+    {
+      title: "Konkurranser",
+      items: [
+        { title: "Kreative", path: "/competitions/creative" },
+        { title: "Esport", path: "/competitions/esport" },
+      ],
+    },
+    { title: "Kontakt oss", path: "/contact" },
+  ];
+
+  // This works for a couple of cases, but if we want more items we should probably optimise backend API for navigation generation purposes. And/or use a more advanced frontend caching strategy.
+  const practicalPage = await fetchInfoPageByPath({
     path: "/practical",
-    items: [
-      { title: "Pakkeliste", path: "/practical/packing-list" },
-      { title: "Samtykkeskjema", path: "/practical/consent-form" },
-      { title: "Arrangementsregler", path: "/event/rules" },
-      { title: "Konstruksjonsregler", path: "/event/construction-rules" },
-    ],
-  },
-  {
-    title: "Billetter",
-    path: "/tickets",
-    items: [
-      { title: "Vilkår", path: "/tickets/terms-and-conditions" },
-      { title: "Arrangementsregler", path: "/event/rules" },
-      { title: "Konstruksjonsregler", path: "/event/construction-rules" },
-    ],
-  },
-  {
-    title: "Konkurranser",
-    items: [
-      { title: "Kreative", path: "/competitions/creative" },
-      { title: "Esport", path: "/competitions/esport" },
-    ],
-  },
-  { title: "Kontakt oss", path: "/contact" },
-];
+    apiUrl: import.meta.env.API_URL,
+  }).catch((e) => {
+    console.error(e.message);
+  });
+
+  if (practicalPage?.pages) {
+    items
+      .find((item) => item.title === "Praktisk")
+      ?.items?.unshift(
+        ...practicalPage.pages
+          .filter(({ show_in_menus }) => !!show_in_menus)
+          .map(({ title, url }) => ({
+            title,
+            path: url,
+          })),
+      );
+  }
+
+  return items;
+};
+
+const navigationItems = await getNavigationItems();
 ---
 
 <script>
@@ -74,7 +106,7 @@ const NAVIGATION: NavItem[] = [
   }
 </script>
 
-<header class="flex flex-col-reverse" data-component="header">
+<header class="flex flex-col-reverse z-[1000] relative" data-component="header">
   <div
     class="flex justify-between items-center py-1 px-5 max-w-7xl mb-8 justify-self-center w-full mx-auto bg-backgroundSecondary sm:rounded-xl sm:mx-5 sm:mt-2 sm:mb-8 sm:w-auto xl:mx-auto xl:w-full"
   >
@@ -98,7 +130,7 @@ const NAVIGATION: NavItem[] = [
         </a>
 
         <HeaderNavigation
-          navigationItems={NAVIGATION}
+          navigationItems={navigationItems}
           class="hidden sm:flex w-full space-x-6 space-y-0 justify-end"
           prioritized
         />
@@ -112,41 +144,15 @@ const NAVIGATION: NavItem[] = [
           >
             <span class="absolute -inset-0.5"></span>
             <span class="sr-only">Open main menu</span>
-            <svg
-              class="block h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              aria-hidden="true"
-              data-slot="icon"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
-            </svg>
-            <svg
-              class="hidden h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              aria-hidden="true"
-              data-slot="icon"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M6 18 18 6M6 6l12 12"></path>
-            </svg>
+            <HamburgerSymbol />
+            <CloseSymbol class="hidden" />
           </button>
         </div>
       </div>
       <!-- Mobile menu, show/hide based on menu state. -->
       <div class="hidden" id="mobile-menu" data-part="mobile-menu">
         <HeaderNavigation
-          navigationItems={NAVIGATION}
+          navigationItems={navigationItems}
           class="space-y-3 px-2 pb-3 pt-2 flex flex-col"
           hamburger
         />

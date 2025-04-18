@@ -1,0 +1,42 @@
+---
+import Hero from "./Hero.astro";
+import Button from "../Button.astro";
+
+interface Props {
+  class?: string;
+}
+
+const { class: classNames } = Astro.props;
+// const parent = Astro.site?.hostname || Astro.url.hostname;
+---
+
+<Hero image="/images/live.jpg" class={classNames}>
+  <!--iframe
+    src={`https://player.twitch.tv/?channel=tgtvgame&parent=${parent}`}
+    frameborder="0"
+    allowfullscreen="true"
+    scrolling="no"
+    height="378"
+    width="620"
+    slot="overlay"
+    class="rounded-3xl"></iframe -->
+  <div class="flex flex-col text-left">
+    <div class="w-full">
+      <h2 class="text-xl font-bold">Vi er live!</h2>
+      <p class="text-lg">
+        Følg med på våre livestreams for å få med deg hva som skjer i skipet
+        akkurat nå
+      </p>
+    </div>
+    <aside class="mt-6 space-x-2">
+      <Button href="https://www.twitch.tv/team/thegathering" theme="orange"
+        >Se streamene her</Button
+      >
+      <Button href="/schedule" theme="secondary">Programmet</Button>
+    </aside>
+  </div>
+  <Fragment slot="cta">
+    <p class="text-white">Besøke oss i påsken?</p>
+    <Button href="/tickets" theme="secondary"> Kjøp dagsbillett </Button>
+  </Fragment>
+</Hero>

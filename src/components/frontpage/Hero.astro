@@ -1,56 +1,49 @@
 ---
-import { YouTube } from "astro-lazy-youtube-embed";
-import Button from "../Button.astro";
+interface Props {
+  image: string;
+  imageHref?: string;
+  class?: string;
+}
+
+const { class: classNames, image, imageHref } = Astro.props;
+const hideMobileImage = Astro.slots.has("overlay");
+const imageClass = `${hideMobileImage ? "hidden" : ""} sm:block sm:absolute sm:left-0 sm:top-0 w-full sm:h-full object-cover rounded-3xl sm:z-0`;
 ---
 
 <section
-  class="relative rounded-3xl sm:grid sm:grid-cols-5 gap-4 sm:p-4 space-y-4 sm:space-y-0"
+  class={`relative rounded-3xl sm:grid sm:grid-cols-5 gap-4 sm:p-4 space-y-4 sm:space-y-0 ${classNames}`}
 >
-  <div class="z-10 relative rounded-3xl flex flex-col col-span-3">
-    <YouTube
-      class="rounded-3xl"
-      title="The Gathering 2025 - TG:RE - Trailer"
-      videoId="B8khsj7usxc"
-      allow="autoplay"
-      embedParams={{
-        autoplay: 1,
-        playslinline: 1,
-        rel: 0,
-        // @ts-ignore
-        mute: 1,
-      }}
-    />
-  </div>
+  {
+    imageHref ? (
+      <a href={imageHref}>
+        <img src={image} alt="Hero Image" class={imageClass} />
+      </a>
+    ) : (
+      <img src={image} alt="Hero Image" class={imageClass} />
+    )
+  }
+  {
+    hideMobileImage ? (
+      <div class="z-10 relative rounded-3xl flex flex-col col-span-3">
+        <slot name="overlay" />
+      </div>
+    ) : null
+  }
 
-  <div class="z-10 relative flex flex-col justify-end col-span-2 space-y-4">
+  <div
+    class="z-10 relative flex flex-col justify-end col-span-2 space-y-4 sm:col-start-4"
+  >
     <div
       class="w-full bg-blue-600 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:rounded-2xl"
     >
-      <div class="flex flex-col text-left">
-        <div class="w-full">
-          <h2 class="text-lg font-normal">Billettsalget er i gang!</h2>
-          <p class="text-4xl font-bold">16.-20. APRIL</p>
-        </div>
-        <aside class="mt-6 space-x-2">
-          <Button href="https://www.geekevents.org/tg25/#/shop" theme="orange"
-            >Kjøp billett</Button
-          >
-          <Button href="/tickets" theme="secondary">Mer info</Button>
-        </aside>
-      </div>
+      <slot />
     </div>
     <div
       class="w-full bg-orange-600 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:rounded-2xl"
     >
       <div class="flex space-x-2 items-center justify-between">
-        <p class="text-white">Lyst til å stille ut?</p>
-        <Button href="/about/expo" theme="secondary">Les hvordan</Button>
+        <slot name="cta" />
       </div>
     </div>
   </div>
-  <img
-    src="/images/tg19-lights.jpg"
-    alt="Hero Image"
-    class="hidden sm:block sm:absolute left-0 top-0 w-full h-full object-cover rounded-3xl z-0"
-  />
 </section>

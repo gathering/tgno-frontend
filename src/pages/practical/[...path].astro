@@ -53,6 +53,7 @@ const jsonLd = !!page.faq?.length
   search_description=`${page.meta.search_description}`
   introText=`${page.intro}`
   lang=`${page.meta.locale || "no"}`
+  image=`${page.main_image?.sizes.large.url}`
   jsonLd={jsonLd}
 >
   <Main>

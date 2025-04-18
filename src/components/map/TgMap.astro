@@ -1,0 +1,472 @@
+---
+import "leaflet/dist/leaflet.css";
+import type { MapItem } from "../../types";
+import FloatingNav from "../floating-nav/FloatingNav.astro";
+
+export type Props = {
+  locations: MapItem[];
+};
+
+const { locations: ssrLocations } = Astro.props;
+---
+
+<script>
+  import L, { type LatLngBoundsExpression } from "leaflet";
+  import {
+    pad,
+    isMapItem,
+    toLatLngTuple,
+    slugifyMapItemName,
+  } from "../../utils/map";
+  import type { MapItem } from "../../types";
+  interface Target extends MapItem {
+    slug: string;
+    tooltip: L.Tooltip | undefined;
+    element: L.Rectangle | L.Polygon;
+    calendarQuery?: string[];
+  }
+
+  // Arbitrary number based on map design
+  const ZOOM_LEVELS = [
+    [3, "high"],
+    [0, "medium"],
+    [-1, "low"],
+    [-10, "none"],
+  ] as const;
+
+  class TGMap extends HTMLElement {
+    currentTarget: string = "";
+    map?: L.Map = undefined;
+    mapBounds?: LatLngBoundsExpression = undefined;
+    targets: Record<string, Target> = {};
+    popup?: L.Popup = undefined;
+
+    setTarget(slug: string) {
+      let target = slug;
+
+      if (this.currentTarget === target || !this.targets[target]) {
+        target = "";
+      }
+
+      this.goToTarget(this.targets[target]);
+      this.currentTarget = target;
+    }
+
+    goToTarget(target?: Target) {
+      this.showPopup(target);
+
+      if (!target) {
+        this.map?.zoomOut();
+        return;
+      }
+
+      this.map?.fitBounds(target.element.getBounds(), {
+        duration: 0.3,
+        padding: [75, 75],
+        animate: true,
+      });
+    }
+
+    showPopup(target?: Target) {
+      if (this.popup) {
+        this.popup.remove();
+      }
+      if (
+        !target ||
+        !this.map ||
+        !target.presentation?.showPopup ||
+        target.presentation?.interactive === false
+      ) {
+        return;
+      }
+
+      const { slug, name, presentation } = target;
+      const { type, calendarQuery, popupText } = presentation || {};
+
+      this.popup = new L.Popup({
+        className: type,
+        closeButton: false,
+      })
+        .setLatLng(target.element.getBounds().getCenter())
+        .setContent((_layer) => {
+          const contents = document.createElement("div");
+
+          const heading = document.createElement("h3");
+          heading.textContent = name;
+          heading.onclick = () => this.onTargetClick(slug);
+          contents.append(heading);
+
+          if (popupText) {
+            const text = document.createElement("p");
+            text.textContent = popupText;
+            contents.append(text);
+          }
+
+          if (calendarQuery) {
+            const calendarLink = document.createElement("a");
+            calendarLink.classList.add("calendar-link");
+            calendarLink.target = "_blank";
+            calendarLink.href = `/schedule?locations=${calendarQuery.join(",")}`;
+            calendarLink.textContent = "Se programmet";
+            contents.append(calendarLink);
+          }
+
+          return contents;
+        })
+        .openOn(this.map);
+    }
+
+    onNavigate(slug: string) {
+      this.setTarget(slug);
+    }
+
+    onTargetClick(slug: string) {
+      this.setTarget(slug);
+    }
+
+    onResetClick() {
+      this.setTarget("");
+    }
+
+    onZoomChange() {
+      const container = this.map?.getContainer();
+      const zoomLevel = this.map?.getZoom() || 0;
+      if (!container) {
+        return;
+      }
+
+      const zoomLevelClass =
+        ZOOM_LEVELS.find(([level]) => zoomLevel >= level)?.[1] || "low";
+
+      container.setAttribute("zoom-level", zoomLevelClass);
+      container.setAttribute("zoom-value", String(zoomLevel));
+    }
+
+    connectedCallback() {
+      let locations: MapItem[] = [];
+      try {
+        locations = JSON.parse(this.dataset.locations || "").filter(isMapItem);
+      } catch (e) {
+        console.log(
+          `Unable to import map locations`,
+          this.dataset.locations,
+          e,
+        );
+      }
+
+      // Initialize the map (local reference so that TS doesn't complain)
+      const map = L.map("map", {
+        crs: L.CRS.Simple,
+        minZoom: -2,
+        // TODO: Activate on mobile, or where we need to avoid the "pop in" effect
+        // renderer: L.canvas({ padding: 3 }),
+        attributionControl: false,
+      });
+      this.map = map;
+      this.mapBounds = [
+        { x: 0, y: 0 },
+        { x: 3308, y: 2339 },
+      ].map(toLatLngTuple);
+
+      // TODO: Replace with proper map (tiled if better for performance)
+      L.imageOverlay("/tg25_map_background.jpg", this.mapBounds).addTo(map);
+      //L.imageOverlay(
+      //  "/TG25_sitemap_low_res_placeholder.jpg",
+      //  this.mapBounds,
+      //).addTo(map);
+
+      map.fitBounds(this.mapBounds);
+      map.setMaxBounds(this.mapBounds);
+
+      locations.forEach((location, index) => {
+        const {
+          name,
+          width,
+          height,
+          pos,
+          polygon: rawPolygon,
+          icon,
+          presentation,
+        } = location;
+        const slug = `${slugifyMapItemName(name)}-${index}`;
+        const bounds = rawPolygon
+          ? rawPolygon.map((cords) => ({
+              x: cords.x + pos.x,
+              y: cords.y + pos.y,
+            }))
+          : [
+              pos,
+              {
+                x: pos.x + width,
+                y: pos.y + height,
+              },
+            ];
+
+        const targetConfig = {
+          noClip: true,
+          className: presentation?.type || "unknown",
+        };
+
+        const target = rawPolygon
+          ? new L.Polygon(bounds.map(toLatLngTuple), targetConfig)
+          : new L.Rectangle(bounds.map(toLatLngTuple), targetConfig);
+        target.addTo(map);
+
+        // TODO: Dealing with polygon shapes?
+        if (
+          icon &&
+          presentation?.mapIcon &&
+          !rawPolygon &&
+          bounds.length === 2
+        ) {
+          L.imageOverlay(
+            icon,
+            // @ts-ignore-next-line
+            pad(presentation.padding ?? width / 10, bounds).map(toLatLngTuple),
+            {
+              zIndex: 201, // Polygons are 200?
+              interactive: false,
+            },
+          ).addTo(map);
+        } else if (
+          !["placeholder", "unknown"].includes(presentation?.type || "")
+        ) {
+          const marker = L.marker(target.getBounds().getCenter(), {
+            icon: L.divIcon({
+              className: `label ${presentation?.stickyLabel ? "sticky" : ""}`,
+              html: name,
+              iconSize: [0, 0],
+              iconAnchor: [0, 0],
+            }),
+            zIndexOffset: 202,
+          }).addTo(map);
+          // Guesstimate hack to semi-align labels
+          marker
+            ?.getElement()
+            ?.style.setProperty(
+              "--width",
+              `${presentation?.labelWidth ?? name.length * 0.7}em`,
+            );
+        }
+
+        const tooltip = !presentation?.stickyLabel
+          ? target
+              .bindTooltip(name, {
+                content: name,
+                className: "tooltip",
+              })
+              .getTooltip()
+          : undefined;
+
+        this.targets[slug] = {
+          slug,
+          ...location,
+          element: target,
+          tooltip,
+        };
+
+        if (presentation?.interactive === false) {
+          return;
+        }
+
+        target.on("click", () => this.onTargetClick(slug));
+      });
+
+      // TODO: Only run on mobile (usage on desktop sizes tend to cause a lot of performance issues)
+      Object.values(this.targets).some((target) => {
+        map.getRenderer(target.element).options.padding = 2;
+        return true;
+      });
+
+      this.querySelectorAll("[data-part=nav-item]").forEach((el) => {
+        el.addEventListener("click", () => {
+          const target = el.getAttribute("data-target");
+          if (target) {
+            this.onNavigate(target);
+          }
+        });
+      });
+
+      this.querySelectorAll("button[data-action=reset]").forEach((button) => {
+        button.addEventListener("click", this.onResetClick);
+      });
+
+      this.onZoomChange();
+      map.on("zoomend", this.onZoomChange.bind(this));
+      map.on("click", (event) => {
+        // @ts-ignore-next-line
+        if (!window.debug) {
+          return;
+        }
+        console.log({
+          x: event.latlng.lng,
+          y: event.latlng.lat,
+        });
+      });
+      console.log(
+        "Looking for a kode_? Then you are on the right track, but this one requires a bit of map exploration. If you find it you might be crew material.",
+      );
+    }
+  }
+
+  customElements.define("tg-map", TGMap);
+</script>
+
+<style>
+  tg-map {
+    .leaflet-control-container {
+      .leaflet-control-zoom {
+        margin-top: theme("margin.10");
+      }
+    }
+    .leaflet-container {
+      background-color: #1d1918;
+      .label {
+        pointer-events: none;
+        font-size: theme("fontSize.base");
+        width: max-content !important;
+        height: auto !important;
+        padding: theme("padding.1") theme("padding.2");
+        display: none;
+        left: calc((var(--width) / 2) * -1);
+        top: -1em;
+        border-radius: theme("borderRadius.lg");
+        background-color: theme("colors.white");
+        font-weight: theme("fontWeight.bold");
+        color: theme("colors.black");
+        box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.2);
+
+        &.sticky {
+          display: flex !important;
+        }
+      }
+      .tooltip {
+      }
+
+      &[zoom-level="none"] {
+        .label {
+          display: none;
+        }
+      }
+      &[zoom-level="low"] {
+        .label {
+          display: flex;
+          font-size: 0.5rem;
+          padding: theme("padding.1") theme("padding.1");
+        }
+        .tooltip {
+          display: none;
+        }
+      }
+      &[zoom-level="medium"] {
+        .label {
+          display: flex;
+        }
+        .tooltip {
+          display: none;
+        }
+      }
+      &[zoom-level="high"] {
+        .label {
+          display: flex;
+          padding: theme("padding.2") theme("padding.4");
+          font-size: theme("fontSize.lg");
+        }
+        .tooltip {
+          display: none;
+        }
+      }
+    }
+    .leaflet-interactive {
+      &.stage {
+        fill-opacity: 1;
+        fill: theme("colors.orange.500");
+        stroke-width: 1;
+        stroke: theme("colors.black");
+      }
+      &.stand {
+        fill-opacity: 1;
+        fill: theme("colors.blue.500");
+        stroke-width: 1;
+        stroke: theme("colors.black");
+      }
+      &.food {
+        fill-opacity: 1;
+        fill: theme("colors.red.500");
+        stroke-width: 1;
+        stroke: theme("colors.black");
+      }
+      &.hygiene {
+        fill-opacity: 1;
+        fill: theme("colors.green.500");
+        stroke-width: 1;
+        stroke: theme("colors.black");
+      }
+      &.attraction {
+        fill-opacity: 1;
+        fill: theme("colors.purple.500");
+        stroke-width: 1;
+        stroke: theme("colors.black");
+      }
+      &.placeholder,
+      &.unknown {
+        fill-opacity: 0.1;
+        fill: white;
+        stroke-width: 1;
+        stroke: theme("colors.black");
+      }
+    }
+    .leaflet-popup {
+      color: theme("colors.white");
+      .leaflet-container {
+        padding: theme("padding.4");
+      }
+      h3 {
+        font-size: theme("fontSize.2xl");
+        font-weight: theme("fontWeight.bold");
+        margin-bottom: theme("margin.2");
+      }
+      .calendar-link {
+        display: block;
+        padding: theme("padding.2") theme("padding.4");
+        margin: theme("margin.4") 0 theme("margin.6");
+        text-align: center;
+        font-size: theme("fontSize.base");
+        font-weight: theme("fontWeight.bold");
+        background-color: theme("colors.yellow.500");
+        color: theme("colors.black");
+        border-radius: theme("borderRadius.lg");
+      }
+      p {
+        font-size: theme("fontSize.base");
+        margin: theme("margin.2") 0;
+      }
+      &.stand {
+        .leaflet-popup-content-wrapper,
+        .leaflet-popup-tip {
+          color: theme("colors.black");
+          background-color: theme("colors.yellow.400");
+        }
+      }
+      &.stage {
+        .leaflet-popup-content-wrapper,
+        .leaflet-popup-tip {
+          color: theme("colors.white");
+          background-color: theme("colors.backgroundSecondary");
+        }
+      }
+    }
+  }
+</style>
+
+<tg-map data-locations={JSON.stringify(ssrLocations)}>
+  <div class="relative z-[999]">
+    <FloatingNav closeOnNavigate>
+      <span slot="content">
+        <slot name="nav" />
+      </span>
+    </FloatingNav>
+  </div>
+  <div id="map" class="fixed bg-black top-32 right-0 bottom-0 left-0 z-[10]">
+  </div>
+</tg-map>

@@ -1,5 +1,7 @@
 ---
 import type { FaqSnippet } from "../../types";
+import Collapsible from "../collapsible/Collapsible.astro";
+import CollapsibleTrigger from "../collapsible/CollapsibleTrigger.astro";
 import H3 from "../H3.astro";
 
 type Props = FaqSnippet & {
@@ -10,6 +12,10 @@ const { title, body, class: className } = Astro.props;
 ---
 
 <section class={`prose p-4 ${className}`}>
-  <H3 class="text-4xl font-bold mb-2">{title}</H3>
-  <div class="" set:html={body} />
+  <Collapsible toggleVariant="header">
+    <CollapsibleTrigger slot="header" class="w-full">
+      <H3 class="text-4xl font-bold my-2">{title}</H3>
+    </CollapsibleTrigger>
+    <div class="prose prose-h2:text-base" set:html={body} />
+  </Collapsible>
 </section>

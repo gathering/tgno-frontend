@@ -5,21 +5,37 @@ import Intro from "../Intro.astro";
 import ContentContainer from "../ContentContainer.astro";
 import H1 from "../H1.astro";
 import H2 from "../H2.astro";
+import BodyText from "../BodyText.astro";
 
 type Props = InfoPage;
 
-const { title, faq = [], intro, body } = Astro.props;
+const { title, faq = [], intro, body, main_image } = Astro.props;
 ---
 
-<ContentContainer variant="wide">
+<ContentContainer variant="narrow">
   <section class="mb-4">
     <H1 text={title} />
     {intro ? <Intro text={intro} /> : null}
-    <div class="prose" set:html={body} />
+    {
+      main_image && (
+        <div class="flex md:max-h-[50vh] mb-8">
+          <img
+            src={main_image.sizes.large.url}
+            srcset={Object.values(main_image.sizes)
+              .sort((a, b) => a.width - b.width)
+              .map((size) => `${size.url} ${size.width}w`)
+              .join(", ")}
+            alt={main_image.alt}
+            class="w-full rounded-3xl md:object-cover object-center"
+          />
+        </div>
+      )
+    }
+    <BodyText htmlBody={body} />
   </section>
   {
     !!faq.length ? (
-      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 mt-8">
+      <section class="flex flex-col gap-4 mb-4 mt-8">
         <H2 text="Vanlige spørsmål" class="sm:col-span-2 lg:col-span-3" />
         {faq.map((item) => (
           <div class="border border-white rounded-3xl">

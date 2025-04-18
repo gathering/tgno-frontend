@@ -1,0 +1,64 @@
+---
+import type { Navigation } from "../../utils/events";
+import CloseSymbol from "../icons/CloseSymbol.astro";
+
+interface Props {
+  navigation: Navigation;
+}
+
+const TAG_STYLES =
+  "flex flex-row items-center gap-2 py-1 px-2 rounded-md text-md";
+
+const { navigation } = Astro.props;
+const getColors = ({ active, color }: { active?: boolean; color?: string }) => {
+  if (!active) {
+    return "border border-white text-white";
+  }
+  return color ? `bg-${color}-500 text-black` : "bg-orange-500 text-black";
+};
+---
+
+<div class="flex flex-col gap-4 max-w-2xl text-white mb-8">
+  <h3>Dag</h3>
+  <div class="flex flex-row flex-wrap gap-2">
+    {
+      navigation.dates.map((date, index) => (
+        <a
+          href={date.url}
+          class={`${TAG_STYLES} ${getColors(date)} hover:bg-white hover:text-backgroundSecondary`}
+        >
+          {date.name}
+          {date.active && index > 0 ? <CloseSymbol /> : null}
+        </a>
+      ))
+    }
+  </div>
+  <h3>Sted</h3>
+  <div class="flex flex-row flex-wrap gap-2">
+    {
+      navigation.locations.map((location) => (
+        <a
+          href={location.url}
+          class={`${TAG_STYLES} ${getColors(location)} hover:bg-white hover:text-backgroundSecondary`}
+        >
+          {location.name}
+          {location.active ? <CloseSymbol /> : null}
+        </a>
+      ))
+    }
+  </div>
+  <h3>Kategori</h3>
+  <div class="flex flex-row flex-wrap gap-2">
+    {
+      navigation.categories.map((category) => (
+        <a
+          href={category.url}
+          class={`${TAG_STYLES} ${getColors(category)} hover:bg-white hover:text-backgroundSecondary`}
+        >
+          {category.name}
+          {category.active ? <CloseSymbol /> : null}
+        </a>
+      ))
+    }
+  </div>
+</div>

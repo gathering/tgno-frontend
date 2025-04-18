@@ -2,10 +2,10 @@
 import Layout from "../layouts/Layout.astro";
 import Main from "../components/Main.astro";
 import NewsComp from "../components/frontpage/NewsComp.astro";
-import Hero from "../components/frontpage/Hero.astro";
 import InfoBox from "../components/frontpage/InfoBox.astro";
 import FactBox from "../components/frontpage/FactBox.astro";
 import Button from "../components/Button.astro";
+import TwitchHero from "../components/frontpage/TwitchHero.astro";
 
 const TG_THEMES = {
   "2000": "The Gathering 1900 - Follow the Flow",
@@ -57,7 +57,7 @@ const randomFact = TG_FACTS[Math.floor(Math.random() * TG_FACTS.length)];
             I NORGES FETESTE PÅSKEHYTTE!
           </h2>
         </div>
-        <Hero image="/images/tg19-lights.jpg" />
+        <TwitchHero class="mb-8" />
       </div>
       <div class="sm:col-start-2 sm:col-span-7">
         <h2 class="text-2xl sm:text-6xl font-bold text-white text-center">

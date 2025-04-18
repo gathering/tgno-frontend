@@ -63,7 +63,7 @@ const boxStyles = [
 <Layout title="The Gathering - Kontakt oss">
   <Main>
     <ContentContainer variant="narrow">
-      <section class="prose">
+      <section class="prose sm:mx-auto">
         <H1 text="Kontakt oss" />
         <div class:list={[...boxStyles, "border-white", "border"]}>
           <H2 text="Generell informasjon" />
@@ -72,6 +72,10 @@ const boxStyles = [
             skjemaet på denne siden (går via epost). Dette fordi alle som jobber
             med The Gathering gjør dette frivillig ved siden av jobb og studier,
             og dermed har begrenset med tid til å snakke i telefonen.
+          </p>
+          <p>
+            Enkelte tjenester er også tilgjengelig på telefon, se full oversikt
+            under skjema
           </p>
 
           <p>
@@ -87,48 +91,66 @@ const boxStyles = [
             slik at vi kan svare på din henvendelse på enklest mulig måte.
           </p>
         </div>
-
-        <div class:list={[...boxStyles, "bg-white", "text-black"]}>
-          <H3 class="mb-4" color="text-black">Ta kontakt</H3>
-          <div id="zammad-feedback-form">
-            Kontaktskjema, om det ikke dukker opp ta kontakt med Hovedkontakt
-            nevnt under
-          </div>
-        </div>
-
-        <div class:list={[...boxStyles, "border-white", "border"]}>
-          <H2 text="Hvem svarer på forespørsler via skjemaet?" class="mb-10" />
-          <H3>Deltakerservice (deltakerombud)</H3>
-          <p>
-            Passer på at deltakerne våre har det godt og trygt under
-            arrangementet. Kan svare på spørsmål rundt tilrettelegging,
-            allergier, og andre praktiske spørsmål.
-          </p>
-
-          <H3>Sponsorkontakt</H3>
-          <p>
-            Passer på at sponsorer og partnere får den informasjonen de trenger.
-            Kan svare på spørsmål rundt sponsorpakker, eksponering, og andre
-            kommersielle spørsmål.
-          </p>
-
-          <H3>Pressekontakt</H3>
-          <p>
-            Pressekontakten er ansvarlig for håndtering av alle presserelaterte
-            spørsmål. Dette inkluderer forespørsler om kreditering, intervjuer,
-            og annen.
-          </p>
-          <dl class="not-prose">
-            <dd><strong>Simon Eriksen Valvik</strong></dd>
-            <dt class="float-left mr-2">Tlf:</dt><dd>
-              <a href="tel:004740050100">400 50 100</a>
-            </dd>
-            <dt class="float-left mr-2">Epost:</dt><dd>
-              <a href="mailto:presse@tg.no">presse@tg.no</a>
-            </dd>
-          </dl>
-        </div>
       </section>
+
+      <div class:list={[...boxStyles, "bg-white", "text-black"]}>
+        <H3 class="mb-4" color="text-black">Ta kontakt</H3>
+        <div id="zammad-feedback-form">
+          Kontaktskjema, om det ikke dukker opp ta kontakt med Hovedkontakt
+          nevnt under
+        </div>
+      </div>
+      <div class:list={[...boxStyles, "bg-white", "text-black"]}>
+        <h3 class="text-black mb-2 text-xl font-normal">Ring oss på</h3>
+        <p class="text-3xl font-bold mb-4">
+          Tlf: <a href="tel:004722696900" class="not-prose underline"
+            >22 69 69 00</a
+          >
+        </p>
+        <p>
+          Telefonen er betjent 08:00-20:00 frem til TG, og hele døgnet under
+          arrangementet
+        </p>
+      </div>
+
+      <div class:list={[...boxStyles, "border-white", "border"]}>
+        <H2 text="Hvem kan du få kontakt med?" class="mb-8" />
+        <H3 class="mt-6">Deltakerservice (deltakerombud)</H3>
+        <p>
+          Passer på at deltakerne våre har det godt og trygt under
+          arrangementet. Kan svare på spørsmål rundt tilrettelegging, allergier,
+          og andre praktiske spørsmål.
+        </p>
+
+        <H3 class="mt-6">Sponsorkontakt</H3>
+        <p>
+          Passer på at sponsorer og partnere får den informasjonen de trenger.
+          Kan svare på spørsmål rundt sponsorpakker, eksponering, og andre
+          kommersielle spørsmål.
+        </p>
+
+        <H3 class="mt-6">Pressekontakt</H3>
+        <p>
+          Pressekontakten er ansvarlig for håndtering av alle presserelaterte
+          spørsmål.
+        </p>
+
+        <dl class="not-prose">
+          <dd><h4><strong>Simon Eriksen Valvik</strong></h4></dd>
+          <dt class="float-left mr-2">Tlf:</dt><dd>
+            <a href="tel:004740050100">400 50 100</a>
+          </dd>
+          <dt class="float-left mr-2">Epost:</dt><dd>
+            <a href="mailto:presse@tg.no">presse@tg.no</a>
+          </dd>
+        </dl>
+        <h4>Akkreditering</h4>
+        <p>
+          Hvis du ønsker å søke presseakkreditering trenger vi følgende
+          opplysninger på e-post: Fullt navn, telefonnummer, arbeidsgiver og
+          hvor mange som kommer.
+        </p>
+      </div>
     </ContentContainer>
   </Main>
 </Layout>

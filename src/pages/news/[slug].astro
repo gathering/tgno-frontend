@@ -9,6 +9,7 @@ import {
   fetchArticleById,
   noLocalizeContributor,
 } from "../../utils";
+import BodyText from "../../components/BodyText.astro";
 
 const { slug } = Astro.params;
 
@@ -79,7 +80,7 @@ const jsonLd = {
     <ContentContainer variant="narrow">
       <!-- Article Content -->
       <Intro text={article.intro} />
-      <div class="prose mb-6" set:html={article.body} />
+      <BodyText class="mb-6" htmlBody={article.body} />
       <aside
         class="mb-6 p-5 space-y-5 text-sm text-white/60 bg-backgroundSecondary rounded"
       >
