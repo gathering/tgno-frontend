@@ -1,0 +1,88 @@
+---
+import H2 from "../../../components/H2.astro";
+import Main from "../../../components/Main.astro";
+import Layout from "../../../layouts/Layout.astro";
+import DayHeader from "../../../components/schedule/DayHeader.astro";
+import ContentContainer from "../../../components/ContentContainer.astro";
+import type { DateOption } from "../../../utils/events";
+import Schedule from "../../../components/schedule/Schedule.astro";
+import { fetchEvents } from "../../../utils/events";
+import type { Tag } from "../../../types";
+import DisplayEvent from "../../../components/schedule/DisplayEvent.astro";
+
+const dateTimeNow = new Date();
+const dateDay =
+  dateTimeNow.getDate() < 10
+    ? `0${dateTimeNow.getDate()}`
+    : dateTimeNow.getDate();
+const startDate = `2025-04-${dateDay}`;
+const startTime = `${dateTimeNow.getHours() - 2}:${dateTimeNow.getMinutes()}:00`;
+const endDate = `2025-04-${dateDay}`;
+const endTime = `${dateTimeNow.getHours() + 2}:${dateTimeNow.getMinutes()}:00`;
+
+const eventDate: DateOption = {
+  start: `${startDate}T${startTime}`,
+  end: `${endDate}T${endTime}`,
+  name: "today",
+  type: "date",
+  slug: "today",
+};
+
+const getLocation = (tags: Tag[]): Tag | undefined => {
+  const tag = tags.find((tag) => tag.type === "location");
+  if (!tag) return undefined;
+
+  const colors = {
+    hovedscenen: "purple",
+    kreativiascenen: "blue",
+    esportscenen: "orange",
+    lounge: "green",
+  };
+  // @ts-ignore-next-line
+  return { ...tag, color: colors[tag.slug] || "gray" };
+};
+const events = await fetchEvents({
+  date: eventDate,
+  api_url: import.meta.env.API_URL,
+  tags: [],
+});
+---
+
+<Layout
+  title="The Gathering - Program"
+  description="Her finner du programmet for hva som skjer innenfor E-Sport, Kreativia, konserter og mer under The Gathering 2025."
+  type="website"
+  headerVariant="hidden"
+  footerVariant="hidden"
+>
+  <Main>
+    <ContentContainer variant="wide">
+      <section data-component="schedule" class="my-8">
+        <H2 text="PROGRAM" />
+        <Schedule>
+          {
+            events.length ? (
+              events.map((event, i) =>
+                event.strings.startDate !== events[i - 1]?.strings.startDate ? (
+                  <>
+                    <DayHeader date={event.start} />
+                    <DisplayEvent
+                      {...event}
+                      location={getLocation(event.tags)}
+                    />
+                  </>
+                ) : (
+                  <DisplayEvent {...event} location={getLocation(event.tags)} />
+                ),
+              )
+            ) : (
+              <p class="text-white text-md">
+                No events found... Perhaps try removing one or more filters?
+              </p>
+            )
+          }
+        </Schedule>
+      </section>
+    </ContentContainer>
+  </Main>
+</Layout>
