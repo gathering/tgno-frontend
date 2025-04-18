@@ -2,13 +2,13 @@
 import H2 from "../../../components/H2.astro";
 import Main from "../../../components/Main.astro";
 import Layout from "../../../layouts/Layout.astro";
-import Event from "../../../components/schedule/Event.astro";
 import DayHeader from "../../../components/schedule/DayHeader.astro";
 import ContentContainer from "../../../components/ContentContainer.astro";
 import type { DateOption } from "../../../utils/events";
 import Schedule from "../../../components/schedule/Schedule.astro";
 import { fetchEvents } from "../../../utils/events";
 import type { Tag } from "../../../types";
+import DisplayEvent from "../../../components/schedule/DisplayEvent.astro";
 
 const dateTimeNow = new Date();
 const dateDay =
@@ -66,10 +66,13 @@ const events = await fetchEvents({
                 event.strings.startDate !== events[i - 1]?.strings.startDate ? (
                   <>
                     <DayHeader date={event.start} />
-                    <Event {...event} location={getLocation(event.tags)} />
+                    <DisplayEvent
+                      {...event}
+                      location={getLocation(event.tags)}
+                    />
                   </>
                 ) : (
-                  <Event {...event} location={getLocation(event.tags)} />
+                  <DisplayEvent {...event} location={getLocation(event.tags)} />
                 ),
               )
             ) : (
