@@ -50,6 +50,30 @@ const events = await fetchEvents({
 });
 ---
 
+<script>
+  const container = document.querySelector("[data-component=schedule]");
+  if (container) {
+    container.clientHeight > document.body.clientHeight;
+    container.classList.add("scroll");
+    console.log(container, container.clientHeight, document.body.clientHeight);
+  }
+</script>
+<style>
+  body {
+    height: 100vh;
+  }
+  [data-component="schedule"] {
+    &.scroll {
+      transition-behavior: normal;
+      transition-duration: 20s;
+      transition-timing-function: linear;
+      transition-delay: 5s;
+      transition-property: transform;
+      transform: translateY(-55%);
+    }
+  }
+</style>
+
 <Layout
   title="The Gathering - Program"
   description="Her finner du programmet for hva som skjer innenfor E-Sport, Kreativia, konserter og mer under The Gathering 2025."
@@ -57,15 +81,15 @@ const events = await fetchEvents({
   headerVariant="hidden"
   footerVariant="hidden"
 >
-  <Main>
+  <Main display>
     <ContentContainer variant="wide">
       <section data-component="schedule" class="my-8">
-        <H2 text="PROGRAM" />
         <Schedule>
           {
             events.length ? (
               events.map((event, i) =>
-                event.strings.startDate !== events[i - 1]?.strings.startDate ? (
+                event.strings.startDate !== events[i - 1]?.strings.startDate &&
+                i > 0 ? (
                   <>
                     <DayHeader date={event.start} />
                     <DisplayEvent
