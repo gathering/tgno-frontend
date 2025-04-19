@@ -29,7 +29,12 @@ const { class: classNames } = Astro.props;
       </p>
     </div>
     <aside class="mt-6 space-x-2">
-      <Button href="https://www.twitch.tv/team/thegathering" theme="orange"
+      <Button
+        href="https://www.twitch.tv/team/thegathering"
+        theme="orange"
+        class="hidden sm:inline">Se streamene her</Button
+      >
+      <Button href="https://m.twitch.tv/tgtv" theme="orange" class="sm:hidden"
         >Se streamene her</Button
       >
       <Button href="/schedule" theme="secondary">Programmet</Button>
