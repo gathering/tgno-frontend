@@ -227,15 +227,16 @@ if (isCancelled) {
         <aside
           class={`flex flex-row gap-3 pb-3 w-full rounded-b-xl group-[.collapsed]:bg-transparent group-[.collapsed]:text-white`}
         >
-          <time datetime={start} class="flex flex-row gap-3">
+          <time datetime={start} class="flex flex-row gap-3 time">
             <span class="flex w-4">
               <DurationSymbol />
             </span>
             {duration}
           </time>
           <span
-            class={`ml-auto hidden ${description ? "group-[.collapsed]:block" : ""}`}
+            class={`flex-row py-1 px-2 gap-2 bg-neutral-900 rounded-md ml-auto hidden ${description ? "group-[.collapsed]:flex" : ""}`}
           >
+            Les mer
             <ArrowSymbol />
           </span>
         </aside>
