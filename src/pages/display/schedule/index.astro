@@ -55,7 +55,6 @@ const events = await fetchEvents({
   if (container) {
     container.clientHeight > document.body.clientHeight;
     container.classList.add("scroll");
-    console.log(container, container.clientHeight, document.body.clientHeight);
   }
 </script>
 <style>
@@ -69,7 +68,7 @@ const events = await fetchEvents({
       transition-timing-function: linear;
       transition-delay: 5s;
       transition-property: transform;
-      transform: translateY(-55%);
+      transform: translateY(-52%);
     }
   }
 </style>
