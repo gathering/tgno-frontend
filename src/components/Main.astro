@@ -1,10 +1,22 @@
 ---
 import SponsorsContainer from "../components/sponsors/SponsorContainer.astro";
+
+interface Props {
+  display?: boolean;
+}
+
+const { display = false } = Astro.props;
 ---
 
-<main class="px-5 xl:mx-auto">
-  <div class="max-w-7xl">
-    <slot />
-    <SponsorsContainer />
-  </div>
+<main class={!display ? "px-5 xl:mx-auto" : ""}>
+  {
+    !display ? (
+      <div class="max-w-7xl">
+        <slot />
+        <SponsorsContainer />
+      </div>
+    ) : (
+      <slot />
+    )
+  }
 </main>
