@@ -7,6 +7,7 @@ interface Props {
 
 const { class: classNames, image, imageHref } = Astro.props;
 const hideMobileImage = Astro.slots.has("overlay");
+const showCta = Astro.slots.has("cta");
 const imageClass = `${hideMobileImage ? "hidden" : ""} sm:block sm:absolute sm:left-0 sm:top-0 w-full sm:h-full object-cover rounded-3xl sm:z-0`;
 ---
 
@@ -38,12 +39,14 @@ const imageClass = `${hideMobileImage ? "hidden" : ""} sm:block sm:absolute sm:l
     >
       <slot />
     </div>
-    <div
-      class="w-full bg-orange-600 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:rounded-2xl"
-    >
-      <div class="flex space-x-2 items-center justify-between">
-        <slot name="cta" />
-      </div>
-    </div>
+    ${
+      showCta ? (
+        <div class="w-full bg-orange-600 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:rounded-2xl">
+          <div class="flex space-x-2 items-center justify-between">
+            <slot name="cta" />
+          </div>
+        </div>
+      ) : null
+    }
   </div>
 </section>

@@ -1,0 +1,22 @@
+---
+import Hero from "./Hero.astro";
+import Button from "../Button.astro";
+
+interface Props {
+  class?: string;
+}
+
+const { class: classNames } = Astro.props;
+---
+
+<Hero image="/images/live.jpg" class={classNames}>
+  <div class="flex flex-col text-left">
+    <div class="w-full">
+      <h2 class="text-xl font-bold">Takk for i år!</h2>
+      <p class="text-lg">
+        Det har vært kult å henge med dere i påsken. Følg med her og i våre
+        sosisale medier for mer info.
+      </p>
+    </div>
+  </div>
+</Hero>
