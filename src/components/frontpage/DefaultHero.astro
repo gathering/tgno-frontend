@@ -13,8 +13,8 @@ const { class: classNames } = Astro.props;
 <Hero image="/images/tg19-lights.jpg" class={classNames}>
   <YouTube
     class="rounded-3xl"
-    title="The Gathering 2025 - TG:RE - Trailer"
-    videoId="B8khsj7usxc"
+    title="TG25: 10 Days Timelapse"
+    videoId="0X1YK1iQvIM"
     allow="autoplay"
     embedParams={{
       autoplay: 1,
@@ -27,18 +27,19 @@ const { class: classNames } = Astro.props;
   />
   <div class="flex flex-col text-left">
     <div class="w-full">
-      <h2 class="text-lg font-normal">Billettsalget er i gang!</h2>
-      <p class="text-4xl font-bold">16.-20. APRIL</p>
+      <h2 class="text-lg font-normal">
+        Vil du være med på å skape magien, møte likesinnede og samtidig få
+        uforglemmelige opplevelser?
+      </h2>
+      <p class="text-4xl font-bold">Søk deg inn som frivillig!</p>
     </div>
     <aside class="mt-6 space-x-2">
-      <Button href="https://www.geekevents.org/tg25/#/shop" theme="orange"
-        >Kjøp billett</Button
-      >
-      <Button href="/tickets" theme="secondary">Mer info</Button>
+      <Button href="https://wannabe.tg.no" theme="orange">Søk crew</Button>
+      <Button href="/news/wannabe-er-åpnet" theme="secondary">Mer info</Button>
     </aside>
   </div>
-  <Fragment slot="cta">
+  <!-- <Fragment slot="cta">
     <p class="text-white">Lyst til å stille ut?</p>
     <Button href="/about/expo" theme="secondary">Les hvordan</Button>
-  </Fragment>
+  </Fragment> -->
 </Hero>
