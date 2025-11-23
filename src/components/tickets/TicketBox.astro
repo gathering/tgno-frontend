@@ -2,18 +2,37 @@
 export interface Props {
   timespan?: string;
   name: string;
-  price?: number;
+  price?:
+    | number
+    | {
+        child: number;
+        adult: number;
+      };
   seatless?: boolean;
+  kanduless?: boolean;
 }
 
-const { timespan, name, price, seatless = false } = Astro.props;
-const formattedPrice = price
-  ? new Intl.NumberFormat("nb-NO", {
-      style: "currency",
-      currency: "NOK",
-      maximumFractionDigits: 0,
-    }).format(price)
-  : "";
+const {
+  timespan,
+  name,
+  price,
+  seatless = false,
+  kanduless = false,
+} = Astro.props;
+
+const formatPrice = (price: number | undefined) =>
+  price
+    ? new Intl.NumberFormat("nb-NO", {
+        style: "currency",
+        currency: "NOK",
+        maximumFractionDigits: 0,
+      }).format(price)
+    : "";
+
+const prices = {
+  adult: formatPrice(typeof price === "number" ? price : price?.adult),
+  child: formatPrice(typeof price === "object" ? price?.child : undefined),
+};
 
 const STYLES = {
   pending:
@@ -35,7 +54,22 @@ const boxStyles = `p-6 rounded-3xl sm:mx-auto sm:rounded-2xl ${style} prose rela
 
 <div class={boxStyles}>
   <h4 class="text-2xl">{name}</h4>
-  {price ? <h5 class="text-xl">{formattedPrice}</h5> : null}
+  {
+    prices.adult ? (
+      <div class="flex items-baseline gap-x-2">
+        <h5 class="text-xl">{prices.adult}</h5>
+        {prices.child ? <h6 class="text-xs">Voksen</h6> : null}
+      </div>
+    ) : null
+  }
+  {
+    prices.child ? (
+      <div class="flex items-baseline gap-x-2">
+        <h5 class="text-xl">{prices.child}</h5>
+        <h6 class="text-xs">Barn (under 16 år)</h6>
+      </div>
+    ) : null
+  }
   <ul class="text-xs list-none bg-black/15 rounded-md p-4">
     <li>
       {
@@ -51,6 +85,7 @@ const boxStyles = `p-6 rounded-3xl sm:mx-auto sm:rounded-2xl ${style} prose rela
           : `Detaljer om tilgang kommer senere`
       }
     </li>
+    {kanduless ? null : <li>Inkludert medlemskap i KANDU</li>}
   </ul>
   <slot />
 </div>
