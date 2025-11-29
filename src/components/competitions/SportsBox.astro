@@ -1,6 +1,7 @@
 ---
 import H2 from "../../components/H2.astro";
 import H3 from "../../components/H3.astro";
+import Button from "../Button.astro";
 import Pill from "./Pill.astro";
 
 export interface Props {
@@ -11,7 +12,6 @@ export interface Props {
   byoc?: boolean;
   requiresTicket?: boolean;
   class?: string;
-  buttonClass?: string;
   url?: string;
   urlText?: string;
 }
@@ -23,7 +23,6 @@ const {
   url,
   urlText = "Les mer",
   class: classNames,
-  buttonClass: buttonClassNames,
   byoc,
   requiresTicket,
 } = Astro.props;
@@ -76,9 +75,9 @@ const formattedPrizes = prizes.map((prize) =>
   {
     url && (
       <div class="last:pt-4 last:mt-auto w-full">
-        <a href={url}>
-          <button class={buttonClassNames}>{urlText}</button>
-        </a>
+        <Button href={url} variant="wide">
+          {urlText}
+        </Button>
       </div>
     )
   }

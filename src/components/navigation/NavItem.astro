@@ -116,7 +116,7 @@ const itemsWithParent: Array<
   data-mode={interactionMode}
 >
   <div
-    class={`block ${isActive ? "text-orange-500" : "text-white"} ${clickable ? "group-[.expanded]:text-orange-500" : "group-[.expanded]:text-neutral-400"} flex ${interactionMode === "hover" ? "z-20" : ""} relative ${clickable ? "cursor-pointer" : "cursor-default"} items-center h-6`}
+    class={`block ${isActive ? "text-orange-600" : "text-white"} ${clickable ? "group-[.expanded]:text-orange-600" : "group-[.expanded]:text-neutral-400"} flex ${interactionMode === "hover" ? "z-20" : ""} relative ${clickable ? "cursor-pointer" : "cursor-default"} items-center h-6`}
   >
     <TextContainer href={path} data-part="main-link" class="mr-3 w-max">
       {title}
@@ -171,7 +171,7 @@ const itemsWithParent: Array<
           <li class={`${subItem.touchOnly ? "hidden" : ""}`}>
             <a
               href={subItem.path}
-              class={`block rounded-md px-2 py-1 text-sm font-medium ${subItem.path === Astro.url.pathname ? "text-orange-500" : "text-neutral-300"} hover:bg-orange-500 hover:text-white`}
+              class={`block rounded-md px-2 py-1 text-sm font-medium ${subItem.path === Astro.url.pathname ? "text-orange-600" : "text-neutral-300"} hover:bg-orange-600 hover:text-white`}
             >
               {subItem.title}
             </a>

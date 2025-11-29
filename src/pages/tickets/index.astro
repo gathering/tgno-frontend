@@ -7,6 +7,7 @@ import H3 from "../../components/H3.astro";
 import ContentContainer from "../../components/ContentContainer.astro";
 import TicketBox from "../../components/tickets/TicketBox.astro";
 import ReservationGuideBox from "../../components/tickets/ReservationGuideBox.astro";
+import Button from "../../components/Button.astro";
 
 const boxStyles = [
   "p-6",
@@ -75,14 +76,15 @@ const jsonLd = {
               >
             </p>
           </section>
-          <a
-            class={`${buttonStyles} mt-6 border border-orange-500 bg-orange-500 text-black hover:bg-orange-200 hover:text-black`}
+          <Button
             href="https://www.geekevents.org/tg26/#/shop"
-            target="_blank">Kjøp billett på GeekEvents</a
+            variant="wide"
+            class="mt-6"
+            theme="orange">Kjøp billett på GeekEvents</Button
           >
         </div>
         <section
-          class={`${boxStyles.join(" ")} sm:col-span-4 bg-orange-500 prose-a:text-black`}
+          class={`${boxStyles.join(" ")} sm:col-span-4 bg-orange-600 prose-a:text-black`}
         >
           <ReservationGuideBox />
         </section>
@@ -202,19 +204,21 @@ const jsonLd = {
           </div>
         </section>
         <section
-          class={`${boxStyles.join(" ")} sm:col-start-3 sm:col-span-3 bg-orange-500 text-black mb-5`}
+          class={`${boxStyles.join(" ")} sm:col-start-3 sm:col-span-3 bg-orange-600 text-black mb-5`}
         >
           <H3>Hva venter du på?</H3>
           <p>Kjøp din billett i dag og bli med på noe helt unikt!</p>
-          <a
-            class={`${buttonStyles} mt-4 bg-transparent border border-white hover:bg-black/10`}
+          <Button
             href="https://support.gathering.org/help/no-no"
-            target="_blank">Få svar på det du lurer på i FAQen</a
+            class="mt-4 border border-white"
+            variant="wide"
+            theme="orange">Få svar på det du lurer på i FAQen</Button
           >
-          <a
-            class={`${buttonStyles} mt-2 bg-white border border-white text-black hover:bg-white/70 hover:text-black`}
+          <Button
             href="https://www.geekevents.org/tg26/#/shop"
-            target="_blank">Kjøp billett på GeekEvents</a
+            class="mt-2"
+            variant="wide"
+            theme="white">Kjøp billett på GeekEvents</Button
           >
         </section>
       </div>

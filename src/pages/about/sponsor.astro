@@ -4,10 +4,9 @@ import Layout from "../../layouts/Layout.astro";
 import Main from "../../components/Main.astro";
 import H2 from "../../components/H2.astro";
 import ContentContainer from "../../components/ContentContainer.astro";
+import Button from "../../components/Button.astro";
 
 const boxStyles = "rounded-3xl sm:rounded-2xl sm:w-full sm:mx-auto";
-const buttonStyles =
-  "block px-4 py-2 rounded-full content-center text-decoration-none text-center mt-6 border border-orange-500 bg-orange-500 hover:bg-orange-200 hover:text-black";
 ---
 
 <Layout
@@ -45,8 +44,11 @@ const buttonStyles =
               er sikre på at vi kan finne en løsning som passer for deg.
             </p>
           </span>
-          <a class={buttonStyles} href="mailto:sponsor@tg.no"
-            >Ta kontakt på sponsor@tg.no</a
+          <Button
+            class="mt-6"
+            theme="orange"
+            variant="wide"
+            href="mailto:sponsor@tg.no">Ta kontakt på sponsor@tg.no</Button
           >
         </section>
         <aside class="sm:col-span-7 my-4 prose text-white">
