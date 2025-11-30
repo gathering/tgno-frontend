@@ -16,8 +16,6 @@ const boxStyles = [
   "sm:rounded-2xl",
   "sm:w-full",
 ];
-const buttonStyles =
-  "block px-4 py-2 rounded-full content-center text-decoration-none text-center";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -119,6 +117,7 @@ const jsonLd = {
               name="LANpass"
               timespan="til hele arrangementet"
               price={1690}
+              class="md:col-span-2 min-w-full border-8 border-sky-800"
             >
               <p>
                 Gir deg tilgang til hele eventet fra start til slutt. Dette er
@@ -153,18 +152,18 @@ const jsonLd = {
               }}
               seatless
             >
+              <li slot="additional-features">
+                Kan ikke delta i de offisielle konkurranser som er under <a
+                  href="/competitions/creative">Kreative</a
+                >
+                og <a href="/competitions/esport">E-sport</a> på TG.no
+              </li>
               <p>
                 Besøksbilett til arrangementet hele uken uten sitteplass. Du kan
                 oppholde deg i skipet både dag og natt, inkludert overnatting i
                 det dedikerte soveområdet.
               </p>
-              <p>
-                Kan delta i mindre konkurranser og turneringer. <br />
-                Kan ikke delta i de offisielle konkurranser som er under <a
-                  href="/competitions/creative">Kreative</a
-                >
-                og <a href="/competitions/esport">E-sport</a> på TG.no
-              </p>
+              <p>Kan kun delta i mindre konkurranser og turneringer.</p>
             </TicketBox>
             <TicketBox
               name="EXPOpass - Dagsbilett"
@@ -175,18 +174,18 @@ const jsonLd = {
               }}
               seatless
             >
+              <li slot="additional-features">
+                Kan ikke delta i de offisielle konkurranser som er under <a
+                  href="/competitions/creative">Kreative</a
+                >
+                og <a href="/competitions/esport">E-sport</a> på TG.no
+              </li>
               <p>
                 1-dags besøksbilett til arrangementet uten sitteplass. Inngang
                 er gyldig frem til dagsprogrammet er ferdig for dagen. Gir ikke
                 tilgang til overnattingsområdet.
               </p>
-              <p>
-                Kan delta i mindre konkurranser og turneringer. <br />
-                Kan ikke delta i de offisielle konkurranser som er under <a
-                  href="/competitions/creative">Kreative</a
-                >
-                og <a href="/competitions/esport">E-sport</a> på TG.no
-              </p>
+              <p>Kan kun delta i mindre konkurranser og turneringer.</p>
             </TicketBox>
             <TicketBox
               name="Ledsagerbillett"
@@ -195,11 +194,98 @@ const jsonLd = {
               seatless
               kanduless
             >
+              <li slot="additional-features">
+                Er kun tilgjengelig for personer med gyldig ledsagerbevis
+              </li>
+            </TicketBox>
+          </div>
+        </section>
+        <section
+          class={`${boxStyles.join(" ")} min-w-full sm:col-span-7 sm:col-start-1 bg-orange-400 sm:h-min`}
+        >
+          <H3>Tilleggsprodukter</H3>
+          <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
+            <TicketBox name="Collectors Bundle" price={949} variant="product">
+              <span slot="features"></span>
               <p>
-                <em>
-                  Er kun tilgjengelig for personer med gyldig ledsagerbevis
-                </em>
+                La TG26-minnene leve videre etter påsken! Denne pakken gir deg
+                de ultimate samleobjektene til en rabattert pris enn om du
+                kjøper produktene hver for seg!
               </p>
+              <p>Pakken inneholder:</p>
+              <ul>
+                <li>Genser med TG-logo</li>
+                <li>Musematte med årets design</li>
+                <li>T-skjorte med årets design</li>
+                <li>TG-brandet håndkle</li>
+                <li>Badge og lanyard med årets design</li>
+              </ul>
+            </TicketBox>
+            <TicketBox name="Frokostpakke" price={299} variant="product">
+              <p slot="features" class="text-xs bg-black/15 rounded-md p-4">
+                Glutenfrie alternativer finnes.
+              </p>
+              <p>
+                Få tilgang til et utvalg av ferske, nysmurte baguetter og
+                ciabatta under TG. Frokostpakken hentes i TG-Shoppen mellom
+                09:30-11:30 (torsdag, fredag og lørdag).
+              </p>
+              <p>Velg mellom</p>
+
+              <ul>
+                <li>
+                  Nysmurte baguetter med ost og skinke eller brie og salami.
+                </li>
+                <li>En digg ciabatta med kyllingsalat.</li>
+              </ul>
+
+              <p>
+                Du får også én 0,5l utvalgt drikke til alle måltider, samt én
+                frukt.
+              </p>
+            </TicketBox>
+            <TicketBox name="Premiumparkering" price={690} variant="product">
+              <span slot="features"></span>
+              <p>
+                Parker bilen på parkeringsplassen rett ved hovedinngangen.
+                Perfekt for deg som ønsker rask og enkel tilgang til bilen din.
+                <br />
+                <em
+                  >Merk: Du må sjekke inn og få utlevert dine billetter før du
+                  får tilgang til parkeringsplassen din.</em
+                >
+              </p>
+            </TicketBox>
+            <TicketBox
+              name="Premium Supporter Bundle"
+              price={15000}
+              variant="product"
+              class="md:col-span-3 min-w-full border-8 border-orange-800"
+            >
+              <span slot="features"></span>
+              <p>
+                For deg som vil ha den ultimate TG-opplevelsen, men også ønsker
+                å støtte The Gathering.
+              </p>
+              <p>Du får</p>
+
+              <ul>
+                <li>
+                  Overnatting for én person (eget hotellrom på <a
+                    href="https://www.scandichotels.com/no/hotell/scandic-hamar"
+                    target="_blank"
+                  >
+                    Scandic Hamar</a
+                  >)
+                </li>
+                <li>Eksklusiv merch-pakke</li>
+                <li>Express-innsjekk</li>
+                <li>Frokostpakke hver morgen i skipet, levert til din plass</li>
+                <li>Privat parkeringsplass ved inngangen</li>
+                <li>Mat- og drikkebonger</li>
+                <li>Kveldssnacks fra shoppen</li>
+                <li>Andre overraskelser</li>
+              </ul>
             </TicketBox>
           </div>
         </section>

@@ -10,6 +10,8 @@ export interface Props {
       };
   seatless?: boolean;
   kanduless?: boolean;
+  variant?: "pending" | "standard" | "seatless" | "product";
+  class?: string;
 }
 
 const {
@@ -18,6 +20,8 @@ const {
   price,
   seatless = false,
   kanduless = false,
+  variant,
+  class: className = "",
 } = Astro.props;
 
 const formatPrice = (price: number | undefined) =>
@@ -41,15 +45,15 @@ const STYLES = {
     "bg-white shadow-lg text-black prose-headings:text-black prose-strong:text-black",
   seatless:
     "bg-sky-200 shadow-lg text-black prose-headings:text-black prose-strong:text-black",
+  product:
+    "bg-white shadow-lg text-black prose-headings:text-black prose-strong:text-black",
 };
 
-const style = seatless
-  ? STYLES.seatless
-  : price
-    ? STYLES.standard
-    : STYLES.pending;
+const style =
+  (variant && STYLES[variant]) ||
+  (seatless ? STYLES.seatless : price ? STYLES.standard : STYLES.pending);
 
-const boxStyles = `p-6 rounded-3xl sm:mx-auto sm:rounded-2xl ${style} prose relative`;
+const boxStyles = `p-6 rounded-3xl sm:mx-auto sm:rounded-2xl ${style} prose relative ${className}`;
 ---
 
 <div class={boxStyles}>
@@ -70,22 +74,23 @@ const boxStyles = `p-6 rounded-3xl sm:mx-auto sm:rounded-2xl ${style} prose rela
       </div>
     ) : null
   }
-  <ul class="text-xs list-none bg-black/15 rounded-md p-4">
-    <li>
-      {
-        seatless
-          ? "Ingen sitteplass inkludert"
-          : "Inkludert sitteplass på på 120 cm"
-      }
-    </li>
-    <li>
-      {
-        timespan
-          ? `Gir tilgang ${timespan}`
-          : `Detaljer om tilgang kommer senere`
-      }
-    </li>
-    {kanduless ? null : <li>Inkludert medlemskap i KANDU</li>}
-  </ul>
+  <slot name="features">
+    <ul
+      class="text-xs list-none bg-black/15 rounded-md p-4 prose-a:text-inherit"
+    >
+      <li>
+        {
+          seatless
+            ? "Ingen sitteplass inkludert"
+            : "Inkludert sitteplass på på 120 cm"
+        }
+      </li>
+      <li>
+        {timespan ? `Gir tilgang ${timespan}` : null}
+      </li>
+      {kanduless ? null : <li>Inkludert medlemskap i KANDU</li>}
+      <slot name="additional-features" />
+    </ul>
+  </slot>
   <slot />
 </div>
