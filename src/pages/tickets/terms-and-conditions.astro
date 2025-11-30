@@ -4,6 +4,7 @@ import Layout from "../../layouts/Layout.astro";
 import Main from "../../components/Main.astro";
 import H2 from "../../components/H2.astro";
 import ContentContainer from "../../components/ContentContainer.astro";
+import H3 from "../../components/H3.astro";
 
 const sectionStyles = [
   "p-6",
@@ -31,7 +32,7 @@ const sectionStyles = [
           <ul>
             <li>
               Billettkategorier: <a
-                href="https://www.geekevents.org/tg25/#/shop"
+                href="https://www.geekevents.org/tg26/#/shop"
                 target="_blank"
                 >Se vår egen side for informasjon om billetttyper og priser.</a
               >
@@ -73,21 +74,67 @@ const sectionStyles = [
           </ul>
         </section>
         <section class:list={sectionStyles}>
-          <H2 text="3. Refundering og Angrerett" />
+          <H2 text="3. Refundering og Angrerett" class="mb-6" />
           <ul>
             <li>
-              Du kan kansellere billetten din og få refusjon frem til <strong
-                >1. januar 2025</strong
-              >. Etter denne datoen gis det ikke refusjon, uansett årsak.
+              Kjøp av billetter til dette arrangementet er bindende, og det gis
+              ingen refusjon ved avbestilling, kansellering fra kjøper eller
+              manglende oppmøte – uansett årsak.
             </li>
             <li>
-              Gebyrer til ekstern billettleverandør og KANDU-kontingenten er
-              <strong>ikke refunderbare.</strong>
+              Angrerett gjelder ikke for arrangementer som finner sted på en
+              bestemt dato eller tidsperiode, jf. angrerettloven § 22 bokstav m.
             </li>
             <li>
-              Refusjonsforespørsler må sendes til <a href="mailto:info@tg.no"
-                >info@tg.no</a
-              > med nødvendig informasjon om kjøpet.
+              Dersom arrangementet avlyses i sin helhet, har kjøper rett til å
+              få refundert billettens pålydende verdi, med fradrag for kostnader
+              som ikke tilfaller arrangøren, herunder billettgebyrer,
+              betalingsgebyrer og eventuelle organisasjonskontingenter som er
+              betalt i forbindelse med kjøpet. Disse dekker tjenester og
+              medlemskap som anses levert ved kjøpstidspunktet og refunderes
+              derfor ikke.
+            </li>
+            <li>
+              Dersom arrangementet flyttes til ny dato, endres sted eller
+              gjennomføres med vesentlige endringer, tilbys refusjon dersom
+              endringen medfører at arrangementet ikke lenger kan anses som det
+              samme som opprinnelig avtalt. Refusjon gjennomføres i så fall til
+              det betalingskortet som ble brukt ved kjøpet.
+            </li>
+          </ul>
+          <H3>3.1 Refusjon ved sykdom eller medisinsk grunnlag</H3>
+          <ul>
+            <li>
+              Dersom du ikke kan delta på arrangementet, eller må reise hjem som
+              følge av sykdom, skade eller annen medisinsk årsak, gis det ingen
+              refusjon. I slike tilfeller må du selv søke dekning gjennom din
+              reiseforsikring.
+            </li>
+            <li>
+              Dersom du må forlate arrangementet av medisinske årsaker etter
+              ankomst, vil du ikke ha krav på refusjon. Du kan få utstedt
+              bekreftelse fra vårt medisinske personell som dokumentasjon
+              overfor forsikringsselskapet ditt.
+            </li>
+            <li>
+              Ved mistanke om smittsom sykdom (for eksempel omgangssyke,
+              influensa eller koronavirus) vil du kunne bli isolert og sendt
+              hjem så snart som praktisk mulig. Vårt medisinske personell
+              foretar fortløpende vurderinger for å ivareta sikkerheten til alle
+              deltakerne. Ledelsen kan i enkelte tilfeller bruke skjønn og
+              forsøke å finne løsninger som gjør at du kan bli værende dersom
+              situasjonen tillater det. For deltakere under 18 år vil ledelsen
+              kontakte foresatte.
+            </li>
+          </ul>
+          <H3>3.2 Refusjon ved hjemreise på annet grunnlag</H3>
+          <ul>
+            <li>
+              Dersom du blir bedt om å forlate arrangementet på grunn av brudd
+              på regler, sikkerhetsbestemmelser eller annen vesentlig grunn, gis
+              det ingen refusjon eller kompensasjon. Arrangøren dekker heller
+              ikke kostnader til eventuell hjemtransport eller overnatting. For
+              deltakere under 18 år vil ledelsen kontakte foresatte.
             </li>
           </ul>
         </section>
@@ -142,12 +189,13 @@ const sectionStyles = [
           </ul>
         </section>
         <section class:list={sectionStyles}>
-          <H2 text="6. Overdragelse av Billetter" />
+          <H2 text="6. Overdragelse og videresalg av billetter" class="mb-6" />
+          <H3>6.1 Overdragelse av billetter"</H3>
           <ul>
             <li>
-              Billetten kan overføres til en annen person ved å bruke vår
-              tredjeparts billettleverandør Geekevents sine innebygde
-              funksjoner.
+              Billetter kan overføres til en annen person ved å bruke de
+              innebygde funksjonene hos vår tredjeparts billettleverandør,
+              GeekEvents.
             </li>
             <li>
               Hver deltaker må inneha sin egen billett for å kunne delta på
@@ -156,6 +204,32 @@ const sectionStyles = [
             <li>
               Deltakere har mulighet til å overføre ansvar for setevalg til en
               annen person via vårt billettsystem.
+            </li>
+          </ul>
+          <H3> 6.2 Videresalg av billetter</H3>
+          <ul>
+            <li>
+              Videresalg av ordinære deltakerbilletter er tillatt, men kun til
+              samme eller lavere pris enn opprinnelig kjøpspris, jf.
+              svartebørsloven.
+            </li>
+            <li>
+              Videresalg av gratisbilletter er ikke tillatt. Gratisbilletter er
+              personlige og kan ikke overdras uten arrangørens skriftlige
+              samtykke. Brudd på disse bestemmelsene kan medføre at billetten(e)
+              annulleres uten kompensasjon.
+            </li>
+          </ul>
+          <H3>6.3 Særregler for gratisbilletter</H3>
+          <ul>
+            <li>
+              Billetter vunnet i konkurranser gjelder kun for det arrangementet
+              og året de er utstedt for, og kan ikke overføres til senere
+              arrangementer. Det gis ikke økonomisk kompensasjon for
+              gratisbilletter, uansett årsak. Arrangøren kan fastsette særskilte
+              vilkår for gratisbilletter i kampanjer eller konkurranser, og
+              slike vilkår vil i så fall fremgå tydelig i tilknytning til
+              utsendelsen av billetten.
             </li>
           </ul>
         </section>
