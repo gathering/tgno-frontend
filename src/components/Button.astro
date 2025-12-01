@@ -1,6 +1,6 @@
 ---
 type Theme = "orange" | "blue" | "secondary" | "white";
-type Variant = "normal" | "standalone";
+type Variant = "normal" | "standalone" | "wide";
 interface Props {
   href: string;
   theme?: Theme;
@@ -10,14 +10,15 @@ interface Props {
 
 const THEMES: Record<Theme, string> = {
   orange:
-    "border text-white bg-orange-600 border-orange-600 hover:bg-orange-500",
-  blue: "border text-white bg-blue-600 border-blue-600 hover:bg-blue-500",
+    "border text-white bg-orange-600 border-orange-600 hover:bg-orange-700",
+  blue: "border text-white bg-sky-600 border-sky-600 hover:bg-sky-500",
   secondary: "border text-white bg-transparent border-white hover:bg-white/20",
   white: "border text-black bg-white border-white hover:bg-neutral-200",
 };
 const VARIANTS: Record<Variant, string> = {
-  normal: "px-4 py-2 rounded-full text-xs font-bold",
-  standalone: "p-6 rounded-3xl text-md",
+  normal: "inline-block px-4 py-2 rounded-full text-xs font-bold",
+  standalone: "inline-block p-6 rounded-3xl text-md",
+  wide: "block px-4 py-2 rounded-full content-center text-center",
 };
 
 const { href, theme = "orange", class: classNames = "" } = Astro.props;
@@ -30,7 +31,7 @@ const variantStyles =
 
 <a
   href={href}
-  class={`inline-block content-center ${colorStyles} ${variantStyles} ${classNames}`}
+  class={`content-center not-prose ${colorStyles} ${variantStyles} ${classNames}`}
   target={target}
 >
   <slot />

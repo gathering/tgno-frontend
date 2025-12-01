@@ -7,6 +7,7 @@ import H3 from "../../components/H3.astro";
 import ContentContainer from "../../components/ContentContainer.astro";
 import TicketBox from "../../components/tickets/TicketBox.astro";
 import ReservationGuideBox from "../../components/tickets/ReservationGuideBox.astro";
+import Button from "../../components/Button.astro";
 
 const boxStyles = [
   "p-6",
@@ -15,8 +16,6 @@ const boxStyles = [
   "sm:rounded-2xl",
   "sm:w-full",
 ];
-const buttonStyles =
-  "block px-4 py-2 rounded-full content-center text-decoration-none text-center";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -75,19 +74,20 @@ const jsonLd = {
               >
             </p>
           </section>
-          <a
-            class={`${buttonStyles} mt-6 border border-orange-500 bg-orange-500 text-black hover:bg-orange-200 hover:text-black`}
+          <Button
             href="https://www.geekevents.org/tg26/#/shop"
-            target="_blank">Kjøp billett på GeekEvents</a
+            variant="wide"
+            class="mt-6"
+            theme="orange">Kjøp billett på Geekevents</Button
           >
         </div>
         <section
-          class={`${boxStyles.join(" ")} sm:col-span-4 bg-orange-500 prose-a:text-black`}
+          class={`${boxStyles.join(" ")} sm:col-span-4 bg-orange-600 prose-a:text-black`}
         >
           <ReservationGuideBox />
         </section>
         <section
-          class={`${boxStyles.join(" ")} sm:col-span-3 bg-blue-400 text-black prose prose-headings:text-black sm:h-min`}
+          class={`${boxStyles.join(" ")} sm:col-span-3 bg-sky-400 text-black prose prose-headings:text-black sm:h-min`}
         >
           <H3>Viktige datoer</H3>
           <p>
@@ -96,7 +96,7 @@ const jsonLd = {
           </p>
           <ul>
             <li class="font-bold">
-              1. Desember, 13:37 - Billettsalget&nbsp;åpner
+              1. Desember, 13:37 - Billettsalget&nbsp;åpnet
             </li>
             <li class="text-xs">TBA - Setereservasjon åpner</li>
             <li class="text-xs">TBA - Forhåndsinnsjekk åpner</li>
@@ -105,7 +105,7 @@ const jsonLd = {
           </ul>
         </section>
         <section
-          class={`${boxStyles.join(" ")} sm:col-start-1 sm:col-span-7 bg-blue-500`}
+          class={`${boxStyles.join(" ")} sm:col-start-1 sm:col-span-7 bg-sky-500`}
         >
           <H3>Billettypene for TG 2026</H3>
           <p>
@@ -117,6 +117,7 @@ const jsonLd = {
               name="LANpass"
               timespan="til hele arrangementet"
               price={1690}
+              class="md:col-span-2 min-w-full border-8 border-sky-800"
             >
               <p>
                 Gir deg tilgang til hele eventet fra start til slutt. Dette er
@@ -151,18 +152,18 @@ const jsonLd = {
               }}
               seatless
             >
+              <li slot="additional-features">
+                Kan ikke delta i de offisielle konkurranser som er under <a
+                  href="/competitions/creative">Kreative</a
+                >
+                og <a href="/competitions/esport">E-sport</a> på TG.no
+              </li>
               <p>
                 Besøksbilett til arrangementet hele uken uten sitteplass. Du kan
                 oppholde deg i skipet både dag og natt, inkludert overnatting i
                 det dedikerte soveområdet.
               </p>
-              <p>
-                Kan delta i mindre konkurranser og turneringer. <br />
-                Kan ikke delta i de offisielle konkurranser som er under <a
-                  href="/competitions/creative">Kreative</a
-                >
-                og <a href="/competitions/esport">E-sport</a> på TG.no
-              </p>
+              <p>Kan kun delta i mindre konkurranser og turneringer.</p>
             </TicketBox>
             <TicketBox
               name="EXPOpass - Dagsbilett"
@@ -173,18 +174,18 @@ const jsonLd = {
               }}
               seatless
             >
+              <li slot="additional-features">
+                Kan ikke delta i de offisielle konkurranser som er under <a
+                  href="/competitions/creative">Kreative</a
+                >
+                og <a href="/competitions/esport">E-sport</a> på TG.no
+              </li>
               <p>
                 1-dags besøksbilett til arrangementet uten sitteplass. Inngang
                 er gyldig frem til dagsprogrammet er ferdig for dagen. Gir ikke
                 tilgang til overnattingsområdet.
               </p>
-              <p>
-                Kan delta i mindre konkurranser og turneringer. <br />
-                Kan ikke delta i de offisielle konkurranser som er under <a
-                  href="/competitions/creative">Kreative</a
-                >
-                og <a href="/competitions/esport">E-sport</a> på TG.no
-              </p>
+              <p>Kan kun delta i mindre konkurranser og turneringer.</p>
             </TicketBox>
             <TicketBox
               name="Ledsagerbillett"
@@ -193,28 +194,117 @@ const jsonLd = {
               seatless
               kanduless
             >
-              <p>
-                <em>
-                  Er kun tilgjengelig for personer med gyldig ledsagerbevis
-                </em>
-              </p>
+              <li slot="additional-features">
+                Er kun tilgjengelig for personer med gyldig ledsagerbevis
+              </li>
             </TicketBox>
           </div>
         </section>
         <section
-          class={`${boxStyles.join(" ")} sm:col-start-3 sm:col-span-3 bg-orange-500 text-black mb-5`}
+          class={`${boxStyles.join(" ")} min-w-full sm:col-span-7 sm:col-start-1 bg-orange-400 sm:h-min`}
+        >
+          <H3>Tilleggsprodukter</H3>
+          <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
+            <TicketBox name="Collectors Bundle" price={949} variant="product">
+              <span slot="features"></span>
+              <p>
+                La TG26-minnene leve videre etter påsken! Denne pakken gir deg
+                de ultimate samleobjektene til en rabattert pris enn om du
+                kjøper produktene hver for seg!
+              </p>
+              <p>Pakken inneholder:</p>
+              <ul>
+                <li>Genser med TG-logo</li>
+                <li>Musematte med årets design</li>
+                <li>T-skjorte med årets design</li>
+                <li>TG-brandet håndkle</li>
+                <li>Badge og lanyard med årets design</li>
+              </ul>
+            </TicketBox>
+            <TicketBox name="Frokostpakke" price={299} variant="product">
+              <p slot="features" class="text-xs bg-black/15 rounded-md p-4">
+                Glutenfrie alternativer finnes.
+              </p>
+              <p>
+                Få tilgang til et utvalg av ferske, nysmurte baguetter og
+                ciabatta under TG. Frokostpakken hentes i TG-Shoppen mellom
+                09:30-11:30 (torsdag, fredag og lørdag).
+              </p>
+              <p>Velg mellom</p>
+
+              <ul>
+                <li>
+                  Nysmurte baguetter med ost og skinke eller brie og salami.
+                </li>
+                <li>En digg ciabatta med kyllingsalat.</li>
+              </ul>
+
+              <p>
+                Du får også én 0,5l utvalgt drikke til alle måltider, samt én
+                frukt.
+              </p>
+            </TicketBox>
+            <TicketBox name="Premiumparkering" price={690} variant="product">
+              <span slot="features"></span>
+              <p>
+                Parker bilen på parkeringsplassen rett ved hovedinngangen.
+                Perfekt for deg som ønsker rask og enkel tilgang til bilen din.
+                <br />
+                <em
+                  >Merk: Du må sjekke inn og få utlevert dine billetter før du
+                  får tilgang til parkeringsplassen din.</em
+                >
+              </p>
+            </TicketBox>
+            <TicketBox
+              name="Premium Supporter Bundle"
+              price={15000}
+              variant="product"
+              class="md:col-span-3 min-w-full border-8 border-orange-800"
+            >
+              <span slot="features"></span>
+              <p>
+                For deg som vil ha den ultimate TG-opplevelsen, men også ønsker
+                å støtte The Gathering.
+              </p>
+              <p>Du får</p>
+
+              <ul>
+                <li>
+                  Overnatting for én person (eget hotellrom på <a
+                    href="https://www.scandichotels.com/no/hotell/scandic-hamar"
+                    target="_blank"
+                  >
+                    Scandic Hamar</a
+                  >)
+                </li>
+                <li>Eksklusiv merch-pakke</li>
+                <li>Express-innsjekk</li>
+                <li>Frokostpakke hver morgen i skipet, levert til din plass</li>
+                <li>Privat parkeringsplass ved inngangen</li>
+                <li>Mat- og drikkebonger</li>
+                <li>Kveldssnacks fra shoppen</li>
+                <li>Andre overraskelser</li>
+              </ul>
+            </TicketBox>
+          </div>
+        </section>
+        <section
+          class={`${boxStyles.join(" ")} sm:col-start-3 sm:col-span-3 bg-orange-600 text-black mb-5`}
         >
           <H3>Hva venter du på?</H3>
           <p>Kjøp din billett i dag og bli med på noe helt unikt!</p>
-          <a
-            class={`${buttonStyles} mt-4 bg-transparent border border-white hover:bg-black/10`}
+          <Button
             href="https://support.gathering.org/help/no-no"
-            target="_blank">Få svar på det du lurer på i FAQen</a
+            class="mt-4 border border-white"
+            variant="wide"
+            theme="orange">Få svar på det du lurer på i FAQen</Button
           >
-          <a
-            class={`${buttonStyles} mt-2 bg-white border border-white text-black hover:bg-white/70 hover:text-black`}
+          <Button
             href="https://www.geekevents.org/tg26/#/shop"
-            target="_blank">Kjøp billett på GeekEvents</a
+            class="mt-2"
+            variant="wide"
+            theme="white">Kjøp billett på Geekevents</Button
           >
         </section>
       </div>

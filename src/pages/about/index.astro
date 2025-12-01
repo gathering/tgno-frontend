@@ -4,10 +4,9 @@ import Layout from "../../layouts/Layout.astro";
 import Main from "../../components/Main.astro";
 import H2 from "../../components/H2.astro";
 import ContentContainer from "../../components/ContentContainer.astro";
+import Button from "../../components/Button.astro";
 
 const boxStyles = "rounded-3xl sm:rounded-2xl sm:w-full sm:mx-auto";
-const buttonStyles =
-  "block px-4 py-2 rounded-full content-center text-decoration-none text-center mt-6 border border-orange-500 bg-orange-500 hover:bg-orange-200 hover:text-black";
 ---
 
 <Layout title="The Gathering - Om The Gathering" description="Hv">
@@ -39,7 +38,7 @@ const buttonStyles =
           </span>
         </section>
         <section
-          class={`${boxStyles} p-6 sm:col-start-5 sm:col-span-3 sm:row-start-1 sm:row-span-2 bg-blue-400 text-black prose prose-headings:text-black sm:mt-20`}
+          class={`${boxStyles} p-6 sm:col-start-5 sm:col-span-3 sm:row-start-1 sm:row-span-2 bg-sky-400 text-black prose prose-headings:text-black sm:mt-20`}
         >
           <H2 text="Bakgrunn" color="text-black" />
           <p>
@@ -83,8 +82,13 @@ const buttonStyles =
               opplevelse.
             </p>
           </span>
-          <a class={buttonStyles} href="https://www.kandu.no" target="_blank"
-            >Les mer om KANDU</a
+          <Button
+            class="mt-6"
+            theme="orange"
+            variant="wide"
+            href="https://www.kandu.no"
+          >
+            Les mer om KANDU</Button
           >
         </section>
       </div>

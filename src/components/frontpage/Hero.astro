@@ -35,13 +35,13 @@ const imageClass = `${hideMobileImage ? "hidden" : ""} sm:block sm:absolute sm:l
     class="z-10 relative flex flex-col justify-end col-span-2 space-y-4 sm:col-start-4"
   >
     <div
-      class="w-full bg-blue-600 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:rounded-2xl"
+      class="w-full bg-orange-500 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:rounded-2xl"
     >
       <slot />
     </div>
-    ${
+    {
       showCta ? (
-        <div class="w-full bg-orange-600 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:rounded-2xl">
+        <div class="w-full bg-sky-500 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:rounded-2xl">
           <div class="flex space-x-2 items-center justify-between">
             <slot name="cta" />
           </div>

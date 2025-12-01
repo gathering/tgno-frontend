@@ -9,17 +9,6 @@ import SportsBox from "../../components/competitions/SportsBox.astro";
 import Pill from "../../components/competitions/Pill.astro";
 
 const boxStyles = ["p-6", "rounded-3xl", "sm:mx-auto", "sm:rounded-2xl"];
-const buttonStyles = [
-  "w-full",
-  "mt-auto",
-  "px-4",
-  "py-2",
-  "rounded-full",
-  "content-center",
-  "bg-orange-500",
-  "text-black",
-  "hover:bg-orange-200",
-];
 ---
 
 <Layout title="The Gathering - E-Sport konkurranser">
@@ -54,8 +43,7 @@ const buttonStyles = [
         </div>
         <SportsBox
           title="Valorant"
-          class={`${boxStyles.join(" ")} sm:col-start-4 sm:col-span-2 sm:row-start-1 sm:mt-20 bg-blue-400 text-black prose prose-headings:text-black prose-a:text-black`}
-          buttonClass={buttonStyles.join(" ")}
+          class={`${boxStyles.join(" ")} sm:col-start-4 sm:col-span-2 sm:row-start-1 sm:mt-20 bg-sky-400 text-black prose prose-headings:text-black prose-a:text-black`}
           prizes={[65000, 25000, 10000]}
           url="https://www.gamer.no/turneringer/tg25-valorant/13485"
           urlText="Meld deg på her!"
@@ -86,9 +74,8 @@ const buttonStyles = [
         </SportsBox>
         <SportsBox
           title="CS2"
-          class={`${boxStyles.join(" ")} sm:col-start-1 sm:col-span-2 sm:row-start-2 sm:-mt-20 sm:mb-20 bg-blue-50 text-black prose prose-headings:text-black`}
+          class={`${boxStyles.join(" ")} sm:col-start-1 sm:col-span-2 sm:row-start-2 sm:-mt-20 sm:mb-20 bg-sky-50 text-black prose prose-headings:text-black`}
           prizes={[40000, 15000, 5000]}
-          buttonClass={buttonStyles.join(" ")}
           url="https://www.challengermode.com/s/TheGathering/tournaments/a331c7ba-67d0-4447-f532-08dbc34f38a0"
           urlText="Meld deg på her!"
           requiresTicket
@@ -103,9 +90,8 @@ const buttonStyles = [
         </SportsBox>
         <SportsBox
           title="LoL"
-          class={`${boxStyles.join(" ")} sm:col-start-3 sm:col-span-2 border-blue-400 border prose`}
+          class={`${boxStyles.join(" ")} sm:col-start-3 sm:col-span-2 border-sky-400 border prose`}
           prizes={[25000, 10000, 5000]}
-          buttonClass={buttonStyles.join(" ")}
           url="https://www.gamer.no/turneringer/tg25-league-of-legends/13480"
           urlText="Meld deg på her!"
           requiresTicket
@@ -121,9 +107,8 @@ const buttonStyles = [
         </SportsBox>
         <SportsBox
           title="Rocket League"
-          class={`${boxStyles.join(" ")} sm:col-start-2 sm:col-span-2 sm:mt-32 bg-blue-400 text-black prose prose-headings:text-black`}
+          class={`${boxStyles.join(" ")} sm:col-start-2 sm:col-span-2 sm:mt-32 bg-sky-400 text-black prose prose-headings:text-black`}
           prizes={[10000, 5000, 2000]}
-          buttonClass={buttonStyles.join(" ")}
           url="https://www.gamer.no/turneringer/tg25-rocket-league/13479"
           urlText="Meld deg på her!"
           requiresTicket
@@ -144,9 +129,8 @@ const buttonStyles = [
         </SportsBox>
         <SportsBox
           title="Trackmania"
-          class={`${boxStyles.join(" ")} sm:col-span-2 sm:mb-32 bg-blue-50 text-black prose prose-headings:text-black`}
+          class={`${boxStyles.join(" ")} sm:col-span-2 sm:mb-32 bg-sky-50 text-black prose prose-headings:text-black`}
           prizes={[5000, 2000, 1000]}
-          buttonClass={buttonStyles.join(" ")}
           url="https://www.gamer.no/turneringer/tg25-trackmania/13484"
           urlText="Meld deg på her!"
           requiresTicket
@@ -163,10 +147,9 @@ const buttonStyles = [
 
         <SportsBox
           title="TCF: The Fertile Crescent"
-          class={`${boxStyles.join(" ")} sm:col-start-1 sm:col-span-2 sm:row-span-2 bg-blue-50 text-black prose prose-headings:text-black`}
+          class={`${boxStyles.join(" ")} sm:col-start-1 sm:col-span-2 sm:row-span-2 bg-sky-50 text-black prose prose-headings:text-black`}
           prizes={[2500, 1500, 500]}
           prizeDisclaimer="Premiene er i form av Steam-gavekort."
-          buttonClass={buttonStyles.join(" ")}
           url="https://www.ves.gg/tfc"
           urlText="Meld deg på her!"
           requiresTicket
