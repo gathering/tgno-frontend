@@ -27,7 +27,11 @@ const { articles } = Astro.props;
               datetime={meta.first_published_at}
               class="text-sm text-gray-500"
             >
-              {new Date(meta.first_published_at).toLocaleDateString("en-US", {
+              {new Date(
+                meta.custom_published_at
+                  ? meta.custom_published_at
+                  : meta.first_published_at,
+              ).toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",

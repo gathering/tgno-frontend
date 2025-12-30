@@ -51,14 +51,15 @@ const gridStyles = singleColumn
                 datetime={article.meta.first_published_at}
                 class="text-sm text-gray-500"
               >
-                {new Date(article.meta.first_published_at).toLocaleDateString(
-                  "nb-NO",
-                  {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  },
-                )}
+                {new Date(
+                  article.meta.custom_published_at
+                    ? article.meta.custom_published_at
+                    : article.meta.first_published_at,
+                ).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
               </time>
             </div>
             <TeaserImage image={article.main_image} />
