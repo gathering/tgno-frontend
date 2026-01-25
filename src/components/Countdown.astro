@@ -1,0 +1,103 @@
+---
+interface Props {
+  targetDate: string; // ISO 8601 format
+}
+const { targetDate } = Astro.props;
+---
+
+<div
+  id="countdown"
+  class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 sm:gap-x-4 rounded-xl text-white whitespace-nowrap leading-none"
+  data-target={targetDate}
+>
+  <div class="text-center">
+    <div
+      class="text-lg sm:text-2xl md:text-3xl font-bold tabular-nums"
+      data-days
+    >
+      0
+    </div>
+    <div class="text-xs uppercase tracking-wide text-neutral-400">Days</div>
+  </div>
+
+  <div class="text-center">
+    <div
+      class="text-lg sm:text-2xl md:text-3xl font-bold tabular-nums"
+      data-hours
+    >
+      0
+    </div>
+    <div class="text-xs uppercase tracking-wide text-neutral-400">Hours</div>
+  </div>
+
+  <div class="text-center">
+    <div
+      class="text-lg sm:text-2xl md:text-3xl font-bold tabular-nums"
+      data-minutes
+    >
+      0
+    </div>
+    <div class="text-xs uppercase tracking-wide text-neutral-400">Minutes</div>
+  </div>
+
+  <div class="text-center">
+    <div
+      class="text-lg sm:text-2xl md:text-3xl font-bold tabular-nums"
+      data-seconds
+    >
+      0
+    </div>
+    <div class="text-xs uppercase tracking-wide text-neutral-400">Seconds</div>
+  </div>
+</div>
+
+<script lang="ts">
+  const container = document.getElementById("countdown");
+  if (!(container instanceof HTMLDivElement))
+    throw new Error("Countdown container not found");
+
+  const targetAttr = container.dataset.target;
+  if (!targetAttr) throw new Error("Missing target date");
+
+  const targetTime = new Date(targetAttr).getTime();
+  if (Number.isNaN(targetTime)) throw new Error("Invalid target date format");
+
+  const daysEl = container.querySelector("[data-days]");
+  const hoursEl = container.querySelector("[data-hours]");
+  const minutesEl = container.querySelector("[data-minutes]");
+  const secondsEl = container.querySelector("[data-seconds]");
+
+  if (!(daysEl && hoursEl && minutesEl && secondsEl)) {
+    throw new Error("Countdown parts not found");
+  }
+
+  function render(diff) {
+    const days = Math.floor(diff / 86_400_000);
+    const hours = Math.floor((diff / 3_600_000) % 24);
+    const minutes = Math.floor((diff / 60_000) % 60);
+    const seconds = Math.floor((diff / 1_000) % 60);
+
+    daysEl.textContent = String(days);
+    hoursEl.textContent = String(hours);
+    minutesEl.textContent = String(minutes);
+    secondsEl.textContent = String(seconds);
+  }
+
+  let timer;
+
+  function update() {
+    const diff = targetTime - Date.now();
+
+    if (diff <= 0) {
+      if (timer) window.clearInterval(timer);
+      container.innerHTML =
+        '<span class="text-lg font-semibold text-green-400">🚀 Launched</span>';
+      return;
+    }
+
+    render(diff);
+  }
+
+  update();
+  timer = window.setInterval(update, 1000);
+</script>

@@ -4,6 +4,7 @@ import { fetchInfoPageByPath } from "../utils";
 import HeaderNavigation from "./HeaderNavigation.astro";
 import CloseSymbol from "./icons/CloseSymbol.astro";
 import HamburgerSymbol from "./icons/HamburgerSymbol.astro";
+import Countdown from "./Countdown.astro";
 
 const getNavigationItems: () => Promise<NavItem[]> = async () => {
   const items = [
@@ -104,7 +105,7 @@ const navigationItems = await getNavigationItems();
   >
     <nav class="w-full">
       <div class="relative h-20 flex items-center justify-between">
-        <a href="/" class="sm:flex gap-x-4 items-center hidden">
+        <a href="/" class="sm:flex gap-x-4 items-center hidden flex-shrink-0">
           <img
             src="/tg26/tg26_horizontal.svg"
             alt="The Gathering logo"
@@ -112,7 +113,10 @@ const navigationItems = await getNavigationItems();
             class="aspect-thumbnail object-cover"
           />
         </a>
-        <a href="/" class="flex gap-x-4 -ml-1 items-center sm:hidden">
+        <a
+          href="/"
+          class="flex gap-x-4 -ml-1 items-center sm:hidden flex-shrink-0"
+        >
           <img
             src="/tg26/tg26_horizontal.svg"
             alt="The Gathering logo"
@@ -121,12 +125,16 @@ const navigationItems = await getNavigationItems();
           />
         </a>
 
+        <div class="flex-1 hidden sm:flex items-center justify-center px-4">
+          <Countdown targetDate="2026-05-01T20:00:00Z" />
+        </div>
+
         <HeaderNavigation
           navigationItems={navigationItems}
-          class="hidden sm:flex w-full space-x-6 space-y-0 justify-end"
+          class="hidden sm:flex space-x-6 space-y-0 flex-shrink-0"
           prioritized
         />
-        <div class="flex items-center">
+        <div class="flex items-center flex-shrink-0 sm:hidden">
           <button
             type="button"
             data-part="mobile-menu-trigger"
