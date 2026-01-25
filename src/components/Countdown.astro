@@ -4,6 +4,7 @@ interface Props {
   confetti?: boolean;
   endMessage?: string;
 }
+
 const {
   targetDate,
   confetti = false,
@@ -12,8 +13,7 @@ const {
 ---
 
 <div
-  id="countdown"
-  class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 sm:gap-x-4 rounded-xl text-white whitespace-nowrap leading-none"
+  class="countdown flex flex-wrap items-center justify-center gap-x-3 gap-y-1 sm:gap-x-4 rounded-xl text-white whitespace-nowrap leading-none"
   data-target={targetDate}
   data-confetti={confetti ? "true" : "false"}
   data-end-message={endMessage}
@@ -59,50 +59,52 @@ const {
   </div>
 </div>
 
-<script lang="ts">
-  const container = document.getElementById("countdown");
-  if (!(container instanceof HTMLDivElement))
-    throw new Error("Countdown not found");
+<script>
+  type Parts = {
+    days: HTMLElement;
+    hours: HTMLElement;
+    minutes: HTMLElement;
+    seconds: HTMLElement;
+  };
 
-  const targetAttr = container.dataset.target;
-  if (!targetAttr) throw new Error("Missing target date");
+  function getParts(container: Element): Parts {
+    const days = container.querySelector("[data-days]");
+    const hours = container.querySelector("[data-hours]");
+    const minutes = container.querySelector("[data-minutes]");
+    const seconds = container.querySelector("[data-seconds]");
 
-  const targetTime = new Date(targetAttr).getTime();
-  if (Number.isNaN(targetTime)) throw new Error("Invalid target date");
+    if (!(days && hours && minutes && seconds)) {
+      throw new Error("Countdown parts not found");
+    }
 
-  const confettiEnabled = container.dataset.confetti === "true";
-  const endMessage = container.dataset.endMessage || "Countdown complete";
-
-  const daysEl = container.querySelector("[data-days]");
-  const hoursEl = container.querySelector("[data-hours]");
-  const minutesEl = container.querySelector("[data-minutes]");
-  const secondsEl = container.querySelector("[data-seconds]");
-
-  if (!(daysEl && hoursEl && minutesEl && secondsEl))
-    throw new Error("Parts not found");
-
-  function render(diff) {
-    daysEl.textContent = String(Math.floor(diff / 86_400_000));
-    hoursEl.textContent = String(Math.floor((diff / 3_600_000) % 24));
-    minutesEl.textContent = String(Math.floor((diff / 60_000) % 60));
-    secondsEl.textContent = String(Math.floor((diff / 1_000) % 60));
+    return {
+      days: days as HTMLElement,
+      hours: hours as HTMLElement,
+      minutes: minutes as HTMLElement,
+      seconds: seconds as HTMLElement,
+    };
   }
 
-  function loadConfetti() {
-    return new Promise((resolve, reject) => {
-      if (window.confetti) return resolve(window.confetti);
-
-      const s = document.createElement("script");
-      s.src =
-        "https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js";
-      s.onload = () => resolve(window.confetti);
-      s.onerror = () => reject(new Error("Failed to load confetti"));
-      document.head.appendChild(s);
-    });
+  function pad2(n: number) {
+    return String(n).padStart(2, "0");
   }
 
-  async function playConfetti() {
-    const confetti = await loadConfetti();
+  function render(parts: Parts, diffMs: number) {
+    const days = Math.floor(diffMs / 86_400_000);
+    const hours = Math.floor((diffMs / 3_600_000) % 24);
+    const minutes = Math.floor((diffMs / 60_000) % 60);
+    const seconds = Math.floor((diffMs / 1_000) % 60);
+
+    parts.days.textContent = String(days);
+    parts.hours.textContent = pad2(hours);
+    parts.minutes.textContent = pad2(minutes);
+    parts.seconds.textContent = pad2(seconds);
+  }
+
+  async function fireConfetti() {
+    const mod = await import("canvas-confetti");
+    const confetti = mod.default;
+
     confetti({
       particleCount: 80,
       angle: 60,
@@ -117,25 +119,59 @@ const {
     });
   }
 
-  let timer;
-  let launched = false;
+  function initCountdown(container: HTMLElement) {
+    const targetAttr = container.dataset.target;
+    if (!targetAttr) throw new Error("Missing target date");
 
-  function launch() {
-    if (launched) return;
-    launched = true;
+    const targetTime = new Date(targetAttr).getTime();
+    if (Number.isNaN(targetTime)) throw new Error("Invalid target date");
 
-    if (timer) window.clearInterval(timer);
-    container.innerHTML = `<span class="text-2xl font-semibold bg-gradient-to-r from-[#12abcf] to-[#e6693b] bg-clip-text text-transparent">${endMessage}</span>`;
+    const confettiEnabled = container.dataset.confetti === "true";
+    const endMessage = container.dataset.endMessage || "Countdown complete";
+    const parts = getParts(container);
 
-    if (confettiEnabled) void playConfetti();
+    let timer: number | undefined;
+    let launched = false;
+
+    async function launch() {
+      if (launched) return;
+      launched = true;
+
+      if (timer) window.clearInterval(timer);
+
+      // Replace countdown with end message (safe textContent)
+      container.innerHTML = "";
+      const span = document.createElement("span");
+      span.className =
+        "text-2xl font-semibold bg-gradient-to-r from-[#12abcf] to-[#e6693b] bg-clip-text text-transparent";
+      span.textContent = endMessage;
+      container.appendChild(span);
+
+      if (confettiEnabled) {
+        try {
+          await fireConfetti();
+        } catch {
+          // If the library isn't installed or fails to load, just skip silently.
+        }
+      }
+    }
+
+    function update() {
+      const diff = targetTime - Date.now();
+      if (diff <= 0) void launch();
+      else render(parts, diff);
+    }
+
+    update();
+    timer = window.setInterval(update, 1000);
   }
 
-  function update() {
-    const diff = targetTime - Date.now();
-    if (diff <= 0) return launch();
-    render(diff);
-  }
-
-  update();
-  timer = window.setInterval(update, 1000);
+  // Support multiple countdowns on a page
+  document.querySelectorAll<HTMLElement>(".countdown").forEach((el) => {
+    try {
+      initCountdown(el);
+    } catch (err) {
+      console.error(err);
+    }
+  });
 </script>
