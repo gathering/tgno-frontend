@@ -2,8 +2,13 @@
 interface Props {
   targetDate: string; // ISO 8601
   confetti?: boolean;
+  endMessage?: string;
 }
-const { targetDate, confetti = false } = Astro.props;
+const {
+  targetDate,
+  confetti = false,
+  endMessage = "Countdown complete",
+} = Astro.props;
 ---
 
 <div
@@ -11,6 +16,7 @@ const { targetDate, confetti = false } = Astro.props;
   class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 sm:gap-x-4 rounded-xl text-white whitespace-nowrap leading-none"
   data-target={targetDate}
   data-confetti={confetti ? "true" : "false"}
+  data-end-message={endMessage}
 >
   <div class="text-center">
     <div
@@ -65,6 +71,7 @@ const { targetDate, confetti = false } = Astro.props;
   if (Number.isNaN(targetTime)) throw new Error("Invalid target date");
 
   const confettiEnabled = container.dataset.confetti === "true";
+  const endMessage = container.dataset.endMessage || "Countdown complete";
 
   const daysEl = container.querySelector("[data-days]");
   const hoursEl = container.querySelector("[data-hours]");
@@ -118,8 +125,7 @@ const { targetDate, confetti = false } = Astro.props;
     launched = true;
 
     if (timer) window.clearInterval(timer);
-    container.innerHTML =
-      '<span class="text-lg font-semibold text-green-400">🚀 Launched</span>';
+    container.innerHTML = `<span class="text-2xl font-semibold bg-gradient-to-r from-[#12abcf] to-[#e6693b] bg-clip-text text-transparent">${endMessage}</span>`;
 
     if (confettiEnabled) void playConfetti();
   }
