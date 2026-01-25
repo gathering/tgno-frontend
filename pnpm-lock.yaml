@@ -26,6 +26,9 @@ importers:
       astro-lazy-youtube-embed:
         specifier: ^0.5.4
         version: 0.5.4(astro@5.7.4(jiti@1.21.7)(rollup@4.40.0)(typescript@5.8.3)(yaml@2.7.1))
+      canvas-confetti:
+        specifier: ^1.9.4
+        version: 1.9.4
       dompurify:
         specifier: ^3.2.5
         version: 3.2.5
@@ -824,6 +827,9 @@ packages:
 
   caniuse-lite@1.0.30001714:
     resolution: {integrity: sha512-mtgapdwDLSSBnCI3JokHM7oEQBLxiJKVRtg10AxM1AyeiKcM96f0Mkbqeq+1AbiCtvMcHRulAAEMu693JrSWqg==}
+
+  canvas-confetti@1.9.4:
+    resolution: {integrity: sha512-yxQbJkAVrFXWNbTUjPqjF7G+g6pDotOUHGbkZq2NELZUMDpiJ85rIEazVb8GTaAptNW2miJAXbs1BtioA251Pw==}
 
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
@@ -3384,6 +3390,8 @@ snapshots:
   camelcase@8.0.0: {}
 
   caniuse-lite@1.0.30001714: {}
+
+  canvas-confetti@1.9.4: {}
 
   ccount@2.0.1: {}
 

@@ -1,14 +1,16 @@
 ---
 interface Props {
-  targetDate: string; // ISO 8601 format
+  targetDate: string; // ISO 8601
+  confetti?: boolean;
 }
-const { targetDate } = Astro.props;
+const { targetDate, confetti = false } = Astro.props;
 ---
 
 <div
   id="countdown"
   class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 sm:gap-x-4 rounded-xl text-white whitespace-nowrap leading-none"
   data-target={targetDate}
+  data-confetti={confetti ? "true" : "false"}
 >
   <div class="text-center">
     <div
@@ -54,47 +56,77 @@ const { targetDate } = Astro.props;
 <script lang="ts">
   const container = document.getElementById("countdown");
   if (!(container instanceof HTMLDivElement))
-    throw new Error("Countdown container not found");
+    throw new Error("Countdown not found");
 
   const targetAttr = container.dataset.target;
   if (!targetAttr) throw new Error("Missing target date");
 
   const targetTime = new Date(targetAttr).getTime();
-  if (Number.isNaN(targetTime)) throw new Error("Invalid target date format");
+  if (Number.isNaN(targetTime)) throw new Error("Invalid target date");
+
+  const confettiEnabled = container.dataset.confetti === "true";
 
   const daysEl = container.querySelector("[data-days]");
   const hoursEl = container.querySelector("[data-hours]");
   const minutesEl = container.querySelector("[data-minutes]");
   const secondsEl = container.querySelector("[data-seconds]");
 
-  if (!(daysEl && hoursEl && minutesEl && secondsEl)) {
-    throw new Error("Countdown parts not found");
-  }
+  if (!(daysEl && hoursEl && minutesEl && secondsEl))
+    throw new Error("Parts not found");
 
   function render(diff) {
-    const days = Math.floor(diff / 86_400_000);
-    const hours = Math.floor((diff / 3_600_000) % 24);
-    const minutes = Math.floor((diff / 60_000) % 60);
-    const seconds = Math.floor((diff / 1_000) % 60);
+    daysEl.textContent = String(Math.floor(diff / 86_400_000));
+    hoursEl.textContent = String(Math.floor((diff / 3_600_000) % 24));
+    minutesEl.textContent = String(Math.floor((diff / 60_000) % 60));
+    secondsEl.textContent = String(Math.floor((diff / 1_000) % 60));
+  }
 
-    daysEl.textContent = String(days);
-    hoursEl.textContent = String(hours);
-    minutesEl.textContent = String(minutes);
-    secondsEl.textContent = String(seconds);
+  function loadConfetti() {
+    return new Promise((resolve, reject) => {
+      if (window.confetti) return resolve(window.confetti);
+
+      const s = document.createElement("script");
+      s.src =
+        "https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js";
+      s.onload = () => resolve(window.confetti);
+      s.onerror = () => reject(new Error("Failed to load confetti"));
+      document.head.appendChild(s);
+    });
+  }
+
+  async function playConfetti() {
+    const confetti = await loadConfetti();
+    confetti({
+      particleCount: 80,
+      angle: 60,
+      spread: 70,
+      origin: { x: 0, y: 0.7 },
+    });
+    confetti({
+      particleCount: 80,
+      angle: 120,
+      spread: 70,
+      origin: { x: 1, y: 0.7 },
+    });
   }
 
   let timer;
+  let launched = false;
+
+  function launch() {
+    if (launched) return;
+    launched = true;
+
+    if (timer) window.clearInterval(timer);
+    container.innerHTML =
+      '<span class="text-lg font-semibold text-green-400">🚀 Launched</span>';
+
+    if (confettiEnabled) void playConfetti();
+  }
 
   function update() {
     const diff = targetTime - Date.now();
-
-    if (diff <= 0) {
-      if (timer) window.clearInterval(timer);
-      container.innerHTML =
-        '<span class="text-lg font-semibold text-green-400">🚀 Launched</span>';
-      return;
-    }
-
+    if (diff <= 0) return launch();
     render(diff);
   }
 
