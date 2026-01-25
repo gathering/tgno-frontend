@@ -4,7 +4,6 @@ import { fetchInfoPageByPath } from "../utils";
 import HeaderNavigation from "./HeaderNavigation.astro";
 import CloseSymbol from "./icons/CloseSymbol.astro";
 import HamburgerSymbol from "./icons/HamburgerSymbol.astro";
-import Countdown from "./Countdown.astro";
 
 const getNavigationItems: () => Promise<NavItem[]> = async () => {
   const items = [
@@ -124,14 +123,6 @@ const navigationItems = await getNavigationItems();
             class="aspect-thumbnail object-cover"
           />
         </a>
-
-        <div class="flex-1 hidden sm:flex items-center justify-center px-4">
-          <Countdown
-            targetDate="2026-04-01T20:00:00+02:00"
-            confetti
-            endMessage="TG26 er i gang!"
-          />
-        </div>
 
         <HeaderNavigation
           navigationItems={navigationItems}
