@@ -25,10 +25,16 @@ updates:
         patterns:
           - "tailwindcss"
           - "@tailwindcss/*"
+      typescript:
+        patterns:
+          - "typescript"
+          - "@types/*"
       tooling:
         dependency-type: "development"
+      catch-all:
+        patterns:
+          - "*"
 
     labels:
       - "dependencies"
-      - "frontend"
       - "dependabot"
