@@ -11,12 +11,12 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.4",
-    "@astrojs/node": "^9.4.1",
+    "@astrojs/check": "^0.9.6",
+    "@astrojs/node": "^9.5.2",
     "@astrojs/tailwind": "^6.0.2",
     "@tailwindcss/typography": "^0.5.16",
     "astro": "^5.16.15",
-    "astro-lazy-youtube-embed": "^0.5.4",
+    "astro-lazy-youtube-embed": "^0.5.5",
     "dompurify": "^3.2.5",
     "jsdom": "^25.0.1",
     "leaflet": "^1.9.4",
