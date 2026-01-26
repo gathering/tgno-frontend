@@ -78,8 +78,8 @@ if (isCancelled) {
 
 <style>
   [data-component="event"] {
-    color: theme("colors.white");
-    border-color: theme("colors.white");
+    color: var(--color-white);
+    border-color: var(--color-white);
     &.minimal {
     }
     &.has-ended {
@@ -93,13 +93,13 @@ if (isCancelled) {
     &.has-notice {
       .live-symbol {
         display: flex;
-        color: theme("colors.yellow.600");
+        color: var(--color-yellow-600);
       }
     }
     &.is-cancelled {
       .live-symbol {
         display: flex;
-        color: theme("colors.yellow.600");
+        color: var(--color-yellow-600);
       }
       .date {
         text-decoration: line-through;

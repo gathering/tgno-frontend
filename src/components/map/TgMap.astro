@@ -460,13 +460,13 @@ const { locations: ssrLocations } = Astro.props;
 </style>
 
 <tg-map data-locations={JSON.stringify(ssrLocations)}>
-  <div class="relative z-[999]">
+  <div class="relative z-999">
     <FloatingNav closeOnNavigate>
       <span slot="content">
         <slot name="nav" />
       </span>
     </FloatingNav>
   </div>
-  <div id="map" class="fixed bg-black top-32 right-0 bottom-0 left-0 z-[10]">
+  <div id="map" class="fixed bg-black top-32 right-0 bottom-0 left-0 z-10">
   </div>
 </tg-map>

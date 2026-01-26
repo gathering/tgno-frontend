@@ -97,14 +97,14 @@ const { closeOnNavigate } = Astro.props;
   <nav
     id="floating-nav-contents"
     data-part="floating-nav-contents"
-    class="z-10 fixed right-6 bottom-6 ml-6 max-w-26 bg-black/90 p-6 pb-10 hidden max-h-[80vh] overflow-y-auto rounded-3xl rounded-br-[2rem]"
+    class="z-10 fixed right-6 bottom-6 ml-6 max-w-26 bg-black/90 p-6 pb-10 hidden max-h-[80vh] overflow-y-auto rounded-3xl rounded-br-4xl"
   >
     <slot name="content" />
   </nav>
   <button
     type="button"
     data-part="floating-nav-trigger"
-    class="z-[11] fixed rounded-full bg-orange-600 text-white p-3 right-9 bottom-9 group"
+    class="z-11 fixed rounded-full bg-orange-600 text-white p-3 right-9 bottom-9 group"
     aria-controls="floating-nav-contents"
     aria-expanded="false"
   >
