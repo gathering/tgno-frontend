@@ -1,3 +1,4 @@
+/** TODO: Replace this file with non-legacy config pattern, ref https://tailwindcss.com/docs/upgrade-guide */
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
