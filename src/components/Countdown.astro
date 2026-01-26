@@ -3,59 +3,63 @@ interface Props {
   targetDate: string; // ISO 8601
   confetti?: boolean;
   endMessage?: string;
+  class?: string;
 }
 
 const {
   targetDate,
   confetti = false,
   endMessage = "Countdown complete",
+  class: classNames,
 } = Astro.props;
 ---
 
-<div
-  class="countdown flex flex-wrap items-center justify-center gap-x-3 gap-y-1 sm:gap-x-4 rounded-xl text-white whitespace-nowrap leading-none"
-  data-target={targetDate}
-  data-confetti={confetti ? "true" : "false"}
-  data-end-message={endMessage}
->
-  <div class="text-center">
-    <div
-      class="text-lg sm:text-2xl md:text-3xl font-bold tabular-nums"
-      data-days
-    >
-      0
+<div class={classNames}>
+  <div
+    class="countdown flex flex-wrap items-center justify-center gap-x-3 gap-y-1 sm:gap-x-4 rounded-xl text-white whitespace-nowrap leading-none"
+    data-target={targetDate}
+    data-confetti={confetti ? "true" : "false"}
+    data-end-message={endMessage}
+  >
+    <div class="text-center">
+      <div
+        class="text-lg sm:text-2xl md:text-3xl font-bold tabular-nums"
+        data-days
+      >
+        0
+      </div>
+      <div class="text-xs uppercase tracking-wide text-white">Days</div>
     </div>
-    <div class="text-xs uppercase tracking-wide text-white">Days</div>
-  </div>
 
-  <div class="text-center">
-    <div
-      class="text-lg sm:text-2xl md:text-3xl font-bold tabular-nums"
-      data-hours
-    >
-      0
+    <div class="text-center">
+      <div
+        class="text-lg sm:text-2xl md:text-3xl font-bold tabular-nums"
+        data-hours
+      >
+        0
+      </div>
+      <div class="text-xs uppercase tracking-wide text-white">Hours</div>
     </div>
-    <div class="text-xs uppercase tracking-wide text-white">Hours</div>
-  </div>
 
-  <div class="text-center">
-    <div
-      class="text-lg sm:text-2xl md:text-3xl font-bold tabular-nums"
-      data-minutes
-    >
-      0
+    <div class="text-center">
+      <div
+        class="text-lg sm:text-2xl md:text-3xl font-bold tabular-nums"
+        data-minutes
+      >
+        0
+      </div>
+      <div class="text-xs uppercase tracking-wide text-white">Minutes</div>
     </div>
-    <div class="text-xs uppercase tracking-wide text-white">Minutes</div>
-  </div>
 
-  <div class="text-center">
-    <div
-      class="text-lg sm:text-2xl md:text-3xl font-bold tabular-nums"
-      data-seconds
-    >
-      0
+    <div class="text-center">
+      <div
+        class="text-lg sm:text-2xl md:text-3xl font-bold tabular-nums"
+        data-seconds
+      >
+        0
+      </div>
+      <div class="text-xs uppercase tracking-wide text-white">Seconds</div>
     </div>
-    <div class="text-xs uppercase tracking-wide text-white">Seconds</div>
   </div>
 </div>
 

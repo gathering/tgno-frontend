@@ -1,6 +1,4 @@
 ---
-import Countdown from "../Countdown.astro";
-
 interface Props {
   image: string;
   imageHref?: string;
@@ -40,11 +38,6 @@ const imageClass = `${hideMobileImage ? "hidden" : ""} sm:block sm:absolute sm:l
       class="w-full bg-orange-500 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:rounded-2xl"
     >
       <slot />
-    </div>
-    <div
-      class="w-full bg-blue-500 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:rounded-2xl"
-    >
-      <Countdown targetDate="2026-04-01T00:00:00+02:00" />
     </div>
     {
       showCta ? (
