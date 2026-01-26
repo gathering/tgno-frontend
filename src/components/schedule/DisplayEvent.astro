@@ -124,7 +124,7 @@ if (isCancelled) {
               {location ? (
                 <a
                   href={location.url}
-                  class={`rounded-lg flex flex-row py-4 px-8 ${location.color ? "bg-" + location.color + "-500 text-black" : "text-white border-white"} ${location.url ? "hover:bg-white hover:text-backgroundSecondary" : ""} ${location.active ? "" : ""}`}
+                  class={`rounded-lg flex flex-row py-4 px-8 ${location.color ? "bg-" + location.color + "-500 text-black" : "text-white border-white"} ${location.url ? "hover:bg-white hover:text-background-secondary" : ""} ${location.active ? "" : ""}`}
                 >
                   {location.name}
                   {location.active && location.url ? <CloseSymbol /> : null}

@@ -1,3 +1,37 @@
 @import "tailwindcss";
-/* TODO: Replace with non-legacy config pattern */
-@config "../../tailwind.config.mjs";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-background: #06070a;
+  --color-background-secondary: #0e0f16;
+}
+
+/**
+ * These are quite manual and error prone at the moment. Consider finding a more
+ * robust pattern for this, and/or utilising the built in inverted/darkmode support
+ * in prose. Still, let us avoid falling back to legacy tailwind.config patterns.
+ */
+@utility prose {
+  --tw-prose-custom-default: var(--color-white);
+
+  --tw-prose-body: var(--tw-prose-custom-default);
+  --tw-prose-headings: var(--color-sky-400);
+  --tw-prose-lead: var(--tw-prose-custom-default);
+  --tw-prose-links: var(--color-sky-400);
+  --tw-prose-bold: var(--tw-prose-custom-default);
+  --tw-prose-counters: var(--tw-prose-custom-default);
+  --tw-prose-bullets: var(--tw-prose-custom-default);
+  --tw-prose-hr: var(--tw-prose-custom-default);
+  --tw-prose-quotes: var(--tw-prose-custom-default);
+  --tw-prose-quote-borders: var(--tw-prose-custom-default);
+  --tw-prose-captions: var(--tw-prose-custom-default);
+  --tw-prose-code: var(--tw-prose-custom-default);
+  --tw-prose-pre-code: var(--tw-prose-custom-default);
+  --tw-prose-pre-bg: var(--tw-prose-custom-default);
+  --tw-prose-th-borders: var(--tw-prose-custom-default);
+  --tw-prose-td-borders: var(--tw-prose-custom-default);
+
+  a:hover {
+    color: var(--color-sky-600);
+  }
+}

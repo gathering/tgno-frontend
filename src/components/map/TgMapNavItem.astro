@@ -15,7 +15,7 @@ const { color, mapItem } = Astro.props;
 ---
 
 <a
-  class={`${color ? getColors({ color }) : ""} flex flex-row cursor-pointer items-center gap-2 py-1 px-2 rounded-md text-md hover:bg-white hover:text-backgroundSecondary`}
+  class={`${color ? getColors({ color }) : ""} flex flex-row cursor-pointer items-center gap-2 py-1 px-2 rounded-md text-md hover:bg-white hover:text-background-secondary`}
   data-part="nav-item"
   data-target={mapItem.slug || slugifyMapItemName(mapItem.name)}
 >
