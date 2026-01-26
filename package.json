@@ -29,7 +29,7 @@
     "@types/leaflet": "^1.9.17",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.1",
-    "prettier": "^3.5.3",
+    "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1"
   },
   "lint-staged": {
