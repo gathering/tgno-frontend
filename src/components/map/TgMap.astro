@@ -316,24 +316,24 @@ const { locations: ssrLocations } = Astro.props;
   tg-map {
     .leaflet-control-container {
       .leaflet-control-zoom {
-        margin-top: theme("margin.10");
+        margin-top: calc(var(--spacing) * 10);
       }
     }
     .leaflet-container {
       background-color: #1d1918;
       .label {
         pointer-events: none;
-        font-size: theme("fontSize.base");
+        font-size: var(--text-base);
         width: max-content !important;
         height: auto !important;
-        padding: theme("padding.1") theme("padding.2");
+        padding: var(--spacing) calc(var(--spacing) * 2);
         display: none;
         left: calc((var(--width) / 2) * -1);
         top: -1em;
-        border-radius: theme("borderRadius.lg");
-        background-color: theme("colors.white");
-        font-weight: theme("fontWeight.bold");
-        color: theme("colors.black");
+        border-radius: var(--radius-lg);
+        background-color: var(--color-white);
+        font-size: var(--font-weight-bold);
+        background-color: var(--color-white);
         box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.2);
 
         &.sticky {
@@ -352,7 +352,7 @@ const { locations: ssrLocations } = Astro.props;
         .label {
           display: flex;
           font-size: 0.5rem;
-          padding: theme("padding.1") theme("padding.1");
+          padding: var(--spacing) calc(var(--spacing) * 2);
         }
         .tooltip {
           display: none;
@@ -369,8 +369,8 @@ const { locations: ssrLocations } = Astro.props;
       &[zoom-level="high"] {
         .label {
           display: flex;
-          padding: theme("padding.2") theme("padding.4");
-          font-size: theme("fontSize.lg");
+          padding: var(--spacing) calc(var(--spacing) * 2);
+          font-size: var(--text-lg);
         }
         .tooltip {
           display: none;
@@ -380,79 +380,79 @@ const { locations: ssrLocations } = Astro.props;
     .leaflet-interactive {
       &.stage {
         fill-opacity: 1;
-        fill: theme("colors.orange.500");
+        fill: var(--color-orange-500);
         stroke-width: 1;
-        stroke: theme("colors.black");
+        stroke: var(--color-black);
       }
       &.stand {
         fill-opacity: 1;
-        fill: theme("colors.blue.500");
+        fill: var(--color-blue-500);
         stroke-width: 1;
-        stroke: theme("colors.black");
+        stroke: var(--color-black);
       }
       &.food {
         fill-opacity: 1;
-        fill: theme("colors.red.500");
+        fill: var(--color-red-500);
         stroke-width: 1;
-        stroke: theme("colors.black");
+        stroke: var(--color-black);
       }
       &.hygiene {
         fill-opacity: 1;
-        fill: theme("colors.green.500");
+        fill: var(--color-green-500);
         stroke-width: 1;
-        stroke: theme("colors.black");
+        stroke: var(--color-black);
       }
       &.attraction {
         fill-opacity: 1;
-        fill: theme("colors.purple.500");
+        fill: var(--color-purple-500);
         stroke-width: 1;
-        stroke: theme("colors.black");
+        stroke: var(--color-black);
       }
       &.placeholder,
       &.unknown {
         fill-opacity: 0.1;
         fill: white;
         stroke-width: 1;
-        stroke: theme("colors.black");
+        stroke: var(--color-black);
       }
     }
     .leaflet-popup {
-      color: theme("colors.white");
+      color: var(--color-white);
       .leaflet-container {
-        padding: theme("padding.4");
+        padding: calc(var(--spacing) * 4);
       }
       h3 {
-        font-size: theme("fontSize.2xl");
-        font-weight: theme("fontWeight.bold");
-        margin-bottom: theme("margin.2");
+        font-size: var(--text-2xl);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: calc(var(--spacing) * 2);
       }
       .calendar-link {
         display: block;
-        padding: theme("padding.2") theme("padding.4");
-        margin: theme("margin.4") 0 theme("margin.6");
+        padding: calc(var(--spacing) * 2) calc(var(--spacing) * 2);
+        margin: calc(var(--spacing) * 4) calc(var(--spacing) * 6);
         text-align: center;
-        font-size: theme("fontSize.base");
-        font-weight: theme("fontWeight.bold");
-        background-color: theme("colors.yellow.500");
-        color: theme("colors.black");
-        border-radius: theme("borderRadius.lg");
+        font-size: var(--text-base);
+        font-weight: var(--font-weight-bold);
+        background-color: var(--color-yellow-500);
+        color: var(--color-black);
+        border-radius: var(--radius-lg);
       }
       p {
-        font-size: theme("fontSize.base");
-        margin: theme("margin.2") 0;
+        font-size: var(--text-base);
+        margin: calc(var(--spacing) * 2) 0;
       }
       &.stand {
         .leaflet-popup-content-wrapper,
         .leaflet-popup-tip {
-          color: theme("colors.black");
-          background-color: theme("colors.yellow.400");
+          color: var(--color-black);
+          background-color: var(--color-yellow-400);
         }
       }
       &.stage {
         .leaflet-popup-content-wrapper,
         .leaflet-popup-tip {
-          color: theme("colors.white");
-          background-color: theme("colors.backgroundSecondary");
+          color: var(--color-white);
+          background-color: var(--color-background-secondary);
         }
       }
     }
@@ -460,13 +460,13 @@ const { locations: ssrLocations } = Astro.props;
 </style>
 
 <tg-map data-locations={JSON.stringify(ssrLocations)}>
-  <div class="relative z-[999]">
+  <div class="relative z-999">
     <FloatingNav closeOnNavigate>
       <span slot="content">
         <slot name="nav" />
       </span>
     </FloatingNav>
   </div>
-  <div id="map" class="fixed bg-black top-32 right-0 bottom-0 left-0 z-[10]">
+  <div id="map" class="fixed bg-black top-32 right-0 bottom-0 left-0 z-10">
   </div>
 </tg-map>

@@ -25,7 +25,7 @@ const getColors = ({ active, color }: { active?: boolean; color?: string }) => {
       navigation.dates.map((date, index) => (
         <a
           href={date.url}
-          class={`${TAG_STYLES} ${getColors(date)} hover:bg-white hover:text-backgroundSecondary`}
+          class={`${TAG_STYLES} ${getColors(date)} hover:bg-white hover:text-background-secondary`}
         >
           {date.name}
           {date.active && index > 0 ? <CloseSymbol /> : null}
@@ -39,7 +39,7 @@ const getColors = ({ active, color }: { active?: boolean; color?: string }) => {
       navigation.locations.map((location) => (
         <a
           href={location.url}
-          class={`${TAG_STYLES} ${getColors(location)} hover:bg-white hover:text-backgroundSecondary`}
+          class={`${TAG_STYLES} ${getColors(location)} hover:bg-white hover:text-background-secondary`}
         >
           {location.name}
           {location.active ? <CloseSymbol /> : null}
@@ -53,7 +53,7 @@ const getColors = ({ active, color }: { active?: boolean; color?: string }) => {
       navigation.categories.map((category) => (
         <a
           href={category.url}
-          class={`${TAG_STYLES} ${getColors(category)} hover:bg-white hover:text-backgroundSecondary`}
+          class={`${TAG_STYLES} ${getColors(category)} hover:bg-white hover:text-background-secondary`}
         >
           {category.name}
           {category.active ? <CloseSymbol /> : null}
