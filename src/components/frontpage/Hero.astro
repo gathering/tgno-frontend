@@ -41,11 +41,6 @@ const imageClass = `${hideMobileImage ? "hidden" : ""} sm:block sm:absolute sm:l
     >
       <slot />
     </div>
-    <div
-      class="w-full bg-blue-500 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:rounded-2xl"
-    >
-      <Countdown targetDate="2026-04-01T00:00:00+02:00" />
-    </div>
     {
       showCta ? (
         <div class="w-full bg-sky-500 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:rounded-2xl">
