@@ -66,8 +66,12 @@ const randomFact = TG_FACTS[Math.floor(Math.random() * TG_FACTS.length)];
         <h2 class="text-xl sm:text-2xl text-white mb-4 font-bold">
           Dørene åpner om
         </h2>
-        <!-- After doors, <Countdown targetDate="2026-04-01T20:00:00+02:00" />-->
-        <Countdown targetDate="2026-04-01T09:00:00+02:00" />
+        <!-- After doors, <Countdown targetDate="2026-04-01T20:00:00+02:00" confetti endMessage="Gå til scenen" />-->
+        <Countdown
+          targetDate="2026-04-01T09:00:00+02:00"
+          confetti
+          endMessage="TG26 er i gang!"
+        />
       </div>
       <div class="sm:col-start-2 sm:col-span-7">
         <h2 class="text-2xl sm:text-6xl font-bold text-white text-center">
