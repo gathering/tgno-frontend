@@ -132,14 +132,14 @@ const {
 
     let timer: number | undefined;
     let launched = false;
+    let prevDiff: number | null = null;
 
-    async function launch() {
+    async function launch(withConfetti = true) {
       if (launched) return;
       launched = true;
 
       if (timer) window.clearInterval(timer);
 
-      // Replace countdown with end message (safe textContent)
       container.innerHTML = "";
       const span = document.createElement("span");
       span.className =
@@ -147,19 +147,33 @@ const {
       span.textContent = endMessage;
       container.appendChild(span);
 
-      if (confettiEnabled) {
+      if (withConfetti && confettiEnabled) {
         try {
           await fireConfetti();
         } catch {
-          // If the library isn't installed or fails to load, just skip silently.
+          // ignore
         }
       }
     }
 
     function update() {
       const diff = targetTime - Date.now();
-      if (diff <= 0) void launch();
-      else render(parts, diff);
+
+      // If we loaded the page after it already ended, show endMessage (no confetti)
+      if (prevDiff === null && diff <= 0) {
+        void launch(false);
+        prevDiff = diff;
+        return;
+      }
+
+      // If we cross zero while running, launch + confetti (if enabled)
+      if (prevDiff !== null && prevDiff > 0 && diff <= 0) {
+        void launch(true);
+      } else if (diff > 0) {
+        render(parts, diff);
+      }
+
+      prevDiff = diff;
     }
 
     update();
