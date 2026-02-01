@@ -1,5 +1,4 @@
 ---
-import { YouTube } from "astro-lazy-youtube-embed";
 import Hero from "./Hero.astro";
 import Button from "../Button.astro";
 
@@ -10,21 +9,13 @@ interface Props {
 const { class: classNames } = Astro.props;
 ---
 
-<Hero image="/images/blurry-lights.jpg" class={classNames}>
-  <YouTube
-    class="rounded-3xl"
-    title="The Gathering 2026 - TG RE:UNION - Trailer"
-    videoId="mtDVFcYip8A"
-    allow="autoplay"
-    embedParams={{
-      autoplay: 1,
-      playslinline: 1,
-      rel: 0,
-      // @ts-ignore
-      mute: 1,
-    }}
-    slot="overlay"
-  />
+<Hero
+  image="/images/blurry-lights.jpg"
+  backgroundVideo="/public/tg2019-header-video.mp4"
+  fullVideoHref="https://www.youtube.com/watch?v=mtDVFcYip8A"
+  fullVideoText="Watch full trailer"
+  class={classNames}
+>
   <div class="flex flex-col text-left">
     <div class="w-full">
       <h2 class="text-lg font-normal">Billettsalget har åpnet</h2>

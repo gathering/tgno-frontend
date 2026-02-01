@@ -2,20 +2,55 @@
 interface Props {
   image: string;
   imageHref?: string;
+  backgroundVideo?: string;
+  fullVideoHref?: string;
+  fullVideoText?: string;
   class?: string;
 }
 
-const { class: classNames, image, imageHref } = Astro.props;
+const {
+  class: classNames,
+  image,
+  imageHref,
+  backgroundVideo,
+  fullVideoHref,
+  fullVideoText = "Watch full video",
+} = Astro.props;
 const hideMobileImage = Astro.slots.has("overlay");
 const showCta = Astro.slots.has("cta");
+const hasVideo = !!backgroundVideo;
 const imageClass = `${hideMobileImage ? "hidden" : ""} sm:block sm:absolute sm:left-0 sm:top-0 w-full sm:h-full object-cover rounded-3xl sm:z-0`;
+const videoClass = `sm:absolute sm:left-0 sm:top-0 w-full sm:h-full object-cover rounded-3xl sm:z-0`;
 ---
 
 <section
   class={`relative rounded-3xl sm:grid sm:grid-cols-5 gap-4 sm:p-4 space-y-4 sm:space-y-0 ${classNames}`}
 >
   {
-    imageHref ? (
+    hasVideo ? (
+      <div class="relative sm:contents">
+        <video
+          autoplay
+          muted
+          loop
+          playsinline
+          class={videoClass}
+          poster={image}
+        >
+          <source src={backgroundVideo} type="video/mp4" />
+        </video>
+        {fullVideoHref && (
+          <a
+            href={fullVideoHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 px-3 py-1.5 bg-black/60 hover:bg-black/80 text-white text-xs rounded-full backdrop-blur-sm transition-colors z-10"
+          >
+            {fullVideoText}
+          </a>
+        )}
+      </div>
+    ) : imageHref ? (
       <a href={imageHref}>
         <img src={image} alt="Hero Image" class={imageClass} />
       </a>
