@@ -1,6 +1,6 @@
 # Getting started
 
-See [DEVELOPMENT.md](DEVELOPMENT.md) for more detailed instructions on how to get local development setup up and running. PRs on any part of documentation is very welcome!
+See [DEVELOPMENT.md](DEVELOPMENT.md) for more detailed instructions on how to get local development setup up and running. PRs on any part of documentation or requested features are very welcome!
 
 # Astro Starter Kit: Basics
 

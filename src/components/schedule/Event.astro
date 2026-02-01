@@ -78,8 +78,8 @@ if (isCancelled) {
 
 <style>
   [data-component="event"] {
-    color: theme("colors.white");
-    border-color: theme("colors.white");
+    color: var(--color-white);
+    border-color: var(--color-white);
     &.minimal {
     }
     &.has-ended {
@@ -93,13 +93,13 @@ if (isCancelled) {
     &.has-notice {
       .live-symbol {
         display: flex;
-        color: theme("colors.yellow.600");
+        color: var(--color-yellow-600);
       }
     }
     &.is-cancelled {
       .live-symbol {
         display: flex;
-        color: theme("colors.yellow.600");
+        color: var(--color-yellow-600);
       }
       .date {
         text-decoration: line-through;
@@ -175,7 +175,7 @@ if (isCancelled) {
               {location ? (
                 <a
                   href={location.url}
-                  class={`rounded-md flex flex-row py-1 px-2 ${location.color ? "bg-" + location.color + "-500 text-black" : "text-white border-white"} ${location.url ? "hover:bg-white hover:text-backgroundSecondary" : ""} ${location.active ? "" : ""}`}
+                  class={`rounded-md flex flex-row py-1 px-2 ${location.color ? "bg-" + location.color + "-500 text-black" : "text-white border-white"} ${location.url ? "hover:bg-white hover:text-background-secondary" : ""} ${location.active ? "" : ""}`}
                 >
                   {location.name}
                   {location.active && location.url ? <CloseSymbol /> : null}
@@ -186,7 +186,7 @@ if (isCancelled) {
               <a
                 href={related_url}
                 target="_blank"
-                class="rounded-md h-fit p-2 ml-auto hover:bg-white hover:text-backgroundSecondary"
+                class="rounded-md h-fit p-2 ml-auto hover:bg-white hover:text-background-secondary"
               >
                 <ExternalLinkSymbol />
               </a>

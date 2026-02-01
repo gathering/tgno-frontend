@@ -1,4 +1,6 @@
 ---
+import { setInterval } from "timers";
+
 export interface Schedule extends HTMLElement {
   attachScrollToTriggers(query: string): void;
 }
@@ -12,7 +14,7 @@ export interface Schedule extends HTMLElement {
   }
   class Schedule extends HTMLElement {
     events: Event[] = [];
-    timer: number | null = null;
+    timer: ReturnType<typeof setInterval> | null = null;
     debugOffset: number = 0;
     isLive: boolean = false;
     scrollTriggers: HTMLElement[] = [];

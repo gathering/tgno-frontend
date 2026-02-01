@@ -5,7 +5,36 @@
 
 version: 2
 updates:
-  - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "npm" # pnpm is supported indirectly via npm
+    directory: "/"
     schedule:
       interval: "weekly"
+      day: "wednesday"
+      time: "16:00"
+      timezone: "CET"
+
+    open-pull-requests-limit: 5
+
+    groups:
+      astro:
+        patterns:
+          - "astro"
+          - "@astrojs/*"
+          - "astro*"
+      tailwind:
+        patterns:
+          - "tailwindcss"
+          - "@tailwindcss/*"
+      typescript:
+        patterns:
+          - "typescript"
+          - "@types/*"
+      tooling:
+        dependency-type: "development"
+      catch-all:
+        patterns:
+          - "*"
+
+    labels:
+      - "dependencies"
+      - "dependabot"
