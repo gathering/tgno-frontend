@@ -62,10 +62,11 @@ export async function getCachedNavigationItems(
 
   // Fetch dynamic items from API
   try {
-    const { pages } = await fetchInfoPageByPath({
-      path: "/practical",
-      apiUrl,
-    });
+    const { pages } =
+      (await fetchInfoPageByPath({
+        path: "/practical",
+        apiUrl,
+      })) || {};
 
     if (pages) {
       items
