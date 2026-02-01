@@ -17,6 +17,7 @@
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.16.15",
     "astro-lazy-youtube-embed": "^0.5.5",
+    "canvas-confetti": "^1.9.4",
     "dompurify": "^3.2.5",
     "jsdom": "^25.0.1",
     "leaflet": "^1.9.4",

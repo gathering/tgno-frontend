@@ -1,0 +1,201 @@
+---
+interface Props {
+  targetDate: string; // ISO 8601
+  confetti?: boolean;
+  endMessage?: string;
+}
+
+const {
+  targetDate,
+  confetti = false,
+  endMessage = "Countdown complete",
+} = Astro.props;
+---
+
+<span countdown-pre-container>
+  <slot name="pre" />
+</span>
+<div
+  class="countdown flex flex-wrap items-center justify-center gap-x-3 gap-y-1 sm:gap-x-4 rounded-xl text-white whitespace-nowrap leading-none"
+  data-target={targetDate}
+  data-confetti={confetti ? "true" : "false"}
+  data-end-message={endMessage}
+>
+  <div class="text-center">
+    <div
+      class="text-lg sm:text-2xl md:text-2xl font-bold tabular-nums text-white"
+      data-days
+    >
+      0
+    </div>
+    <div class="text-xs uppercase tracking-wide text-white/40">Dager</div>
+  </div>
+
+  <div class="text-center">
+    <div
+      class="text-lg sm:text-2xl md:text-2xl font-bold tabular-nums text-white"
+      data-hours
+    >
+      0
+    </div>
+    <div class="text-xs uppercase tracking-wide text-white/40">Timer</div>
+  </div>
+
+  <div class="text-center">
+    <div
+      class="text-lg sm:text-2xl md:text-2xl font-bold tabular-nums text-white"
+      data-minutes
+    >
+      0
+    </div>
+    <div class="text-xs uppercase tracking-wide text-white/40">Minutter</div>
+  </div>
+
+  <div class="text-center">
+    <div
+      class="text-lg sm:text-2xl md:text-2xl font-bold tabular-nums text-white"
+      data-seconds
+    >
+      0
+    </div>
+    <div class="text-xs uppercase tracking-wide text-white/40">Sekunder</div>
+  </div>
+</div>
+
+<script>
+  type Parts = {
+    days: HTMLElement;
+    hours: HTMLElement;
+    minutes: HTMLElement;
+    seconds: HTMLElement;
+    preMessage: Element | null;
+  };
+
+  function getParts(container: Element): Parts {
+    const days = container.querySelector("[data-days]");
+    const hours = container.querySelector("[data-hours]");
+    const minutes = container.querySelector("[data-minutes]");
+    const seconds = container.querySelector("[data-seconds]");
+    const preMessage = container.previousElementSibling;
+
+    if (!(days && hours && minutes && seconds)) {
+      throw new Error("Countdown parts not found");
+    }
+
+    return {
+      days: days as HTMLElement,
+      hours: hours as HTMLElement,
+      minutes: minutes as HTMLElement,
+      seconds: seconds as HTMLElement,
+      preMessage,
+    };
+  }
+
+  function pad2(n: number) {
+    return String(n).padStart(2, "0");
+  }
+
+  function render(parts: Parts, diffMs: number) {
+    const days = Math.floor(diffMs / 86_400_000);
+    const hours = Math.floor((diffMs / 3_600_000) % 24);
+    const minutes = Math.floor((diffMs / 60_000) % 60);
+    const seconds = Math.floor((diffMs / 1_000) % 60);
+
+    parts.days.textContent = String(days);
+    parts.hours.textContent = pad2(hours);
+    parts.minutes.textContent = pad2(minutes);
+    parts.seconds.textContent = pad2(seconds);
+  }
+
+  async function fireConfetti() {
+    const mod = await import("canvas-confetti");
+    const confetti = mod.default;
+
+    confetti({
+      particleCount: 80,
+      angle: 60,
+      spread: 70,
+      origin: { x: 0, y: 0.7 },
+    });
+    confetti({
+      particleCount: 80,
+      angle: 120,
+      spread: 70,
+      origin: { x: 1, y: 0.7 },
+    });
+  }
+
+  function initCountdown(container: HTMLElement) {
+    const targetAttr = container.dataset.target;
+    if (!targetAttr) throw new Error("Missing target date");
+
+    const targetTime = new Date(targetAttr).getTime();
+    if (Number.isNaN(targetTime)) throw new Error("Invalid target date");
+
+    const confettiEnabled = container.dataset.confetti === "true";
+    const endMessage = container.dataset.endMessage || "Countdown complete";
+    const parts = getParts(container);
+
+    let timer: number | undefined;
+    let launched = false;
+    let prevDiff: number | null = null;
+
+    async function launch(withConfetti = true) {
+      if (launched) return;
+      launched = true;
+
+      if (timer) window.clearInterval(timer);
+
+      container.innerHTML = "";
+      const span = document.createElement("span");
+      span.className =
+        "text-2xl font-semibold bg-gradient-to-r from-[#12abcf] to-[#e6693b] bg-clip-text text-transparent";
+      span.textContent = endMessage;
+      container.appendChild(span);
+
+      if (parts.preMessage) {
+        parts.preMessage.classList.add("hidden");
+      }
+
+      if (withConfetti && confettiEnabled) {
+        try {
+          await fireConfetti();
+        } catch {
+          // ignore
+        }
+      }
+    }
+
+    function update() {
+      const diff = targetTime - Date.now();
+
+      // If we loaded the page after it already ended, show endMessage (no confetti)
+      if (prevDiff === null && diff <= 0) {
+        void launch(false);
+        prevDiff = diff;
+        return;
+      }
+
+      // If we cross zero while running, launch + confetti (if enabled)
+      if (prevDiff !== null && prevDiff > 0 && diff <= 0) {
+        void launch(true);
+      } else if (diff > 0) {
+        render(parts, diff);
+      }
+
+      prevDiff = diff;
+    }
+
+    update();
+    timer = window.setInterval(update, 1000);
+  }
+
+  // Support multiple countdowns on a page
+  document.querySelectorAll<HTMLElement>(".countdown").forEach((el) => {
+    try {
+      initCountdown(el);
+    } catch (err) {
+      console.error(err);
+    }
+  });
+</script>

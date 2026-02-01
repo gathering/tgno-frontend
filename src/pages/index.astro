@@ -6,6 +6,7 @@ import InfoBox from "../components/frontpage/InfoBox.astro";
 import FactBox from "../components/frontpage/FactBox.astro";
 import Button from "../components/Button.astro";
 import TicketsHero from "../components/frontpage/TicketsHero.astro";
+import Countdown from "../components/Countdown.astro";
 
 const TG_THEMES = {
   "2000": "The Gathering 1900 - Follow the Flow",
@@ -50,14 +51,27 @@ const randomFact = TG_FACTS[Math.floor(Math.random() * TG_FACTS.length)];
     <div class="grid sm:grid-cols-9 gap-4 gap-y-10 mb-14 w-full">
       <div class="sm:col-span-9">
         <div class="max-w-4xl">
-          <h1 class=`text-2xl sm:text-6xl text-white font-bold`>
+          <h1 class="text-2xl sm:text-6xl text-white font-bold">
             FEM UFORGLEMMELIGE DAGER
           </h1>
-          <h2 class=`text-xl sm:text-4xl text-white mb-8`>
+          <h2 class="text-xl sm:text-4xl text-white mb-8">
             I NORGES FETESTE PÅSKEHYTTE!
           </h2>
         </div>
-        <TicketsHero class="mb-8 min-h-[300px]" />
+        <TicketsHero class="min-h-[300px] mb-4" />
+        <div
+          class="w-full bg-blue-500 md:bg-background-secondary p-4 rounded-3xl flex justify-center flex content-center items-center gap-2 min-[540px]:gap-10 flex-col min-[540px]:flex-row"
+        >
+          <Countdown
+            targetDate="2026-02-01T17:28:00+02:00"
+            confetti
+            endMessage="TG26 er i gang!"
+          >
+            <h2 class="text-xl text-white font-bold" slot="pre">
+              Dørene åpner
+            </h2>
+          </Countdown>
+        </div>
       </div>
       <div class="sm:col-start-2 sm:col-span-7">
         <h2 class="text-2xl sm:text-6xl font-bold text-white text-center">
