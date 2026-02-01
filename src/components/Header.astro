@@ -1,76 +1,10 @@
 ---
-import type { NavItem } from "../types";
-import { fetchInfoPageByPath } from "../utils";
+import { getCachedNavigationItems } from "../utils/navigation-cache";
 import HeaderNavigation from "./HeaderNavigation.astro";
 import CloseSymbol from "./icons/CloseSymbol.astro";
 import HamburgerSymbol from "./icons/HamburgerSymbol.astro";
 
-const getNavigationItems: () => Promise<NavItem[]> = async () => {
-  const items = [
-    {
-      title: "Aktuelt",
-      path: "/news",
-    },
-    {
-      title: "Om TG",
-      path: "/about",
-      items: [
-        { title: "Bli utstiller", path: "/about/expo" },
-        { title: "Bli sponsor", path: "/about/sponsor" },
-      ],
-    },
-    {
-      title: "Praktisk",
-      path: "/practical",
-      items: [
-        { title: "Arrangementsregler", path: "/event/rules" },
-        { title: "Konstruksjonsregler", path: "/event/construction-rules" },
-      ],
-    },
-    {
-      title: "Billetter",
-      path: "/tickets",
-      items: [
-        { title: "Vilkår", path: "/tickets/terms-and-conditions" },
-        { title: "Arrangementsregler", path: "/event/rules" },
-        { title: "Konstruksjonsregler", path: "/event/construction-rules" },
-      ],
-    },
-    {
-      title: "Konkurranser",
-      items: [
-        { title: "Kreative", path: "/competitions/creative" },
-        { title: "Esport", path: "/competitions/esport" },
-      ],
-    },
-    { title: "Kontakt oss", path: "/contact" },
-  ];
-
-  // This works for a couple of cases, but if we want more items we should probably optimise backend API for navigation generation purposes. And/or use a more advanced frontend caching strategy.
-  const practicalPage = await fetchInfoPageByPath({
-    path: "/practical",
-    apiUrl: import.meta.env.API_URL,
-  }).catch((e) => {
-    console.error(e.message);
-  });
-
-  if (practicalPage?.pages) {
-    items
-      .find((item) => item.title === "Praktisk")
-      ?.items?.unshift(
-        ...practicalPage.pages
-          .filter(({ show_in_menus }) => !!show_in_menus)
-          .map(({ title, url }) => ({
-            title,
-            path: url,
-          })),
-      );
-  }
-
-  return items;
-};
-
-const navigationItems = await getNavigationItems();
+const navigationItems = await getCachedNavigationItems(import.meta.env.API_URL);
 ---
 
 <script>
