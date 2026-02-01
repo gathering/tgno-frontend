@@ -15,7 +15,7 @@
     "@astrojs/node": "^9.5.2",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.18",
-    "astro": "^5.16.15",
+    "astro": "^5.17.1",
     "astro-lazy-youtube-embed": "^0.5.5",
     "canvas-confetti": "^1.9.4",
     "dompurify": "^3.2.5",
