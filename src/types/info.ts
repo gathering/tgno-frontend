@@ -30,5 +30,6 @@ export interface FaqPage extends MinimalApiPage {
   body?: string;
 }
 
-export interface FetchInfoPageChildrenResponse
-  extends PaginatedResponse<FaqPage | InfoPage> {}
+export interface FetchInfoPageChildrenResponse extends PaginatedResponse<
+  FaqPage | InfoPage
+> {}
