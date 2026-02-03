@@ -18,7 +18,7 @@ const { title, faq = [], intro, body, main_image } = Astro.props;
     {intro ? <Intro text={intro} /> : null}
     {
       main_image && (
-        <div class="flex md:max-h-[50vh] mb-8">
+        <div class="flex md:max-h-[50vh] md:min-h-[600px] mb-8">
           <img
             src={main_image.sizes.large.url}
             srcset={Object.values(main_image.sizes)
