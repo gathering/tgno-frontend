@@ -67,7 +67,7 @@ const jsonLd = {
       <H1 text={article.title} />
       {
         article.main_image && (
-          <div class="flex md:max-h-[50vh]">
+          <div class="flex md:max-h-[50vh] md:min-h-[600px]">
             <img
               src={article.main_image.sizes.large.url}
               srcset={Object.values(article.main_image.sizes)
