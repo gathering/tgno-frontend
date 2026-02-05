@@ -32,13 +32,13 @@ const navigationItems = await getCachedNavigationItems(import.meta.env.API_URL);
   }
 </script>
 
-<header class="flex flex-col-reverse z-1000 relative" data-component="header">
+<header class="sticky top-0 z-40 flex flex-col-reverse" data-component="header">
   <div
-    class="flex justify-between items-center py-1 px-5 max-w-7xl mb-8 justify-self-center w-full mx-auto bg-background-secondary sm:rounded-xl sm:mx-5 sm:mt-2 sm:mb-8 sm:w-auto xl:mx-auto xl:w-full"
+    class="flex justify-between items-center py-1 px-5 max-w-7xl mb-8 justify-self-center w-full mx-auto bg-background-secondary sm:rounded-xl sm:mx-5 sm:mt-2 sm:mb-8 sm:w-auto xl:mx-auto xl:w-full shadow-2xl shadow-black"
   >
     <nav class="w-full">
       <div class="relative h-20 flex items-center justify-between">
-        <a href="/" class="sm:flex gap-x-4 items-center hidden">
+        <a href="/" class="sm:flex gap-x-4 items-center hidden w-max">
           <img
             src="/tg26/tg26_horizontal.svg"
             alt="The Gathering logo"
@@ -85,7 +85,7 @@ const navigationItems = await getCachedNavigationItems(import.meta.env.API_URL);
       </div>
     </nav>
   </div>
-  <aside>
+  <aside data-part="info-banner">
     <span
       class="flex w-full text-white justify-end py-2 px-5 max-w-7xl justify-self-center mx-auto gap-x-3 xl:px-0"
     >
@@ -95,4 +95,25 @@ const navigationItems = await getCachedNavigationItems(import.meta.env.API_URL);
       >
     </span>
   </aside>
+
+  <script>
+    const infoBanner = document.querySelector("[data-part='info-banner']");
+    const headerDiv = document.querySelector("[data-component='header'] div");
+
+    if (infoBanner) window.addEventListener("scroll", handleScroll);
+    handleScroll();
+
+    function handleScroll() {
+      if (!infoBanner || !headerDiv?.parentElement) return; // safety check / types sanity check
+      if (window.scrollY > 100) {
+        infoBanner.classList.add("hidden");
+        headerDiv.classList.add("sm:rounded-none", "xl:rounded-b-xl");
+        headerDiv.classList.remove("sm:rounded-xl", "py-1", "sm:mt-2");
+      } else if (window.scrollY <= 40) {
+        infoBanner.classList.remove("hidden");
+        headerDiv.classList.remove("sm:rounded-none", "xl:rounded-b-xl");
+        headerDiv.classList.add("sm:rounded-xl", "py-1", "sm:mt-2");
+      }
+    }
+  </script>
 </header>
