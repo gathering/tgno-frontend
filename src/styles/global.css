@@ -26,6 +26,11 @@
   --color-foreground-contrast: var(--dynamic-color-foreground-contrast);
 }
 
+/* color animations */
+* {
+  @apply transition-colors duration-200;
+}
+
 /**
  * These are quite manual and error prone at the moment. Consider finding a more
  * robust pattern for this, and/or utilising the built in inverted/darkmode support
