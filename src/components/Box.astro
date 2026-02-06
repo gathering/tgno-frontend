@@ -29,24 +29,26 @@ const {
   itemCenter = false,
   withMargin = true,
   title,
-  titleColor = "text-white",
+  titleColor = "text-foreground",
   date,
-  dateColor = "text-white",
+  dateColor = "text-foreground",
   text,
-  textColor = "text-white",
+  textColor = "text-foreground",
   button,
   secondaryButton,
-  backgroundColor = "bg-white",
+  backgroundColor = "bg-foreground-contrast",
 } = Astro.props;
 const itemCenterProps = itemCenter ? "items-center" : "items-start";
-const borderProps = button?.border ? "border-white border" : "";
-const buttonTextColor = button?.textcolor ? button.textcolor : "text-black";
+const borderProps = button?.border ? "border-foreground-contrast border" : "";
+const buttonTextColor = button?.textcolor
+  ? button.textcolor
+  : "text-foreground-contrast";
 const textAlignmentProps = itemCenter ? "text-center" : "";
 const marginProps = withMargin ? "m-4" : "";
 ---
 
 <div
-  class={`${backgroundColor} ${marginProps} p-4 rounded-3xl flex flex-col space-y-2 sm:m-auto sm:rounded-2xl`}
+  class={`${backgroundColor} ${marginProps} p-4 rounded-3xl flex flex-col space-y-2 sm:m-auto sm:rounded-2xl `}
 >
   {
     title && (
@@ -85,7 +87,7 @@ const marginProps = withMargin ? "m-4" : "";
         {button && (
           <a
             href={button.link}
-            class={`${button?.color} ${borderProps} inline-block text-white px-4 py-2 rounded-full content-center`}
+            class={`${button?.color} ${borderProps} inline-block text-foreground px-4 py-2 rounded-full content-center`}
           >
             {button.text}
           </a>

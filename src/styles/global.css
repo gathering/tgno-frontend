@@ -1,9 +1,29 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* LIGHT MODE */
+  --dynamic-color-background: #ffffff;
+  --dynamic-color-background-secondary: #f8f8f8;
+  --dynamic-color-foreground: black;
+  --dynamic-color-foreground-contrast: white;
+
+  &.dark {
+    /* DARK MODE */
+    --dynamic-color-background: #06070a;
+    --dynamic-color-background-secondary: #0e0f16;
+    --dynamic-color-foreground: white;
+    --dynamic-color-foreground-contrast: black;
+  }
+}
+
 @theme {
-  --color-background: #06070a;
-  --color-background-secondary: #0e0f16;
+  --color-background: var(--dynamic-color-background);
+  --color-background-secondary: var(--dynamic-color-background-secondary);
+  --color-foreground: var(--dynamic-color-foreground);
+  --color-foreground-contrast: var(--dynamic-color-foreground-contrast);
 }
 
 /**
@@ -12,7 +32,7 @@
  * in prose. Still, let us avoid falling back to legacy tailwind.config patterns.
  */
 @utility prose {
-  --tw-prose-custom-default: var(--color-white);
+  --tw-prose-custom-default: var(--color-foreground);
 
   --tw-prose-body: var(--tw-prose-custom-default);
   --tw-prose-headings: var(--color-sky-400);

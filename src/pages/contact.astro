@@ -65,7 +65,15 @@ const boxStyles = [
     <ContentContainer variant="narrow">
       <section class="prose sm:mx-auto">
         <H1 text="Kontakt oss" />
-        <div class:list={[...boxStyles, "border-white", "border"]}>
+        <div
+          class:list={[
+            ...boxStyles,
+            "bg-background-secondary",
+            "text-foreground",
+            "border-foreground",
+            "border",
+          ]}
+        >
           <H2 text="Generell informasjon" />
           <p>
             Våre kontaktpersoner foretrekker å få henvendelser og spørsmål via
@@ -93,15 +101,19 @@ const boxStyles = [
         </div>
       </section>
 
-      <div class:list={[...boxStyles, "bg-white", "text-black"]}>
-        <H3 class="mb-4" color="text-black">Ta kontakt</H3>
+      <div
+        class:list={[...boxStyles, "bg-foreground", "text-foreground-contrast"]}
+      >
+        <H3 class="mb-4" color="text-foreground-contrast">Ta kontakt</H3>
         <div id="zammad-feedback-form">
           Kontaktskjema, om det ikke dukker opp ta kontakt med Hovedkontakt
           nevnt under
         </div>
       </div>
-      <div class:list={[...boxStyles, "bg-white", "text-black"]}>
-        <h3 class="text-black mb-2 text-xl font-normal">Ring oss på</h3>
+      <div
+        class:list={[...boxStyles, "bg-foreground", "text-foreground-contrast"]}
+      >
+        <h3 class="mb-2 text-xl font-normal">Ring oss på</h3>
         <p class="text-3xl font-bold mb-4">
           Tlf: <a href="tel:004722696900" class="not-prose underline"
             >22 69 69 00</a
@@ -113,7 +125,15 @@ const boxStyles = [
         </p>
       </div>
 
-      <div class:list={[...boxStyles, "bg-neutral-800"]}>
+      <div
+        class:list={[
+          ...boxStyles,
+          "bg-background-secondary",
+          "text-foreground",
+          "border-foreground",
+          "border",
+        ]}
+      >
         <H2 text="Hvem kan du få kontakt med?" class="mb-8" />
         <H3 class="mt-6">Deltakerservice (deltakerombud)</H3>
         <p>

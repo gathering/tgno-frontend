@@ -25,7 +25,9 @@ const boxStyles = "rounded-3xl sm:rounded-2xl sm:w-full sm:mx-auto";
             class="w-full h-full object-cover rounded-3xl"
           />
         </aside>
-        <section class={`${boxStyles} p-6 sm:col-span-4 bg-white mt-auto`}>
+        <section
+          class={`${boxStyles} p-6 sm:col-span-4 bg-white mt-auto shadow-md shadow-black dark:shadow-none`}
+        >
           <span class="prose text-black prose-strong:text-black">
             <H2 text="Lyst til å støtte The Gathering?" color="text-black" />
             <p>
@@ -51,7 +53,7 @@ const boxStyles = "rounded-3xl sm:rounded-2xl sm:w-full sm:mx-auto";
             href="mailto:sponsor@tg.no">Ta kontakt på sponsor@tg.no</Button
           >
         </section>
-        <aside class="sm:col-span-7 my-4 prose text-white">
+        <aside class="sm:col-span-7 my-4 prose text-foreground">
           <p>
             Egentlig mest klar for å ha stand? <a href="/about/expo">
               Les mer om expo-mulighetene her!

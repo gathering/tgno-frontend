@@ -78,8 +78,8 @@ if (isCancelled) {
 
 <style>
   [data-component="event"] {
-    color: var(--color-white);
-    border-color: var(--color-white);
+    color: var(--color-foreground);
+    border-color: var(--color-foreground);
     &.minimal {
     }
     &.has-ended {
@@ -163,7 +163,7 @@ if (isCancelled) {
   data-start={start}
   data-end={end}
 >
-  <div class={`flex flex-row block pb-4 pt-2 border-t border-white`}>
+  <div class={`flex flex-row block pb-4 pt-2 border-t border-foreground`}>
     <aside class="w-24 mr-4 date">
       {strings.startDateLong}
     </aside>
@@ -175,7 +175,7 @@ if (isCancelled) {
               {location ? (
                 <a
                   href={location.url}
-                  class={`rounded-md flex flex-row py-1 px-2 ${location.color ? "bg-" + location.color + "-500 text-black" : "text-white border-white"} ${location.url ? "hover:bg-white hover:text-background-secondary" : ""} ${location.active ? "" : ""}`}
+                  class={`rounded-md flex flex-row py-1 px-2 ${location.color ? "bg-" + location.color + "-500 text-foreground-contrast" : "text-foreground border-foreground"} ${location.url ? "hover:bg-foreground hover:text-foreground-contrast" : ""} ${location.active ? "" : ""}`}
                 >
                   {location.name}
                   {location.active && location.url ? <CloseSymbol /> : null}
@@ -186,7 +186,7 @@ if (isCancelled) {
               <a
                 href={related_url}
                 target="_blank"
-                class="rounded-md h-fit p-2 ml-auto hover:bg-white hover:text-background-secondary"
+                class="rounded-md h-fit p-2 ml-auto hover:bg-foreground hover:text-foreground-contrast"
               >
                 <ExternalLinkSymbol />
               </a>
@@ -204,7 +204,7 @@ if (isCancelled) {
               "aria-expanded": "false",
             }
           : {}}
-        class={`text-md ${description ? "group-[.collapsed]:cursor-pointer group-[.collapsed]:hover:bg-white/10" : ""}`}
+        class={`text-md ${description ? "group-[.collapsed]:cursor-pointer group-[.collapsed]:hover:bg-foreground/10" : ""}`}
       >
         <h3 class="font-semibold text-pretty mb-1 pt-1 flex flex-row">
           <span class="w-3 -ml-5 mr-2 text-red-600 live-symbol hidden">
@@ -225,7 +225,7 @@ if (isCancelled) {
           ) : null
         }
         <aside
-          class={`flex flex-row gap-3 pb-3 w-full rounded-b-xl group-[.collapsed]:bg-transparent group-[.collapsed]:text-white`}
+          class={`flex flex-row gap-3 pb-3 w-full rounded-b-xl group-[.collapsed]:bg-transparent group-[.collapsed]:text-foreground-contrast`}
         >
           <time datetime={start} class="flex flex-row gap-3 time">
             <span class="flex w-4">
@@ -234,7 +234,7 @@ if (isCancelled) {
             {duration}
           </time>
           <span
-            class={`flex-row py-1 px-2 gap-2 bg-neutral-900 rounded-md ml-auto hidden ${description ? "group-[.collapsed]:flex" : ""}`}
+            class={`flex-row py-1 px-2 gap-2 bg-foreground-contrast rounded-md ml-auto hidden ${description ? "group-[.collapsed]:flex" : ""}`}
           >
             Les mer
             <ArrowSymbol />

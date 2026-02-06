@@ -63,6 +63,24 @@ const matomoInstanceUrl =
 
     <title>{title}</title>
 
+    <!-- theme handling -->
+    <script is:inline>
+      const updateTheme = () => {
+        const theme =
+          typeof localStorage !== undefined
+            ? localStorage.getItem("theme")
+            : null;
+        const preference = window.matchMedia("(prefers-color-scheme: dark)")
+          .matches
+          ? "dark"
+          : "light";
+        const isDark =
+          theme === "dark" || (theme === null && preference === "dark");
+        document.documentElement.classList[isDark ? "add" : "remove"]("dark");
+      };
+      updateTheme();
+    </script>
+
     {
       jsonLd ? (
         <script

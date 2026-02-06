@@ -4,7 +4,7 @@ type Props = {
   color?: string;
   class?: string;
 };
-const { text, color = "text-white", class: classNames = "" } = Astro.props;
+const { text, color = "text-foreground", class: classNames = "" } = Astro.props;
 ---
 
 <h2 class=`text-4xl ${color} font-bold mb-2 ${classNames}`>{text}</h2>

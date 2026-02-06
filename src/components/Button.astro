@@ -12,8 +12,10 @@ const THEMES: Record<Theme, string> = {
   orange:
     "border text-white bg-orange-600 border-orange-600 hover:bg-orange-700",
   blue: "border text-white bg-sky-600 border-sky-600 hover:bg-sky-500",
-  secondary: "border text-white bg-transparent border-white hover:bg-white/20",
-  white: "border text-black bg-white border-white hover:bg-neutral-200",
+  white:
+    "border text-black bg-white border-foreground-contrast hover:bg-neutral-200",
+  secondary:
+    "border text-foreground bg-transparent border-foreground-contrast hover:bg-foreground-contrast/20",
 };
 const VARIANTS: Record<Variant, string> = {
   normal: "inline-block px-4 py-2 rounded-full text-xs font-bold",
@@ -31,7 +33,7 @@ const variantStyles =
 
 <a
   href={href}
-  class={`content-center not-prose ${colorStyles} ${variantStyles} ${classNames}`}
+  class={`content-center not-prose shadow-lg shadow-black ${colorStyles} ${variantStyles} ${classNames}`}
   target={target}
 >
   <slot />
