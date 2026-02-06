@@ -27,7 +27,7 @@ const optionalFilters = activeFilters.filter(
       {activeFilters.map(({ name, required, url, color }) => (
         <a
           href={url}
-          class={`flex flex-row items-center gap-2 py-1 px-2 rounded-md text-md ${color ? "bg-" + color + "-500 text-black" : "border border-white text-white"} hover:bg-white hover:text-background-secondary`}
+          class={`flex flex-row items-center gap-2 py-1 px-2 rounded-md text-md ${color ? "bg-" + color + "-500 text-black" : "border border-foreground text-foreground"} hover:bg-foreground hover:text-foreground-contrast`}
         >
           {name}
           {!required ? <CloseSymbol /> : null}
@@ -36,7 +36,7 @@ const optionalFilters = activeFilters.filter(
       {resetUrl && optionalFilters ? (
         <a
           href={resetUrl}
-          class="flex flex-row items-center gap-2 py-1 px-2 rounded-md text-md bg-orange-500 text-black hover:bg-white hover:text-background-secondary"
+          class="flex flex-row items-center gap-2 py-1 px-2 rounded-md text-md bg-orange-500 text-black hover:bg-foreground hover:text-background-secondary"
         >
           <FilterCloseSymbol />
         </a>

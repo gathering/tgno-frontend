@@ -1,9 +1,14 @@
 ---
 type Props = {
-  color?: "text-white" | "text-black" | "";
+  color?:
+    | "text-foreground"
+    | "text-foreground-contrast"
+    | "text-white"
+    | "text-black"
+    | "";
   class?: string;
 };
-const { color = "text-white", class: classNames = "" } = Astro.props;
+const { color = "text-foreground", class: classNames = "" } = Astro.props;
 ---
 
 <h3 class=`text-2xl ${color} font-bold mb-2 ${classNames}`><slot /></h3>

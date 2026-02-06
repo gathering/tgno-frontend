@@ -59,7 +59,7 @@ const jsonLd = {
       />
       <div class="grid grid-cols-1 sm:grid-cols-7 gap-x-4 gap-y-10">
         <div class="sm:col-start-1 sm:col-span-4">
-          <section class="prose prose-strong:text-white">
+          <section class="prose prose-strong:text-foreground">
             <H2 text="Opplev Norges største dataparty!" />
             <p>
               The Gathering (TG) er et av de største arrangementene for gaming,
@@ -203,7 +203,7 @@ const jsonLd = {
         <section
           class={`${boxStyles.join(" ")} min-w-full sm:col-span-7 sm:col-start-1 bg-orange-400 sm:h-min`}
         >
-          <H3>Tilleggsprodukter</H3>
+          <H3 color="text-black">Tilleggsprodukter</H3>
           <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
             <TicketBox name="Collectors Bundle" price={1090} variant="product">
               <span slot="features"></span>
@@ -290,13 +290,13 @@ const jsonLd = {
           </div>
         </section>
         <section
-          class={`${boxStyles.join(" ")} sm:col-start-3 sm:col-span-3 bg-orange-600 text-black mb-5`}
+          class={`${boxStyles.join(" ")} sm:col-start-3 sm:col-span-3 bg-orange-600 text-white mb-5`}
         >
-          <H3>Hva venter du på?</H3>
+          <H3 color="text-white">Hva venter du på?</H3>
           <p>Kjøp din billett i dag og bli med på noe helt unikt!</p>
           <Button
             href="https://support.gathering.org/help/no-no"
-            class="mt-4 border border-white"
+            class="mt-4 border border-foreground"
             variant="wide"
             theme="orange">Få svar på det du lurer på i FAQen</Button
           >

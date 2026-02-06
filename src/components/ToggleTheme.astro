@@ -1,0 +1,55 @@
+---
+import ThemeDark from "./icons/ThemeDark.astro";
+import ThemeLight from "./icons/ThemeLight.astro";
+import ThemeSystem from "./icons/ThemeSystem.astro";
+---
+
+<button
+  id="theme-toggle"
+  class="theme-toggle rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-foreground focus:outline-none focus:ring-2 focus:ring-inset focus:ring-foreground"
+  aria-label="Toggle theme"
+>
+  <ThemeDark class="hidden" />
+  <ThemeLight class="hidden" />
+  <ThemeSystem class="hidden" />
+</button>
+
+<script>
+  declare function updateTheme(): void;
+
+  const themeToggle = document.getElementById("theme-toggle");
+
+  function updateThemeDisplay() {
+    const current = localStorage.getItem("theme") || "system";
+    const dark = themeToggle?.querySelector("svg:nth-child(1)") as SVGElement;
+    const light = themeToggle?.querySelector("svg:nth-child(2)") as SVGElement;
+    const system = themeToggle?.querySelector("svg:nth-child(3)") as SVGElement;
+
+    for (const [theme, icon] of Object.entries({ dark, light, system })) {
+      if (theme === current) {
+        icon.classList.remove("hidden");
+        icon.classList.add("block");
+      } else {
+        icon.classList.remove("block");
+        icon.classList.add("hidden");
+      }
+    }
+  }
+
+  updateThemeDisplay();
+
+  themeToggle?.addEventListener("click", () => {
+    const current = localStorage.getItem("theme");
+    let next: string | null;
+
+    if (current === "dark") next = "light";
+    else if (current === "light") next = null;
+    else next = "dark";
+
+    if (next) localStorage.setItem("theme", next);
+    else localStorage.removeItem("theme");
+
+    updateTheme();
+    updateThemeDisplay();
+  });
+</script>

@@ -86,12 +86,12 @@ const jsonLd = {
       <Intro text={article.intro} />
       <BodyText class="mb-6" htmlBody={article.body} />
       <aside
-        class="my-6 p-5 space-y-5 clear-both text-sm text-white/60 bg-background-secondary rounded"
+        class="my-6 p-5 space-y-5 clear-both text-sm text-foreground/60 bg-background-secondary rounded"
       >
         <section class="space-y-1">
           <time
             datetime={article.meta.first_published_at}
-            class="text-sm text-white/90"
+            class="text-sm text-foreground/90"
           >
             Publisert:{" "}
             {
@@ -127,7 +127,7 @@ const jsonLd = {
                   .map(noLocalizeContributor)
                   .map((contributor) => (
                     <dl class="flex flex-col mb-2 mr-4">
-                      <dt class="font-bold text-white/90">
+                      <dt class="font-bold text-foreground/90">
                         {contributor.name}
                       </dt>
                       <dd class="">{contributor.contribution_type}</dd>
