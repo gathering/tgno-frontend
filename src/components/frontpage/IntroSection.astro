@@ -1,0 +1,86 @@
+---
+import Button from "../Button.astro";
+import Countdown from "../Countdown.astro";
+import InfoBox from "./InfoBox.astro";
+---
+
+<div class="grid gap-2 md:grid-cols-3">
+  <div class="sm:col-span-1 relative">
+    <img
+      src="https://www.tg.no/media/images/Et_helt_liv_30_TG26_3_of_1.max-1600x1600.png"
+      alt=""
+      class="rounded-2xl object-cover w-full sm:absolute sm:top-0 sm:left-0 sm:h-full"
+    />
+  </div>
+  <div class="sm:col-span-1">
+    <InfoBox class="bg-white">
+      <h2 class="mb-2 font-bold text-2xl md:text-4xl">
+        Godt gammeldags dataparty
+      </h2>
+      <p>
+        Hver påske samler vi spill- og teknologientusiaster i Vikingskipet i
+        Hamar, på en av verdens største festivaler som feirer data, kreativitet
+        og spillkultur.
+      </p>
+      <Button href="/about" theme="orange" class="mt-4"> Les mer </Button>
+    </InfoBox>
+  </div>
+  <div class="sm:col-span-1 relative">
+    <img
+      src="https://www.tg.no/media/images/Foto_Mats_O._Bristol.max-1600x1600.jpg"
+      alt=""
+      class="rounded-2xl object-cover w-full sm:absolute sm:top-0 sm:left-0 sm:h-full"
+    />
+  </div>
+  <div
+    class="sm:col-span-3 bg-blue-500 md:bg-background-secondary p-4 rounded-2xl flex justify-center flex content-center items-center gap-2 min-[540px]:gap-10 flex-col min-[540px]:flex-row"
+  >
+    <Countdown
+      targetDate="2026-04-01T09:00:00+02:00"
+      confetti
+      endMessage="TG26 er i gang!"
+    >
+      <h2 class="text-xl text-white font-bold" slot="pre">Dørene åpner</h2>
+    </Countdown>
+  </div>
+  <div class="sm:col-span-2 relative">
+    <img
+      src="https://www.tg.no/media/images/TG25_1704_FOTO_OleChristian-Klamas-0062.max-1600x1600.jpg"
+      alt=""
+      class="rounded-2xl object-cover w-full sm:absolute sm:top-0 sm:left-0 sm:h-full"
+    />
+  </div>
+  <div class="sm:col-span-1">
+    <InfoBox class="bg-sky-600">
+      <h2 class="mb-2 font-bold text-2xl md:text-4xl text-white">
+        Kreative konkurranser
+      </h2>
+      <p>
+        Vi arrangerer en rekke konkurranser innenfor ulike kreative disipliner,
+        som grafikk, musikk og programmering. Delta selv, eller stem frem dine
+        favoritter!
+      </p>
+      <Button href="/about" theme="white" class="mt-4"> Les mer </Button>
+    </InfoBox>
+  </div>
+  <div class="sm:col-span-2 relative sm:order-last">
+    <img
+      src="https://www.tg.no/media/images/GC9A8363_1.max-1600x1600.jpg"
+      alt=""
+      class="rounded-2xl object-cover w-full sm:absolute sm:top-0 sm:left-0 sm:h-full"
+    />
+  </div>
+  <div class="sm:col-span-1">
+    <InfoBox class="bg-orange-500">
+      <h2 class="mb-2 font-bold text-2xl md:text-4xl text-white">
+        Expo og foredrag
+      </h2>
+      <p>
+        Utforsk vårt store expo-område med spennende utstillere fra teknologi-
+        og spillindustrien. Delta på engasjerende foredrag og workshops ledet av
+        eksperter innen ulike felt.
+      </p>
+      <Button href="/about" theme="white" class="mt-4"> Les mer </Button>
+    </InfoBox>
+  </div>
+</div>
