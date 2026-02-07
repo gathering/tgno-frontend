@@ -32,6 +32,6 @@
   --tw-prose-td-borders: var(--tw-prose-custom-default);
 
   a:hover {
-    color: var(--color-sky-600);
+    color: var(--color-sky-400);
   }
 }
