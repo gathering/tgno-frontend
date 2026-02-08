@@ -7,7 +7,7 @@ import Pill from "./Pill.astro";
 export interface Props {
   title: string;
   children: any;
-  prizes: number[];
+  prizes?: number[];
   prizeDisclaimer?: string;
   byoc?: boolean;
   requiresTicket?: boolean;
@@ -28,13 +28,17 @@ const {
 } = Astro.props;
 
 const hasPills = byoc || requiresTicket;
-const formattedPrizes = prizes.map((prize) =>
-  new Intl.NumberFormat("nb-NO", {
-    style: "currency",
-    currency: "NOK",
-    maximumFractionDigits: 0,
-  }).format(prize),
-);
+const hasPrizes = Array.isArray(prizes) && prizes.length > 0;
+
+const formattedPrizes = hasPrizes
+  ? prizes.map((prize) =>
+      new Intl.NumberFormat("nb-NO", {
+        style: "currency",
+        currency: "NOK",
+        maximumFractionDigits: 0,
+      }).format(prize),
+    )
+  : [];
 ---
 
 <section class={`flex flex-col ${classNames}`}>
@@ -47,31 +51,39 @@ const formattedPrizes = prizes.map((prize) =>
         </div>
       )
     }
-    <H2 text={title} color="" class="mt-4" />
+    <H2 text={title} color="text-white" class="mt-4" />
     <slot />
   </div>
-  {
-    formattedPrizes.length ? (
-      <div class="mt-4 last:mt-auto">
-        <H3 class="mt-0 text-lg" color="">
-          Premiepotten: {prizeDisclaimer ? " *" : ""}
-        </H3>
-        <dl class="divide-y divide-black/50 not-prose">
-          {formattedPrizes.map((prize, index) => (
-            <div class="px-2 py-1 grid grid-cols-3 sm:gap-2 sm:px-0">
-              <dt class="text-sm font-bold leading-4">
-                {`${index + 1}. plass`}
-              </dt>
-              <dd class="mt-1 text-sm leading-4 col-span-2 sm:mt-0">{prize}</dd>
-            </div>
-          ))}
-        </dl>
-        {prizeDisclaimer && (
-          <p class="mt-2 text-sm opacity-70">* {prizeDisclaimer}</p>
-        )}
-      </div>
-    ) : null
-  }
+
+  <div class="mt-4 last:mt-auto">
+    <H3 class="mt-0 text-lg" color=""> Premiepotten: </H3>
+
+    {
+      hasPrizes ? (
+        <>
+          <dl class="divide-y divide-black/50 not-prose">
+            {formattedPrizes.map((prize, index) => (
+              <div class="px-2 py-1 grid grid-cols-3 sm:gap-2 sm:px-0">
+                <dt class="text-sm font-bold leading-4">
+                  {`${index + 1}. plass`}
+                </dt>
+                <dd class="mt-1 text-sm leading-4 col-span-2 sm:mt-0">
+                  {prize}
+                </dd>
+              </div>
+            ))}
+          </dl>
+
+          {prizeDisclaimer && (
+            <p class="mt-2 text-sm opacity-70">* {prizeDisclaimer}</p>
+          )}
+        </>
+      ) : (
+        <p class="text-sm">TBA</p>
+      )
+    }
+  </div>
+
   {
     url && (
       <div class="last:pt-4 last:mt-auto w-full">
