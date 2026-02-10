@@ -8,8 +8,7 @@ import ContentContainer from "../../components/ContentContainer.astro";
 import SportsBox from "../../components/competitions/SportsBox.astro";
 import Pill from "../../components/competitions/Pill.astro";
 
-const boxStyles =
-  "w-full h-full p-6 rounded-3xl sm:mx-auto sm:rounded-2xl max-w-sm max-h-fit";
+const boxStyles = "p-6 rounded-3xl sm:rounded-2xl h-full";
 ---
 
 <Layout title="The Gathering - E-Sport konkurranser">
@@ -17,103 +16,101 @@ const boxStyles =
     <ContentContainer>
       <H1 text="E-Sport konkurranser" />
 
-      <div class="space-y-6 flex flex-col xl:flex-row justify-between">
-        <!-- Intro / practical info block -->
-        <section
-          class="prose prose-strong:text-white text-white max-w-2xl pr-0 md:pr-10"
-        >
-          <H2 text="Klar for å kjempe om premier?" />
-          <p>
-            Er du klar for å konkurrere i de mest spennende og intense
-            turneringene innen gaming? På The Gathering arrangerer vi en rekke
-            turneringer i noen av verdens mest populære spill! Uansett om du er
-            en erfaren spiller eller ny i e-sportens verden, vil våre
-            turneringer gi deg muligheten til å teste ferdighetene dine,
-            samarbeide med laget ditt, og kanskje til og med vinne fantastiske
-            premier!
-          </p>
-
-          <H3>Praktisk informasjon</H3>
-          <p>
-            <Pill text="Egen maskin" color="orange" class="mr-2" />
-            De fleste turneringene er BYOC (Bring Your Own Computer), noe som betyr
-            at du må ta med deg din egen datamaskin for å kunne delta.
-          </p>
-          <p>
-            <Pill text="I skipet" color="blue" class="mr-2" />
-            Du må, som regel, også være på plass på The Gathering for å kunne delta
-            i turneringene.
-          </p>
-        </section>
-
-        <!-- Cards grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 md:grid-rows-2 gap-6 px-4">
-          <SportsBox
-            title="Valorant"
-            class={`${boxStyles} bg-background-secondary text-white prose`}
-            url="https://www.gamer.no/turneringer/tg25-valorant/13485"
-            urlText="Meld deg på her!"
-            requiresTicket
-            byoc
-          >
-            <p class="m-0 opacity-80">
-              Valorant er et 5v5 «character-based tactical shooter» spill som er
-              utviklet av Riot Games. To lag på 5 kjemper mot hverandre om å
-              enten holde gitte områder trygt fra motstanderne eller ta dem ved
-              å plante en spike og la den eksplodere.
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Intro block -->
+        <div class="sm:col-span-2 lg:col-span-2">
+          <section class="prose prose-strong:text-white text-white max-w-2xl">
+            <H2 text="Klar for å kjempe om premier?" />
+            <p>
+              Er du klar for å konkurrere i de mest spennende og intense
+              turneringene innen gaming? På The Gathering arrangerer vi en rekke
+              turneringer i noen av verdens mest populære spill! Uansett om du
+              er en erfaren spiller eller ny i e-sportens verden, vil våre
+              turneringer gi deg muligheten til å teste ferdighetene dine,
+              samarbeide med laget ditt, og kanskje til og med vinne fantastiske
+              premier!
             </p>
-          </SportsBox>
 
-          <SportsBox
-            title="Counter-Strike 2"
-            class={`${boxStyles} bg-background-secondary text-white prose`}
-            url="https://www.challengermode.com/s/TheGathering/tournaments/a331c7ba-67d0-4447-f532-08dbc34f38a0"
-            urlText="Meld deg på her!"
-            requiresTicket
-            byoc
-          >
-            <p class="m-0 opacity-80">
-              Counter-Strike 2 er det største tekniske spranget fremover i
-              Counter-Strikes historie, som legger til rette for nye funksjoner
-              og oppdateringer i årene som kommer.
+            <H3>Praktisk informasjon</H3>
+            <p>
+              <Pill text="Egen maskin" color="orange" class="mr-2" />
+              De fleste turneringene er BYOC (Bring Your Own Computer), noe som betyr
+              at du må ta med deg din egen datamaskin for å kunne delta.
             </p>
-          </SportsBox>
-
-          <SportsBox
-            title="League of Legends"
-            class={`${boxStyles} bg-background-secondary text-white prose`}
-            url="https://www.gamer.no/turneringer/tg25-league-of-legends/13480"
-            urlText="Meld deg på her!"
-            requiresTicket
-            byoc
-          >
-            <p class="m-0 opacity-80">
-              League of Legends er et lagbasert strategispill der to lag med fem
-              mektige mestere møter hverandre for å ødelegge den andres base.
-              Velg blant over 140 mestere for å lage episke skuespill, sikre
-              drap og ta ned tårn mens du kjemper deg mot seier.
+            <p>
+              <Pill text="I skipet" color="blue" class="mr-2" />
+              Du må, som regel, også være på plass på The Gathering for å kunne delta
+              i turneringene.
             </p>
-          </SportsBox>
-
-          <SportsBox
-            title="Rocket League"
-            class={`${boxStyles} bg-background-secondary text-white prose`}
-            url="https://www.gamer.no/turneringer/tg25-rocket-league/13479"
-            urlText="Meld deg på her!"
-            requiresTicket
-            byoc
-          >
-            <p class="m-0 opacity-80">
-              Spillet blir beskrevet som "en hybrid av fotball- og kjøretøysfylt
-              arkade med lettforståelige kontroller og flytende, fysikkdrevet
-              konkurranse". Spillere kontrollerer en rakettdrevet bil og bruker
-              den til å føre en ball inn i motstanderens mål. Spillere har
-              muligheten til å hoppe med bilen sin og treffe ballen i lufta. I
-              tillegg kan spillere plukke opp fartsøkningsmidler, ved å kjøre
-              bilen sin over markerte felt på arenaen.
-            </p>
-          </SportsBox>
+          </section>
         </div>
+
+        <!-- Compo cards -->
+        <SportsBox
+          title="Valorant"
+          class={`${boxStyles} bg-background-secondary text-white prose lg:col-span-2`}
+          url="https://www.gamer.no/turneringer/tg25-valorant/13485"
+          urlText="Meld deg på her!"
+          requiresTicket
+          byoc
+        >
+          <p class="m-0 opacity-80">
+            Valorant er et 5v5 «character-based tactical shooter» spill som er
+            utviklet av Riot Games. To lag på 5 kjemper mot hverandre om å enten
+            holde gitte områder trygt fra motstanderne eller ta dem ved å plante
+            en spike og la den eksplodere.
+          </p>
+        </SportsBox>
+
+        <SportsBox
+          title="Counter-Strike 2"
+          class={`${boxStyles} bg-background-secondary text-white prose lg:col-span-2`}
+          url="https://www.challengermode.com/s/TheGathering/tournaments/a331c7ba-67d0-4447-f532-08dbc34f38a0"
+          urlText="Meld deg på her!"
+          requiresTicket
+          byoc
+        >
+          <p class="m-0 opacity-80">
+            Counter-Strike 2 er det største tekniske spranget fremover i
+            Counter-Strikes historie, som legger til rette for nye funksjoner og
+            oppdateringer i årene som kommer.
+          </p>
+        </SportsBox>
+
+        <SportsBox
+          title="League of Legends"
+          class={`${boxStyles} bg-background-secondary text-white prose lg:col-span-2`}
+          url="https://www.gamer.no/turneringer/tg25-league-of-legends/13480"
+          urlText="Meld deg på her!"
+          requiresTicket
+          byoc
+        >
+          <p class="m-0 opacity-80">
+            League of Legends er et lagbasert strategispill der to lag med fem
+            mektige mestere møter hverandre for å ødelegge den andres base. Velg
+            blant over 140 mestere for å lage episke skuespill, sikre drap og ta
+            ned tårn mens du kjemper deg mot seier.
+          </p>
+        </SportsBox>
+
+        <SportsBox
+          title="Rocket League"
+          class={`${boxStyles} bg-background-secondary text-white prose lg:col-span-2`}
+          url="https://www.gamer.no/turneringer/tg25-rocket-league/13479"
+          urlText="Meld deg på her!"
+          requiresTicket
+          byoc
+        >
+          <p class="m-0 opacity-80">
+            Spillet blir beskrevet som "en hybrid av fotball- og kjøretøysfylt
+            arkade med lettforståelige kontroller og flytende, fysikkdrevet
+            konkurranse". Spillere kontrollerer en rakettdrevet bil og bruker
+            den til å føre en ball inn i motstanderens mål. Spillere har
+            muligheten til å hoppe med bilen sin og treffe ballen i lufta. I
+            tillegg kan spillere plukke opp fartsøkningsmidler, ved å kjøre
+            bilen sin over markerte felt på arenaen.
+          </p>
+        </SportsBox>
       </div>
     </ContentContainer>
   </Main>
