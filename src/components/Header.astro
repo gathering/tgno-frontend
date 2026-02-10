@@ -85,7 +85,10 @@ const navigationItems = await getCachedNavigationItems(import.meta.env.API_URL);
       </div>
     </nav>
   </div>
-  <aside data-part="info-banner">
+  <aside
+    data-part="info-banner"
+    class="overflow-hidden transition-[max-height,opacity] duration-150 ease-in max-h-20 opacity-100"
+  >
     <span
       class="flex w-full text-white justify-end py-2 px-5 max-w-7xl justify-self-center mx-auto gap-x-3 xl:px-0"
     >
@@ -104,15 +107,25 @@ const navigationItems = await getCachedNavigationItems(import.meta.env.API_URL);
     handleScroll();
 
     function handleScroll() {
-      if (!infoBanner || !headerDiv?.parentElement) return; // safety check / types sanity check
-      if (window.scrollY > 100) {
-        infoBanner.classList.add("hidden");
+      if (!infoBanner || !headerDiv?.parentElement) return;
+
+      const scrolled = window.scrollY > 1;
+
+      infoBanner.classList.toggle("max-h-0", scrolled);
+      infoBanner.classList.toggle("opacity-0", scrolled);
+      infoBanner.classList.toggle("pointer-events-none", scrolled);
+
+      infoBanner.classList.toggle("max-h-20", !scrolled);
+      infoBanner.classList.toggle("opacity-100", !scrolled);
+
+      // Scroll animation
+      headerDiv.classList.add("transition-all", "duration-300");
+      if (scrolled) {
         headerDiv.classList.add("sm:rounded-none", "xl:rounded-b-xl");
-        headerDiv.classList.remove("sm:rounded-xl", "py-1", "sm:mt-2");
-      } else if (window.scrollY <= 40) {
-        infoBanner.classList.remove("hidden");
+        headerDiv.classList.remove("sm:rounded-xl");
+      } else {
         headerDiv.classList.remove("sm:rounded-none", "xl:rounded-b-xl");
-        headerDiv.classList.add("sm:rounded-xl", "py-1", "sm:mt-2");
+        headerDiv.classList.add("sm:rounded-xl");
       }
     }
   </script>
