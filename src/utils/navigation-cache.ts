@@ -26,6 +26,10 @@ export async function getCachedNavigationItems(
       path: "/news",
     },
     {
+      title: "Program",
+      path: "/schedule",
+    },
+    {
       title: "Om TG",
       path: "/about",
       items: [
