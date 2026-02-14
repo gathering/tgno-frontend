@@ -254,30 +254,30 @@ export class Calendar {
         },
       ],
       locations: [
-        //{
-        //  slug: "hovedscenen",
-        //  name: "Hovedscenen",
-        //  type: "location",
-        //  color: "purple",
-        //},
-        //{
-        //  slug: "kreativiascenen",
-        //  name: "Kreativiascenen",
-        //  type: "location",
-        //  color: "blue",
-        //},
-        //{
-        //  slug: "esportscenen",
-        //  name: "Esportscenen",
-        //  type: "location",
-        //  color: "orange",
-        //},
-        //{
-        //  slug: "lounge",
-        //  name: "Lounge",
-        //  type: "location",
-        //  color: "green",
-        //},
+        {
+          slug: "hovedscenen",
+          name: "Hovedscenen",
+          type: "location",
+          color: "purple",
+        },
+        {
+          slug: "kreativiascenen",
+          name: "Kreativiascenen",
+          type: "location",
+          color: "blue",
+        },
+        {
+          slug: "esportscenen",
+          name: "Esportscenen",
+          type: "location",
+          color: "orange",
+        },
+        {
+          slug: "lounge",
+          name: "Lounge",
+          type: "location",
+          color: "green",
+        },
       ],
     });
   };
