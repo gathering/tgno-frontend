@@ -310,10 +310,15 @@ export const fetchEvents = async ({
   }
 
   const response = await typedFetch<FetchEventsResponse>(url.toString());
-  const data = await response.json();
+  let rawEventsData: FetchEventsResponse = [];
+  try {
+    rawEventsData = await response.json();
+  } catch (error) {
+    console.error(`Failed to parse events response: ${error}`);
+  }
   const pad = (number: number) => String(number).padStart(2, "0");
 
-  events = data.map((event) => {
+  events = rawEventsData.map((event) => {
     const startObj = new Date(event.start);
     const endObj = new Date(event.end);
     const reqStartObj = hasDates(date) ? new Date(date.start) : null;
