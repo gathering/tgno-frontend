@@ -211,12 +211,12 @@ export class Calendar {
     return (this._navigationConfig ??= {
       dates: [
         DEFAULT_DATE_OPTION,
-        ...[16, 17, 18, 19, 20].map((date) => {
+        ...[1, 2, 3, 4, 5].map((date) => {
           // TODO: Adjust timezone to +1 when filtering for dates outside of summer time
-          const start = `2025-04-${date} 00:00+02:00`;
-          const end = `2025-04-${date + 1} 02:00+02:00`;
+          const start = `2026-04-0${date} 00:00+02:00`;
+          const end = `2026-04-0${date + 1} 02:00+02:00`;
           return {
-            slug: `2025-04-${date}`,
+            slug: `2026-04-0${date}`,
             name: new Date(start).toLocaleDateString("no-NO", {
               weekday: "long",
               day: "numeric",
@@ -254,30 +254,30 @@ export class Calendar {
         },
       ],
       locations: [
-        {
-          slug: "hovedscenen",
-          name: "Hovedscenen",
-          type: "location",
-          color: "purple",
-        },
-        {
-          slug: "kreativiascenen",
-          name: "Kreativiascenen",
-          type: "location",
-          color: "blue",
-        },
-        {
-          slug: "esportscenen",
-          name: "Esportscenen",
-          type: "location",
-          color: "orange",
-        },
-        {
-          slug: "lounge",
-          name: "Lounge",
-          type: "location",
-          color: "green",
-        },
+        //{
+        //  slug: "hovedscenen",
+        //  name: "Hovedscenen",
+        //  type: "location",
+        //  color: "purple",
+        //},
+        //{
+        //  slug: "kreativiascenen",
+        //  name: "Kreativiascenen",
+        //  type: "location",
+        //  color: "blue",
+        //},
+        //{
+        //  slug: "esportscenen",
+        //  name: "Esportscenen",
+        //  type: "location",
+        //  color: "orange",
+        //},
+        //{
+        //  slug: "lounge",
+        //  name: "Lounge",
+        //  type: "location",
+        //  color: "green",
+        //},
       ],
     });
   };
