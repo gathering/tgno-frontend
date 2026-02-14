@@ -238,7 +238,7 @@ export class Calendar {
           slug: "kreativia",
           name: "Kreativia",
           type: "category",
-          color: "blue",
+          color: "sky",
         },
         {
           slug: "konsert",
@@ -264,7 +264,7 @@ export class Calendar {
           slug: "kreativiascenen",
           name: "Kreativiascenen",
           type: "location",
-          color: "blue",
+          color: "sky",
         },
         {
           slug: "esportscenen",
