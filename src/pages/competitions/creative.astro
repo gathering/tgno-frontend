@@ -1,37 +1,87 @@
 ---
-import H1 from "../../components/H1.astro";
-import Layout from "../../layouts/Layout.astro";
-import Main from "../../components/Main.astro";
 import H2 from "../../components/H2.astro";
-import H3 from "../../components/H3.astro";
-import ContentContainer from "../../components/ContentContainer.astro";
-import CreativeBox from "../../components/competitions/CreativeBox.astro";
-import Pill from "../../components/competitions/Pill.astro";
 
-const boxStyles = "p-6 rounded-3xl sm:mx-auto sm:rounded-2xl";
+interface Prize {
+  name?: string;
+  price?: number | string;
+}
+
+type PrizeCategory = Array<Prize>;
+
+export interface Props {
+  title: string;
+  children: any;
+  prizes: PrizeCategory | Array<PrizeCategory>;
+  byoc?: boolean;
+  requiresTicket?: boolean;
+  class?: string;
+  url?: string;
+  category?:
+    | "foto"
+    | "video"
+    | "grafikk"
+    | "musikk"
+    | "diverse"
+    | "cosplay"
+    | "utvikling";
+}
+
+const { title, prizes, url, class: classNames, category } = Astro.props;
+
+const formatPrice = (prize: number | string) =>
+  typeof prize === "string"
+    ? prize
+    : new Intl.NumberFormat("nb-NO", {
+        style: "currency",
+        currency: "NOK",
+        maximumFractionDigits: 0,
+      }).format(prize);
+
+const categoryStyles = {
+  foto: "bg-red-500",
+  video: "bg-green-500",
+  grafikk: "bg-sky-400",
+  musikk: "bg-yellow-500",
+  diverse: "bg-purple-500",
+  cosplay: "bg-indigo-500",
+  utvikling: "bg-pink-500",
+};
+
+const categoryStyle = categoryStyles[category || "diverse"];
+const hasPrices = !!prizes.length;
+const prizeGroups = prizes.every(Array.isArray) ? prizes : [prizes];
 ---
 
-<Layout title="The Gathering - Kreative konkurranser">
-  <Main>
-    <ContentContainer>
-      <div class="text-center">
-        <H1 text="Kreative konkurranser" />
-      </div>
-      <div class="max-w-3xl mx-auto">
-        <section
-          class="mb-6 prose prose-strong:text-white text-white text-center mx-auto"
-        >
-          <H2 text="Informasjon kommer snart!" />
-          <p class="text-xl">
-            Detaljert informasjon om de kreative konkurransene for TG26 vil bli
-            publisert her når den er klar.
-          </p>
-          <p>
-            Følg med på våre sosiale medier for oppdateringer om konkurranser,
-            premier og påmelding.
-          </p>
-        </section>
-      </div>
-    </ContentContainer>
-  </Main>
-</Layout>
+<section class={`flex flex-col ${categoryStyle} ${classNames}`}>
+  <H2 text={title} color="" />
+  <span>
+    <slot />
+  </span>
+  {
+    hasPrices
+      ? prizeGroups.map((groupPrizes) => (
+          <>
+            <dl class="divide-y divide-black/50 mt-5 last:pt-5 last:mt-auto">
+              {groupPrizes.map(({ name, price }, index) => (
+                <div class="px-2 py-1 grid grid-cols-3 sm:gap-2 sm:px-0">
+                  <dt class="text-sm font-bold leading-4 text-black/90 col-span-2 sm:col-span-1">
+                    {name || `${index + 1}. plass`}
+                  </dt>
+                  <dd class="mt-1 text-sm leading-4 text-black/70 sm:col-span-2 sm:mt-0">
+                    {price ? formatPrice(price) : "TBA"}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </>
+        ))
+      : null
+  }
+  {
+    url && (
+      <button class="w-full px-4 py-2 rounded-full content-center mt-auto bg-white border border-white hover:bg-white/70">
+        Les mer
+      </button>
+    )
+  }
+</section>
