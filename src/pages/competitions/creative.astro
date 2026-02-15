@@ -8,7 +8,8 @@ import ContentContainer from "../../components/ContentContainer.astro";
 import CreativeBox from "../../components/competitions/CreativeBox.astro";
 import Pill from "../../components/competitions/Pill.astro";
 
-const boxStyles = "p-6 rounded-3xl sm:mx-auto sm:rounded-2xl w-full";
+const boxStyles =
+  "p-6 rounded-3xl sm:mx-auto sm:rounded-2xl w-full min-h-[150px] sm:min-h-[200px]";
 ---
 
 <Layout title="The Gathering - Kreative konkurranser">
@@ -18,17 +19,12 @@ const boxStyles = "p-6 rounded-3xl sm:mx-auto sm:rounded-2xl w-full";
       <div
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
       >
-        <div class="sm:col-start-1 sm:col-span-2">
+        <div class="sm:col-start-1 sm:col-span-2 sm:row-span-2">
           <section class="mb-6 prose prose-strong:text-white text-white">
             <H2 text="Hvem takler presset best?" />
             <p>
               Test sjansene dine for å vinne flotte premier i konkurranser innen
-              cosplay, musikk, video, grafikk og mer! Noen konkurranser kan du
-              starte på allerede i dag, mens andre vil ikke påbegynnes før vi er
-              i skipet. Se alle konkurransene på TG25 <a
-                href="https://competitions.gathering.org/"
-                target="_blank">her</a
-              >.
+              cosplay, musikk, video, grafikk og mer!
             </p>
             <H3>Praktisk informasjon</H3>
             <p>
@@ -68,8 +64,16 @@ const boxStyles = "p-6 rounded-3xl sm:mx-auto sm:rounded-2xl w-full";
           <p></p>
         </CreativeBox>
         <CreativeBox
-          title="Freestyle Music"
+          title="TG:Hack"
           class={`${boxStyles} sm:col-span-2`}
+          prizes={[]}
+          category="diverse"
+        >
+          <p></p>
+        </CreativeBox>
+        <CreativeBox
+          title="Freestyle Music"
+          class={boxStyles}
           prizes={[]}
           category="musikk"
         >
@@ -77,17 +81,9 @@ const boxStyles = "p-6 rounded-3xl sm:mx-auto sm:rounded-2xl w-full";
         </CreativeBox>
         <CreativeBox
           title="Game Jam"
-          class={`${boxStyles} md:col-span-2`}
-          prizes={[]}
-          category="utvikling"
-        >
-          <p></p>
-        </CreativeBox>
-        <CreativeBox
-          title="TG:Hack"
           class={boxStyles}
           prizes={[]}
-          category="diverse"
+          category="utvikling"
         >
           <p></p>
         </CreativeBox>
@@ -229,12 +225,12 @@ const boxStyles = "p-6 rounded-3xl sm:mx-auto sm:rounded-2xl w-full";
         </CreativeBox>
 
         <CreativeBox
-          title="Popup Competitions"
-          class={boxStyles}
+          title="Improviserte konkurranser"
+          class={`${boxStyles} md:col-span-2`}
           prizes={[]}
           category="diverse"
         >
-          <p></p>
+          <p>Følg med på tg.no og under arrangementet</p>
         </CreativeBox>
       </div>
     </ContentContainer>
