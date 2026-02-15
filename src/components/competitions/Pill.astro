@@ -2,11 +2,12 @@
 export interface Props {
   text: string;
   tooltip?: string;
-  color?: "orange" | "blue" | "yellow";
+  color?: "orange" | "blue" | "yellow" | "white";
   class?: string;
 }
 
 const colors = {
+  white: "text-black/80 border-black/20 bg-white",
   orange: "text-black/80 border-black/20 bg-orange-500",
   blue: "text-black/80 border-black/20 bg-sky-400",
   yellow: "text-black/80 border-black/20 bg-yellow-400",
