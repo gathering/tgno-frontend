@@ -16,10 +16,16 @@ import BrandTiktok from "./icons/BrandTiktok.astro";
     <div>
       <a href="/" class="flex items-center mb-4">
         <img
-          src="/images/tglogo-color.png"
+          src="/images/tglogo-color.svg"
           alt="The Gathering logo"
           width={150}
-          class="aspect-thumbnail object-cover min-w-full"
+          class="aspect-thumbnail object-cover min-w-full block light:hidden"
+        />
+        <img
+          src="/images/tglogo-color-black.svg"
+          alt="The Gathering logo"
+          width={150}
+          class="aspect-thumbnail object-cover min-w-full hidden light:block"
         />
       </a>
       <div

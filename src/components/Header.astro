@@ -44,7 +44,13 @@ const navigationItems = await getCachedNavigationItems(import.meta.env.API_URL);
             src="/tg26/tg26_horizontal.svg"
             alt="The Gathering logo"
             width={130}
-            class="aspect-thumbnail object-cover"
+            class="aspect-thumbnail object-cover block light:hidden"
+          />
+          <img
+            src="/tg26/tg26_horizontal_black.svg"
+            alt="The Gathering logo"
+            width={130}
+            class="aspect-thumbnail object-cover hidden light:block"
           />
         </a>
         <a href="/" class="flex gap-x-4 -ml-1 items-center sm:hidden">
