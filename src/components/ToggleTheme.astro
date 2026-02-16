@@ -35,12 +35,41 @@ import ThemeLight from "./icons/ThemeLight.astro";
 
   updateThemeDisplay();
 
+  let toggles = 0;
   themeToggle?.addEventListener("click", () => {
     const current = localStorage.getItem("theme") || "dark";
     let next = current === "dark" ? "light" : "dark";
     localStorage.setItem("theme", next);
 
+    toggles += 1;
+    setTimeout(() => {
+      toggles = Math.max(0, toggles - 1);
+    }, 3000);
+
+    if (toggles > 5 && next === "dark") {
+      toggles = 0;
+      triggerEasterEgg();
+    }
+
     updateTheme();
     updateThemeDisplay();
   });
+
+  function triggerEasterEgg() {
+    const overlay = document.createElement("div");
+    overlay.classList =
+      "fixed inset-0 bg-black opacity-75 z-40 pointer-events-auto";
+    document.body.appendChild(overlay);
+
+    const box = document.createElement("div");
+    box.classList =
+      "fixed text-7xl sm:text-8xl md:text-9xl z-50 pointer-events-none animate-bounce top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-max";
+    box.textContent = "‼️👀🔥‼️";
+    document.body.appendChild(box);
+
+    setTimeout(() => {
+      overlay.remove();
+      box.remove();
+    }, 3000);
+  }
 </script>
