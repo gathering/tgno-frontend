@@ -27,7 +27,7 @@
 }
 
 /* color animations */
-* {
+*:not(p, a, span) {
   @apply transition-colors duration-200;
 }
 
