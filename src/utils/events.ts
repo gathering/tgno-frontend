@@ -211,12 +211,12 @@ export class Calendar {
     return (this._navigationConfig ??= {
       dates: [
         DEFAULT_DATE_OPTION,
-        ...[16, 17, 18, 19, 20].map((date) => {
+        ...[1, 2, 3, 4, 5].map((date) => {
           // TODO: Adjust timezone to +1 when filtering for dates outside of summer time
-          const start = `2025-04-${date} 00:00+02:00`;
-          const end = `2025-04-${date + 1} 02:00+02:00`;
+          const start = `2026-04-0${date} 00:00+02:00`;
+          const end = `2026-04-0${date + 1} 02:00+02:00`;
           return {
-            slug: `2025-04-${date}`,
+            slug: `2026-04-0${date}`,
             name: new Date(start).toLocaleDateString("no-NO", {
               weekday: "long",
               day: "numeric",
@@ -238,7 +238,7 @@ export class Calendar {
           slug: "kreativia",
           name: "Kreativia",
           type: "category",
-          color: "blue",
+          color: "sky",
         },
         {
           slug: "konsert",
@@ -264,7 +264,7 @@ export class Calendar {
           slug: "kreativiascenen",
           name: "Kreativiascenen",
           type: "location",
-          color: "blue",
+          color: "sky",
         },
         {
           slug: "esportscenen",
@@ -310,10 +310,15 @@ export const fetchEvents = async ({
   }
 
   const response = await typedFetch<FetchEventsResponse>(url.toString());
-  const data = await response.json();
+  let rawEventsData: FetchEventsResponse = [];
+  try {
+    rawEventsData = await response.json();
+  } catch (error) {
+    console.error(`Failed to parse events response: ${error}`);
+  }
   const pad = (number: number) => String(number).padStart(2, "0");
 
-  events = data.map((event) => {
+  events = rawEventsData.map((event) => {
     const startObj = new Date(event.start);
     const endObj = new Date(event.end);
     const reqStartObj = hasDates(date) ? new Date(date.start) : null;

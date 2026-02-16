@@ -7,7 +7,7 @@ import Pill from "./Pill.astro";
 export interface Props {
   title: string;
   children: any;
-  prizes: number[];
+  prizes?: number[];
   prizeDisclaimer?: string;
   byoc?: boolean;
   requiresTicket?: boolean;
@@ -28,7 +28,7 @@ const {
 } = Astro.props;
 
 const hasPills = byoc || requiresTicket;
-const formattedPrizes = prizes.map((prize) =>
+const formattedPrizes = prizes?.map((prize) =>
   new Intl.NumberFormat("nb-NO", {
     style: "currency",
     currency: "NOK",
@@ -47,11 +47,11 @@ const formattedPrizes = prizes.map((prize) =>
         </div>
       )
     }
-    <H2 text={title} color="" class="mt-4" />
+    <H2 text={title} color="text-white" class="mt-4" />
     <slot />
   </div>
   {
-    formattedPrizes.length ? (
+    formattedPrizes?.length ? (
       <div class="mt-4 last:mt-auto">
         <H3 class="mt-0 text-lg" color="">
           Premiepotten: {prizeDisclaimer ? " *" : ""}
@@ -74,7 +74,7 @@ const formattedPrizes = prizes.map((prize) =>
   }
   {
     url && (
-      <div class="last:pt-4 last:mt-auto w-full">
+      <div class="last:pt-4 last:mt-auto w-full hidden">
         <Button href={url} variant="wide">
           {urlText}
         </Button>

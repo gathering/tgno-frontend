@@ -33,32 +33,40 @@ const getColors = ({ active, color }: { active?: boolean; color?: string }) => {
       ))
     }
   </div>
-  <h3>Sted</h3>
-  <div class="flex flex-row flex-wrap gap-2">
-    {
-      navigation.locations.map((location) => (
-        <a
-          href={location.url}
-          class={`${TAG_STYLES} ${getColors(location)} hover:bg-foreground hover:text-foreground-contrast`}
-        >
-          {location.name}
-          {location.active ? <CloseSymbol /> : null}
-        </a>
-      ))
-    }
-  </div>
-  <h3>Kategori</h3>
-  <div class="flex flex-row flex-wrap gap-2">
-    {
-      navigation.categories.map((category) => (
-        <a
-          href={category.url}
-          class={`${TAG_STYLES} ${getColors(category)} hover:bg-foreground hover:text-foreground-contrast`}
-        >
-          {category.name}
-          {category.active ? <CloseSymbol /> : null}
-        </a>
-      ))
-    }
-  </div>
+  {
+    navigation.locations.length > 0 && (
+      <>
+        <h3>Sted</h3>
+        <div class="flex flex-row flex-wrap gap-2">
+          {navigation.locations.map((location) => (
+            <a
+              href={location.url}
+              class={`${TAG_STYLES} ${getColors(location)} hover:bg-foreground hover:text-foreground-contrast`}
+            >
+              {location.name}
+              {location.active ? <CloseSymbol /> : null}
+            </a>
+          ))}
+        </div>
+      </>
+    )
+  }
+  {
+    navigation.categories.length > 0 && (
+      <>
+        <h3>Kategori</h3>
+        <div class="flex flex-row flex-wrap gap-2">
+          {navigation.categories.map((category) => (
+            <a
+              href={category.url}
+              class={`${TAG_STYLES} ${getColors(category)} hover:bg-foreground hover:text-foreground-contrast`}
+            >
+              {category.name}
+              {category.active ? <CloseSymbol /> : null}
+            </a>
+          ))}
+        </div>
+      </>
+    )
+  }
 </div>
