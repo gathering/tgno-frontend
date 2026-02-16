@@ -17,6 +17,6 @@ const { filename, url, alt, width, nudge } = Astro.props;
     src={`/tg25/sponsors/${filename}`}
     alt={alt}
     width={width}
-    class={`aspect-thumbnail object-cover ${nudge ? "m" + nudge + "-2" : ""} invert dark:invert-0`}
+    class={`aspect-thumbnail object-cover ${nudge ? "m" + nudge + "-2" : ""} light:invert`}
   />
 </a>

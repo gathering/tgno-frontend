@@ -1,21 +1,21 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant light (&:where(.light-mode, .light-mode *));
 
 :root {
-  /* LIGHT MODE */
-  --dynamic-color-background: #ffffff;
-  --dynamic-color-background-secondary: #f8f8f8;
-  --dynamic-color-foreground: black;
-  --dynamic-color-foreground-contrast: white;
+  /* DARK MODE */
+  --dynamic-color-background: #06070a;
+  --dynamic-color-background-secondary: #0e0f16;
+  --dynamic-color-foreground: white;
+  --dynamic-color-foreground-contrast: black;
 
-  &.dark {
-    /* DARK MODE */
-    --dynamic-color-background: #06070a;
-    --dynamic-color-background-secondary: #0e0f16;
-    --dynamic-color-foreground: white;
-    --dynamic-color-foreground-contrast: black;
+  &.light-mode {
+    /* LIGHT MODE */
+    --dynamic-color-background: #ffffff;
+    --dynamic-color-background-secondary: #f8f8f8;
+    --dynamic-color-foreground: black;
+    --dynamic-color-foreground-contrast: white;
   }
 }
 

@@ -1,7 +1,6 @@
 ---
 import ThemeDark from "./icons/ThemeDark.astro";
 import ThemeLight from "./icons/ThemeLight.astro";
-import ThemeSystem from "./icons/ThemeSystem.astro";
 ---
 
 <button
@@ -11,7 +10,6 @@ import ThemeSystem from "./icons/ThemeSystem.astro";
 >
   <ThemeDark class="hidden" />
   <ThemeLight class="hidden" />
-  <ThemeSystem class="hidden" />
 </button>
 
 <script>
@@ -20,12 +18,11 @@ import ThemeSystem from "./icons/ThemeSystem.astro";
   const themeToggle = document.getElementById("theme-toggle");
 
   function updateThemeDisplay() {
-    const current = localStorage.getItem("theme") || "system";
+    const current = localStorage.getItem("theme") || "dark";
     const dark = themeToggle?.querySelector("svg:nth-child(1)") as SVGElement;
     const light = themeToggle?.querySelector("svg:nth-child(2)") as SVGElement;
-    const system = themeToggle?.querySelector("svg:nth-child(3)") as SVGElement;
 
-    for (const [theme, icon] of Object.entries({ dark, light, system })) {
+    for (const [theme, icon] of Object.entries({ dark, light })) {
       if (theme === current) {
         icon.classList.remove("hidden");
         icon.classList.add("block");
@@ -39,15 +36,9 @@ import ThemeSystem from "./icons/ThemeSystem.astro";
   updateThemeDisplay();
 
   themeToggle?.addEventListener("click", () => {
-    const current = localStorage.getItem("theme");
-    let next: string | null;
-
-    if (current === "dark") next = "light";
-    else if (current === "light") next = null;
-    else next = "dark";
-
-    if (next) localStorage.setItem("theme", next);
-    else localStorage.removeItem("theme");
+    const current = localStorage.getItem("theme") || "dark";
+    let next = current === "dark" ? "light" : "dark";
+    localStorage.setItem("theme", next);
 
     updateTheme();
     updateThemeDisplay();
