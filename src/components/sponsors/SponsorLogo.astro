@@ -8,8 +8,6 @@ interface Props {
 }
 
 const { filename, url, alt, width, nudge } = Astro.props;
-
-// ydnamically import a svg based on the filename prop, and apply a text color to it
 ---
 
 <a href={url} target="_blank" class="flex justify-center md:min-w-[160px]">
@@ -17,6 +15,6 @@ const { filename, url, alt, width, nudge } = Astro.props;
     src={`/tg25/sponsors/${filename}`}
     alt={alt}
     width={width}
-    class={`aspect-thumbnail object-cover ${nudge ? "m" + nudge + "-2" : ""} light:invert`}
+    class={`aspect-thumbnail object-cover ${nudge ? "m" + nudge + "-2" : ""} light:invert select-none`}
   />
 </a>

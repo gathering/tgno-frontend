@@ -102,18 +102,30 @@ const boxStyles = [
       </section>
 
       <div
-        class:list={[...boxStyles, "bg-foreground", "text-foreground-contrast"]}
+        class:list={[
+          ...boxStyles,
+          "bg-white",
+          "text-black",
+          "border-foreground",
+          "border",
+        ]}
       >
-        <H3 class="mb-4" color="text-foreground-contrast">Ta kontakt</H3>
+        <H3 class="mb-4" color="text-black">Ta kontakt</H3>
         <div id="zammad-feedback-form">
           Kontaktskjema, om det ikke dukker opp ta kontakt med Hovedkontakt
           nevnt under
         </div>
       </div>
       <div
-        class:list={[...boxStyles, "bg-foreground", "text-foreground-contrast"]}
+        class:list={[
+          ...boxStyles,
+          "bg-white",
+          "text-black",
+          "border-foreground",
+          "border",
+        ]}
       >
-        <h3 class="mb-2 text-xl font-normal">Ring oss på</h3>
+        <h3 class="text-black mb-2 text-xl font-normal">Ring oss på</h3>
         <p class="text-3xl font-bold mb-4">
           Tlf: <a href="tel:004722696900" class="not-prose underline"
             >22 69 69 00</a
@@ -128,10 +140,9 @@ const boxStyles = [
       <div
         class:list={[
           ...boxStyles,
-          "bg-background-secondary",
+          "bg-neutral-800",
+          "light:bg-neutral-200",
           "text-foreground",
-          "border-foreground",
-          "border",
         ]}
       >
         <H2 text="Hvem kan du få kontakt med?" class="mb-8" />
