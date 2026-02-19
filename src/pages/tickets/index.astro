@@ -17,6 +17,83 @@ const boxStyles = [
   "sm:w-full",
 ];
 
+// Important dates
+const importantDates = [
+  { date: "1. Desember", time: "13:37", text: "Billettsalget" },
+  { date: "12. Mars", text: "Setereservasjon" },
+  { date: "18. Mars", text: "Forhåndsinnsjekk" },
+  { date: "29. Mars", text: "Setereservasjon" },
+  { date: "1. April", text: "Dørene" },
+];
+
+const EVENT_YEAR = new Date().getFullYear();
+
+// Map months for timeline creation
+const monthMap: Record<string, number> = {
+  Januar: 0,
+  Februar: 1,
+  Mars: 2,
+  April: 3,
+  Mai: 4,
+  Juni: 5,
+  Juli: 6,
+  August: 7,
+  September: 8,
+  Oktober: 9,
+  November: 10,
+  Desember: 11,
+};
+
+// Get norwegian time
+const now = new Date(
+  new Date().toLocaleString("en-US", { timeZone: "Europe/Oslo" }),
+);
+
+// Make a "timeline" for status logic
+const withStatus = importantDates.map((item, index, array) => {
+  const [dayStr, monthName] = item.date.split(" ");
+  const day = Number(dayStr);
+  const month = monthMap[monthName];
+
+  // Dates after April belong to previous year
+  let year = EVENT_YEAR;
+  if (month > 3) {
+    year -= 1;
+  }
+
+  // Handle statuses
+  const [hours = 0, minutes = 0] = item.time?.split(":").map(Number) ?? [];
+
+  const dateTime = new Date(year, month, day, hours, minutes);
+
+  let nextDateTime: Date | null = null;
+  const next = array[index + 1];
+
+  if (next) {
+    const [nextDayStr, nextMonthName] = next.date.split(" ");
+    const nextMonth = monthMap[nextMonthName];
+    const nextDay = Number(nextDayStr);
+
+    let nextYear = EVENT_YEAR;
+    if (nextMonth > 3) {
+      nextYear -= 1;
+    }
+
+    nextDateTime = new Date(nextYear, nextMonth, nextDay);
+  }
+
+  const isActive = now >= dateTime && (!nextDateTime || now < nextDateTime);
+
+  const status = now >= dateTime ? "Åpnet" : "Åpner";
+
+  return {
+    ...item,
+    status,
+    isActive,
+  };
+});
+
+// Page details
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Event",
@@ -95,13 +172,14 @@ const jsonLd = {
             setene du ønsker på The Gathering 2026:
           </p>
           <ul>
-            <li class="font-bold">
-              1. Desember, 13:37 - Billettsalget&nbsp;åpnet
-            </li>
-            <li class="text-xs">12. Mars - Setereservasjon åpner</li>
-            <li class="text-xs">18. Mars - Forhåndsinnsjekk åpner</li>
-            <li class="text-xs">29. Mars - Setereservasjon stenger</li>
-            <li class="text-xs">1. April - Dørene åpner</li>
+            {
+              withStatus.map((item) => (
+                <li class={item.isActive ? "font-bold" : "text-xs"}>
+                  {item.date}
+                  {item.time && `, ${item.time}`} – {item.text} {item.status}
+                </li>
+              ))
+            }
           </ul>
         </section>
         <section
