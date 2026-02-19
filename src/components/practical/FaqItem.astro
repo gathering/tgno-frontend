@@ -8,14 +8,14 @@ type Props = FaqSnippet & {
   class?: string;
 };
 
-const { title, body, class: className } = Astro.props;
+const { title, body, class: className = "" } = Astro.props;
 ---
 
-<section class={`prose p-4 ${className}`}>
+<section class={` ${className}`}>
   <Collapsible toggleVariant="header">
     <CollapsibleTrigger slot="header" class="w-full">
-      <H3 class="text-4xl font-bold my-2">{title}</H3>
+      <H3 class="text-2xl font-semibold">{title}</H3>
     </CollapsibleTrigger>
-    <div class="prose prose-h2:text-base" set:html={body} />
+    <div class="mt-2 prose prose-invert" set:html={body} />
   </Collapsible>
 </section>
