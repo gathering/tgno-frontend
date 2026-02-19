@@ -1,5 +1,6 @@
 ---
 import { getCachedNavigationItems } from "../utils/navigation-cache";
+import Button from "./Button.astro";
 import HeaderNavigation from "./HeaderNavigation.astro";
 import CloseSymbol from "./icons/CloseSymbol.astro";
 import HamburgerSymbol from "./icons/HamburgerSymbol.astro";
@@ -60,7 +61,14 @@ const navigationItems = await getCachedNavigationItems(import.meta.env.API_URL);
           class="hidden sm:flex w-full space-x-6 space-y-0 justify-end"
           prioritized
         />
-        <div class="flex items-center">
+
+        <div class="flex items-center font-bold">
+          <Button
+            href="https://www.geekevents.org/tg26/#/shop"
+            variant="wide"
+            class="whitespace-nowrap"
+            theme="orange">Kjøp billett</Button
+          >
           <button
             type="button"
             data-part="mobile-menu-trigger"
