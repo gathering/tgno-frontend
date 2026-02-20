@@ -1,0 +1,263 @@
+---
+import H2 from "../../components/H2.astro";
+import Main from "../../components/Main.astro";
+import Layout from "../../layouts/Layout.astro";
+import {
+  Calendar,
+  isTag,
+  isDateOption,
+  tagsOfTypes,
+  DEFAULT_DATE_OPTION,
+} from "../../utils/events";
+import Event from "../../components/schedule/Event.astro";
+import DayHeader from "../../components/schedule/DayHeader.astro";
+import CloseSymbol from "../../components/icons/CloseSymbol.astro";
+import ContentContainer from "../../components/ContentContainer.astro";
+import FloatingNav from "../../components/floating-nav/FloatingNav.astro";
+import type { DateOption, TagWithMeta, Filter } from "../../utils/events";
+import type { Tag } from "../../types";
+import ChevronDownSymbol from "../../components/icons/ChevronDownSymbol.astro";
+import ActiveFilterNav, {
+  type ActiveFilter,
+} from "../../components/schedule/ActiveFilterNav.astro";
+import FullFilterNav from "../../components/schedule/FullFilterNav.astro";
+import Schedule from "../../components/schedule/Schedule.astro";
+
+type Nullablefilter = Omit<Filter, "date"> & {
+  date?: Filter["date"];
+};
+
+function getUrl({ date, locations, categories }: Nullablefilter) {
+  const url = new URL(Astro.url);
+  url.search = "";
+
+  if (date) {
+    url.searchParams.set("date", date.slug);
+  }
+  if (locations.length) {
+    url.searchParams.set("locations", locations.join(","));
+  }
+  if (categories.length) {
+    url.searchParams.set("categories", categories.join(","));
+  }
+  return url;
+}
+
+const getAdjustedFilter = (
+  filterChange: {
+    date?: DateOption;
+    location?: string;
+    category?: string;
+  },
+  currentFilter: Filter,
+): Nullablefilter => {
+  const { date, location, category } = filterChange;
+  const newFilter = {
+    date: date
+      ? date.slug === currentFilter.date?.slug
+        ? DEFAULT_DATE_OPTION
+        : date
+      : currentFilter.date,
+    // For now we just disallow more than one tag per location and category
+    locations: location
+      ? location === currentFilter.locations[0]
+        ? []
+        : [location]
+      : currentFilter.locations,
+    // For now we just disallow more than one tag per location and category
+    categories: category
+      ? category === currentFilter.categories[0]
+        ? []
+        : [category]
+      : currentFilter.categories,
+  };
+  return newFilter;
+};
+
+function getCalendarUrl(
+  entity: DateOption | TagWithMeta,
+  currentFilter: Filter,
+) {
+  if (isTag(entity)) {
+    return getUrl(
+      getAdjustedFilter(
+        entity.type === "location"
+          ? { location: entity.slug }
+          : { category: entity.slug },
+        currentFilter,
+      ),
+    );
+  }
+  if (isDateOption(entity)) {
+    return getUrl(
+      getAdjustedFilter(
+        {
+          date: entity,
+        },
+        currentFilter,
+      ),
+    );
+  }
+  return getUrl(currentFilter);
+}
+
+const getAdjustedUrl = (filterChange: {
+  date?: DateOption;
+  location?: string;
+  category?: string;
+}) => getUrl(getAdjustedFilter(filterChange, filter));
+
+const calendar = new Calendar(
+  {
+    event: parseInt(Astro.url.searchParams.get("event") || "0", 10) || null,
+    date: Astro.url.searchParams.get("date"),
+    locations: (Astro.url.searchParams.get("locations") || "").split(",") || [],
+    categories:
+      (Astro.url.searchParams.get("categories") || "").split(",") || [],
+  },
+  getCalendarUrl,
+);
+
+const events = await calendar.getEvents();
+const focusedEvent = await calendar.getFocusedEvent();
+
+const getLocation = (tags: Tag[]) => {
+  const location = tags.filter(tagsOfTypes(["location"])).pop();
+  return location ? calendar.getDecoratedTag(location) : undefined;
+};
+
+const filter = calendar.getFilter();
+const navigation = calendar.getNavigation();
+---
+
+<script>
+  import type { Schedule } from "../../components/schedule/Schedule.astro";
+  import { callOnceAvailable } from "../../utils/components";
+
+  callOnceAvailable({
+    element: document.querySelector<Schedule>(
+      "[data-component='schedule'] tg-schedule",
+    ),
+    callback: (schedule) =>
+      schedule.attachScrollToTriggers("[data-part='scroll-to-live-trigger']"),
+    check: (schedule) => !!schedule?.attachScrollToTriggers,
+    readyEvent: "schedule:loaded",
+  });
+</script>
+
+<Layout
+  title="The Gathering - Program"
+  description="Her finner du programmet for hva som skjer innenfor E-Sport, Kreativia, konserter og mer under The Gathering 2026."
+  type="website"
+  jsonLd={focusedEvent
+    ? {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        name: focusedEvent.title,
+        startDate: focusedEvent.start,
+        endDate: focusedEvent.end,
+        description: focusedEvent.description,
+        eventStatus: focusedEvent.cancelled
+          ? "EventCancelled"
+          : "EventScheduled",
+        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+        location: {
+          "@type": "Place",
+          name: "The Gathering",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "Hamar, Vikingskipet",
+            addressLocality: "Hamar",
+            postalCode: "2316",
+            addressCountry: "NO",
+          },
+        },
+        organizer: {
+          "@type": "Organization",
+          name: "The Gathering",
+          url: "https://www.gathering.org",
+        },
+      }
+    : undefined}
+>
+  <Main>
+    <ContentContainer variant="narrow">
+      <section data-component="schedule">
+        <H2 text="PROGRAM" />
+        {
+          focusedEvent ? (
+            <Event
+              {...focusedEvent}
+              location={getLocation(focusedEvent.tags)}
+              expanded
+            >
+              <a href="/schedule" class="">
+                <CloseSymbol />
+              </a>
+            </Event>
+          ) : null
+        }
+        <nav class="text-white mt-4 mb-8">
+          <FloatingNav closeOnNavigate>
+            <button
+              slot="trigger"
+              class="flex flex-row gap-2 text-neutral-300 bg-white/10 py-2 px-3 rounded-lg"
+              >Filtrer <ChevronDownSymbol /></button
+            >
+            <button
+              data-part="scroll-to-live-trigger"
+              slot="after-trigger"
+              class="hidden flex-row gap-2 ml-2 text-neutral-300 bg-black/20 py-2 px-3 rounded-lg"
+              >Scroll til Live</button
+            >
+            <span slot="content">
+              <FullFilterNav navigation={navigation} />
+              <button
+                data-part="scroll-to-live-trigger"
+                slot="after-trigger"
+                class="hidden flex-row gap-2 ml-2 text-neutral-300 bg-black/20 py-2 px-3 rounded-lg"
+                >Scroll til Live</button
+              >
+            </span>
+          </FloatingNav>
+          <ActiveFilterNav
+            activeFilters={[
+              filter.date && {
+                ...filter.date,
+                url: getAdjustedUrl({ date: filter.date }).toString(),
+                required: filter.date.slug === DEFAULT_DATE_OPTION.slug,
+              },
+              ...filter.locations.map(calendar.getDecoratedTag),
+              ...filter.categories.map(calendar.getDecoratedTag),
+            ].filter(Boolean) as ActiveFilter[]}
+            resetUrl={getUrl({
+              date: DEFAULT_DATE_OPTION,
+              locations: [],
+              categories: [],
+            }).toString()}
+          />
+        </nav>
+        <Schedule>
+          {
+            events.length ? (
+              events.map((event, i) =>
+                event.strings.startDate !== events[i - 1]?.strings.startDate ? (
+                  <>
+                    <DayHeader date={event.start} />
+                    <Event {...event} location={getLocation(event.tags)} />
+                  </>
+                ) : (
+                  <Event {...event} location={getLocation(event.tags)} />
+                ),
+              )
+            ) : (
+              <p class="text-white text-md">
+                No events found... Perhaps try removing one or more filters?
+              </p>
+            )
+          }
+        </Schedule>
+      </section>
+    </ContentContainer>
+  </Main>
+</Layout>
