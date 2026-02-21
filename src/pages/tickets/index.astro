@@ -17,81 +17,28 @@ const boxStyles = [
   "sm:w-full",
 ];
 
-// Important dates
 const importantDates = [
-  { date: "1. Desember", time: "13:37", text: "Billettsalget" },
-  { date: "12. Mars", text: "Setereservasjon" },
-  { date: "18. Mars", text: "Forhåndsinnsjekk" },
-  { date: "29. Mars", text: "Setereservasjon" },
-  { date: "1. April", text: "Dørene" },
+  {
+    activeFrom: "2025-12-01T13:37:00+01:00",
+    text: "1. Desember, 13:37 – Billettsalget åpner",
+  },
+  {
+    activeFrom: "2026-03-12T00:00:00+01:00",
+    text: "12. Mars – Setereservasjon åpner",
+  },
+  {
+    activeFrom: "2026-03-18T00:00:00+01:00",
+    text: "18. Mars – Forhåndsinnsjekk åpner",
+  },
+  {
+    activeFrom: "2026-03-29T00:00:00+02:00",
+    text: "29. Mars – Setereservasjon stenger",
+  },
+  {
+    activeFrom: "2026-04-01T00:00:00+02:00",
+    text: "1. April – Dørene åpner",
+  },
 ];
-
-const EVENT_YEAR = new Date().getFullYear();
-
-// Map months for timeline creation
-const monthMap: Record<string, number> = {
-  Januar: 0,
-  Februar: 1,
-  Mars: 2,
-  April: 3,
-  Mai: 4,
-  Juni: 5,
-  Juli: 6,
-  August: 7,
-  September: 8,
-  Oktober: 9,
-  November: 10,
-  Desember: 11,
-};
-
-// Get norwegian time
-const now = new Date(
-  new Date().toLocaleString("en-US", { timeZone: "Europe/Oslo" }),
-);
-
-// Make a "timeline" for status logic
-const withStatus = importantDates.map((item, index, array) => {
-  const [dayStr, monthName] = item.date.split(" ");
-  const day = Number(dayStr);
-  const month = monthMap[monthName];
-
-  // Dates after April belong to previous year
-  let year = EVENT_YEAR;
-  if (month > 3) {
-    year -= 1;
-  }
-
-  // Handle statuses
-  const [hours = 0, minutes = 0] = item.time?.split(":").map(Number) ?? [];
-
-  const dateTime = new Date(year, month, day, hours, minutes);
-
-  let nextDateTime: Date | null = null;
-  const next = array[index + 1];
-
-  if (next) {
-    const [nextDayStr, nextMonthName] = next.date.split(" ");
-    const nextMonth = monthMap[nextMonthName];
-    const nextDay = Number(nextDayStr);
-
-    let nextYear = EVENT_YEAR;
-    if (nextMonth > 3) {
-      nextYear -= 1;
-    }
-
-    nextDateTime = new Date(nextYear, nextMonth, nextDay);
-  }
-
-  const isActive = now >= dateTime && (!nextDateTime || now < nextDateTime);
-
-  const status = now >= dateTime ? "Åpnet" : "Åpner";
-
-  return {
-    ...item,
-    status,
-    isActive,
-  };
-});
 
 // Page details
 const jsonLd = {
@@ -122,6 +69,23 @@ const jsonLd = {
     url: "https://www.kandu.no",
   },
 };
+
+const now = new Date();
+
+const parsedDates = importantDates
+  .map((item) => ({
+    ...item,
+    date: new Date(item.activeFrom),
+  }))
+  .sort((a, b) => a.date.getTime() - b.date.getTime());
+
+const activeIndex = parsedDates.findLastIndex((item) => item.date <= now);
+
+const withStatus = parsedDates.map((item, index) => ({
+  text: item.text,
+  isActive: index === activeIndex,
+  status: index <= activeIndex ? "Åpnet" : "Åpner",
+}));
 ---
 
 <Layout
@@ -175,8 +139,7 @@ const jsonLd = {
             {
               withStatus.map((item) => (
                 <li class={item.isActive ? "font-bold" : "text-xs"}>
-                  {item.date}
-                  {item.time && `, ${item.time}`} – {item.text} {item.status}
+                  {item.text} {item.status}
                 </li>
               ))
             }
