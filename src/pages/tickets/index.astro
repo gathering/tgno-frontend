@@ -98,9 +98,9 @@ const jsonLd = {
             <li class="font-bold">
               1. Desember, 13:37 - Billettsalget&nbsp;åpnet
             </li>
-            <li class="text-xs">TBA - Setereservasjon åpner</li>
-            <li class="text-xs">TBA - Forhåndsinnsjekk åpner</li>
-            <li class="text-xs">TBA - Setereservasjon stenger</li>
+            <li class="text-xs">12. Mars - Setereservasjon åpner</li>
+            <li class="text-xs">18. Mars - Forhåndsinnsjekk åpner</li>
+            <li class="text-xs">29. Mars - Setereservasjon stenger</li>
             <li class="text-xs">1. April - Dørene åpner</li>
           </ul>
         </section>
@@ -184,6 +184,25 @@ const jsonLd = {
                 1-dags besøksbilett til arrangementet uten sitteplass. Inngang
                 er gyldig frem til dagsprogrammet er ferdig for dagen. Gir ikke
                 tilgang til overnattingsområdet.
+              </p>
+              <p>Kan kun delta i mindre konkurranser og turneringer.</p>
+            </TicketBox>
+            <TicketBox
+              name="UngINN EXPOpass - Ukespass"
+              timespan="til hele arrangementet"
+              price={349}
+              seatless
+            >
+              <li slot="additional-features">
+                Kan ikke delta i de offisielle konkurranser som er under <a
+                  href="/competitions/creative">Kreative</a
+                >
+                og <a href="/competitions/esport">E-sport</a> på TG.no
+              </li>
+              <p>
+                Denne billetter gjelder for for alle ungdommer i Innlandet med
+                UngINN-kortet. UngINN-kortet må fremvises enten fysisk eller
+                digitalt sammen med legitimasjon ved ankomst til arrangementet.
               </p>
               <p>Kan kun delta i mindre konkurranser og turneringer.</p>
             </TicketBox>
