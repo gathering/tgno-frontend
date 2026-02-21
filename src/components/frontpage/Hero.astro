@@ -2,7 +2,10 @@
 interface Props {
   image: string;
   imageHref?: string;
-  backgroundVideo?: string;
+  backgroundVideo?: Array<{
+    path: string;
+    type: string;
+  }>;
   fullVideoHref?: string;
   fullVideoText?: string;
   class?: string;
@@ -37,7 +40,9 @@ const videoClass = `max-sm:min-h-[200px] sm:absolute sm:left-0 sm:top-0 w-full s
           class={videoClass}
           poster={image}
         >
-          <source src={backgroundVideo} type="video/mp4" />
+          {backgroundVideo.map((video) => (
+            <source src={video.path} type={video.type} />
+          ))}
         </video>
         {fullVideoHref && (
           <a

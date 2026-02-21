@@ -11,7 +11,10 @@ const { class: classNames } = Astro.props;
 
 <Hero
   image="/images/blurry-lights.jpg"
-  backgroundVideo="/tg26/preview_video.webm"
+  backgroundVideo={[
+    { path: "/tg26/preview_video.webm", type: "video/webm" },
+    { path: "/tg26/preview_video.mp4", type: "video/mp4" },
+  ]}
   fullVideoHref="https://www.youtube.com/watch?v=mtDVFcYip8A"
   fullVideoText="Se TG26 teaseren på YouTube"
   class={classNames}
