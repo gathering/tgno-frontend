@@ -4,7 +4,7 @@ import InfoBox from "./InfoBox.astro";
 ---
 
 <div class="grid gap-2 md:grid-cols-3">
-  <div class="sm:col-span-1 relative">
+  <div class="sm:col-span-2 md:col-span-1 relative">
     <img
       src="https://www.tg.no/media/images/Et_helt_liv_30_TG26_3_of_1.max-1600x1600.png"
       alt=""
@@ -25,7 +25,7 @@ import InfoBox from "./InfoBox.astro";
       </p>
     </InfoBox>
   </div>
-  <div class="sm:col-span-1 relative">
+  <div class="hidden md:flex relative">
     <img
       src="https://www.tg.no/media/images/Foto_Mats_O._Bristol.max-1600x1600.jpg"
       alt=""
@@ -33,7 +33,7 @@ import InfoBox from "./InfoBox.astro";
     />
   </div>
   <div
-    class="sm:col-span-3 bg-sky-400 md:bg-background-secondary p-4 rounded-2xl flex justify-center flex content-center items-center gap-2 min-[540px]:gap-10 flex-col min-[540px]:flex-row"
+    class="sm:col-span-3 md:bg-background-secondary p-4 rounded-2xl flex justify-center flex content-center items-center gap-2 min-[540px]:gap-10 flex-col min-[540px]:flex-row"
   >
     <Countdown
       targetDate="2026-04-01T09:00:00+02:00"
