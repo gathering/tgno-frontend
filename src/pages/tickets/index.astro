@@ -69,6 +69,12 @@ const jsonLd = {
     url: "https://www.kandu.no",
   },
 };
+
+const now = new Date();
+
+const activeIndex = importantDates
+  .map((item) => new Date(item.activeFrom))
+  .findLastIndex((date) => date <= now);
 ---
 
 <Layout
@@ -119,7 +125,13 @@ const jsonLd = {
             setene du ønsker på The Gathering 2026:
           </p>
           <ul>
-            {importantDates.map((item) => <li class="text-xs">{item.text}</li>)}
+            {
+              importantDates.map((item, index) => (
+                <li class={index === activeIndex ? "font-bold" : "text-xs"}>
+                  {item.text}
+                </li>
+              ))
+            }
           </ul>
         </section>
         <section
