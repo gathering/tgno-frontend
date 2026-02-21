@@ -69,23 +69,6 @@ const jsonLd = {
     url: "https://www.kandu.no",
   },
 };
-
-const now = new Date();
-
-const parsedDates = importantDates
-  .map((item) => ({
-    ...item,
-    date: new Date(item.activeFrom),
-  }))
-  .sort((a, b) => a.date.getTime() - b.date.getTime());
-
-const activeIndex = parsedDates.findLastIndex((item) => item.date <= now);
-
-const withStatus = parsedDates.map((item, index) => ({
-  text: item.text,
-  isActive: index === activeIndex,
-  status: index <= activeIndex ? "Åpnet" : "Åpner",
-}));
 ---
 
 <Layout
@@ -136,13 +119,7 @@ const withStatus = parsedDates.map((item, index) => ({
             setene du ønsker på The Gathering 2026:
           </p>
           <ul>
-            {
-              withStatus.map((item) => (
-                <li class={item.isActive ? "font-bold" : "text-xs"}>
-                  {item.text} {item.status}
-                </li>
-              ))
-            }
+            {importantDates.map((item) => <li class="text-xs">{item.text}</li>)}
           </ul>
         </section>
         <section
