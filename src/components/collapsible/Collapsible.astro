@@ -4,103 +4,110 @@ import ArrowSymbol from "../icons/ArrowSymbol.astro";
 interface Props {
   startExpanded?: boolean;
   toggleVariant?: "header" | "footer";
+  class?: string;
 }
 
-const { startExpanded = false, toggleVariant } = Astro.props;
+const {
+  startExpanded = false,
+  toggleVariant = "header" as "header" | "footer",
+  class: className = "",
+} = Astro.props;
 ---
 
 <script>
   class Collapsible extends HTMLElement {
-    open = false;
+    open: boolean = false;
     triggers: HTMLElement[] = [];
-    collapsible: HTMLElement | null = null;
+    content: HTMLElement | null = null;
 
-    toggle(open?: boolean) {
-      // Close siblings if needed (accordion behavior)
-      if (!this.open) {
-        const siblings = Array.from(
-          this.parentElement?.querySelectorAll("tg-collapsible") || [],
-        ).filter((el) => el !== this);
-        siblings.forEach((s) => {
-          const collapsibleEl = s as unknown as Collapsible;
-          if (collapsibleEl.open) collapsibleEl.toggle(false);
-        });
-      }
+    setOpen(next: boolean) {
+      if (this.open === next) return;
+      this.open = next;
 
-      this.open = typeof open !== "undefined" ? open : !this.open;
-
+      // Rotate icons if present
       this.triggers.forEach((trigger) => {
         const icon = trigger.querySelector("svg");
-        if (icon) icon.classList.toggle("rotate-180", this.open);
+        if (icon instanceof SVGElement) {
+          icon.classList.toggle("rotate-180", this.open);
+        }
       });
 
-      if (this.collapsible) {
-        this.collapsible.classList.toggle("hidden", !this.open);
-      }
+      // Show/hide content
+      this.content?.classList.toggle("hidden", !this.open);
+
+      // ARIA update
+      this.triggers.forEach((trigger) => {
+        trigger.setAttribute("aria-expanded", String(this.open));
+      });
     }
+
+    toggle = () => this.setOpen(!this.open);
 
     connectedCallback() {
       this.open = this.getAttribute("data-start-expanded") === "true";
+
       this.triggers = Array.from(
-        this.querySelectorAll("[data-part=collapsible-trigger]"),
-      );
-      this.collapsible = this.querySelector("[data-part=collapsible]");
-
-      if (!this.collapsible) return;
-      if (!this.triggers.length) {
-        this.toggle(true);
-        return;
-      }
-
-      this.triggers.forEach((trigger) =>
-        trigger.addEventListener("click", () => this.toggle()),
+        this.querySelectorAll<HTMLElement>("[data-part=collapsible-trigger]"),
       );
 
-      this.toggle(this.open);
+      this.content = this.querySelector<HTMLElement>("[data-part=collapsible]");
+      if (!this.content) return;
+
+      // Make entire trigger area clickable
+      this.triggers.forEach((trigger) => {
+        trigger.addEventListener("click", this.toggle);
+        trigger.style.cursor = "pointer";
+      });
+
+      // Optional: allow clicking header/footer container itself
+      const containers = this.querySelectorAll<HTMLElement>(
+        ".collapsible-click-area",
+      );
+      containers.forEach((container) => {
+        container.addEventListener("click", this.toggle);
+      });
+
+      this.setOpen(this.open);
     }
   }
 
-  customElements.define("tg-collapsible", Collapsible);
+  if (!customElements.get("tg-collapsible")) {
+    customElements.define("tg-collapsible", Collapsible);
+  }
 </script>
 
-<tg-collapsible
-  data-start-expanded={startExpanded}
-  class="block mb-6 bg-background-secondary rounded-xl p-4"
->
-  <aside class="flex justify-between items-center mb-2">
-    <slot name="header" />
-    {
-      toggleVariant === "header" && (
+<tg-collapsible data-start-expanded={startExpanded} class={className}>
+  {
+    toggleVariant === "header" && (
+      <div class="flex justify-between items-center collapsible-click-area cursor-pointer">
+        <slot name="header" />
         <button
           data-part="collapsible-trigger"
           aria-expanded={startExpanded}
-          class="text-white p-2 rounded-md hover:bg-background-secondary transition flex items-center"
+          class="flex items-center justify-center text-white p-2 rounded-md hover:bg-gray-900 transition"
         >
-          <ArrowSymbol class="w-6 h-6 transition-transform duration-300" />
+          <ArrowSymbol class="transition-transform duration-300" />
         </button>
-      )
-    }
-  </aside>
+      </div>
+    )
+  }
 
-  <section
-    data-part="collapsible"
-    class={`${startExpanded ? "" : "hidden"} mt-2`}
-  >
+  <section data-part="collapsible" class={`${startExpanded ? "" : "hidden"}`}>
     <slot />
   </section>
 
-  <aside class="flex justify-between items-center mt-2">
-    <slot name="footer" />
-    {
-      toggleVariant === "footer" && (
+  {
+    toggleVariant === "footer" && (
+      <div class="flex justify-between items-center collapsible-click-area">
+        <slot name="footer" />
         <button
           data-part="collapsible-trigger"
           aria-expanded={startExpanded}
-          class="text-white p-2 rounded-md hover:bg-background-secondary transition flex items-center"
+          class="flex items-center justify-center"
         >
           Les mer
         </button>
-      )
-    }
-  </aside>
+      </div>
+    )
+  }
 </tg-collapsible>
