@@ -40,7 +40,10 @@ function getUrl({ date, locations, categories }: Nullablefilter) {
   if (categories.length) {
     url.searchParams.set("categories", categories.join(","));
   }
-  return url;
+
+  // We explicitly only return the pathname and search and ignore host and protocol
+  // This means we get a relative url, and don't have to worry about Astro.url being correct
+  return url.pathname + url.search;
 }
 
 const getAdjustedFilter = (
