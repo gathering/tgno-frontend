@@ -1,5 +1,5 @@
 ---
-import type { FetchArticlesProps } from "../../types";
+import type { Article, FetchArticlesProps } from "../../types";
 import { fetchArticles } from "../../utils";
 import Button from "../Button.astro";
 import TeaserImage from "../news/TeaserImage.astro";
@@ -8,21 +8,28 @@ type Props = {
   singleColumn?: boolean;
   offset?: number;
   limit?: number;
+  articles?: Article[];
 } & Omit<FetchArticlesProps, "api_url">;
 
-const { singleColumn = false, offset = 0, limit = 10 } = Astro.props;
+const {
+  singleColumn = false,
+  offset = 0,
+  limit = 10,
+  articles: defaultArticles,
+} = Astro.props;
 
-const articles =
-  (
-    await fetchArticles({
-      ...Astro.props,
-      api_url: import.meta.env.API_URL,
-      offset,
-      limit,
-    }).catch((e) => {
-      console.error(e.message);
-    })
-  )?.items || [];
+const articles = defaultArticles
+  ? defaultArticles
+  : (
+      await fetchArticles({
+        ...Astro.props,
+        api_url: import.meta.env.API_URL,
+        offset,
+        limit,
+      }).catch((e) => {
+        console.error(e.message);
+      })
+    )?.items || [];
 
 const gridStyles = singleColumn
   ? "grid grid-cols-1"
