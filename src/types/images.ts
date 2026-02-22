@@ -5,7 +5,8 @@ interface ImageSize {
 }
 
 export interface Image {
-  title: string;
+  id?: number;
+  title?: string;
   alt: string;
   url: string;
   uncroppable?: boolean;

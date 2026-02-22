@@ -1,24 +1,31 @@
 ---
 interface Props {
-  image: string;
+  image?: string;
+  class?: string;
 }
 
-const { image } = Astro.props;
+const { image, class: classList = "" } = Astro.props;
+const hasImage = !!image;
 ---
 
 <section
-  class="bg-white p-4 rounded-3xl grid md:p-6 md:grid-cols-2 gap-4 md:h-full md:m-auto md:rounded-2xl"
+  class:list={{
+    "md:grid-cols-2": hasImage,
+  }}
+  class={`${classList} p-4 rounded-3xl grid md:p-6 gap-4 md:h-full md:m-auto md:rounded-2xl relative`}
 >
-  <aside
-    class="rounded-2xl overflow-hidden md:relative h-full w-full md:rounded-xl md:order-last"
-  >
-    <img
-      src={image}
-      alt=""
-      class="object-cover md:h-full md:absolute md:top-0 md:right-0"
-    />
-  </aside>
-  <div class="flex flex-col justify-end items-start">
+  {
+    hasImage && (
+      <aside class="rounded-2xl overflow-hidden md:relative h-full w-full md:rounded-xl md:order-last">
+        <img
+          src={image}
+          alt=""
+          class="object-cover md:h-full md:w-full md:absolute md:top-0 md:right-0"
+        />
+      </aside>
+    )
+  }
+  <div class="flex flex-col justify-end items-start z-10">
     <slot />
   </div>
 </section>

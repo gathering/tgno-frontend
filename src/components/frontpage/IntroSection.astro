@@ -1,0 +1,200 @@
+---
+import Countdown from "../Countdown.astro";
+import ResponsiveImage from "../ResponsiveImage.astro";
+import InfoBox from "./InfoBox.astro";
+---
+
+<div class="grid gap-2 md:grid-cols-3">
+  <div class="sm:col-span-2 md:col-span-1 relative">
+    <ResponsiveImage
+      image={{
+        alt: "Klassisk CRT skjerm forran utsikt over innsiden av Vikingskipet",
+        sizes: {
+          thumbnail: {
+            url: "https://www.tg.no/media/images/Et_helt_liv_30_TG26_3_of_1.2e16d0ba.fill-150x150.png",
+            width: 150,
+            height: 150,
+          },
+          small: {
+            url: "https://www.tg.no/media/images/Et_helt_liv_30_TG26_3_of_1.max-300x300.png",
+            width: 300,
+            height: 135,
+          },
+          medium: {
+            url: "https://www.tg.no/media/images/Et_helt_liv_30_TG26_3_of_1.max-700x700.png",
+            width: 700,
+            height: 315,
+          },
+          large: {
+            url: "https://www.tg.no/media/images/Et_helt_liv_30_TG26_3_of_1.max-1600x1600.png",
+            width: 1200,
+            height: 540,
+          },
+          extra_large: {
+            url: "https://www.tg.no/media/images/Et_helt_liv_30_TG26_3_of_1.max-3200x3200.png",
+            width: 1200,
+            height: 540,
+          },
+        },
+        url: "https://www.tg.no/media/images/Et_helt_liv_30_TG26_3_of_1.max-1600x1600.png",
+      }}
+      class="rounded-2xl object-cover w-full sm:absolute sm:top-0 sm:left-0 sm:h-full"
+    />
+  </div>
+  <div class="sm:col-span-1">
+    <InfoBox class="bg-white">
+      <h2 class="mb-2 font-bold text-2xl md:text-4xl">30 år i Vikingskipet</h2>
+      <p>
+        Siden 1996 har vi samlet tusenvis av mennesker som liker spill,
+        kreativitet og tech i Vikingskipet på Hamar. Hver påske fylles hallen
+        med PC-er, konserter, konkurranser og folk som liker det samme som deg.
+      </p>
+      <p>
+        Ta med en venn og bli med på tidenes påskeferie i Norges feteste
+        påskehytte.
+      </p>
+    </InfoBox>
+  </div>
+  <div class="hidden md:flex relative">
+    <ResponsiveImage
+      image={{
+        alt: "Luftfoto av Vikingskipet - Mats O. Bristol",
+        sizes: {
+          thumbnail: {
+            url: "https://www.tg.no/media/images/Foto_Mats_O._Bristol.2e16d0ba.fill-150x150.jpg",
+            width: 150,
+            height: 150,
+          },
+          small: {
+            url: "https://www.tg.no/media/images/Foto_Mats_O._Bristol.max-300x300.jpg",
+            width: 300,
+            height: 224,
+          },
+          medium: {
+            url: "https://www.tg.no/media/images/Foto_Mats_O._Bristol.max-700x700.jpg",
+            width: 700,
+            height: 524,
+          },
+          large: {
+            url: "https://www.tg.no/media/images/Foto_Mats_O._Bristol.max-1600x1600.jpg",
+            width: 1600,
+            height: 1199,
+          },
+          extra_large: {
+            url: "https://www.tg.no/media/images/Foto_Mats_O._Bristol.max-3200x3200.jpg",
+            width: 3200,
+            height: 2398,
+          },
+        },
+        url: "https://www.tg.no/media/images/Foto_Mats_O._Bristol.max-1600x1600.jpg",
+      }}
+      class="rounded-2xl object-cover w-full sm:absolute sm:top-0 sm:left-0 sm:h-full"
+    />
+  </div>
+  <div
+    class="sm:col-span-3 md:bg-background-secondary p-4 rounded-2xl flex justify-center flex content-center items-center gap-2 min-[540px]:gap-10 flex-col min-[540px]:flex-row"
+  >
+    <Countdown
+      targetDate="2026-04-01T09:00:00+02:00"
+      confetti
+      endMessage="TG26 er i gang!"
+    >
+      <h2 class="text-xl text-white font-bold" slot="pre">Dørene åpner</h2>
+    </Countdown>
+  </div>
+  <div class="sm:col-span-2 relative">
+    <ResponsiveImage
+      image={{
+        alt: "Utsikt over innsiden av Vikingskipet, opplyst i varme farger av heftig sceneshow i bakgrunnen - Ole-Christian Klamas",
+        sizes: {
+          thumbnail: {
+            url: "https://www.tg.no/media/images/TG25_1704_FOTO_OleChristian-Klamas.2e16d0ba.fill-150x150.jpg",
+            width: 150,
+            height: 150,
+          },
+          small: {
+            url: "https://www.tg.no/media/images/TG25_1704_FOTO_OleChristian-Klamas-0062.max-300x300.jpg",
+            width: 300,
+            height: 200,
+          },
+          medium: {
+            url: "https://www.tg.no/media/images/TG25_1704_FOTO_OleChristian-Klamas-0062.max-700x700.jpg",
+            width: 700,
+            height: 466,
+          },
+          large: {
+            url: "https://www.tg.no/media/images/TG25_1704_FOTO_OleChristian-Klamas-0062.max-1600x1600.jpg",
+            width: 1600,
+            height: 1066,
+          },
+          extra_large: {
+            url: "https://www.tg.no/media/images/TG25_1704_FOTO_OleChristian-Klamas-0062.max-3200x3200.jpg",
+            width: 2160,
+            height: 1440,
+          },
+        },
+        url: "https://www.tg.no/media/images/TG25_1704_FOTO_OleChristian-Klamas-0062.max-1600x1600.jpg",
+      }}
+      class="rounded-2xl object-cover w-full sm:absolute sm:top-0 sm:left-0 sm:h-full"
+    />
+  </div>
+  <div class="sm:col-span-1">
+    <InfoBox class="bg-sky-600">
+      <h2 class="mb-2 font-bold text-2xl md:text-4xl text-white">
+        Norges største datafestival
+      </h2>
+      <p>
+        The Gathering er en pause fra hverdagen. Et sted hvor du kan koble av,
+        være sosial og gjøre det du liker, på ett og samme sted. Gå på konsert,
+        sitt på LAN, meld deg på konkurranser og utforsk alt som skjer rundt
+        deg.
+      </p>
+    </InfoBox>
+  </div>
+  <div class="sm:col-span-2 relative sm:order-last">
+    <ResponsiveImage
+      image={{
+        alt: "Stemningsbilde av merch butikk i expo-området",
+        sizes: {
+          thumbnail: {
+            url: "https://www.tg.no/media/images/GC9A8363_1.2e16d0ba.fill-150x150.jpg",
+            width: 150,
+            height: 150,
+          },
+          small: {
+            url: "https://www.tg.no/media/images/GC9A8363_1.max-300x300.jpg",
+            width: 300,
+            height: 200,
+          },
+          medium: {
+            url: "https://www.tg.no/media/images/GC9A8363_1.max-700x700.jpg",
+            width: 700,
+            height: 466,
+          },
+          large: {
+            url: "https://www.tg.no/media/images/GC9A8363_1.max-1600x1600.jpg",
+            width: 1600,
+            height: 1066,
+          },
+          extra_large: {
+            url: "https://www.tg.no/media/images/GC9A8363_1.max-3200x3200.jpg",
+            width: 3200,
+            height: 2133,
+          },
+        },
+        url: "https://www.tg.no/media/images/GC9A8363_1.max-1600x1600.jpg",
+      }}
+      class="rounded-2xl object-cover w-full sm:absolute sm:top-0 sm:left-0 sm:h-full"
+    />
+  </div>
+  <div class="sm:col-span-1">
+    <InfoBox class="bg-orange-500">
+      <h2 class="mb-2 font-bold text-2xl md:text-4xl text-white">Expo</h2>
+      <p>
+        Utforsk expo-området vårt med utstillere fra teknologi- og
+        spillindustrien. Her kan du teste nye ting, delta på foredrag og
+        workshops, og oppleve det nyeste innen spill og tech.
+      </p>
+    </InfoBox>
+  </div>
+</div>
