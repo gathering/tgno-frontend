@@ -128,7 +128,7 @@ const activeIndex = importantDates
           <ul>
             {
               importantDates.map((item, index) => (
-                <li class={index === activeIndex ? "font-bold" : "text-xs"}>
+                <li class={index === activeIndex ? "font-bold" : ""}>
                   {item.text}
                 </li>
               ))
