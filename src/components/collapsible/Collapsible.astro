@@ -12,6 +12,10 @@ const {
   toggleVariant = "header" as "header" | "footer",
   class: className = "",
 } = Astro.props;
+
+// Generate unique IDs
+const contentId = `collapsible-content-${Math.random().toString(36).slice(2)}`;
+const triggerId = `collapsible-trigger-${Math.random().toString(36).slice(2)}`;
 ---
 
 <script>
@@ -24,18 +28,21 @@ const {
 
       const triggers = Array.from(
         this.querySelectorAll(
-          "[data-part=collapsible-trigger], .collapsible-click-area",
+          ".collapsible-click-area, [data-part=collapsible-trigger]",
         ),
       ).filter((el) => el instanceof HTMLElement);
 
       const setOpen = (value: boolean) => {
         open = value;
 
+        // Show/hide content
         content.classList.toggle("hidden", !open);
 
+        // Update triggers
         triggers.forEach((el) => {
           el.setAttribute("aria-expanded", String(open));
 
+          // Rotate arrow
           const icon = el.querySelector("svg");
           if (icon instanceof SVGElement) {
             icon.classList.toggle("rotate-180", open);
@@ -45,6 +52,7 @@ const {
 
       const toggle = () => setOpen(!open);
 
+      // Attach event listeners to triggers (also handles keyboard events for accessibility)
       triggers.forEach((el) => {
         el.addEventListener("click", toggle);
         el.addEventListener("keydown", (e) => {
@@ -68,10 +76,12 @@ const {
   {
     toggleVariant === "header" && (
       <div
+        id={triggerId}
         class="flex justify-between items-center collapsible-click-area cursor-pointer"
         role="button"
         tabindex="0"
         aria-expanded={startExpanded}
+        aria-controls={contentId}
       >
         <slot name="header" />
         <ArrowSymbol class="transition-transform duration-300 text-white" />
@@ -80,8 +90,10 @@ const {
   }
 
   <section
-    id="collapsible-content"
+    id={contentId}
     data-part="collapsible"
+    role="region"
+    aria-labelledby={triggerId}
     class={`${startExpanded ? "" : "hidden"}`}
   >
     <slot />
@@ -89,15 +101,15 @@ const {
 
   {
     toggleVariant === "footer" && (
-      <div class="flex justify-between items-center collapsible-click-area">
+      <div
+        class="flex justify-between items-center collapsible-click-area cursor-pointer"
+        role="button"
+        tabindex="0"
+        aria-expanded={startExpanded}
+        aria-controls={contentId}
+      >
         <slot name="footer" />
-        <button
-          data-part="collapsible-trigger"
-          aria-expanded={startExpanded}
-          class="flex items-center justify-center"
-        >
-          Les mer
-        </button>
+        <span class="flex items-center justify-center">Les mer</span>
       </div>
     )
   }
