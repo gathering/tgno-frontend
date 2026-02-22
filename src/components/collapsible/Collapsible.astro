@@ -16,58 +16,40 @@ const {
 
 <script>
   class Collapsible extends HTMLElement {
-    open: boolean = false;
-    triggers: HTMLElement[] = [];
-    content: HTMLElement | null = null;
-
-    setOpen(next: boolean) {
-      if (this.open === next) return;
-      this.open = next;
-
-      // Rotate icons if present
-      this.triggers.forEach((trigger) => {
-        const icon = trigger.querySelector("svg");
-        if (icon instanceof SVGElement) {
-          icon.classList.toggle("rotate-180", this.open);
-        }
-      });
-
-      // Show/hide content
-      this.content?.classList.toggle("hidden", !this.open);
-
-      // ARIA update
-      this.triggers.forEach((trigger) => {
-        trigger.setAttribute("aria-expanded", String(this.open));
-      });
-    }
-
-    toggle = () => this.setOpen(!this.open);
-
     connectedCallback() {
-      this.open = this.getAttribute("data-start-expanded") === "true";
+      let open = this.dataset.startExpanded === "true";
 
-      this.triggers = Array.from(
-        this.querySelectorAll<HTMLElement>("[data-part=collapsible-trigger]"),
-      );
+      const content = this.querySelector("[data-part=collapsible]");
+      if (!(content instanceof HTMLElement)) return;
 
-      this.content = this.querySelector<HTMLElement>("[data-part=collapsible]");
-      if (!this.content) return;
+      const triggers = Array.from(
+        this.querySelectorAll(
+          "[data-part=collapsible-trigger], .collapsible-click-area",
+        ),
+      ).filter((el) => el instanceof HTMLElement);
 
-      // Make entire trigger area clickable
-      this.triggers.forEach((trigger) => {
-        trigger.addEventListener("click", this.toggle);
-        trigger.style.cursor = "pointer";
+      const setOpen = (value: boolean) => {
+        open = value;
+
+        content.classList.toggle("hidden", !open);
+
+        triggers.forEach((el) => {
+          el.setAttribute("aria-expanded", String(open));
+
+          const icon = el.querySelector("svg");
+          if (icon instanceof SVGElement) {
+            icon.classList.toggle("rotate-180", open);
+          }
+        });
+      };
+
+      const toggle = () => setOpen(!open);
+
+      triggers.forEach((el) => {
+        el.addEventListener("click", toggle);
       });
 
-      // Optional: allow clicking header/footer container itself
-      const containers = this.querySelectorAll<HTMLElement>(
-        ".collapsible-click-area",
-      );
-      containers.forEach((container) => {
-        container.addEventListener("click", this.toggle);
-      });
-
-      this.setOpen(this.open);
+      setOpen(open);
     }
   }
 
