@@ -70,11 +70,12 @@ const jsonLd = {
   },
 };
 
-const now = new Date();
+const yesterday = new Date();
+yesterday.setDate(yesterday.getDate() - 1);
 
 const activeIndex = importantDates
   .map((item) => new Date(item.activeFrom))
-  .findLastIndex((date) => date <= now);
+  .findIndex((date) => date >= yesterday);
 ---
 
 <Layout
@@ -127,7 +128,7 @@ const activeIndex = importantDates
           <ul>
             {
               importantDates.map((item, index) => (
-                <li class={index === activeIndex ? "font-bold" : "text-xs"}>
+                <li class={index === activeIndex ? "font-bold" : ""}>
                   {item.text}
                 </li>
               ))
