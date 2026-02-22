@@ -47,6 +47,12 @@ const {
 
       triggers.forEach((el) => {
         el.addEventListener("click", toggle);
+        el.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            toggle();
+          }
+        });
       });
 
       setOpen(open);
@@ -61,20 +67,23 @@ const {
 <tg-collapsible data-start-expanded={startExpanded} class={className}>
   {
     toggleVariant === "header" && (
-      <div class="flex justify-between items-center collapsible-click-area cursor-pointer">
+      <div
+        class="flex justify-between items-center collapsible-click-area cursor-pointer"
+        role="button"
+        tabindex="0"
+        aria-expanded={startExpanded}
+      >
         <slot name="header" />
-        <button
-          data-part="collapsible-trigger"
-          aria-expanded={startExpanded}
-          class="flex items-center justify-center text-white p-2 rounded-md hover:bg-gray-900 transition"
-        >
-          <ArrowSymbol class="transition-transform duration-300" />
-        </button>
+        <ArrowSymbol class="transition-transform duration-300 text-white" />
       </div>
     )
   }
 
-  <section data-part="collapsible" class={`${startExpanded ? "" : "hidden"}`}>
+  <section
+    id="collapsible-content"
+    data-part="collapsible"
+    class={`${startExpanded ? "" : "hidden"}`}
+  >
     <slot />
   </section>
 
