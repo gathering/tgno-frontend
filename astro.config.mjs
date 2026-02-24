@@ -17,4 +17,24 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+  security: {
+    allowedDomains: [
+      {
+        hostname: "tg.no",
+        protocol: "https",
+      },
+      {
+        hostname: "www.tg.no",
+        protocol: "https",
+      },
+      {
+        hostname: "dev.tg.no",
+        protocol: "https",
+      },
+      {
+        hostname: "**.preview.tg.no",
+        protocol: "https",
+      },
+    ],
+  },
 });
