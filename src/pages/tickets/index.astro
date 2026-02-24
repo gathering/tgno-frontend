@@ -70,12 +70,13 @@ const jsonLd = {
   },
 };
 
-const yesterday = new Date();
-yesterday.setDate(yesterday.getDate() - 1);
+const today = new Date();
 
 const activeIndex = importantDates
   .map((item) => new Date(item.activeFrom))
-  .findIndex((date) => date >= yesterday);
+  .reduce((lastActive, date, index) => {
+    return date <= today ? index : lastActive;
+  }, -1);
 ---
 
 <Layout
