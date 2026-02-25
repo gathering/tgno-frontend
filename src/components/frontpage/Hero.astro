@@ -2,20 +2,60 @@
 interface Props {
   image: string;
   imageHref?: string;
+  backgroundVideo?: Array<{
+    path: string;
+    type: string;
+  }>;
+  fullVideoHref?: string;
+  fullVideoText?: string;
   class?: string;
 }
 
-const { class: classNames, image, imageHref } = Astro.props;
+const {
+  class: classNames,
+  image,
+  imageHref,
+  backgroundVideo,
+  fullVideoHref,
+  fullVideoText = "se hele",
+} = Astro.props;
 const hideMobileImage = Astro.slots.has("overlay");
 const showCta = Astro.slots.has("cta");
+const hasVideo = !!backgroundVideo;
 const imageClass = `${hideMobileImage ? "hidden" : ""} sm:block sm:absolute sm:left-0 sm:top-0 w-full sm:h-full object-cover rounded-3xl sm:z-0`;
+const videoClass = `max-sm:min-h-[200px] sm:absolute sm:left-0 sm:top-0 w-full sm:h-full object-cover rounded-3xl sm:z-0`;
 ---
 
 <section
   class={`relative rounded-3xl sm:grid sm:grid-cols-5 gap-4 sm:p-4 space-y-4 sm:space-y-0 ${classNames}`}
 >
   {
-    imageHref ? (
+    hasVideo ? (
+      <div class="relative sm:contents">
+        <video
+          autoplay
+          muted
+          loop
+          playsinline
+          class={videoClass}
+          poster={image}
+        >
+          {backgroundVideo.map((video) => (
+            <source src={video.path} type={video.type} />
+          ))}
+        </video>
+        {fullVideoHref && (
+          <a
+            href={fullVideoHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 px-4 py-2 bg-black/60 hover:bg-black/80 text-white text-xs rounded-full backdrop-blur-sm z-10"
+          >
+            {fullVideoText}
+          </a>
+        )}
+      </div>
+    ) : imageHref ? (
       <a href={imageHref}>
         <img src={image} alt="Hero Image" class={imageClass} />
       </a>

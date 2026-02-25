@@ -12,7 +12,7 @@ const { filename, url, alt, width, nudge } = Astro.props;
 
 <a href={url} target="_blank" class="flex justify-center md:min-w-[160px]">
   <img
-    src={`/tg25/sponsors/${filename}`}
+    src={`/sponsors/${filename}`}
     alt={alt}
     width={width}
     class={`aspect-thumbnail object-cover ${nudge ? "m" + nudge + "-2" : ""}`}

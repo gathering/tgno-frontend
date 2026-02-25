@@ -8,29 +8,226 @@ import ContentContainer from "../../components/ContentContainer.astro";
 import CreativeBox from "../../components/competitions/CreativeBox.astro";
 import Pill from "../../components/competitions/Pill.astro";
 
-const boxStyles = "p-6 rounded-3xl sm:mx-auto sm:rounded-2xl";
+const boxStyles =
+  "p-6 rounded-3xl sm:mx-auto sm:rounded-2xl w-full min-h-[150px] sm:min-h-[200px]";
 ---
 
 <Layout title="The Gathering - Kreative konkurranser">
   <Main>
     <ContentContainer>
-      <div class="text-center">
-        <H1 text="Kreative konkurranser" />
-      </div>
-      <div class="max-w-3xl mx-auto">
-        <section
-          class="mb-6 prose prose-strong:text-white text-white text-center mx-auto"
+      <H1 text="Kreative konkurranser" />
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+      >
+        <div class="sm:col-start-1 sm:col-span-2 sm:row-span-2">
+          <section class="mb-6 prose prose-strong:text-white text-white">
+            <H2 text="Hvem takler presset best?" />
+            <p>
+              Test sjansene dine for å vinne flotte premier i konkurranser innen
+              musikk, video, grafikk og mer!
+            </p>
+            <H3>Praktisk informasjon</H3>
+            <p>
+              <Pill text="Vi er i gang!" color="white" class="mr-2" />
+              De aller fleste av konkurransene kan du starte med allerede nå. Følg
+              på tg.no for endelige regler og detaljer.
+            </p>
+          </section>
+        </div>
+        <CreativeBox
+          title="Real-time Demo"
+          class={boxStyles}
+          prizes={[]}
+          category="utvikling"
         >
-          <H2 text="Informasjon kommer snart!" />
-          <p class="text-xl">
-            Detaljert informasjon om de kreative konkurransene for TG26 vil bli
-            publisert her når den er klar.
-          </p>
-          <p>
-            Følg med på våre sosiale medier for oppdateringer om konkurranser,
-            premier og påmelding.
-          </p>
-        </section>
+          <p></p>
+        </CreativeBox>
+        <CreativeBox
+          title="Hand-drawn Graphics"
+          class={boxStyles}
+          prizes={[]}
+          category="grafikk"
+        >
+          <p></p>
+        </CreativeBox>
+        <CreativeBox
+          title="TG:Hack"
+          class={`${boxStyles} sm:col-span-2`}
+          prizes={[]}
+          category="utvikling"
+        >
+          <p></p>
+        </CreativeBox>
+        <CreativeBox
+          title="Freestyle Music"
+          class={boxStyles}
+          prizes={[]}
+          category="musikk"
+        >
+          <p></p>
+        </CreativeBox>
+        <CreativeBox
+          title="Game Jam"
+          class={boxStyles}
+          prizes={[]}
+          category="utvikling"
+        >
+          <p></p>
+        </CreativeBox>
+        <CreativeBox
+          title="Fast Music"
+          class={boxStyles}
+          prizes={[]}
+          category="musikk"
+        >
+          <p></p>
+        </CreativeBox>
+        <CreativeBox
+          title="Small HTML"
+          class={boxStyles}
+          prizes={[]}
+          category="utvikling"
+        >
+          <p></p>
+        </CreativeBox>
+        <CreativeBox
+          title="Fast Graphics"
+          class={boxStyles}
+          prizes={[]}
+          category="grafikk"
+        >
+          <p></p>
+        </CreativeBox>
+        <CreativeBox
+          title="Pixel Art Graphics"
+          class={boxStyles}
+          prizes={[]}
+          category="grafikk"
+        >
+          <p></p>
+        </CreativeBox>
+        <CreativeBox
+          title="10 minute DJ Mix Video"
+          class={boxStyles}
+          prizes={[]}
+          category="musikk"
+        >
+          <p></p>
+        </CreativeBox>
+        <CreativeBox
+          title="Themed Photo"
+          class={boxStyles}
+          prizes={[]}
+          category="foto"
+        >
+          <p></p>
+        </CreativeBox>
+
+        <CreativeBox
+          title="K-Pop Music"
+          class={boxStyles}
+          prizes={[]}
+          category="musikk"
+        >
+          <p></p>
+        </CreativeBox>
+        <CreativeBox
+          title="Creative Tooling"
+          class={boxStyles}
+          prizes={[]}
+          category="utvikling"
+        >
+          <p></p>
+        </CreativeBox>
+
+        <CreativeBox
+          title="Best Shelf"
+          class={boxStyles}
+          prizes={[]}
+          category="physical"
+        >
+          <p></p>
+        </CreativeBox>
+
+        <CreativeBox
+          title="Computer Case"
+          class={boxStyles}
+          prizes={[]}
+          category="physical"
+        >
+          <p></p>
+        </CreativeBox>
+
+        <CreativeBox
+          title="Fast Themed Photo"
+          class={boxStyles}
+          prizes={[]}
+          category="foto"
+        >
+          <p></p>
+        </CreativeBox>
+
+        <CreativeBox
+          title="Best Group"
+          class={boxStyles}
+          prizes={[]}
+          category="diverse"
+        >
+          <p></p>
+        </CreativeBox>
+
+        <CreativeBox
+          title="Improviserte konkurranser"
+          class={`${boxStyles} md:col-span-2`}
+          prizes={[]}
+          category="diverse"
+        >
+          <p>Følg med på tg.no og under arrangementet</p>
+        </CreativeBox>
+
+        <CreativeBox
+          title="Themed In-Game Screenshot"
+          class={boxStyles}
+          prizes={[]}
+          category="foto"
+        >
+          <p></p>
+        </CreativeBox>
+
+        <CreativeBox
+          title="Textmode Graphics"
+          class={boxStyles}
+          prizes={[]}
+          category="grafikk"
+        >
+          <p></p>
+        </CreativeBox>
+        <CreativeBox
+          title="Jury Award"
+          class={boxStyles}
+          prizes={[]}
+          category="diverse"
+        >
+          <p></p>
+        </CreativeBox>
+
+        <CreativeBox
+          title="Useless Util"
+          class={boxStyles}
+          prizes={[]}
+          category="utvikling"
+        >
+          <p></p>
+        </CreativeBox>
+
+        <CreativeBox
+          title="Minecraft"
+          class={boxStyles}
+          prizes={[]}
+          category="diverse"
+        >
+          <p></p>
+        </CreativeBox>
       </div>
     </ContentContainer>
   </Main>
