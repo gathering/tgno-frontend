@@ -34,7 +34,7 @@ const navigationItems = await getCachedNavigationItems(import.meta.env.API_URL);
 
 <header class="sticky top-0 z-40 flex flex-col-reverse" data-component="header">
   <div
-    class="flex justify-between items-center py-1 px-5 max-w-7xl mb-8 justify-self-center w-full mx-auto bg-background-secondary rounded-xl sm:mx-5 sm:mb-8 sm:w-auto xl:mx-auto xl:w-full shadow-2xl shadow-black"
+    class="flex justify-between items-center py-1 px-5 max-w-7xl mb-8 justify-self-center w-full mx-auto bg-background-secondary sm:rounded-xl sm:mx-5 sm:mb-8 sm:w-auto xl:mx-auto xl:w-full shadow-2xl shadow-black"
   >
     <nav class="w-full">
       <div class="relative h-20 flex items-center justify-between">
@@ -120,11 +120,7 @@ const navigationItems = await getCachedNavigationItems(import.meta.env.API_URL);
 
       // Scroll animation
       headerDiv.classList.add("transition-all", "duration-300");
-      if (scrolled) {
-        headerDiv.classList.add("rounded-b-2xl", "rounded-t-none");
-      } else {
-        headerDiv.classList.remove("rounded-b-2xl", "rounded-t-none");
-      }
+      headerDiv.classList.toggle("sm:rounded-t-none", scrolled);
     }
   </script>
 </header>
