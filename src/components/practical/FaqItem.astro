@@ -1,29 +1,22 @@
 ---
 import type { FaqSnippet } from "../../types";
-import Collapsible from "../collapsible/Collapsible.astro";
-import H3 from "../H3.astro";
-import ArrowSymbol from "../icons/ArrowSymbol.astro";
+import FaqCollapsible from "./FaqCollapsible.astro";
 
 type Props = FaqSnippet & { class?: string };
 
 const { title, body, class: className = "" } = Astro.props;
 ---
 
-<section class={`block mb-6 ${className}`}>
-  <Collapsible
-    toggleVariant="header"
-    class="block mb-6 bg-background-secondary rounded-xl p-4"
-  >
-    <!-- HEADER -->
+<section class={`block ${className}`}>
+  <FaqCollapsible class="block bg-background-secondary rounded-xl p-4">
     <div slot="header" class="flex justify-between items-center w-full">
-      <H3 class="text-xl font-bold tracking-tight text-white">{title}</H3>
+      <h3 class="text-xl text-white">{title}</h3>
     </div>
 
-    <!-- Collapsible content -->
     <div
       data-part="collapsible"
-      class="prose prose-invert max-w-none leading-relaxed mt-4"
+      class="prose prose-invert mt-8"
       set:html={body}
     />
-  </Collapsible>
+  </FaqCollapsible>
 </section>
