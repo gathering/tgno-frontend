@@ -1,0 +1,89 @@
+---
+import ArrowSymbol from "../icons/ArrowSymbol.astro";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = "" } = Astro.props;
+
+// Generate unique IDs
+const contentId = `collapsible-content-${Math.random().toString(36).slice(2)}`;
+const triggerId = `collapsible-trigger-${Math.random().toString(36).slice(2)}`;
+---
+
+<script>
+  class Collapsible extends HTMLElement {
+    connectedCallback() {
+      let open = false;
+
+      const content = this.querySelector("[data-part=collapsible]");
+      if (!(content instanceof HTMLElement)) return;
+
+      const triggers = Array.from(
+        this.querySelectorAll("[data-part=collapsible-trigger]"),
+      ).filter((el) => el instanceof HTMLElement);
+
+      const setOpen = (value: boolean) => {
+        open = value;
+
+        // Show/hide content
+        content.classList.toggle("hidden", !open);
+
+        // Update triggers
+        triggers.forEach((el) => {
+          el.setAttribute("aria-expanded", String(open));
+
+          // Rotate arrow
+          const icon = el.querySelector("svg");
+          if (icon instanceof SVGElement) {
+            icon.classList.toggle("rotate-180", open);
+          }
+        });
+      };
+
+      const toggle = () => setOpen(!open);
+
+      // Attach event listeners to triggers (also handles keyboard events for accessibility)
+      triggers.forEach((el) => {
+        el.addEventListener("click", toggle);
+        el.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            toggle();
+          }
+        });
+      });
+
+      setOpen(open);
+    }
+  }
+
+  if (!customElements.get("tg-collapsible")) {
+    customElements.define("tg-collapsible", Collapsible);
+  }
+</script>
+
+<tg-collapsible class={className}>
+  <button
+    id={triggerId}
+    class="flex w-full justify-between items-center cursor-pointer"
+    data-part="collapsible-trigger"
+    tabindex="0"
+    aria-expanded="false"
+    aria-controls={contentId}
+  >
+    <slot name="header" />
+    <ArrowSymbol class="transition-transform duration-300 text-white" />
+  </button>
+
+  <section
+    id={contentId}
+    data-part="collapsible"
+    role="region"
+    aria-labelledby={triggerId}
+    class="hidden"
+  >
+    <slot />
+  </section>
+</tg-collapsible>

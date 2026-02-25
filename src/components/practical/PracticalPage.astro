@@ -38,9 +38,7 @@ const { title, faq = [], intro, body, main_image } = Astro.props;
       <section class="flex flex-col gap-4 mb-4 mt-8">
         <H2 text="Vanlige spørsmål" class="sm:col-span-2 lg:col-span-3" />
         {faq.map((item) => (
-          <div class="border border-white rounded-3xl">
-            <FaqItem {...item} />
-          </div>
+          <FaqItem {...item} />
         ))}
       </section>
     ) : null
