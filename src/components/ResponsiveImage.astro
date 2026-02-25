@@ -1,14 +1,30 @@
 ---
 import type { Image } from "../types";
 
-export type Props = Image;
+export type Props = {
+  sizes?: string;
+  class?: string;
+  image: Image;
+};
 
-const { sizes, alt } = Astro.props;
+const {
+  image: { alt, sizes: availableImageSizes },
+  class: classNames = "",
+  sizes,
+} = Astro.props;
+
+const srcset = Object.values(availableImageSizes)
+  .sort((a, b) => a.width - b.width)
+  .map((size) => `${size.url} ${size.width}w`)
+  .join(", ");
+
+// Assume most images are full width on mobile, and no bigger than 50% of the viewport on desktop
+const defaultSizes = "(min-width: 768px) 50vw, 100vw";
 ---
 
 <img
-  src={sizes.large.url}
-  srcset={`${sizes.large.url} 500w, ${sizes.extra_large.url} 1000w`}
+  srcset={srcset}
+  sizes={sizes ?? defaultSizes}
   alt={alt}
-  class="w-auto rounded-3xl mb-5"
+  class={classNames}
 />

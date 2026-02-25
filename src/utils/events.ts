@@ -77,7 +77,7 @@ export interface Navigation {
 type UrlCreator = (
   entity: TagWithMeta | DateOption,
   currentFilter: Filter,
-) => URL;
+) => string;
 
 export class Calendar {
   query: {
