@@ -43,6 +43,7 @@ if (!expanded) {
   }
 }
 
+const isExpandable = Boolean(description);
 const hasNotice = tags.some((tag) => tag.slug === "notice");
 // Let's rely on tag signal for now, but looking for unused signal in case it shows up
 const isCancelled = cancelled || tags.some((tag) => tag.slug === "cancelled");
@@ -109,59 +110,72 @@ if (isCancelled) {
 </style>
 
 <script>
-  // TODO: Make generic toggle script/component?
   const events: {
     event: Element;
-    trigger: Element | null;
+    triggers: Array<Element>;
     collapsible: Element | null;
   }[] = [...document.querySelectorAll("[data-component='event']")].map(
     (event) => {
-      const trigger = event.querySelector(
-        "[data-part='event-details-trigger']",
+      const triggers = Array.from(
+        event.querySelectorAll("[data-part='event-details-trigger']"),
       );
       const collapsible = event.querySelector("[data-part='event-details']");
-      return { event, trigger, collapsible };
+      return { event, triggers, collapsible };
     },
   );
 
-  const collapseAllEvents = () => {
-    events.forEach(({ trigger, event }) => {
-      if (!trigger) {
-        return;
-      }
-      trigger.setAttribute("data-active", "false");
-      trigger.setAttribute("aria-expanded", "false");
-      event.classList.add("collapsed");
+  const updateEventProperties = (
+    {
+      event,
+      triggers,
+    }: {
+      event: Element;
+      triggers: Array<Element>;
+    },
+    active: boolean,
+  ) => {
+    if (!triggers.length) {
+      return;
+    }
+    event.classList.toggle("collapsed", !active);
+    event.setAttribute("data-active", String(active));
+
+    triggers.forEach((trigger) => {
+      trigger.setAttribute("aria-expanded", String(active));
     });
   };
 
-  events.forEach(({ trigger, event }) => {
-    if (!trigger) {
+  const collapseAllEvents = () => {
+    events.forEach((event) => updateEventProperties(event, false));
+  };
+
+  events.forEach(({ triggers, event }) => {
+    if (!triggers.length) {
       return;
     }
 
-    trigger.addEventListener("click", () => {
-      const active =
-        (trigger.getAttribute("data-active") || "false") === "false";
+    triggers.forEach((trigger) => {
+      trigger.addEventListener("click", () => {
+        const active =
+          (event.getAttribute("data-active") || "false") === "false";
 
-      // We only allow expanding
-      if (!active) {
-        return;
-      }
+        if (trigger.getAttribute("data-mode") === "expand-only" && !active) {
+          return;
+        }
 
-      collapseAllEvents();
-      trigger.setAttribute("data-active", String(active));
-      trigger.setAttribute("aria-expanded", String(active));
-      event.classList.toggle("collapsed", !active);
+        collapseAllEvents();
+        updateEventProperties({ event, triggers }, active);
+      });
     });
   });
 </script>
 
 <article
   data-component="event"
-  class={`group ${expanded ? "" : "collapsed"} ${style} ${hasNotice ? "has-notice" : ""} ${isCancelled ? "is-cancelled" : ""}`}
+  class={`group ${expanded ? "expanded" : "collapsed"} ${style} ${hasNotice ? "has-notice" : ""} ${isCancelled ? "is-cancelled" : ""}`}
   data-start={start}
   data-end={end}
+  data-active="false"
 >
   <div class={`flex flex-row block pb-4 pt-2 border-t border-white`}>
     <aside class="w-24 mr-4 date">
@@ -186,7 +200,7 @@ if (isCancelled) {
               <a
                 href={related_url}
                 target="_blank"
-                class="rounded-md h-fit p-2 ml-auto hover:bg-white hover:text-background-secondary"
+                class="rounded-md h-fit p-1 ml-auto hover:bg-white hover:text-background-secondary"
               >
                 <ExternalLinkSymbol />
               </a>
@@ -196,15 +210,15 @@ if (isCancelled) {
         ) : null
       }
       <section
-        {...description
+        class={`text-md ${description ? "group-[.collapsed]:cursor-pointer" : ""}`}
+        {...isExpandable
           ? {
               "data-part": "event-details-trigger",
               "aria-controls": `event-${id}-details`,
-              "data-active": "false",
+              "data-mode": "expand-only",
               "aria-expanded": "false",
             }
           : {}}
-        class={`text-md ${description ? "group-[.collapsed]:cursor-pointer group-[.collapsed]:hover:bg-white/10" : ""}`}
       >
         <h3 class="font-semibold text-pretty mb-1 pt-1 flex flex-row">
           <span class="w-3 -ml-5 mr-2 text-red-600 live-symbol hidden">
@@ -212,35 +226,43 @@ if (isCancelled) {
           </span>
           {title}
         </h3>
+        <time datetime={start} class="flex flex-row gap-3 time">
+          <span class="flex w-4">
+            <DurationSymbol />
+          </span>
+          {duration}
+        </time>
         {
-          description ? (
+          description && (
             <div
-              class="mt-3 pb-2 group-[.collapsed]:hidden w-full"
+              class="mt-3 sm:mb-8 pb-2 group-[.collapsed]:hidden w-full"
               data-part="event-details"
               id={`event-${id}-details`}
               aria-role="details"
             >
               <p>{description}</p>
             </div>
-          ) : null
+          )
         }
-        <aside
-          class={`flex flex-row gap-3 pb-3 w-full rounded-b-xl group-[.collapsed]:bg-transparent group-[.collapsed]:text-white`}
-        >
-          <time datetime={start} class="flex flex-row gap-3 time">
-            <span class="flex w-4">
-              <DurationSymbol />
-            </span>
-            {duration}
-          </time>
-          <span
-            class={`flex-row py-1 px-2 gap-2 bg-neutral-900 rounded-md ml-auto hidden ${description ? "group-[.collapsed]:flex" : ""}`}
-          >
-            Les mer
-            <ArrowSymbol />
-          </span>
-        </aside>
       </section>
+      <aside
+        class="flex flex-col relative gap-3 pb-5 w-full rounded-b-xl group-[.collapsed]:bg-transparent group-[.collapsed]:text-white mt-3 sm:mt-0"
+      >
+        {
+          isExpandable && (
+            <button
+              class="flex w-full sm:w-auto sm:absolute sm:bottom-1 sm:right-1 py-2 px-4 gap-2 justify-center text-sm sm:text-base bg-neutral-900 rounded-md ml-auto cursor-pointer"
+              data-part="event-details-trigger"
+              aria-controls={`event-${id}-details`}
+              aria-expanded="false"
+            >
+              <span class="hidden group-[.collapsed]:flex">Les mer</span>
+              <span class="flex group-[.collapsed]:hidden">Lukk</span>
+              <ArrowSymbol class="transition-transform duration-300 rotate-180 group-[.collapsed]:rotate-0" />
+            </button>
+          )
+        }
+      </aside>
     </section>
   </div>
 </article>
