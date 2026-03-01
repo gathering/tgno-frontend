@@ -12,6 +12,7 @@ export interface Props {
   kanduless?: boolean;
   variant?: "pending" | "standard" | "seatless" | "product";
   class?: string;
+  unavailable?: boolean;
 }
 
 const {
@@ -22,6 +23,7 @@ const {
   kanduless = false,
   variant,
   class: className = "",
+  unavailable = false,
 } = Astro.props;
 
 const formatPrice = (price: number | undefined) =>
@@ -59,7 +61,7 @@ const boxStyles = `p-6 rounded-3xl sm:mx-auto sm:rounded-2xl ${style} prose rela
 <div class={boxStyles}>
   <h4 class="text-2xl">{name}</h4>
   {
-    prices.adult ? (
+    !unavailable && prices.adult ? (
       <div class="flex items-baseline gap-x-2">
         <h5 class="text-xl">{prices.adult}</h5>
         {prices.child ? <h6 class="text-xs">Voksen</h6> : null}
@@ -68,10 +70,20 @@ const boxStyles = `p-6 rounded-3xl sm:mx-auto sm:rounded-2xl ${style} prose rela
     ) : null
   }
   {
-    prices.child ? (
+    !unavailable && prices.child ? (
       <div class="flex items-baseline gap-x-2">
         <h5 class="text-xl">{prices.child}</h5>
         <h6 class="text-xs">Barn (under 16 år)</h6>
+      </div>
+    ) : null
+  }
+  {
+    unavailable ? (
+      <div class="absolute not-prose inset-0 bg-white/80 flex flex-col items-center justify-center rounded-3xl sm:rounded-2xl text-black">
+        <span class="text-center bg-white rounded-md p-4">
+          <h5 class="text-xl font-bold">{name}</h5>
+          <h5 class="text-base">er ikke lenger tilgjengelig</h5>
+        </span>
       </div>
     ) : null
   }
