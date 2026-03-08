@@ -457,11 +457,11 @@ export const fetchCompetitionBySlug = async ({
     return undefined;
   }
 
+  const reversedRulesSets = [...competition.rulesSets].reverse();
   return {
     ...competition,
     // Various magical formatting tricks, should come from backend/static config
-    rules: competition.rulesSets
-      .reverse()
+    rules: reversedRulesSets
       .flatMap((rulesSetKey) => ruleSets[rulesSetKey] || [])
       .map((rule) => {
         if (rule.text.startsWith("<h2>")) {
@@ -486,13 +486,13 @@ export const fetchCompetitions = async ({
 
 export const getTailwindColorByCategory = (category: CreativeCategory) => {
   const colors: Record<CreativeCategory, string> = {
-    photo: "red",
-    video: "green",
-    graphics: "sky",
-    music: "yellow",
-    misc: "purple",
-    physical: "indigo",
-    programming: "pink",
+    photo: "bg-red-500",
+    video: "bg-green-500",
+    graphics: "bg-sky-500",
+    music: "bg-yellow-500",
+    misc: "bg-purple-500",
+    physical: "bg-indigo-500",
+    programming: "bg-pink-500",
   };
 
   return colors[category] || colors.misc;
