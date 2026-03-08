@@ -1,5 +1,5 @@
 ---
-type Theme = "orange" | "blue" | "secondary" | "white";
+type Theme = "orange" | "blue" | "secondary" | "white" | "transparent";
 type Variant = "normal" | "standalone" | "wide";
 interface Props {
   href: string;
@@ -14,6 +14,8 @@ const THEMES: Record<Theme, string> = {
   blue: "border text-white bg-sky-400 border-sky-400 hover:bg-sky-500",
   secondary: "border text-white bg-transparent border-white hover:bg-white/20",
   white: "border text-black bg-white border-white hover:bg-neutral-200",
+  transparent:
+    "border text-black bg-white/20 border-transparent hover:bg-neutral-200/50",
 };
 const VARIANTS: Record<Variant, string> = {
   normal: "inline-block px-4 py-2 rounded-full text-xs font-bold",
