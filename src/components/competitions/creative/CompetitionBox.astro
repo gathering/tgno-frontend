@@ -1,22 +1,30 @@
 ---
-import H2 from "../../components/H2.astro";
-import Button from "../Button.astro";
-import type { Competition, CreativeCategory } from "../../utils";
+import H2 from "../../../components/H2.astro";
+import { type Competition } from "../../../utils";
+import CreativeBox from "./CreativeBox.astro";
 
 export interface Props extends Pick<
   Competition,
   "name" | "description" | "category" | "prizes"
 > {
-  children: any;
+  children?: any;
   slug?: Competition["slug"];
   class?: string;
+  hideAction?: boolean;
 }
 
-const { name, prizes = [], class: classNames, category } = Astro.props;
+const {
+  name,
+  prizes = [],
+  class: classNames,
+  category,
+  description,
+  hideAction = false,
+} = Astro.props;
 
 const url = Astro.props.slug
   ? `/competitions/creative/${Astro.props.slug}`
-  : null;
+  : undefined;
 
 const formatPrice = (prize: number | string) =>
   typeof prize === "string"
@@ -27,26 +35,17 @@ const formatPrice = (prize: number | string) =>
         maximumFractionDigits: 0,
       }).format(prize);
 
-const categoryStyles: Record<CreativeCategory, string> = {
-  photo: "bg-red-500",
-  video: "bg-green-500",
-  graphics: "bg-sky-500",
-  music: "bg-yellow-500",
-  misc: "bg-purple-500",
-  physical: "bg-indigo-500",
-  programming: "bg-pink-500",
-};
-
-const categoryStyle = categoryStyles[category || "misc"];
 const hasPrices = !!prizes.length;
 const prizeGroups = prizes.every(Array.isArray) ? prizes : [prizes];
 ---
 
-<section class={`flex flex-col gap-4 ${categoryStyle} ${classNames}`}>
-  <H2 text={name} color="" />
-  <span>
-    <slot />
-  </span>
+<CreativeBox
+  url={hideAction ? undefined : url}
+  category={category}
+  class={classNames}
+>
+  <H2 text={name} color="" class="mb-0" />
+  {description && <p>{description}</p>}
   {
     hasPrices
       ? prizeGroups.map((groupPrizes) => (
@@ -67,11 +66,4 @@ const prizeGroups = prizes.every(Array.isArray) ? prizes : [prizes];
         ))
       : null
   }
-  {
-    url && (
-      <Button href={url} variant="wide" theme="transparent" class="mt-auto">
-        Les mer
-      </Button>
-    )
-  }
-</section>
+</CreativeBox>

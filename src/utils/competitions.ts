@@ -483,3 +483,17 @@ export const fetchCompetitions = async ({
 }): Promise<Competition[]> => {
   return competitions || [];
 };
+
+export const getTailwindColorByCategory = (category: CreativeCategory) => {
+  const colors: Record<CreativeCategory, string> = {
+    photo: "red",
+    video: "green",
+    graphics: "sky",
+    music: "yellow",
+    misc: "purple",
+    physical: "indigo",
+    programming: "pink",
+  };
+
+  return colors[category] || colors.misc;
+};

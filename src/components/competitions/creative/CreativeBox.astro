@@ -1,0 +1,32 @@
+---
+import Button from "../../Button.astro";
+import { getTailwindColorByCategory, type Competition } from "../../../utils";
+
+export interface Props {
+  children?: any;
+  url?: string;
+  class?: string;
+  category?: Competition["category"];
+}
+
+const { class: classNames, category, url } = Astro.props;
+
+const primaryColor = category
+  ? `bg-${getTailwindColorByCategory(category)}-500`
+  : "bg-white";
+---
+
+<section
+  class={`flex flex-col gap-4 ${primaryColor} p-6 rounded-3xl sm:rounded-2xl w-full ${classNames}`}
+>
+  <span>
+    <slot />
+  </span>
+  {
+    url && (
+      <Button href={url} variant="wide" theme="transparent" class="mt-auto">
+        Les mer
+      </Button>
+    )
+  }
+</section>
