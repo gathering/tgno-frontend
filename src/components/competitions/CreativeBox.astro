@@ -1,32 +1,22 @@
 ---
 import H2 from "../../components/H2.astro";
+import Button from "../Button.astro";
+import type { Competition, CreativeCategory } from "../../utils";
 
-interface Prize {
-  name?: string;
-  price?: number | string;
-}
-
-type PrizeCategory = Array<Prize>;
-
-export interface Props {
-  title: string;
+export interface Props extends Pick<
+  Competition,
+  "name" | "description" | "category" | "prizes"
+> {
   children: any;
-  prizes: PrizeCategory | Array<PrizeCategory>;
-  byoc?: boolean;
-  requiresTicket?: boolean;
+  slug?: Competition["slug"];
   class?: string;
-  url?: string;
-  category?:
-    | "foto"
-    | "video"
-    | "grafikk"
-    | "musikk"
-    | "diverse"
-    | "physical"
-    | "utvikling";
 }
 
-const { title, prizes, url, class: classNames, category } = Astro.props;
+const { name, prizes = [], class: classNames, category } = Astro.props;
+
+const url = Astro.props.slug
+  ? `/competitions/creative/${Astro.props.slug}`
+  : null;
 
 const formatPrice = (prize: number | string) =>
   typeof prize === "string"
@@ -37,23 +27,23 @@ const formatPrice = (prize: number | string) =>
         maximumFractionDigits: 0,
       }).format(prize);
 
-const categoryStyles = {
-  foto: "bg-red-500",
+const categoryStyles: Record<CreativeCategory, string> = {
+  photo: "bg-red-500",
   video: "bg-green-500",
-  grafikk: "bg-sky-500",
-  musikk: "bg-yellow-500",
-  diverse: "bg-purple-500",
+  graphics: "bg-sky-500",
+  music: "bg-yellow-500",
+  misc: "bg-purple-500",
   physical: "bg-indigo-500",
-  utvikling: "bg-pink-500",
+  programming: "bg-pink-500",
 };
 
-const categoryStyle = categoryStyles[category || "diverse"];
+const categoryStyle = categoryStyles[category || "misc"];
 const hasPrices = !!prizes.length;
 const prizeGroups = prizes.every(Array.isArray) ? prizes : [prizes];
 ---
 
-<section class={`flex flex-col ${categoryStyle} ${classNames}`}>
-  <H2 text={title} color="" />
+<section class={`flex flex-col gap-4 ${categoryStyle} ${classNames}`}>
+  <H2 text={name} color="" />
   <span>
     <slot />
   </span>
@@ -79,9 +69,9 @@ const prizeGroups = prizes.every(Array.isArray) ? prizes : [prizes];
   }
   {
     url && (
-      <button class="w-full px-4 py-2 rounded-full content-center mt-auto bg-white border border-white hover:bg-white/70">
+      <Button href={url} variant="wide" theme="transparent" class="mt-auto">
         Les mer
-      </button>
+      </Button>
     )
   }
 </section>

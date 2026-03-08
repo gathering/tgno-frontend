@@ -1,0 +1,60 @@
+---
+import H1 from "../../../components/H1.astro";
+import Layout from "../../../layouts/Layout.astro";
+import Main from "../../../components/Main.astro";
+import H2 from "../../../components/H2.astro";
+import H3 from "../../../components/H3.astro";
+import ContentContainer from "../../../components/ContentContainer.astro";
+import CreativeBox from "../../../components/competitions/CreativeBox.astro";
+import Pill from "../../../components/competitions/Pill.astro";
+import { fetchCompetitions } from "../../../utils";
+
+const boxStyles =
+  "p-6 rounded-3xl sm:mx-auto sm:rounded-2xl w-full min-h-[150px] sm:min-h-[200px]";
+
+const competitions = await fetchCompetitions({
+  api_url: import.meta.env.API_URL,
+});
+---
+
+<Layout title="The Gathering - Kreative konkurranser">
+  <Main>
+    <ContentContainer>
+      <H1 text="Kreative konkurranser" />
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+      >
+        <div class="sm:col-start-1 sm:col-span-2 sm:row-span-2">
+          <section class="mb-6 prose prose-strong:text-white text-white">
+            <H2 text="Hvem takler presset best?" />
+            <p>
+              Test sjansene dine for å vinne flotte premier i konkurranser innen
+              musikk, video, grafikk og mer!
+            </p>
+            <H3>Praktisk informasjon</H3>
+            <p>
+              <Pill text="Vi er i gang!" color="white" class="mr-2" />
+              De aller fleste av konkurransene kan du starte med allerede nå. Følg
+              på tg.no for endelige regler og detaljer.
+            </p>
+          </section>
+        </div>
+        {
+          competitions.map((competition) => (
+            <CreativeBox {...competition} class={boxStyles}>
+              <p>{competition.description}</p>
+            </CreativeBox>
+          ))
+        }
+        <CreativeBox
+          name="Improviserte konkurranser"
+          class={`${boxStyles} md:col-span-2`}
+          prizes={[]}
+          category="misc"
+        >
+          <p>Følg med på tg.no og under arrangementet</p>
+        </CreativeBox>
+      </div>
+    </ContentContainer>
+  </Main>
+</Layout>

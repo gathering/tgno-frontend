@@ -1,0 +1,40 @@
+---
+import H1 from "../../../components/H1.astro";
+import Main from "../../../components/Main.astro";
+import Intro from "../../../components/Intro.astro";
+import ContentContainer from "../../../components/ContentContainer.astro";
+import Layout from "../../../layouts/Layout.astro";
+import { fetchCompetitionBySlug } from "../../../utils";
+import BodyText from "../../../components/BodyText.astro";
+
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.rewrite("/404");
+}
+
+const competition = await fetchCompetitionBySlug({
+  slug,
+  api_url: import.meta.env.API_URL,
+});
+
+if (!competition) {
+  return Astro.rewrite("/404");
+}
+---
+
+<Layout
+  title=`The Gathering - ${competition.name} konkurranse`
+  description=`${competition.description || competition.name}`
+  search_description=`${competition.description || competition.name}`
+>
+  <Main>
+    <ContentContainer variant="narrow">
+      <H1 text={competition.name} />
+      <Intro
+        text={`${competition.description || ""} Kontaktperson for konkurransen er ${competition.contact ?? "Kreativia support desk"}`}
+      />
+      <BodyText htmlBody={competition.rules} />
+    </ContentContainer>
+  </Main>
+</Layout>
