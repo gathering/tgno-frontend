@@ -56,8 +56,7 @@ export const competitions: Competition[] = [
     category: "programming",
     judging: "jury",
     contact: "Kim Roar aka Zokum",
-    // NOTE: Missing in original rules; kept as placeholder ruleset.
-    rulesSets: ["base", "common", "gameJam"],
+    rulesSets: ["base", "common"],
   },
   {
     name: "Best Creative Tooling",
@@ -133,7 +132,7 @@ export const competitions: Competition[] = [
     name: "Pixel Art",
     slug: "pixel-art",
     description:
-      "Create an image up to 384Ã—216 px using max 32 colors from a fixed 256-color palette.",
+      "Create an image up to 384 by 216 pixel using max 32 colors from a fixed 256-color palette.",
     category: "graphics",
     judging: "audience",
     rulesSets: ["base", "common", "graphicsBase", "pixelArt"],
@@ -213,22 +212,15 @@ export const competitions: Competition[] = [
     slug: "tg-hack",
     category: "misc",
     judging: "score",
-    // NOTE: Missing in original rules; kept as placeholder ruleset.
-    rulesSets: ["base", "common", "tghack"],
+    rulesSets: ["base", "common"],
   },
   {
     name: "Best Group",
     slug: "best-group",
     category: "misc",
     judging: "score",
-    prizes: [
-      {
-        price: 100,
-      },
-    ],
     contact: "Kim Roar aka Zokum",
-    // NOTE: Missing in original rules; kept as placeholder ruleset.
-    rulesSets: ["base", "common", "bestGroup"],
+    rulesSets: ["base", "common"],
   },
 ];
 
