@@ -165,7 +165,7 @@ export const competitions: Competition[] = [
     category: "graphics",
     judging: "audience",
     contact: "Mollen",
-    rulesSets: ["base", "common", "graphicsBase", "themedPhoto"],
+    rulesSets: ["base", "common", "graphicsBase", "fastThemedPhoto"],
   },
   {
     name: "Themed In-game Screenshot",
@@ -184,7 +184,7 @@ export const competitions: Competition[] = [
     category: "graphics",
     judging: "audience",
     contact: "Kim Roar aka Zokum",
-    rulesSets: ["base", "common", "graphicsBase", "textmodeGraphics"],
+    rulesSets: ["base", "common", "graphicsBase", "textmodeArt"],
   },
   {
     name: "Jury Award",
@@ -221,7 +221,7 @@ export const competitions: Competition[] = [
     category: "misc",
     judging: "score",
     contact: "Skandix",
-    rulesSets: ["base", "common", "tghack"],
+    rulesSets: [],
   },
   {
     name: "Best Group",
@@ -256,7 +256,7 @@ export const ruleSets: Record<string, Array<Rule>> = {
       text: "By submitting, you accept the competition contract and grant the organizers the rights display, judge, distribute and use the entry for purposes related to Kandu and The Gathering, including promotion of these.",
     },
     {
-      text: "<h2>Attendance</h2>To receive physical prizes you or your representative must attend the prize-giving ceremony.",
+      text: "Attendance. To receive physical prizes you or your representative must attend the prize-giving ceremony.",
     },
   ],
 
@@ -466,6 +466,53 @@ export const ruleSets: Record<string, Array<Rule>> = {
     },
     {
       text: "Submit the program and any instructions to run it. Include a short description of why it's wonderfully useless.",
+    },
+  ],
+  bestGroup: [
+    {
+      text: "Top 10 placements in every creative competition award points.",
+    },
+    {
+      text: "Points are multiplied with a factor per competition based on complexity prestige and expected participants.",
+    },
+    {
+      text: "Your group needs to have at least entries in two different competitions or two different creators in the same competition.",
+    },
+    {
+      text: "There is no prizes, only diplomas and bragging right to the top 3 groups.",
+    },
+  ],
+  fastThemedPhoto: [
+    {
+      text: "Photo must be a single exposure (no composites). Minor retouching allowed (crop, exposure, color balance). Submit unsigned final image and original if requested.",
+    },
+    {
+      text: "Ensure correct format and resolution. Photos must be previously unreleased and respect the theme.",
+    },
+    { text: "Submit images in PNG or JPG (RGB) before the deadline." },
+    {
+      text: "This year's theme has a theme that will be revealed at the party. It will be possible to photograph this theme inside Vikingskipet.",
+    },
+    {
+      text: "You could photograph vintage Norwegian technology or inventions. You could mix new and old with a Norwegian twist to it. You could photograph someone playing an old Norwegian computer game. As long as the three elements are reflected in the image to some degree, it will be allowed.",
+    },
+  ],
+  textmodeArt: [
+    {
+      text: "Make some cool ascii or ansi art.",
+    },
+    {
+      text: "ANSI Colors are allowed.",
+    },
+    { text: "Up to 160 characters wide and 75 lines." },
+    {
+      text: "We allow dos/amiga/c64/utf8. For other formats/typefaces you need permission from the crew.",
+    },
+    {
+      text: "XBin is not allowed.",
+    },
+    {
+      text: "We recommend using Moebius or Moebius XBIN edition.",
     },
   ],
 };
