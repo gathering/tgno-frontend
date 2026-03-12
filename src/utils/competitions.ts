@@ -302,7 +302,7 @@ export const competitions: Competition[] = [
     category: "misc",
     judging: "jury",
     contact: "Helene Harepus",
-    rulesSets: ["base", "common"],
+    rulesSets: ["base", "common", "bestShelf"],
     prizes: [
       { name: "1st Place", price: 500 },
       { name: "2nd Place", price: 300 },
@@ -629,6 +629,30 @@ export const ruleSets: Record<string, Array<Rule>> = {
     },
     {
       text: "We recommend using Moebius or Moebius XBIN edition.",
+    },
+  ],
+  bestShelf: [
+    {
+      text: "Show us how to make a really cool shelf that enhances the TG seating experience.",
+    },
+    {
+      text: "The shelves are judged on multiple criterias, without any particular weight to them..",
+    },
+    { text: "Creativity: Is your shelf innovative or unusual in any way?" },
+    {
+      text: "Practicality: How much better do they make your designated space(s).",
+    },
+    {
+      text: "Width and height do not matter much, don't try to build it as tall as possible, that could be negative.",
+    },
+    {
+      text: "Elements like sound, light, banners, screens and plants are positive factors.",
+    },
+    {
+      text: "Adherence to this year's party theme is not needed, but appreciated, especially on screens and banners.",
+    },
+    {
+      text: "Enviromentally friendly reuse of existing shelves from another year is a plus.",
     },
   ],
 };
