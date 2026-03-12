@@ -40,7 +40,13 @@ const competitions = await fetchCompetitions({
         </div>
         {
           competitions.map((competition) => (
-            <CompetitionBox {...competition} class={boxStyles} />
+            <CompetitionBox
+              {...competition}
+              slug={
+                competition.rulesSets?.length ? competition.slug : undefined
+              }
+              class={boxStyles}
+            />
           ))
         }
         <CompetitionBox
