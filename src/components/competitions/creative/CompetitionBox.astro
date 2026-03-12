@@ -44,7 +44,13 @@ const prizeGroups = prizes.every(Array.isArray) ? prizes : [prizes];
   category={category}
   class={classNames}
 >
-  <H2 text={name} color="" class="mb-0" />
+  {
+    url && (
+      <a href={url}>
+        <H2 text={name} color="" class="mb-0" />
+      </a>
+    )
+  }
   {description && <p>{description}</p>}
   {
     hasPrices
