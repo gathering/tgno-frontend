@@ -20,9 +20,6 @@ const competition = await fetchCompetitionBySlug({
 if (!competition) {
   return Astro.rewrite("/404");
 }
-
-const proseStyles =
-  "prose prose-headings:text-black prose-strong:text-black text-black prose-headings:mt-4 prose-headings:mb-2 prose-links:text-blue-600 prose-links:underline prose-links:decoration-blue-600 prose-a:text-black";
 ---
 
 <Layout
@@ -48,11 +45,13 @@ const proseStyles =
             )
           }
         </CompetitionBox>
-        <CreativeBox class="sm:row-span-2 sm:col-span-2 lg:col-span-3">
+        <CreativeBox
+          class="sm:row-span-2 sm:col-span-2 lg:col-span-3 prose prose-invert"
+        >
           <h2 class="mt-0 mb-6 text-4xl font-bold">
             Rules for {competition.name}
           </h2>
-          <div class={proseStyles} set:html={competition.rules} />
+          <div set:html={competition.rules} />
         </CreativeBox>
       </div>
     </ContentContainer>
