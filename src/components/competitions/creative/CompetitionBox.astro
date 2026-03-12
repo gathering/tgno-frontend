@@ -1,0 +1,73 @@
+---
+import H2 from "../../../components/H2.astro";
+import { type Competition } from "../../../utils";
+import CreativeBox from "./CreativeBox.astro";
+
+export interface Props extends Pick<
+  Competition,
+  "name" | "description" | "category" | "prizes"
+> {
+  children?: any;
+  slug?: Competition["slug"];
+  class?: string;
+  hideAction?: boolean;
+}
+
+const {
+  name,
+  prizes = [],
+  class: classNames,
+  category,
+  description,
+  hideAction = false,
+} = Astro.props;
+
+const url = Astro.props.slug
+  ? `/competitions/creative/${Astro.props.slug}`
+  : undefined;
+
+const formatPrice = (prize: number | string) =>
+  typeof prize === "string"
+    ? prize
+    : new Intl.NumberFormat("nb-NO", {
+        style: "currency",
+        currency: "NOK",
+        maximumFractionDigits: 0,
+      }).format(prize);
+
+const hasPrices = !!prizes.length;
+const prizeGroups = prizes.every(Array.isArray) ? prizes : [prizes];
+---
+
+<CreativeBox
+  url={hideAction ? undefined : url}
+  category={category}
+  class={classNames}
+>
+  <H2 text={name} color="" class="mb-0" />
+  {description && <p>{description}</p>}
+  {
+    hasPrices
+      ? prizeGroups.map((groupPrizes) => (
+          <>
+            <dl class="divide-y divide-black/50 mt-5 last:pt-5 last:mt-auto">
+              {groupPrizes.map(({ name, price }, index) => (
+                <div class="px-2 py-1 grid grid-cols-5 sm:gap-2 sm:px-0">
+                  {name !== "" && (
+                    <dt class="text-sm font-bold leading-4 text-black/90 col-span-3">
+                      {name || `${index + 1}. plass`}
+                    </dt>
+                  )}
+                  <dd
+                    class={`mt-1 text-sm leading-4 text-black/70 ${name === "" ? "col-span-5" : "col-span-2"} sm:mt-0`}
+                  >
+                    {price ? formatPrice(price) : "TBA"}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </>
+        ))
+      : null
+  }
+</CreativeBox>
