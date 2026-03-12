@@ -57,6 +57,12 @@ export const competitions: Competition[] = [
     judging: "jury",
     contact: "Suilion",
     rulesSets: ["base", "common", "uselessUtility"],
+    prizes: [
+      {
+        name: "",
+        price: 'Win "fantastic" prizes that will great on your shelf?',
+      },
+    ],
   },
   {
     name: "Game Jam",
