@@ -23,8 +23,8 @@ const competitions = await fetchCompetitions({
       <div
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
       >
-        <div class="sm:col-start-1 sm:col-span-2 sm:row-span-2">
-          <section class="mb-6 prose prose-strong:text-white text-white">
+        <div class="sm:col-start-1 sm:col-span-2 sm:row-span-1">
+          <section class="mb-6 prose prose-strong:text-white text-white pr-8">
             <H2 text="Hvem takler presset best?" />
             <p>
               Test sjansene dine for å vinne flotte premier i konkurranser innen
@@ -54,9 +54,8 @@ const competitions = await fetchCompetitions({
           class={`${boxStyles} md:col-span-2`}
           prizes={[]}
           category="misc"
-        >
-          <p>Følg med på tg.no og under arrangementet</p>
-        </CompetitionBox>
+          description="I tillegg til de planlagte konkurransene, kan det også dukke opp noen improviserte konkurranser under arrangementet. Følg med på tg.no og under arrangementet."
+        />
       </div>
     </ContentContainer>
   </Main>
