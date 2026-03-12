@@ -425,7 +425,10 @@ export const ruleSets: Record<string, Array<Rule>> = {
 
   pixelArt: [
     {
-      text: "Resolution max: 256 by 256 pixels. Use up to 16 colors chosen from the event palette of 256 colors.",
+      text: "Resolution max: 256 by 256 pixels. Use up to 16 colors chosen from <a href='https://www.tg.no/media/images/pixelart-tg26.original.png' target='_blank'>the event palette</a> of 256 colors.",
+    },
+    {
+      text: "<strong>Download this years color palette here:</strong><br /><a href='https://www.tg.no/media/images/pixelart-tg26.original.png' target='_blank'>https://www.tg.no/media/images/pixelart-tg26.original.png</a>",
     },
     {
       text: "The palette is taken from the Tiki 100, a Norwegian computer specifically designed for school use in the 80s. The odd color palette is due to the computer using 8 bits to encode colors. 3 for red, 3 for green and 2 for blue. This makes it impossible to create completely grey colors.",
