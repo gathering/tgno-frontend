@@ -40,6 +40,13 @@ export const competitions: Competition[] = [
     judging: "audience",
     contact: "Kim Roar aka Zokum",
     rulesSets: ["base", "common", "realtime", "demo"],
+    prizes: [
+      { name: "1st Place", price: 1000 },
+      { name: "2nd Place", price: 500 },
+      { name: "3rd Place", price: 300 },
+      { name: "4th Place", price: 200 },
+      { name: "5th Place", price: 100 },
+    ],
   },
   {
     name: "Useless Utility",
@@ -60,6 +67,13 @@ export const competitions: Competition[] = [
     judging: "jury",
     contact: "Kim Roar aka Zokum",
     rulesSets: ["base", "common", "gameJam"],
+    prizes: [
+      { name: "1st Place", price: 1000 },
+      { name: "2nd Place", price: 500 },
+      { name: "3rd Place", price: 300 },
+      { name: "4th Place", price: 200 },
+      { name: "5th Place", price: 100 },
+    ],
   },
   {
     name: "Best Creative Tooling",
@@ -70,6 +84,11 @@ export const competitions: Competition[] = [
     judging: "jury",
     contact: "Kim Roar aka Zokum",
     rulesSets: ["base", "common"],
+    prizes: [
+      { name: "1st Place", price: 300 },
+      { name: "2nd Place", price: 200 },
+      { name: "3rd Place", price: 100 },
+    ],
   },
   {
     name: "Small HTML",
@@ -80,6 +99,13 @@ export const competitions: Competition[] = [
     judging: "score",
     contact: "Kim Roar aka Zokum",
     rulesSets: ["base", "common", "smallHtml"],
+    prizes: [
+      { name: "1st Place", price: 800 },
+      { name: "2nd Place", price: 400 },
+      { name: "3rd Place", price: 200 },
+      { name: "4th Place", price: 100 },
+      { name: "5th Place", price: 100 },
+    ],
   },
 
   {
@@ -90,6 +116,13 @@ export const competitions: Competition[] = [
     judging: "audience",
     contact: "Hans Christian aka Hogzz",
     rulesSets: ["base", "common", "musicBase", "freestyleMusic"],
+    prizes: [
+      { name: "1st Place", price: 800 },
+      { name: "2nd Place", price: 400 },
+      { name: "3rd Place", price: 200 },
+      { name: "4th Place", price: 100 },
+      { name: "5th Place", price: 100 },
+    ],
   },
   {
     name: "Fast Music",
@@ -100,6 +133,11 @@ export const competitions: Competition[] = [
     judging: "audience",
     contact: "Hans Christian aka Hogzz",
     rulesSets: ["base", "common", "musicBase", "fastRemix"],
+    prizes: [
+      { name: "1st Place", price: 500 },
+      { name: "2nd Place", price: 300 },
+      { name: "3rd Place", price: 200 },
+    ],
   },
   {
     name: "K-pop",
@@ -109,6 +147,11 @@ export const competitions: Competition[] = [
     judging: "audience",
     contact: "Hans Christian aka Hogzz",
     rulesSets: ["base", "common", "musicBase", "genreMusic"],
+    prizes: [
+      { name: "1st Place", price: 500 },
+      { name: "2nd Place", price: 300 },
+      { name: "3rd Place", price: 200 },
+    ],
   },
   {
     name: "10-Minute DJ Mix Video",
@@ -118,6 +161,11 @@ export const competitions: Competition[] = [
     judging: "audience",
     contact: "Mollen",
     rulesSets: ["base", "common", "musicBase", "djSet"],
+    prizes: [
+      { name: "1st Place", price: 500 },
+      { name: "2nd Place", price: 300 },
+      { name: "3rd Place", price: 200 },
+    ],
   },
   {
     name: "Fast Graphics",
@@ -128,6 +176,11 @@ export const competitions: Competition[] = [
     judging: "audience",
     contact: "Suilion",
     rulesSets: ["base", "common", "graphicsBase", "fastGraphics"],
+    prizes: [
+      { name: "1st Place", price: 500 },
+      { name: "2nd Place", price: 300 },
+      { name: "3rd Place", price: 200 },
+    ],
   },
   {
     name: "Pixel Art",
@@ -138,6 +191,11 @@ export const competitions: Competition[] = [
     judging: "audience",
     contact: "Kim Roar aka Zokum",
     rulesSets: ["base", "common", "graphicsBase", "pixelArt"],
+    prizes: [
+      { name: "1st Place", price: 500 },
+      { name: "2nd Place", price: 300 },
+      { name: "3rd Place", price: 200 },
+    ],
   },
   {
     name: "Hand-drawn Graphics",
@@ -148,6 +206,13 @@ export const competitions: Competition[] = [
     judging: "audience",
     contact: "Suilion",
     rulesSets: ["base", "common", "graphicsBase", "freestyleGraphics"],
+    prizes: [
+      { name: "1st Place", price: 800 },
+      { name: "2nd Place", price: 400 },
+      { name: "3rd Place", price: 200 },
+      { name: "4th Place", price: 100 },
+      { name: "5th Place", price: 100 },
+    ],
   },
   {
     name: "Themed Photo",
@@ -157,6 +222,11 @@ export const competitions: Competition[] = [
     judging: "audience",
     contact: "Mollen",
     rulesSets: ["base", "common", "graphicsBase", "themedPhoto"],
+    prizes: [
+      { name: "1st Place", price: 500 },
+      { name: "2nd Place", price: 300 },
+      { name: "3rd Place", price: 200 },
+    ],
   },
   {
     name: "Fast Themed Photo",
@@ -166,6 +236,11 @@ export const competitions: Competition[] = [
     judging: "audience",
     contact: "Mollen",
     rulesSets: ["base", "common", "graphicsBase", "fastThemedPhoto"],
+    prizes: [
+      { name: "1st Place", price: 500 },
+      { name: "2nd Place", price: 300 },
+      { name: "3rd Place", price: 200 },
+    ],
   },
   {
     name: "Themed In-game Screenshot",
@@ -176,6 +251,11 @@ export const competitions: Competition[] = [
     judging: "audience",
     contact: "Suilion",
     rulesSets: ["base", "common", "graphicsBase", "inGameScreenshot"],
+    prizes: [
+      { name: "1st Place", price: 300 },
+      { name: "2nd Place", price: 200 },
+      { name: "3rd Place", price: 100 },
+    ],
   },
   {
     name: "Textmode Graphics",
@@ -185,6 +265,11 @@ export const competitions: Competition[] = [
     judging: "audience",
     contact: "Kim Roar aka Zokum",
     rulesSets: ["base", "common", "graphicsBase", "textmodeArt"],
+    prizes: [
+      { name: "1st Place", price: 500 },
+      { name: "2nd Place", price: 300 },
+      { name: "3rd Place", price: 200 },
+    ],
   },
   {
     name: "Jury Award",
@@ -195,6 +280,13 @@ export const competitions: Competition[] = [
     judging: "jury",
     contact: "Kim Roar aka Zokum",
     rulesSets: ["base", "common"],
+    prizes: [
+      { name: "1st Place", price: 500 },
+      { name: "2nd Place", price: 500 },
+      { name: "3rd Place", price: 500 },
+      { name: "4th Place", price: 500 },
+      { name: "5th Place", price: 500 },
+    ],
   },
   {
     name: "Best Shelf",
@@ -205,6 +297,11 @@ export const competitions: Competition[] = [
     judging: "jury",
     contact: "Helene Harepus",
     rulesSets: ["base", "common"],
+    prizes: [
+      { name: "1st Place", price: 500 },
+      { name: "2nd Place", price: 300 },
+      { name: "3rd Place", price: 200 },
+    ],
   },
   {
     name: "Computer Case",
@@ -213,6 +310,11 @@ export const competitions: Competition[] = [
     category: "misc",
     judging: "jury",
     rulesSets: ["base", "common"],
+    prizes: [
+      { name: "1st Place", price: 500 },
+      { name: "2nd Place", price: 300 },
+      { name: "3rd Place", price: 200 },
+    ],
   },
   {
     name: "TG:Hack",
@@ -222,6 +324,11 @@ export const competitions: Competition[] = [
     judging: "score",
     contact: "Skandix",
     rulesSets: [],
+    prizes: [
+      { name: "1st Place", price: 1000 },
+      { name: "2nd Place", price: 500 },
+      { name: "3rd Place", price: 300 },
+    ],
   },
   {
     name: "Best Group",
