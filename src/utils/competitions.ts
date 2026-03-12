@@ -487,6 +487,9 @@ export const ruleSets: Record<string, Array<Rule>> = {
   ],
   fastThemedPhoto: [
     {
+      text: "The theme will be given at the party, all other asepcts are identical to the regular Themed Photo competition.",
+    },
+    {
       text: "Photo must be a single exposure (no composites). Minor retouching allowed (crop, exposure, color balance). Submit unsigned final image and original if requested.",
     },
     {
@@ -495,9 +498,6 @@ export const ruleSets: Record<string, Array<Rule>> = {
     { text: "Submit images in PNG or JPG (RGB) before the deadline." },
     {
       text: "This year's theme has a theme that will be revealed at the party. It will be possible to photograph this theme inside Vikingskipet.",
-    },
-    {
-      text: "You could photograph vintage Norwegian technology or inventions. You could mix new and old with a Norwegian twist to it. You could photograph someone playing an old Norwegian computer game. As long as the three elements are reflected in the image to some degree, it will be allowed.",
     },
   ],
   textmodeArt: [
