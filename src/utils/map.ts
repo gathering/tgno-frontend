@@ -13,23 +13,19 @@ export const isMapItem = (item: PartialMapItem | MapItem): item is MapItem =>
 
 export const units = (units: number) => units * (47.3 / 3);
 
-// Ex. "3"
-export const stringToSize = (sizeString: string) =>
-  units(parseInt(sizeString || "1"));
-
-// Ex. "3x3"
-export function getStandSize(sizeString: string): {
+export function getStandSize(
+  width: number,
+  height: number,
+): {
   width: number;
   height: number;
 } {
-  const [width = stringToSize("1"), height = stringToSize("1")] = sizeString
-    .split("x")
-    .map(stringToSize);
-  return { width, height };
+  return { width: units(width), height: units(height) };
 }
 
-export function getStandPolygon(sizeString: string): Cords[] {
-  const { width, height } = getStandSize(sizeString);
+export function getStandPolygon(w: number, h: number): Cords[] {
+  const width = units(w);
+  const height = units(h);
   return [
     { x: 0, y: 0 },
     { x: width, y: 0 },
@@ -38,58 +34,52 @@ export function getStandPolygon(sizeString: string): Cords[] {
   ];
 }
 
-export function calculateColumn(
+export function calculate(
   items: Array<PartialMapItem | MapItem>,
-  direction: "up" | "down" = "down",
+  direction: "up" | "down" | "left" | "right",
+  margin = 0,
 ): MapItem[] {
   const newItems: MapItem[] = [];
 
-  items.forEach((item) => {
-    if (isMapItem(item)) {
-      newItems.push(item);
-      return;
-    }
-    const previousItem = newItems[newItems.length - 1];
-    const yOffset =
-      direction === "down" ? item.height * -1 : previousItem.height;
+  const isHorizontal = direction === "left" || direction === "right";
+  const isPositive = direction === "right" || direction === "up";
 
-    newItems.push({
-      ...item,
-      pos: {
-        x: previousItem.pos.x,
-        y: previousItem.pos.y + yOffset,
-      },
-    });
+  items.forEach((item, index) => {
+    if (index === 0) {
+      // First item keeps its position
+      newItems.push({
+        ...item,
+        pos: (item as MapItem).pos,
+      });
+    } else {
+      const prevItem = newItems[index - 1];
+      const prevPos = prevItem.pos;
+
+      // Calculate spacing based on direction:
+      // - Positive direction (right/up): use previous item's size
+      // - Negative direction (left/down): use current item's size
+      const itemSize = isHorizontal ? item.width : item.height;
+      const prevItemSize = isHorizontal ? prevItem.width : prevItem.height;
+
+      const spacing =
+        (isPositive ? prevItemSize : itemSize) + margin + (item.margin || 0);
+
+      // Apply spacing in the specified direction
+      const offset = isPositive ? spacing : -spacing;
+
+      const pos = isHorizontal
+        ? { x: prevPos.x + offset, y: prevPos.y }
+        : { x: prevPos.x, y: prevPos.y + offset };
+
+      newItems.push({
+        ...item,
+        pos,
+      });
+    }
   });
 
   return newItems;
 }
-
-export const calculateRow = (
-  items: Array<PartialMapItem | MapItem>,
-  direction: "right" | "left" = "right",
-  margin = 0,
-): MapItem[] => {
-  const newItems: MapItem[] = [];
-  let { x, y } = (items[0] as MapItem).pos;
-
-  items.forEach((item) => {
-    x += direction === "left" ? (item.margin || 0) * -1 : item.margin || 0;
-
-    newItems.push({
-      ...item,
-      pos: {
-        x,
-        y,
-      },
-    });
-
-    x +=
-      direction === "left" ? (item.width + margin) * -1 : item.width + margin;
-  });
-
-  return newItems;
-};
 
 export function rotateCords(center: Cords, points: Cords[], yaw: number) {
   const res = [];

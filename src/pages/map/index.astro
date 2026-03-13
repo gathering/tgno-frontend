@@ -2,10 +2,8 @@
 import "leaflet/dist/leaflet.css";
 import {
   units,
-  calculateRow,
-  calculateColumn,
+  calculate,
   getStandSize,
-  stringToSize,
   rotateCords,
   getStandPolygon,
   slugifyMapItemName,
@@ -31,14 +29,14 @@ const TYPE_COLORS = {
   placeholder: "gray",
 };
 
-const STANDS = {
+const STANDS: LocationMap = {
   placeholder: {
     name: "Placeholder",
     presentation: {
       type: "placeholder",
     },
   },
-} as const satisfies LocationMap;
+};
 
 const FOOD = {
   placeholder: {
@@ -181,7 +179,7 @@ const ATTRACTIONS = {
   },
 } as const satisfies LocationMap;
 
-const STAGES = {
+const STAGES: LocationMap = {
   mainStage: {
     icon: "https://www.tg.no/tg25/tg25_icon_white.svg",
     name: "Hovedscenen",
@@ -218,51 +216,46 @@ const STAGES = {
       padding: 40,
     },
   },
-} as const satisfies LocationMap;
-
-const SIZES = {
-  small: getStandSize("3x3"),
-  medium: getStandSize("6x6"),
-  long: getStandSize("6x3"),
-  longVertical: getStandSize("3x6"),
-  superlongVertical: getStandSize("3x9"),
-} as const satisfies Record<string, { width: number; height: number }>;
+};
 
 const LOCATIONS: MapItem[] = [
   {
     ...STANDS.placeholder,
-    ...getStandSize("46x38"),
+    ...getStandSize(46, 38),
     pos: { x: units(16), y: units(70) },
   },
   {
     ...STANDS.placeholder,
-    ...getStandSize("20x30"),
+    ...getStandSize(20, 30),
     pos: { x: units(59), y: units(47) },
   },
 
   // Streamer cluster
-  ...calculateColumn([
-    {
-      ...ATTRACTIONS.streamerLounge,
-      ...getStandSize("10x10"),
-      pos: { x: units(50.5), y: units(105) },
-    },
-    {
-      ...ATTRACTIONS.streamers,
-      ...getStandSize("10x3"),
-    },
-  ]),
+  ...calculate(
+    [
+      {
+        ...ATTRACTIONS.streamerLounge,
+        ...getStandSize(10, 10),
+        pos: { x: units(50.5), y: units(105) },
+      },
+      {
+        ...ATTRACTIONS.streamers,
+        ...getStandSize(10, 3),
+      },
+    ],
+    "down",
+  ),
   // TG Shop cluster, lower left above reception
-  ...calculateColumn(
+  ...calculate(
     [
       {
         ...ATTRACTIONS.tgShop,
-        ...getStandSize("12x12"),
+        ...getStandSize(12, 12),
         pos: { x: units(45), y: units(46) },
       },
       {
         ...ATTRACTIONS.support,
-        ...getStandSize("5x5"),
+        ...getStandSize(5, 5),
         presentation: {
           ...ATTRACTIONS.support.presentation,
           labelWidth: 7,
@@ -270,47 +263,50 @@ const LOCATIONS: MapItem[] = [
       },
       {
         ...ATTRACTIONS.infodesk,
-        ...getStandSize("5x5"),
+        ...getStandSize(5, 5),
       },
       {
         ...ATTRACTIONS.esportInfo,
-        ...getStandSize("5x5"),
+        ...getStandSize(5, 5),
       },
     ],
     "up",
   ),
   {
     ...ATTRACTIONS.reception,
-    ...getStandSize("6x8"),
+    ...getStandSize(6, 8),
     pos: { x: 850, y: 206 },
   },
   // Left stage (stage right) cluster
-  ...calculateColumn([
-    {
-      ...ATTRACTIONS.chillout,
-      ...getStandSize("10x15"),
-      pos: { x: units(66), y: units(93) },
-    },
-    {
-      ...STANDS.placeholder,
-      ...getStandSize("10x8"),
-    },
-  ]),
+  ...calculate(
+    [
+      {
+        ...ATTRACTIONS.chillout,
+        ...getStandSize(10, 15),
+        pos: { x: units(66), y: units(93) },
+      },
+      {
+        ...STANDS.placeholder,
+        ...getStandSize(10, 8),
+      },
+    ],
+    "down",
+  ),
   // Creativia cluster right of stage (stage left)
-  ...calculateColumn(
+  ...calculate(
     [
       {
         ...ATTRACTIONS.tgHack,
-        ...getStandSize("9x8"),
+        ...getStandSize(9, 8),
         pos: { x: units(155), y: units(82) },
       },
       {
         ...ATTRACTIONS.creativeInfo,
-        ...getStandSize("11x2"),
+        ...getStandSize(11, 2),
       },
       {
         ...STAGES.creativiaStage,
-        ...getStandSize("11x10"),
+        ...getStandSize(11, 10),
       },
     ],
     "up",
@@ -318,31 +314,31 @@ const LOCATIONS: MapItem[] = [
   // Food cluster
   {
     ...FOOD.placeholder,
-    ...SIZES.small,
-    polygon: rotateCords({ x: 0, y: 0 }, getStandPolygon("3x3"), -40),
+    ...getStandSize(3, 3),
+    polygon: rotateCords({ x: 0, y: 0 }, getStandPolygon(3, 3), -40),
     pos: { x: units(24.5), y: units(57) },
   },
   {
     ...FOOD.placeholder,
-    ...getStandSize("3x6"),
-    polygon: rotateCords({ x: 0, y: 0 }, getStandPolygon("3x6"), -55),
+    ...getStandSize(3, 6),
+    polygon: rotateCords({ x: 0, y: 0 }, getStandPolygon(3, 6), -55),
     pos: { x: units(30), y: units(53) },
   },
   {
     ...FOOD.placeholder,
-    ...getStandSize("8x4"),
+    ...getStandSize(8, 4),
     pos: { x: units(32), y: units(51.5) },
   },
-  ...calculateColumn(
+  ...calculate(
     [
       {
         ...FOOD.placeholder,
-        ...getStandSize("3x6"),
+        ...getStandSize(3, 6),
         pos: { x: units(42), y: units(56) },
       },
       {
         ...FOOD.placeholder,
-        ...getStandSize("3x6"),
+        ...getStandSize(3, 6),
       },
     ],
     "up",
@@ -364,40 +360,40 @@ const LOCATIONS: MapItem[] = [
   // toilets - top
   {
     ...ATTRACTIONS.toilet,
-    ...getStandSize("10x6"),
+    ...getStandSize(10, 6),
     pos: { x: 1400, y: 1941 },
   },
   {
     ...ATTRACTIONS.toilet,
-    ...getStandSize("10x6"),
+    ...getStandSize(10, 6),
     pos: { x: 1830, y: 1941 },
   },
   // toilets - right
   {
     ...ATTRACTIONS.toilet,
-    ...getStandSize("6x10"),
+    ...getStandSize(6, 10),
     pos: { x: 3200, y: 1344 },
   },
   {
     ...ATTRACTIONS.toilet,
-    ...getStandSize("6x10"),
+    ...getStandSize(6, 10),
     pos: { x: 3200, y: 1030 },
   },
   // toilets - left
   {
     ...ATTRACTIONS.toilet,
-    ...getStandSize("6x10"),
+    ...getStandSize(6, 10),
     pos: { x: 60, y: 1344 },
   },
   {
     ...ATTRACTIONS.toilet,
-    ...getStandSize("6x10"),
+    ...getStandSize(6, 10),
     pos: { x: 60, y: 1030 },
   },
   // toilets and showers - bottom
   {
     ...ATTRACTIONS.toilet,
-    ...getStandSize("6x6"),
+    ...getStandSize(6, 6),
     pos: { x: 2156, y: 450 },
     presentation: {
       ...ATTRACTIONS.toilet.presentation,
@@ -406,7 +402,7 @@ const LOCATIONS: MapItem[] = [
   },
   {
     ...ATTRACTIONS.toilet,
-    ...getStandSize("6x6"),
+    ...getStandSize(6, 6),
     pos: { x: 850, y: 360 },
     presentation: {
       ...ATTRACTIONS.toilet.presentation,
@@ -415,59 +411,59 @@ const LOCATIONS: MapItem[] = [
   },
   {
     ...ATTRACTIONS.showers,
-    ...getStandSize("60x6"),
+    ...getStandSize(60, 6),
     pos: { x: 1150, y: 490 },
   },
   // Security and medic
   {
     ...ATTRACTIONS.security,
-    ...getStandSize("10x6"),
+    ...getStandSize(10, 6),
     pos: { x: 2306, y: 550 },
   },
   {
     ...ATTRACTIONS.medic,
-    ...getStandSize("10x6"),
+    ...getStandSize(10, 6),
     pos: { x: 883, y: 500 },
   },
   // Seating and sleeping sectors
-  ...calculateRow(
+  ...calculate(
     [
       {
         ...ATTRACTIONS.sektor,
         name: "Sektor",
-        ...getStandSize("29x30"),
+        ...getStandSize(29, 30),
         pos: { x: units(110), y: units(82) },
       },
       {
         ...ATTRACTIONS.sektor,
         name: "Sektor",
-        ...getStandSize("10x20"),
+        ...getStandSize(10, 20),
       },
     ],
     "right",
     units(3),
   ),
-  ...calculateRow(
+  ...calculate(
     [
       {
         ...ATTRACTIONS.sektor,
         name: "Sektor",
-        ...getStandSize("25x30"),
+        ...getStandSize(25, 30),
         pos: { x: units(82), y: units(47) },
       },
       {
         ...ATTRACTIONS.sektor,
         name: "Sektor",
-        ...getStandSize("29x30"),
+        ...getStandSize(29, 30),
       },
       {
         ...ATTRACTIONS.sleepingArea,
         name: "Sektor",
-        ...getStandSize("10x30"),
+        ...getStandSize(10, 30),
       },
       {
         ...ATTRACTIONS.sleepingArea,
-        ...getStandSize("20x30"),
+        ...getStandSize(20, 30),
         margin: units(12),
       },
     ],
@@ -476,7 +472,7 @@ const LOCATIONS: MapItem[] = [
   ),
   {
     ...ATTRACTIONS.crewArea,
-    ...getStandSize("16x6"),
+    ...getStandSize(16, 6),
     pos: { x: units(166), y: units(107) },
   },
 ].map((item, index) => ({
