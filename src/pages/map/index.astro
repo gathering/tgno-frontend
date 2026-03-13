@@ -275,7 +275,7 @@ const LOCATIONS: MapItem[] = [
   {
     ...ATTRACTIONS.reception,
     ...getStandSize(6, 8),
-    pos: { x: 850, y: 206 },
+    pos: { x: units(54), y: units(13) },
   },
   // Left stage (stage right) cluster
   ...calculate(
@@ -348,53 +348,53 @@ const LOCATIONS: MapItem[] = [
     ...STAGES.mainStage,
     width: 280,
     height: 250,
-    pos: { x: 1300, y: 1310 },
+    pos: { x: units(82), y: units(83) },
   },
   {
     ...STAGES.eSportStage,
     width: 280,
     height: 190,
-    pos: { x: 1300, y: 1600 },
+    pos: { x: units(82), y: units(101) },
   },
   // Toilets and showers
   // toilets - top
   {
     ...ATTRACTIONS.toilet,
     ...getStandSize(10, 6),
-    pos: { x: 1400, y: 1941 },
+    pos: { x: units(89), y: units(123) },
   },
   {
     ...ATTRACTIONS.toilet,
     ...getStandSize(10, 6),
-    pos: { x: 1830, y: 1941 },
+    pos: { x: units(116), y: units(123) },
   },
   // toilets - right
   {
     ...ATTRACTIONS.toilet,
     ...getStandSize(6, 10),
-    pos: { x: 3200, y: 1344 },
+    pos: { x: units(203), y: units(85) },
   },
   {
     ...ATTRACTIONS.toilet,
     ...getStandSize(6, 10),
-    pos: { x: 3200, y: 1030 },
+    pos: { x: units(203), y: units(65) },
   },
   // toilets - left
   {
     ...ATTRACTIONS.toilet,
     ...getStandSize(6, 10),
-    pos: { x: 60, y: 1344 },
+    pos: { x: units(4), y: units(85) },
   },
   {
     ...ATTRACTIONS.toilet,
     ...getStandSize(6, 10),
-    pos: { x: 60, y: 1030 },
+    pos: { x: units(4), y: units(65) },
   },
   // toilets and showers - bottom
   {
     ...ATTRACTIONS.toilet,
     ...getStandSize(6, 6),
-    pos: { x: 2156, y: 450 },
+    pos: { x: units(137), y: units(29) },
     presentation: {
       ...ATTRACTIONS.toilet.presentation,
       stickyLabel: false,
@@ -403,7 +403,7 @@ const LOCATIONS: MapItem[] = [
   {
     ...ATTRACTIONS.toilet,
     ...getStandSize(6, 6),
-    pos: { x: 850, y: 360 },
+    pos: { x: units(54), y: units(23) },
     presentation: {
       ...ATTRACTIONS.toilet.presentation,
       stickyLabel: false,
@@ -412,18 +412,18 @@ const LOCATIONS: MapItem[] = [
   {
     ...ATTRACTIONS.showers,
     ...getStandSize(60, 6),
-    pos: { x: 1150, y: 490 },
+    pos: { x: units(73), y: units(31) },
   },
   // Security and medic
   {
     ...ATTRACTIONS.security,
     ...getStandSize(10, 6),
-    pos: { x: 2306, y: 550 },
+    pos: { x: units(146), y: units(35) },
   },
   {
     ...ATTRACTIONS.medic,
     ...getStandSize(10, 6),
-    pos: { x: 883, y: 500 },
+    pos: { x: units(56), y: units(32) },
   },
   // Seating and sleeping sectors
   ...calculate(
