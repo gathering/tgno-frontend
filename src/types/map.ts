@@ -13,6 +13,7 @@ export interface PartialMapItem {
   icon?: string;
   width: number;
   height: number;
+  margin?: number;
   polygon?: Cords[];
   presentation?: {
     /**
