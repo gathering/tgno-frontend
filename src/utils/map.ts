@@ -11,9 +11,12 @@ export const slugifyMapItemName = (name: string): string =>
 export const isMapItem = (item: PartialMapItem | MapItem): item is MapItem =>
   !!item.name && !!item.width && !!item.height && !!(item as MapItem)?.pos;
 
+export const units = (units: number) => units * (47.3 / 3);
+
 // Ex. "3"
 export const stringToSize = (sizeString: string) =>
-  parseInt(sizeString || "1") * (47.3 / 3);
+  units(parseInt(sizeString || "1"));
+
 // Ex. "3x3"
 export function getStandSize(sizeString: string): {
   width: number;
@@ -65,25 +68,24 @@ export function calculateColumn(
 export const calculateRow = (
   items: Array<PartialMapItem | MapItem>,
   direction: "right" | "left" = "right",
+  margin = 0,
 ): MapItem[] => {
   const newItems: MapItem[] = [];
+  let { x, y } = (items[0] as MapItem).pos;
 
   items.forEach((item) => {
-    if (isMapItem(item)) {
-      newItems.push(item);
-      return;
-    }
-
-    const previousItem = newItems[newItems.length - 1];
-    const xOffset = direction === "left" ? item.width * -1 : previousItem.width;
+    x += direction === "left" ? (item.margin || 0) * -1 : item.margin || 0;
 
     newItems.push({
       ...item,
       pos: {
-        x: previousItem.pos.x + xOffset,
-        y: previousItem.pos.y,
+        x,
+        y,
       },
     });
+
+    x +=
+      direction === "left" ? (item.width + margin) * -1 : item.width + margin;
   });
 
   return newItems;
