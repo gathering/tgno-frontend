@@ -45,13 +45,11 @@ if (!competition) {
             )
           }
         </CompetitionBox>
-        <CreativeBox
-          class="sm:row-span-2 sm:col-span-2 lg:col-span-3 prose prose-invert"
-        >
-          <h2 class="mt-0 mb-6 text-4xl font-bold">
+        <CreativeBox class="sm:row-span-2 sm:col-span-2 lg:col-span-3">
+          <h2 class="mt-0 mb-6 text-4xl font-bold prose prose-invert">
             Rules for {competition.name}
           </h2>
-          <div set:html={competition.rules} />
+          <div class="prose prose-invert" set:html={competition.rules} />
         </CreativeBox>
       </div>
     </ContentContainer>

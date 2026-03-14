@@ -346,6 +346,25 @@ export const competitions: Competition[] = [
     contact: "Kim Roar aka Zokum",
     rulesSets: ["base", "common", "bestGroup"],
   },
+  {
+    name: "Cosplay",
+    slug: "cosplay",
+    description:
+      "Show off your best cosplay outfit, whether it's a character from a game, movie, or your own original design.",
+    category: "physical",
+    judging: "jury",
+    rulesSets: ["cosplay"],
+    prizes: [
+      {
+        name: "Winner",
+        price: "10 000 NOK and Weekend Pass to Magicon Vanguard",
+      },
+      {
+        name: "Runner-up",
+        price: "4 000 NOK and Weekend Pass to Magicon Vanguard",
+      },
+    ],
+  },
 ];
 
 export const ruleSets: Record<string, Array<Rule>> = {
@@ -653,6 +672,36 @@ export const ruleSets: Record<string, Array<Rule>> = {
     },
     {
       text: "Enviromentally friendly reuse of existing shelves from another year is a plus.",
+    },
+  ],
+  cosplay: [
+    {
+      text: "Cosplaykonkurransen arrangeres under The Gathering 2026 i Vikingskipet i Hamar. Konkurransen er åpen for solodeltakere og består av sceneopptreden samt vurdering av kostyme og håndverk. Konkurransen finner sted 4. april 2026.",
+    },
+    {
+      text: "<h3>Deltakelse</h3><ul><li>Konkurransen er kun for solodeltakere.</li><li>Det vil være 10 deltakere i konkurransen.</li><li>For å delta må du ha gyldig billett til The Gathering 2026.</li></ul>",
+    },
+    {
+      text: "<h3>Kostyme</h3><ul><li>Kostymer basert på offisielt publisert visuelt materiale er tillatt. Dette inkluderer for eksempel spill, tegneserier, animasjon, filmer og lignende.</li><li>Originale karakterer og fanart er ikke tillatt.</li><li>Både kostyme og opptreden må være PG13.</li><li>Kostymet må være minst 60 % laget av deltakeren selv.</li></ul>",
+    },
+    {
+      text: "Unntak gjelder for:<ul><li>kontaktlinser</li><li>sko</li><li>parykker</li><li>undertøy</li><li>proteser som ører eller neser</li><li>bruk av delt utstyr som for eksempel 3D-printere</li></ul>",
+    },
+    {
+      text: "<h3>Sceneopptreden</h3><ul><li>Maks lengde på opptreden er 2 minutter.</li><li>Det vil ikke være teknisk rehearsal på scenen før konkurransen.</li><li>Dersom du bruker video eller lyd må dette leveres i én .mp4-fil og følge de tekniske kravene fra arrangøren.</li><li>All lyd må være forhåndsinnspilt. Mikrofon kan ikke brukes under opptreden.</li><li>Følgende er ikke tillatt: konfetti, væsker, pyroteknikk eller fyrverkeri. Det er strengt forbudt å kaste gjenstander utenfor scenen.</li><li>Det er tillatt å ha scenehjelper (stage ninja) på scenen under opptredenen.</li><li>Alle mediefiler må leveres i påmeldingskjema.</li></ul>",
+    },
+    {
+      text: "<h3>Skjerm og teknisk informasjon</h3><ul><li>Bak scenen vil det være en LED-skjerm på omtrent 5 × 6 meter.</li><li>Skjermens oppløsning er 1920 × 2304 og er i vertikalt format.</li></ul>",
+    },
+    {
+      text: "<h3>Pre-judging</h3><p>Alle deltakere vil ha en kort dommersamtale (pre-judging) før konkurransen.</p><p>Her presenterer deltakerne kostymet sitt for dommerne og kan forklare hvordan kostymet er laget, hvilke materialer som er brukt og hvilke teknikker som er benyttet.</p><p>Deltakere kan ta med build book eller referansebilder for å vise prosessen bak kostymet.</p>",
+    },
+
+    {
+      text: "<h3>Premier</h3><p>Det kåres:</p><ul><li>Winner – 10 000 NOK og Weekend Pass til Magicon Vanguard</li><li>Runner-up – 4 000 NOK og Weekend Pass til Magicon Vanguard</li></ul>",
+    },
+    {
+      text: "<h3>Bedømming</h3><table><tr><th>Kategori</th><th>Beskrivelse</th><th>Poeng</th></tr><tr><td>Håndverk</td><td>Kvalitet på utførelse, finish og detaljnivå</td><td>20 poeng</td></tr><tr><td>Likehet med original</td><td>Hvor likt kostymet er referansebildet</td><td>30 poeng</td></tr><tr><td>Opptreden</td><td>Tolkning av karakteren og presentasjon på scenen</td><td>50 poeng</td></tr></table><p>Totalt: 100 poeng</p><p>Merk: Dommerne vurderer kun hvordan kostymet er laget og hvordan cosplayeren bruker det for å oppnå likhet med karakteren det er basert på. Faktorer som kjønn, høyde, vekt, hudfarge eller andre personlige egenskaper vil ikke bli vurdert.</p>",
     },
   ],
 };
