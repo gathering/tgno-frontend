@@ -92,10 +92,16 @@ if (!competition) {
                 Magicon, som skal heve cosplay-opplevelsen på årets arrangement.
               </p>
 
+              <h2>Påmeldingen er nå åpen!</h2>
               <p>
-                Påmeldingen åpner 16. Mars kl 18:00. Gjør deg klar til å
-                imponere dommerne med både kostyme og opptreden den 4. april
-                2026!
+                Meld deg på via <a href="https://forms.gle/cRykPVhNwVocKBUM6"
+                  >dette påmeldingsskjemaet</a
+                >. Påmeldingen åpnet 18:00, 16. Mars.
+              </p>
+
+              <p>
+                Meld deg på nå for en sjangse til å imponere dommerne med både
+                kostyme og opptreden den 4. april 2026!
               </p>
 
               <p>
@@ -108,7 +114,13 @@ if (!competition) {
               />
             </span>
           </CreativeBox>
-          <CompetitionBox {...competition} hideAction />
+          <CompetitionBox
+            {...competition}
+            action={{
+              label: "Meld deg på nå",
+              url: "https://forms.gle/cRykPVhNwVocKBUM6",
+            }}
+          />
         </aside>
         <CreativeBox class="sm:row-span-2 sm:col-span-2 lg:col-span-2">
           <h2 class="mt-0 mb-6 text-4xl font-bold prose prose-invert">

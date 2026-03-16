@@ -32,11 +32,12 @@ if (!competition) {
       <a
         href="/competitions/creative"
         class="flex text-sm text-gray-500 hover:text-gray-700 mb-4"
+        target="_blank"
       >
         &larr; Tilbake til oversikten
       </a>
       <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        <CompetitionBox {...competition} hideAction class="sm:order-last">
+        <CompetitionBox {...competition} action={false} class="sm:order-last">
           {
             competition.contact && (
               <p>
