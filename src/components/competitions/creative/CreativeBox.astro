@@ -4,12 +4,15 @@ import { getTailwindColorByCategory, type Competition } from "../../../utils";
 
 export interface Props {
   children?: any;
-  url?: string;
   class?: string;
   category?: Competition["category"];
+  action?: {
+    label: string;
+    url: string;
+  };
 }
 
-const { class: classNames, category, url } = Astro.props;
+const { class: classNames, category, action } = Astro.props;
 
 const primaryColor = category
   ? getTailwindColorByCategory(category)
@@ -23,9 +26,14 @@ const primaryColor = category
     <slot />
   </span>
   {
-    url && (
-      <Button href={url} variant="wide" theme="transparent" class="mt-auto">
-        Les mer
+    action?.url && (
+      <Button
+        href={action.url}
+        variant="wide"
+        theme="transparent"
+        class="mt-auto"
+      >
+        {action.label}
       </Button>
     )
   }
