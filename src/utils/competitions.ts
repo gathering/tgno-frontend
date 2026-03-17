@@ -331,9 +331,12 @@ export const competitions: Competition[] = [
     contact: "Skandix",
     rulesSets: [],
     prizes: [
-      { name: "1st Place", price: 1000 },
-      { name: "2nd Place", price: 500 },
-      { name: "3rd Place", price: 300 },
+      {
+        name: "1st Place",
+        price: 5000 + " + Dirkesett fra MultiPick og Billetter til TG27",
+      },
+      { name: "2nd Place", price: 3000 },
+      { name: "3rd Place", price: 2000 },
     ],
   },
   {
