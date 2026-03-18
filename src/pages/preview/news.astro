@@ -1,0 +1,126 @@
+---
+import H1 from "../../components/H1.astro";
+import Intro from "../../components/Intro.astro";
+import Main from "../../components/Main.astro";
+import ContentContainer from "../../components/ContentContainer.astro";
+import Layout from "../../layouts/Layout.astro";
+import BodyText from "../../components/BodyText.astro";
+import { noLocalizeContributor } from "../../utils";
+
+const token = Astro.url.searchParams.get("token");
+if (!token) {
+  return new Response("Missing preview token.", { status: 400 });
+}
+
+const apiUrl = import.meta.env.API_URL;
+const res = await fetch(
+  `${apiUrl}api/v2/preview/news/${encodeURIComponent(token)}/`,
+  {
+    headers: { Accept: "application/json" },
+  },
+);
+
+if (!res.ok) {
+  const text = await res.text();
+  return new Response(text || "Preview not found", { status: res.status });
+}
+
+const article = await res.json();
+
+const datePublished = article?.meta?.custom_published_at
+  ? article.meta.custom_published_at
+  : article?.meta?.first_published_at;
+---
+
+<Layout
+  title=`Preview - ${article.title}`
+  description=`${article.meta?.search_description ?? ""}`
+  seo_title=`${article.meta?.seo_title ?? ""}`
+  search_description=`${article.meta?.search_description ?? ""}`
+  introText=`${article.intro ?? ""}`
+  type="article"
+  lang=`${article.meta?.locale || "no"}`
+  image=`${article.main_image?.sizes?.large?.url}`
+>
+  <Main>
+    <ContentContainer
+      variant={article.main_image?.uncroppable ? "narrow" : "wide"}
+    >
+      <H1 text={article.title} />
+      {
+        article.main_image && (
+          <div class="flex md:max-h-[50vh] md:min-h-[600px]">
+            <img
+              src={article.main_image.sizes.large.url}
+              srcset={Object.values(article.main_image.sizes)
+                .sort((a, b) => a.width - b.width)
+                .map((size) => `${size.url} ${size.width}w`)
+                .join(", ")}
+              alt={article.main_image.alt}
+              class="w-full rounded-3xl md:object-cover object-center"
+            />
+          </div>
+        )
+      }
+    </ContentContainer>
+    <ContentContainer variant="narrow">
+      <Intro text={article.intro} />
+      <BodyText class="mb-6" htmlBody={article.body} />
+      <aside
+        class="my-6 p-5 space-y-5 clear-both text-sm text-white/60 bg-background-secondary rounded"
+      >
+        <section class="space-y-1">
+          <time
+            datetime={article.meta?.first_published_at}
+            class="text-sm text-white/90"
+          >
+            Publisert:{" "}
+            {
+              datePublished
+                ? new Date(datePublished).toLocaleDateString("nb-NO", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })
+                : ""
+            }
+          </time>
+          {
+            !!article.tags?.length ? (
+              <p class="text-sm mb-1">
+                {article.tags
+                  .map((tag) =>
+                    tag.name
+                      .split(" ")
+                      .map(
+                        (word) => word.charAt(0).toUpperCase() + word.slice(1),
+                      )
+                      .join(" "),
+                  )
+                  .join(", ")}
+              </p>
+            ) : null
+          }
+        </section>
+        {
+          !!article.contributors?.length ? (
+            <section>
+              <div class="flex flex-row flex-wrap text-sm -mb-2">
+                {article.contributors
+                  .map(noLocalizeContributor)
+                  .map((contributor) => (
+                    <dl class="flex flex-col mb-2 mr-4">
+                      <dt class="font-bold text-white/90">
+                        {contributor.name}
+                      </dt>
+                      <dd class="">{contributor.contribution_type}</dd>
+                    </dl>
+                  ))}
+              </div>
+            </section>
+          ) : null
+        }
+      </aside>
+    </ContentContainer>
+  </Main>
+</Layout>
