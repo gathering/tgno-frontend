@@ -41,8 +41,8 @@ export const competitions: Competition[] = [
     contact: "Kim Roar aka Zokum",
     rulesSets: ["base", "common", "realtime", "demo"],
     prizes: [
-      { name: "1st Place", price: 1000 },
-      { name: "2nd Place", price: 500 },
+      { name: "1st Place", price: 1500 },
+      { name: "2nd Place", price: 700 },
       { name: "3rd Place", price: 300 },
       { name: "4th Place", price: 200 },
       { name: "5th Place", price: 100 },
@@ -74,8 +74,8 @@ export const competitions: Competition[] = [
     contact: "Kim Roar aka Zokum",
     rulesSets: ["base", "common", "gameJam"],
     prizes: [
-      { name: "1st Place", price: 1000 },
-      { name: "2nd Place", price: 500 },
+      { name: "1st Place", price: 1500 },
+      { name: "2nd Place", price: 700 },
       { name: "3rd Place", price: 300 },
       { name: "4th Place", price: 200 },
       { name: "5th Place", price: 100 },
@@ -123,8 +123,8 @@ export const competitions: Competition[] = [
     contact: "Hans Christian aka Hogzz",
     rulesSets: ["base", "common", "musicBase", "freestyleMusic"],
     prizes: [
-      { name: "1st Place", price: 800 },
-      { name: "2nd Place", price: 400 },
+      { name: "1st Place", price: 1000 },
+      { name: "2nd Place", price: 500 },
       { name: "3rd Place", price: 200 },
       { name: "4th Place", price: 100 },
       { name: "5th Place", price: 100 },
@@ -213,7 +213,7 @@ export const competitions: Competition[] = [
     contact: "Suilion",
     rulesSets: ["base", "common", "graphicsBase", "freestyleGraphics"],
     prizes: [
-      { name: "1st Place", price: 800 },
+      { name: "1st Place", price: 1000 },
       { name: "2nd Place", price: 400 },
       { name: "3rd Place", price: 200 },
       { name: "4th Place", price: 100 },
