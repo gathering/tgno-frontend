@@ -6,6 +6,31 @@ import ContentContainer from "../../components/ContentContainer.astro";
 import Layout from "../../layouts/Layout.astro";
 import BodyText from "../../components/BodyText.astro";
 import { noLocalizeContributor } from "../../utils";
+import type { Contributor } from "../../types";
+
+type ImageSize = { url: string; width: number; height: number };
+type PreviewArticle = {
+  id: number;
+  title: string;
+  intro: string;
+  body: string;
+  tags: { id: number; name: string; slug: string }[];
+  contributors: Contributor[];
+  main_image: null | {
+    id: number;
+    title: string;
+    alt: string;
+    sizes: Record<string, ImageSize>;
+    uncroppable?: boolean;
+  };
+  meta: {
+    first_published_at: string | null;
+    custom_published_at: string | null;
+    seo_title: string;
+    search_description: string;
+    locale: "no" | "en" | null;
+  };
+};
 
 const token = Astro.url.searchParams.get("token");
 if (!token) {
@@ -21,11 +46,10 @@ const res = await fetch(
 );
 
 if (!res.ok) {
-  const text = await res.text();
-  return new Response(text || "Preview not found", { status: res.status });
+  return new Response("Preview not found", { status: res.status });
 }
 
-const article = await res.json();
+const article = (await res.json()) as PreviewArticle;
 
 const datePublished = article?.meta?.custom_published_at
   ? article.meta.custom_published_at
@@ -39,7 +63,7 @@ const datePublished = article?.meta?.custom_published_at
   search_description=`${article.meta?.search_description ?? ""}`
   introText=`${article.intro ?? ""}`
   type="article"
-  lang=`${article.meta?.locale || "no"}`
+  lang={(article.meta?.locale || "no") as "no" | "en"}
   image=`${article.main_image?.sizes?.large?.url}`
 >
   <Main>
@@ -52,9 +76,9 @@ const datePublished = article?.meta?.custom_published_at
           <div class="flex md:max-h-[50vh] md:min-h-[600px]">
             <img
               src={article.main_image.sizes.large.url}
-              srcset={Object.values(article.main_image.sizes)
-                .sort((a, b) => a.width - b.width)
-                .map((size) => `${size.url} ${size.width}w`)
+              srcset={(Object.values(article.main_image.sizes) as ImageSize[])
+                .sort((a: ImageSize, b: ImageSize) => a.width - b.width)
+                .map((size: ImageSize) => `${size.url} ${size.width}w`)
                 .join(", ")}
               alt={article.main_image.alt}
               class="w-full rounded-3xl md:object-cover object-center"
@@ -89,11 +113,12 @@ const datePublished = article?.meta?.custom_published_at
             !!article.tags?.length ? (
               <p class="text-sm mb-1">
                 {article.tags
-                  .map((tag) =>
+                  .map((tag: PreviewArticle["tags"][number]) =>
                     tag.name
                       .split(" ")
                       .map(
-                        (word) => word.charAt(0).toUpperCase() + word.slice(1),
+                        (word: string) =>
+                          word.charAt(0).toUpperCase() + word.slice(1),
                       )
                       .join(" "),
                   )
@@ -108,14 +133,16 @@ const datePublished = article?.meta?.custom_published_at
               <div class="flex flex-row flex-wrap text-sm -mb-2">
                 {article.contributors
                   .map(noLocalizeContributor)
-                  .map((contributor) => (
-                    <dl class="flex flex-col mb-2 mr-4">
-                      <dt class="font-bold text-white/90">
-                        {contributor.name}
-                      </dt>
-                      <dd class="">{contributor.contribution_type}</dd>
-                    </dl>
-                  ))}
+                  .map(
+                    (contributor: PreviewArticle["contributors"][number]) => (
+                      <dl class="flex flex-col mb-2 mr-4">
+                        <dt class="font-bold text-white/90">
+                          {contributor.name}
+                        </dt>
+                        <dd class="">{contributor.contribution_type}</dd>
+                      </dl>
+                    ),
+                  )}
               </div>
             </section>
           ) : null
