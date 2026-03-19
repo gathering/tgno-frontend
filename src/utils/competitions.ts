@@ -41,8 +41,8 @@ export const competitions: Competition[] = [
     contact: "Kim Roar aka Zokum",
     rulesSets: ["base", "common", "realtime", "demo"],
     prizes: [
-      { name: "1st Place", price: 1000 },
-      { name: "2nd Place", price: 500 },
+      { name: "1st Place", price: 1500 },
+      { name: "2nd Place", price: 700 },
       { name: "3rd Place", price: 300 },
       { name: "4th Place", price: 200 },
       { name: "5th Place", price: 100 },
@@ -74,8 +74,8 @@ export const competitions: Competition[] = [
     contact: "Kim Roar aka Zokum",
     rulesSets: ["base", "common", "gameJam"],
     prizes: [
-      { name: "1st Place", price: 1000 },
-      { name: "2nd Place", price: 500 },
+      { name: "1st Place", price: 1500 },
+      { name: "2nd Place", price: 700 },
       { name: "3rd Place", price: 300 },
       { name: "4th Place", price: 200 },
       { name: "5th Place", price: 100 },
@@ -123,8 +123,8 @@ export const competitions: Competition[] = [
     contact: "Hans Christian aka Hogzz",
     rulesSets: ["base", "common", "musicBase", "freestyleMusic"],
     prizes: [
-      { name: "1st Place", price: 800 },
-      { name: "2nd Place", price: 400 },
+      { name: "1st Place", price: 1000 },
+      { name: "2nd Place", price: 500 },
       { name: "3rd Place", price: 200 },
       { name: "4th Place", price: 100 },
       { name: "5th Place", price: 100 },
@@ -213,7 +213,7 @@ export const competitions: Competition[] = [
     contact: "Suilion",
     rulesSets: ["base", "common", "graphicsBase", "freestyleGraphics"],
     prizes: [
-      { name: "1st Place", price: 800 },
+      { name: "1st Place", price: 1000 },
       { name: "2nd Place", price: 400 },
       { name: "3rd Place", price: 200 },
       { name: "4th Place", price: 100 },
@@ -329,11 +329,11 @@ export const competitions: Competition[] = [
     category: "misc",
     judging: "score",
     contact: "Skandix",
-    rulesSets: [],
+    rulesSets: ["tghack"],
     prizes: [
       {
         name: "1st Place",
-        price: 5000 + " + Dirkesett fra MultiPick og Billetter til TG27",
+        price: "5000 kr, Dirkesett fra MultiPick, og Billetter til TG27",
       },
       { name: "2nd Place", price: 3000 },
       { name: "3rd Place", price: 2000 },
@@ -705,6 +705,38 @@ export const ruleSets: Record<string, Array<Rule>> = {
     },
     {
       text: "<h3>Bedømming</h3><table><tr><th>Kategori</th><th>Beskrivelse</th><th>Poeng</th></tr><tr><td>Håndverk</td><td>Kvalitet på utførelse, finish og detaljnivå</td><td>20 poeng</td></tr><tr><td>Likehet med original</td><td>Hvor likt kostymet er referansebildet</td><td>30 poeng</td></tr><tr><td>Opptreden</td><td>Tolkning av karakteren og presentasjon på scenen</td><td>50 poeng</td></tr></table><p>Totalt: 100 poeng</p><p>Merk: Dommerne vurderer kun hvordan kostymet er laget og hvordan cosplayeren bruker det for å oppnå likhet med karakteren det er basert på. Faktorer som kjønn, høyde, vekt, hudfarge eller andre personlige egenskaper vil ikke bli vurdert.</p>",
+    },
+  ],
+  tghack: [
+    {
+      text: "<h1>Regler</h1><p>Konkurransen er åpen for alle som er interessert i å delta, uavhengig av kompetansenivå.<br/>Det forventes imidlertid at deltakerne har en grunnleggende forståelse av datasikkerhet og nettverkskonsepter.</p>",
+    },
+    {
+      text: "<h2>Lag</h2><p>Deltakere kan danne lag med maks 5 medlemmer, alle på laget må ha en gyldig LANpass billett til TG26.<br/>Hvert lag bør velge et unikt lagnavn og bør ha en utpekt lagleder som vil være det primære kontaktpunktet med arrangørene.</p>",
+    },
+    {
+      text: "<h2>Spillformat</h2><p>Spillet (CTFen) vil bestå av en rekke utfordringer, som hver vil ha et flagg skjult et sted i seg.<br/>Målet med spillet er å finne så mange flagg som mulig innenfor den gitte tidsgrensen.<br/>Denne typen spillformat er også kalt Jeopardy.</p>",
+    },
+    {
+      text: "<h2>Poengsum</h2><p>Poeng tildeles basert på utfordringens vanskelighetsgrad.<br/>Poeng telles ved slutten av spillet, og laget med høyest poengsum vil bli erklært som vinner.<br/>Hvis to lag har samme poengsum, er det den som fikk poengsummen først som vinner.</p>",
+    },
+    {
+      text: "<h2>Fair Play</h2><p>Deltakerne forventes å følge prinsippene for fair play gjennom hele spillet.<br/>Fusk eller deling av svar mellom lag vil resultere i diskvalifikasjon.<br/>Ethvert forsøk på å forstyrre spillet, som for eksempel tjenestenektangrep, vil også resultere i diskvalifikasjon.<br/>Videre er det ikke tillatt å forsøke å angripe eller forstyrre konkurransens infrastruktur,<br/>inkludert servere, nettverk eller andre systemer som støtter spillet.<br/>Slike handlinger vil resultere i umiddelbar diskvalifikasjon.</p>",
+    },
+    {
+      text: "<h2>Flaggformat</h2><p>Flagget vil være en unik rekke med tegn som deltakerne må finne i utfordringen.<br/>Flagget vil være i formatet:</p><ul><li><code>TG26{this_is_a_test}</code></li><li><code>/^TG26\\{.+\\}$/</code></li></ul>",
+    },
+    {
+      text: "<h2>Samarbeid</h2><p>Samarbeid innad i et team er tillatt og oppmuntret,<br/>men samarbeid mellom team er ikke tillatt.<br/>Team skal ikke dele svar eller løsninger med andre team,<br/>og skal ikke delta i noen form for samhandling.</p>",
+    },
+    {
+      text: "<h2>Tidsbegrensning</h2><p>Spillet vil ha en forhåndsdefinert tidsbegrensning,<br/>og alle flagg må finnes innen denne tidsgrensen.<br/>Den nøyaktige varigheten av spillet vil bli kommunisert til deltakerne før konkurransen starter.</p>",
+    },
+    {
+      text: "<h2>Uenighet</h2><p>Eventuelle uenigheter eller klager skal rettes til arrangørene,<br/>som vil ta den endelige avgjørelsen i enhver sak knyttet til spillet.</p>",
+    },
+    {
+      text: "<h2>Etiske retningslinjer</h2><p>Deltakere forventes å følge en etiske retningslinjer som forbyr enhver form for diskriminering,<br/>trakassering eller krenkende atferd.<br/>Eventuelle brudd på denne etiske retningslinjen vil resultere i diskvalifikasjon<br/>og mulig utvisning fra fremtidige konkurranser.</p>",
     },
   ],
 };
