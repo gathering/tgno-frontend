@@ -169,11 +169,7 @@ const { locations: ssrLocations } = Astro.props;
       ].map(toLatLngTuple);
 
       // TODO: Replace with proper map (tiled if better for performance)
-      L.imageOverlay("/tg25_map_background.jpg", this.mapBounds).addTo(map);
-      //L.imageOverlay(
-      //  "/TG25_sitemap_low_res_placeholder.jpg",
-      //  this.mapBounds,
-      //).addTo(map);
+      L.imageOverlay("/map_background.jpg", this.mapBounds).addTo(map);
 
       map.fitBounds(this.mapBounds);
       map.setMaxBounds(this.mapBounds);
@@ -410,6 +406,8 @@ const { locations: ssrLocations } = Astro.props;
       }
       &.placeholder,
       &.unknown {
+        /* Hidden until only the most basic map is left, to avoid confusion with actual locations */
+        display: none;
         fill-opacity: 0.1;
         fill: white;
         stroke-width: 1;
