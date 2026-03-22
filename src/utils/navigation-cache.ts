@@ -59,6 +59,7 @@ export async function getCachedNavigationItems(
       items: [
         { title: "Kreative", path: "/competitions/creative" },
         { title: "Esport", path: "/competitions/esport" },
+        { title: "Cosplay", path: "/competitions/creative/cosplay" },
       ],
     },
     { title: "Kontakt oss", path: "/contact" },

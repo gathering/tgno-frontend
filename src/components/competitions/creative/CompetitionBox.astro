@@ -10,7 +10,12 @@ export interface Props extends Pick<
   children?: any;
   slug?: Competition["slug"];
   class?: string;
-  hideAction?: boolean;
+  action?:
+    | {
+        label: string;
+        url: string;
+      }
+    | false;
 }
 
 const {
@@ -19,12 +24,20 @@ const {
   class: classNames,
   category,
   description,
-  hideAction = false,
 } = Astro.props;
 
 const url = Astro.props.slug
   ? `/competitions/creative/${Astro.props.slug}`
   : undefined;
+
+const action =
+  Astro.props.action ||
+  (url && Astro.props.action !== false
+    ? {
+        label: "Les mer",
+        url,
+      }
+    : undefined);
 
 const formatPrice = (prize: number | string) =>
   typeof prize === "string"
@@ -39,11 +52,7 @@ const hasPrices = !!prizes.length;
 const prizeGroups = prizes.every(Array.isArray) ? prizes : [prizes];
 ---
 
-<CreativeBox
-  url={hideAction ? undefined : url}
-  category={category}
-  class={classNames}
->
+<CreativeBox action={action} category={category} class={classNames}>
   <H2 text={name} color="" class="mb-0" />
   {description && <p>{description}</p>}
   {
