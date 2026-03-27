@@ -1,3 +1,4 @@
+import NodeCache from "node-cache";
 import { typedFetch } from "./fetching";
 
 interface Prize {
@@ -39,7 +40,9 @@ export interface CompetitionOverviewPage {
   competitions: Array<CompetitionPage>;
 }
 
-// TODO: cache results to avoid unnecessary fetches when navigating between pages
+// Cache with 5 minute TTL (300 seconds), consistent with navigation cache and events cache
+const cache = new NodeCache({ stdTTL: 300 });
+
 export const fetchCompetitionPageBySlug = async ({
   api_url,
   path,
@@ -47,18 +50,26 @@ export const fetchCompetitionPageBySlug = async ({
   api_url: string;
   path?: string;
 }): Promise<CompetitionPage | undefined> => {
-  const response = await typedFetch<CompetitionPage>(
-    `${api_url}api/v2/competitions/find?html_path=${path}`,
-    {
-      redirect: "follow",
-    },
-  );
+  let page =
+    cache.get<CompetitionPage>(`competition-page-${path}`) || undefined;
 
-  const page = await response.json().catch((e) => {
-    return undefined;
-  });
+  if (!page) {
+    const response = await typedFetch<CompetitionPage>(
+      `${api_url}api/v2/competitions/find?html_path=${path}`,
+      {
+        redirect: "follow",
+      },
+    );
 
-  return !page || !response.ok ? undefined : page;
+    page = await response.json().catch((_e) => {
+      return undefined;
+    });
+
+    page = page && response.ok ? page : undefined;
+    cache.set(`competition-page-${path}`, page);
+  }
+
+  return page;
 };
 
 export const getCompetitionsOverview = async ({
@@ -68,19 +79,26 @@ export const getCompetitionsOverview = async ({
   api_url: string;
   path: string;
 }): Promise<CompetitionOverviewPage | undefined> => {
-  // TODO: limit to overview pages only
-  const response = await typedFetch<CompetitionOverviewPage>(
-    `${api_url}api/v2/competitions/find?html_path=${path}&type=konkurranse.CompetitionCategoryPage`,
-    {
-      redirect: "follow",
-    },
-  );
+  let page =
+    cache.get<CompetitionOverviewPage>(`competition-overview-page-${path}`) ||
+    undefined;
 
-  const page = await response.json().catch((e) => {
-    return undefined;
-  });
+  if (!page) {
+    const response = await typedFetch<CompetitionOverviewPage>(
+      `${api_url}api/v2/competitions/find?html_path=${path}&type=konkurranse.CompetitionCategoryPage`,
+      {
+        redirect: "follow",
+      },
+    );
+    page = await response.json().catch((e) => {
+      return undefined;
+    });
 
-  return !page || !response.ok ? undefined : page;
+    page = page && response.ok ? page : undefined;
+    cache.set(`competition-overview-page-${path}`, page);
+  }
+
+  return page;
 };
 
 export const getTailwindColorByCategory = (category: CreativeCategory) => {

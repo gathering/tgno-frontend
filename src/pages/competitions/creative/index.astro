@@ -16,6 +16,12 @@ const overviewPage = await getCompetitionsOverview({
   api_url: API_URL,
   path: "/creative",
 });
+
+if (!overviewPage) {
+  return Astro.rewrite("/404");
+}
+
+const competitions = [...overviewPage.competitions];
 ---
 
 <Layout title="The Gathering - Kreative konkurranser">
