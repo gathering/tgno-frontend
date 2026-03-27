@@ -5,6 +5,7 @@ import Layout from "../../../layouts/Layout.astro";
 import { fetchCompetitionBySlug } from "../../../utils";
 import CompetitionBox from "../../../components/competitions/creative/CompetitionBox.astro";
 import CreativeBox from "../../../components/competitions/creative/CreativeBox.astro";
+import { API_URL } from "../../../utils/runtime-env";
 
 const { slug } = Astro.params;
 
@@ -14,7 +15,7 @@ if (!slug) {
 
 const competition = await fetchCompetitionBySlug({
   slug,
-  api_url: import.meta.env.API_URL,
+  api_url: API_URL,
 });
 
 if (!competition) {

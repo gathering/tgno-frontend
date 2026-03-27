@@ -8,11 +8,12 @@ import ContentContainer from "../../../components/ContentContainer.astro";
 import CompetitionBox from "../../../components/competitions/creative/CompetitionBox.astro";
 import Pill from "../../../components/competitions/Pill.astro";
 import { fetchCompetitions } from "../../../utils";
+import { API_URL } from "../../../utils/runtime-env";
 
 const boxStyles = "sm:mx-auto w-full min-h-[150px] sm:min-h-[200px]";
 
 const competitions = await fetchCompetitions({
-  api_url: import.meta.env.API_URL,
+  api_url: API_URL,
 });
 ---
 

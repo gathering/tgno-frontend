@@ -7,6 +7,7 @@ import Button from "../components/Button.astro";
 import TicketsHero from "../components/frontpage/TicketsHero.astro";
 import IntroSection from "../components/frontpage/IntroSection.astro";
 import { fetchArticles } from "../utils";
+import { API_URL } from "../utils/runtime-env";
 
 const TG_THEMES = {
   "2000": "The Gathering 1900 - Follow the Flow",
@@ -49,7 +50,7 @@ const articles =
   (
     await fetchArticles({
       ...Astro.props,
-      api_url: import.meta.env.API_URL,
+      api_url: API_URL,
       offset: 0,
       limit: 10,
     }).catch((e) => {

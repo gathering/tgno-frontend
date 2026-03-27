@@ -6,10 +6,11 @@ import { fetchCompetitionBySlug } from "../../../utils";
 import CompetitionBox from "../../../components/competitions/creative/CompetitionBox.astro";
 import CreativeBox from "../../../components/competitions/creative/CreativeBox.astro";
 import ResponsiveImage from "../../../components/ResponsiveImage.astro";
+import { API_URL } from "../../../utils/runtime-env";
 
 const competition = await fetchCompetitionBySlug({
   slug: "cosplay",
-  api_url: import.meta.env.API_URL,
+  api_url: API_URL,
 });
 
 if (!competition) {
