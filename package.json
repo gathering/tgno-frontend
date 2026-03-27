@@ -21,7 +21,7 @@
     "leaflet": "^1.9.4",
     "node-cache": "^5.1.2",
     "tailwindcss": "^4.2.2",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.2"
   },
   "devDependencies": {
     "@types/jquery": "^3.5.33",
