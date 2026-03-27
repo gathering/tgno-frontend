@@ -7,13 +7,14 @@ import H3 from "../../../components/H3.astro";
 import ContentContainer from "../../../components/ContentContainer.astro";
 import CompetitionBox from "../../../components/competitions/creative/CompetitionBox.astro";
 import Pill from "../../../components/competitions/Pill.astro";
-import { fetchCompetitions } from "../../../utils";
 import { API_URL } from "../../../utils/runtime-env";
+import { getCompetitionsOverview } from "../../../utils";
 
 const boxStyles = "sm:mx-auto w-full min-h-[150px] sm:min-h-[200px]";
 
-const competitions = await fetchCompetitions({
+const overviewPage = await getCompetitionsOverview({
   api_url: API_URL,
+  path: "/creative",
 });
 ---
 
@@ -41,20 +42,14 @@ const competitions = await fetchCompetitions({
         </div>
         {
           competitions.map((competition) => (
-            <CompetitionBox
-              {...competition}
-              slug={
-                competition.rulesSets?.length ? competition.slug : undefined
-              }
-              class={boxStyles}
-            />
+            <CompetitionBox {...competition} class={boxStyles} />
           ))
         }
         <CompetitionBox
-          name="Improviserte konkurranser"
+          title="Improviserte konkurranser"
           class={`${boxStyles} md:col-span-2`}
           prizes={[]}
-          category="misc"
+          category={{ name: "misc" }}
           description="I tillegg til de planlagte konkurransene, kan det også dukke opp noen improviserte konkurranser under arrangementet. Følg med på tg.no og under arrangementet."
         />
       </div>
