@@ -84,13 +84,14 @@ export const getCompetitionsOverview = async ({
     undefined;
 
   if (!page) {
+    console.debug(`Fetching competition overview page for path: ${path}`);
     const response = await typedFetch<CompetitionOverviewPage>(
       `${api_url}api/v2/competitions/find?html_path=${path}&type=konkurranse.CompetitionCategoryPage`,
       {
         redirect: "follow",
       },
     );
-    page = await response.json().catch((e) => {
+    page = await response.json().catch((_e) => {
       return undefined;
     });
 
