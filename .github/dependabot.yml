@@ -13,7 +13,7 @@ updates:
       time: "16:00"
       timezone: "CET"
 
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 4
 
     groups:
       astro:
@@ -29,8 +29,6 @@ updates:
         patterns:
           - "typescript"
           - "@types/*"
-      tooling:
-        dependency-type: "development"
       catch-all:
         patterns:
           - "*"
