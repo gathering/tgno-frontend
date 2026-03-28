@@ -2,14 +2,14 @@
 import Main from "../../../components/Main.astro";
 import ContentContainer from "../../../components/ContentContainer.astro";
 import Layout from "../../../layouts/Layout.astro";
-import { fetchCompetitionBySlug } from "../../../utils";
+import { fetchCompetitionPageBySlug } from "../../../utils";
 import CompetitionBox from "../../../components/competitions/creative/CompetitionBox.astro";
 import CreativeBox from "../../../components/competitions/creative/CreativeBox.astro";
 import ResponsiveImage from "../../../components/ResponsiveImage.astro";
 import { API_URL } from "../../../utils/runtime-env";
 
-const competition = await fetchCompetitionBySlug({
-  slug: "cosplay",
+const competition = await fetchCompetitionPageBySlug({
+  path: "/creative/cosplay",
   api_url: API_URL,
 });
 
@@ -19,9 +19,9 @@ if (!competition) {
 ---
 
 <Layout
-  title=`The Gathering - ${competition.name} konkurranse`
-  description=`${competition.description || competition.name}`
-  search_description=`${competition.description || competition.name}`
+  title=`The Gathering - ${competition.title} konkurranse`
+  description=`${competition.description || competition.title}`
+  search_description=`${competition.description || competition.title}`
 >
   <Main>
     <ContentContainer variant="wide">
@@ -124,10 +124,17 @@ if (!competition) {
           />
         </aside>
         <CreativeBox class="sm:row-span-2 sm:col-span-2 lg:col-span-2">
-          <h2 class="mt-0 mb-6 text-4xl font-bold prose prose-invert">
-            Regler
-          </h2>
-          <div class="prose prose-invert" set:html={competition.rules} />
+          <span class="prose prose-invert">
+            <h2 class="mt-0 mb-6 text-4xl font-bold">Regler</h2>
+            {
+              competition.rule_sets.map((ruleSet) => (
+                <>
+                  <h3>{ruleSet.title}</h3>
+                  <div set:html={ruleSet.rules} />
+                </>
+              ))
+            }
+          </span>
         </CreativeBox>
       </div>
     </ContentContainer>

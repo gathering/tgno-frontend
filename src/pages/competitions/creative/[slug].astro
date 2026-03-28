@@ -2,19 +2,23 @@
 import Main from "../../../components/Main.astro";
 import ContentContainer from "../../../components/ContentContainer.astro";
 import Layout from "../../../layouts/Layout.astro";
-import { fetchCompetitionBySlug } from "../../../utils";
+import { fetchCompetitionPageBySlug } from "../../../utils";
 import CompetitionBox from "../../../components/competitions/creative/CompetitionBox.astro";
 import CreativeBox from "../../../components/competitions/creative/CreativeBox.astro";
 import { API_URL } from "../../../utils/runtime-env";
 
-const { slug } = Astro.params;
+const sectionPrefix = "/creative/";
 
-if (!slug) {
+const { slug = "" } = Astro.params;
+
+const path = new URL(slug, "http://example.com").pathname;
+
+if (typeof path !== "string") {
   return Astro.rewrite("/404");
 }
 
-const competition = await fetchCompetitionBySlug({
-  slug,
+const competition = await fetchCompetitionPageBySlug({
+  path: path.startsWith(sectionPrefix) ? path : `/creative${path}`,
   api_url: API_URL,
 });
 
@@ -24,9 +28,9 @@ if (!competition) {
 ---
 
 <Layout
-  title=`The Gathering - ${competition.name} konkurranse`
-  description=`${competition.description || competition.name}`
-  search_description=`${competition.description || competition.name}`
+  title=`The Gathering - ${competition.title} konkurranse`
+  description=`${competition.description || competition.title}`
+  search_description=`${competition.description || competition.title}`
 >
   <Main>
     <ContentContainer variant="wide">
@@ -38,20 +42,21 @@ if (!competition) {
         &larr; Tilbake til oversikten
       </a>
       <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        <CompetitionBox {...competition} action={false} class="sm:order-last">
-          {
-            competition.contact && (
-              <p>
-                <strong>Kontaktperson:</strong> {competition.contact}
-              </p>
-            )
-          }
-        </CompetitionBox>
+        <CompetitionBox {...competition} action={false} class="sm:order-last" />
         <CreativeBox class="sm:row-span-2 sm:col-span-2 lg:col-span-3">
-          <h2 class="mt-0 mb-6 text-4xl font-bold prose prose-invert">
-            Rules for {competition.name}
-          </h2>
-          <div class="prose prose-invert" set:html={competition.rules} />
+          <span class="prose prose-invert">
+            <h2 class="mt-0 mb-6 text-4xl font-bold">
+              Rules for {competition.title}
+            </h2>
+            {
+              competition.rule_sets.map((ruleSet) => (
+                <>
+                  <h3>{ruleSet.title}</h3>
+                  <div set:html={ruleSet.rules} />
+                </>
+              ))
+            }
+          </span>
         </CreativeBox>
       </div>
     </ContentContainer>

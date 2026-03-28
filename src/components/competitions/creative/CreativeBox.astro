@@ -1,11 +1,14 @@
 ---
 import Button from "../../Button.astro";
-import { getTailwindColorByCategory, type Competition } from "../../../utils";
+import {
+  getTailwindColorByCategory,
+  type CreativeCategory,
+} from "../../../utils";
 
 export interface Props {
   children?: any;
   class?: string;
-  category?: Competition["category"];
+  category?: CreativeCategory;
   action?: {
     label: string;
     url: string;
