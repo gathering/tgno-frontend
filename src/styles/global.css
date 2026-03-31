@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+@source inline("bg-blue-500");
+
 @theme {
   --color-background: #06070a;
   --color-background-secondary: #0e0f16;

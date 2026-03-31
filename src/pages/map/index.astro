@@ -36,6 +36,120 @@ const STANDS: LocationMap = {
       type: "placeholder",
     },
   },
+  chillout: {
+    name: "Chillout",
+    presentation: {
+      type: "stand",
+    },
+  },
+  hyperion: {
+    name: "Hyperion",
+    presentation: {
+      type: "stand",
+    },
+  },
+  outland: {
+    name: "Outland",
+    presentation: {
+      type: "stand",
+    },
+  },
+  hellRobotic: {
+    name: "Hell Robotic",
+    presentation: {
+      type: "stand",
+    },
+  },
+  monsterStand: {
+    name: "Monster",
+    presentation: {
+      type: "stand",
+    },
+  },
+  monsterBuss: {
+    name: "Monster",
+    presentation: {
+      type: "stand",
+    },
+  },
+  tiktok: {
+    name: "TikTok",
+    presentation: {
+      type: "stand",
+    },
+  },
+  techServerSkap: {
+    name: "Tech Server Skap",
+    presentation: {
+      type: "stand",
+    },
+  },
+  crusadersRetroMuseum: {
+    name: "Crusaders Retro Museum",
+    presentation: {
+      type: "stand",
+    },
+  },
+  smashNorge: {
+    name: "Smash Norge",
+    presentation: {
+      type: "stand",
+    },
+  },
+  dalaMakers: {
+    name: "DalaMakers",
+    presentation: {
+      type: "stand",
+    },
+  },
+  telenor: {
+    name: "Telenor",
+    presentation: {
+      type: "stand",
+    },
+  },
+  spillskolen: {
+    name: "Spillskolen",
+    presentation: {
+      type: "stand",
+    },
+  },
+  nummedalFHS: {
+    name: "Nummedal FHS",
+    presentation: {
+      type: "stand",
+    },
+  },
+  samlestand: {
+    name: "Samlestand",
+    presentation: {
+      type: "stand",
+    },
+  },
+  achievements: {
+    name: "Achievements",
+    presentation: {
+      type: "stand",
+    },
+  },
+  dicetrolls: {
+    name: "Dicetrolls",
+    presentation: {
+      type: "stand",
+    },
+  },
+  lundheim: {
+    name: "Lundheim",
+    presentation: {
+      type: "stand",
+    },
+  },
+  aheadXR: {
+    name: "AHEAD XR",
+    presentation: {
+      type: "stand",
+    },
+  },
 };
 
 const FOOD = {
@@ -43,6 +157,36 @@ const FOOD = {
     name: "Placeholder",
     presentation: {
       type: "placeholder",
+    },
+  },
+  monkeys: {
+    name: "Monky's",
+    presentation: {
+      type: "food",
+    },
+  },
+  gordita: {
+    name: "Gordita",
+    presentation: {
+      type: "food",
+    },
+  },
+  pizzabakern: {
+    name: "Pizzabakern",
+    presentation: {
+      type: "food",
+    },
+  },
+  frysehenger: {
+    name: "Frysehenger",
+    presentation: {
+      type: "food",
+    },
+  },
+  waffleFactory: {
+    name: "Waffle Factory",
+    presentation: {
+      type: "food",
     },
   },
 } as const satisfies LocationMap;
@@ -220,13 +364,9 @@ const STAGES: LocationMap = {
 
 const LOCATIONS: MapItem[] = [
   {
-    ...STANDS.placeholder,
-    ...getStandSize(46, 38),
-    pos: { x: units(16), y: units(70) },
-  },
-  {
-    ...STANDS.placeholder,
-    ...getStandSize(20, 30),
+    // TODO: Chill Out
+    ...STANDS.chillout,
+    ...getStandSize(20, 25),
     pos: { x: units(59), y: units(47) },
   },
 
@@ -236,15 +376,115 @@ const LOCATIONS: MapItem[] = [
       {
         ...ATTRACTIONS.streamerLounge,
         ...getStandSize(10, 10),
-        pos: { x: units(50.5), y: units(105) },
+        pos: { x: units(50.5), y: units(108) },
       },
       {
         ...ATTRACTIONS.streamers,
-        ...getStandSize(10, 3),
+        ...getStandSize(10, 6),
       },
     ],
     "down",
   ),
+  ...calculate(
+    [
+      {
+        ...STANDS.dicetrolls,
+        ...getStandSize(6, 3),
+        pos: { x: units(28), y: units(103.5) },
+      },
+      {
+        ...STANDS.lundheim,
+        ...getStandSize(6, 3),
+      },
+      {
+        ...STANDS.aheadXR,
+        ...getStandSize(8, 8),
+      },
+    ],
+    "right",
+  ),
+  ...calculate(
+    [
+      {
+        ...STANDS.achievements,
+        ...getStandSize(3, 6),
+        pos: { x: units(25.25), y: units(97.5) },
+      },
+      {
+        ...STANDS.samlestand,
+        ...getStandSize(3, 6),
+      },
+      {
+        ...STANDS.nummedalFHS,
+        ...getStandSize(3, 3),
+      },
+      {
+        ...STANDS.spillskolen,
+        ...getStandSize(3, 6),
+      },
+    ],
+    "down",
+  ),
+  {
+    // TODO: Crusaders REtro Museum
+    ...STANDS.crusadersRetroMuseum,
+    ...getStandSize(12, 6),
+    pos: { x: units(33), y: units(92.5) },
+  },
+  {
+    // TODO: Smash Norge
+    ...STANDS.smashNorge,
+    ...getStandSize(5, 6),
+    pos: { x: units(33), y: units(86.5) },
+  },
+  {
+    // TODO: DalaMakers
+    ...STANDS.dalaMakers,
+    ...getStandSize(5, 9),
+    pos: { x: units(33), y: units(77.5) },
+  },
+  {
+    // TODO: Telenor
+    ...STANDS.telenor,
+    ...getStandSize(7, 15),
+    pos: { x: units(38), y: units(77.5) },
+  },
+  {
+    // TODO: Hyperion
+    ...STANDS.hyperion,
+    ...getStandSize(6, 3),
+    pos: { x: units(60.5), y: units(105) },
+  },
+  {
+    // TODO: Hell Robotic
+    ...STANDS.hellRobotic,
+    ...getStandSize(12, 6),
+    pos: { x: units(49.75), y: units(92.5) },
+  },
+  {
+    // TODO: Monster Buss
+    ...STANDS.monsterBuss,
+    ...getStandSize(3, 12),
+    pos: { x: units(49.75), y: units(80.5) },
+  },
+  {
+    // TODO: Monster Stand
+    ...STANDS.monsterStand,
+    ...getStandSize(9, 9),
+    pos: { x: units(52.75), y: units(83.5) },
+  },
+  {
+    // TODO: Tech Server Skap
+    ...STANDS.techServerSkap,
+    ...getStandSize(3, 3),
+    pos: { x: units(52.75), y: units(80.5) },
+  },
+  {
+    // TODO: TikTok
+    ...STANDS.tiktok,
+    ...getStandSize(6, 3),
+    pos: { x: units(55.75), y: units(80.5) },
+  },
   // TG Shop cluster, lower left above reception
   ...calculate(
     [
@@ -286,7 +526,7 @@ const LOCATIONS: MapItem[] = [
         pos: { x: units(66), y: units(93) },
       },
       {
-        ...STANDS.placeholder,
+        ...STANDS.outland,
         ...getStandSize(10, 8),
       },
     ],
@@ -313,31 +553,31 @@ const LOCATIONS: MapItem[] = [
   ),
   // Food cluster
   {
-    ...FOOD.placeholder,
+    ...FOOD.monkeys,
     ...getStandSize(3, 3),
     polygon: rotateCords({ x: 0, y: 0 }, getStandPolygon(3, 3), -40),
     pos: { x: units(24.5), y: units(57) },
   },
   {
-    ...FOOD.placeholder,
+    ...FOOD.gordita,
     ...getStandSize(3, 6),
     polygon: rotateCords({ x: 0, y: 0 }, getStandPolygon(3, 6), -55),
     pos: { x: units(30), y: units(53) },
   },
   {
-    ...FOOD.placeholder,
+    ...FOOD.pizzabakern,
     ...getStandSize(8, 4),
     pos: { x: units(32), y: units(51.5) },
   },
   ...calculate(
     [
       {
-        ...FOOD.placeholder,
+        ...FOOD.frysehenger,
         ...getStandSize(3, 6),
         pos: { x: units(42), y: units(56) },
       },
       {
-        ...FOOD.placeholder,
+        ...FOOD.waffleFactory,
         ...getStandSize(3, 6),
       },
     ],
