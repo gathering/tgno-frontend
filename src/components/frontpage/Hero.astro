@@ -56,7 +56,7 @@ const videoClass = `max-sm:min-h-[200px] sm:absolute sm:left-0 sm:top-0 w-full s
         )}
       </div>
     ) : imageHref ? (
-      <a href={imageHref}>
+      <a href={imageHref} class="flex">
         <img src={image} alt="Hero Image" class={imageClass} />
       </a>
     ) : (
