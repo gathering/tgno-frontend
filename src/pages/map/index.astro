@@ -130,6 +130,9 @@ const STANDS: LocationMap = {
     name: "Achievements",
     presentation: {
       type: "stand",
+      showPopup: true,
+      popupText: "kode_applyfortg27crewplz",
+      popupTextClass: "text-yellow-400 font-bold",
     },
   },
   dicetrolls: {
@@ -295,14 +298,6 @@ const ATTRACTIONS = {
       type: "attraction",
       showInNavigation: true,
       stickyLabel: true,
-    },
-  },
-  crewArea: {
-    name: "Crewområde",
-    presentation: {
-      type: "placeholder",
-      showPopup: true,
-      popupText: "kode_applyfortg26crewplz",
     },
   },
   security: {
@@ -710,11 +705,6 @@ const LOCATIONS: MapItem[] = [
     "right",
     units(3),
   ),
-  {
-    ...ATTRACTIONS.crewArea,
-    ...getStandSize(16, 6),
-    pos: { x: units(166), y: units(107) },
-  },
 ].map((item, index) => ({
   ...item,
   slug: (item as MapItem)?.slug || `${slugifyMapItemName(item.name)}-${index}`,

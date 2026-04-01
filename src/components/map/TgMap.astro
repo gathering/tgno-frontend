@@ -81,7 +81,8 @@ const { locations: ssrLocations } = Astro.props;
       }
 
       const { slug, name, presentation } = target;
-      const { type, calendarQuery, popupText } = presentation || {};
+      const { type, calendarQuery, popupText, popupTextClass } =
+        presentation || {};
 
       this.popup = new L.Popup({
         className: type,
@@ -98,6 +99,7 @@ const { locations: ssrLocations } = Astro.props;
 
           if (popupText) {
             const text = document.createElement("p");
+            text.className = popupTextClass || "";
             text.textContent = popupText;
             contents.append(text);
           }
