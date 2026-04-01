@@ -9,6 +9,8 @@ export type Props = {
   topOffset?: string;
   backgroundClass?: string;
   initialZoom?: number;
+  hideLabels?: boolean;
+  staticNav?: boolean;
 };
 
 const {
@@ -17,6 +19,8 @@ const {
   topOffset,
   backgroundClass = "bg-black",
   initialZoom,
+  hideLabels = false,
+  staticNav = false,
 } = Astro.props;
 
 const resolvedTopOffset =
@@ -161,6 +165,7 @@ const resolvedTopOffset =
       let locations: MapItem[] = [];
       const initialZoom = Number.parseFloat(this.dataset.initialZoom ?? "");
       const hasInitialZoom = Number.isFinite(initialZoom);
+      const hideLabels = this.dataset.hideLabels === "true";
       try {
         locations = JSON.parse(this.dataset.locations || "").filter(isMapItem);
       } catch (e) {
@@ -245,6 +250,7 @@ const resolvedTopOffset =
             },
           ).addTo(map);
         } else if (
+          !hideLabels &&
           !["placeholder", "unknown"].includes(presentation?.type || "")
         ) {
           const marker = L.marker(target.getBounds().getCenter(), {
@@ -481,13 +487,22 @@ const resolvedTopOffset =
 <tg-map
   data-locations={JSON.stringify(ssrLocations)}
   data-initial-zoom={initialZoom}
+  data-hide-labels={hideLabels}
 >
   <div class="relative z-999">
-    <FloatingNav closeOnNavigate>
-      <span slot="content">
-        <slot name="nav" />
-      </span>
-    </FloatingNav>
+    {
+      staticNav ? (
+        <div class="fixed right-6 bottom-6 z-20 w-96 max-w-[calc(100vw-3rem)] rounded-xl bg-black/85 p-6 shadow-2xl">
+          <slot name="nav" />
+        </div>
+      ) : (
+        <FloatingNav closeOnNavigate>
+          <span slot="content">
+            <slot name="nav" />
+          </span>
+        </FloatingNav>
+      )
+    }
   </div>
   <div
     id="map"

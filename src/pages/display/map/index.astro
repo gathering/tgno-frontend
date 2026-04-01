@@ -8,26 +8,14 @@ import {
   getStandPolygon,
   slugifyMapItemName,
 } from "../../../utils/map";
-import TgMap from "../../../components/map/TgMap.astro";
+import DisplayMap from "../../../components/map/DisplayMap.astro";
 import type { MapItem, PartialMapItem } from "../../../types";
 import Layout from "../../../layouts/Layout.astro";
-import TgMapNavItem from "../../../components/map/TgMapNavItem.astro";
-import H3 from "../../../components/H3.astro";
 
 type MapItemBase = Pick<PartialMapItem, "name"> &
   Partial<Omit<PartialMapItem, "name">>;
 
 type LocationMap = Record<string, MapItemBase>;
-
-const TYPE_COLORS = {
-  attraction: "purple",
-  hygiene: "green",
-  food: "red",
-  stand: "blue",
-  stage: "orange",
-  unknown: "gray",
-  placeholder: "gray",
-};
 
 const STANDS: LocationMap = {
   placeholder: {
@@ -756,30 +744,11 @@ const nav = [
   footerVariant="hidden"
   headerVariant="hidden"
 >
-  <TgMap
+  <DisplayMap
     locations={LOCATIONS}
+    nav={nav}
     topOffset="0px"
     backgroundClass="bg-black"
     initialZoom={-1}
-  >
-    <Fragment slot="nav">
-      {
-        nav.map(({ title, items }) => (
-          <>
-            <H3 class="mb-4">{title}</H3>
-            <ul class="flex flex-row flex-wrap text-md font-bold text-white gap-2 mb-6">
-              {items.map((item) => (
-                <li>
-                  <TgMapNavItem
-                    mapItem={item}
-                    color={TYPE_COLORS[item.presentation?.type || "unknown"]}
-                  />
-                </li>
-              ))}
-            </ul>
-          </>
-        ))
-      }
-    </Fragment>
-  </TgMap>
+  />
 </Layout>
