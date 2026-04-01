@@ -28,6 +28,7 @@ export interface PartialMapItem {
      * Show custom text in popup when clicked
      */
     popupText?: string;
+    popupTextClass?: string;
     /**
      * Control if icon should be shown in normal map view
      */
