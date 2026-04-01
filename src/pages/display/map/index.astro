@@ -1,0 +1,785 @@
+---
+import "leaflet/dist/leaflet.css";
+import {
+  units,
+  calculate,
+  getStandSize,
+  rotateCords,
+  getStandPolygon,
+  slugifyMapItemName,
+} from "../../../utils/map";
+import TgMap from "../../../components/map/TgMap.astro";
+import type { MapItem, PartialMapItem } from "../../../types";
+import Layout from "../../../layouts/Layout.astro";
+import TgMapNavItem from "../../../components/map/TgMapNavItem.astro";
+import H3 from "../../../components/H3.astro";
+
+type MapItemBase = Pick<PartialMapItem, "name"> &
+  Partial<Omit<PartialMapItem, "name">>;
+
+type LocationMap = Record<string, MapItemBase>;
+
+const TYPE_COLORS = {
+  attraction: "purple",
+  hygiene: "green",
+  food: "red",
+  stand: "blue",
+  stage: "orange",
+  unknown: "gray",
+  placeholder: "gray",
+};
+
+const STANDS: LocationMap = {
+  placeholder: {
+    name: "Placeholder",
+    presentation: {
+      type: "placeholder",
+    },
+  },
+  chillout: {
+    name: "Chillout",
+    presentation: {
+      type: "stand",
+    },
+  },
+  hyperion: {
+    name: "Hyperion",
+    presentation: {
+      type: "stand",
+    },
+  },
+  outland: {
+    name: "Outland",
+    presentation: {
+      type: "stand",
+    },
+  },
+  hellRobotic: {
+    name: "Hell Robotic",
+    presentation: {
+      type: "stand",
+    },
+  },
+  monsterStand: {
+    name: "Monster",
+    presentation: {
+      type: "stand",
+    },
+  },
+  monsterBuss: {
+    name: "Monster",
+    presentation: {
+      type: "stand",
+    },
+  },
+  tiktok: {
+    name: "TikTok",
+    presentation: {
+      type: "stand",
+    },
+  },
+  techServerSkap: {
+    name: "Tech Server Skap",
+    presentation: {
+      type: "stand",
+    },
+  },
+  crusadersRetroMuseum: {
+    name: "Crusaders Retro Museum",
+    presentation: {
+      type: "stand",
+    },
+  },
+  smashNorge: {
+    name: "Smash Norge",
+    presentation: {
+      type: "stand",
+    },
+  },
+  dalaMakers: {
+    name: "DalaMakers",
+    presentation: {
+      type: "stand",
+    },
+  },
+  telenor: {
+    name: "Telenor",
+    presentation: {
+      type: "stand",
+    },
+  },
+  spillskolen: {
+    name: "Spillskolen",
+    presentation: {
+      type: "stand",
+    },
+  },
+  nummedalFHS: {
+    name: "Nummedal FHS",
+    presentation: {
+      type: "stand",
+    },
+  },
+  samlestand: {
+    name: "Samlestand",
+    presentation: {
+      type: "stand",
+    },
+  },
+  achievements: {
+    name: "Achievements",
+    presentation: {
+      type: "stand",
+      showPopup: true,
+      popupText: "kode_applyfortg27crewplz",
+      popupTextClass: "text-yellow-400 font-bold",
+    },
+  },
+  dicetrolls: {
+    name: "Dicetrolls",
+    presentation: {
+      type: "stand",
+    },
+  },
+  lundheim: {
+    name: "Lundheim",
+    presentation: {
+      type: "stand",
+    },
+  },
+  aheadXR: {
+    name: "AHEAD XR",
+    presentation: {
+      type: "stand",
+    },
+  },
+};
+
+const FOOD = {
+  placeholder: {
+    name: "Placeholder",
+    presentation: {
+      type: "placeholder",
+    },
+  },
+  monkeys: {
+    name: "Monky's",
+    presentation: {
+      type: "food",
+    },
+  },
+  gordita: {
+    name: "Gordita",
+    presentation: {
+      type: "food",
+    },
+  },
+  pizzabakern: {
+    name: "Pizzabakern",
+    presentation: {
+      type: "food",
+    },
+  },
+  frysehenger: {
+    name: "Frysehenger",
+    presentation: {
+      type: "food",
+    },
+  },
+  waffleFactory: {
+    name: "Waffle Factory",
+    presentation: {
+      type: "food",
+    },
+  },
+} as const satisfies LocationMap;
+
+const ATTRACTIONS = {
+  streamerLounge: {
+    name: "Studio and production area",
+    presentation: {
+      type: "unknown",
+    },
+  },
+  streamers: {
+    name: "Streamers",
+    presentation: {
+      type: "stand",
+      showInNavigation: true,
+    },
+  },
+  chillout: {
+    name: "Lounge",
+    icon: "https://www.tg.no/tg25/tg25_icon_white.svg",
+    presentation: {
+      type: "stage",
+      showInNavigation: true,
+      showPopup: true,
+      mapIcon: true,
+      calendarQuery: ["lounge"],
+      padding: 40,
+    },
+  },
+  tgHack: {
+    name: "TG:Hack",
+    presentation: {
+      type: "attraction",
+      showInNavigation: true,
+    },
+  },
+  creativeInfo: {
+    name: "Creative infodesk",
+    presentation: {
+      type: "attraction",
+      showInNavigation: true,
+    },
+  },
+  tgShop: {
+    name: "TG Shop",
+    presentation: {
+      type: "attraction",
+      showInNavigation: true,
+    },
+  },
+  infodesk: {
+    name: "Infodesk",
+    presentation: {
+      type: "attraction",
+      showInNavigation: true,
+    },
+  },
+  reception: {
+    name: "Resepsjon",
+    presentation: {
+      type: "attraction",
+      showInNavigation: true,
+      stickyLabel: true,
+    },
+  },
+  support: {
+    name: "Techsupport",
+    presentation: {
+      type: "attraction",
+      showInNavigation: true,
+    },
+  },
+  esportInfo: {
+    name: "E-sport infodesk",
+    presentation: {
+      type: "attraction",
+      showInNavigation: true,
+    },
+  },
+  toilet: {
+    name: "Toaletter",
+    presentation: {
+      type: "hygiene",
+      stickyLabel: true,
+    },
+  },
+  showers: {
+    name: "Dusjer",
+    presentation: {
+      type: "hygiene",
+      showInNavigation: true,
+    },
+  },
+  sektor: {
+    name: "sektor",
+    presentation: {
+      type: "attraction",
+      showInNavigation: true,
+      stickyLabel: true,
+    },
+  },
+  sleepingArea: {
+    name: "Soveområde",
+    presentation: {
+      type: "attraction",
+      showInNavigation: true,
+      stickyLabel: true,
+    },
+  },
+  security: {
+    name: "Sikkerhet",
+    presentation: {
+      type: "attraction",
+      showInNavigation: true,
+      stickyLabel: true,
+    },
+  },
+  medic: {
+    name: "Medic",
+    presentation: {
+      type: "attraction",
+      showInNavigation: true,
+      stickyLabel: true,
+    },
+  },
+} as const satisfies LocationMap;
+
+const STAGES: LocationMap = {
+  mainStage: {
+    icon: "https://www.tg.no/tg25/tg25_icon_white.svg",
+    name: "Hovedscenen",
+    presentation: {
+      type: "stage",
+      showInNavigation: true,
+      showPopup: true,
+      mapIcon: true,
+      calendarQuery: ["hovedscenen"],
+      padding: 40,
+    },
+  },
+  eSportStage: {
+    icon: "https://www.tg.no/tg25/tg25_icon_white.svg",
+    name: "Esportscenen",
+    presentation: {
+      type: "stage",
+      showInNavigation: true,
+      showPopup: true,
+      mapIcon: true,
+      calendarQuery: ["esportscenen"],
+      padding: 40,
+    },
+  },
+  creativiaStage: {
+    icon: "https://www.tg.no/tg25/tg25_icon_white.svg",
+    name: "Kreativiascenen",
+    presentation: {
+      type: "stage",
+      showInNavigation: true,
+      showPopup: true,
+      mapIcon: true,
+      calendarQuery: ["kreativiascenen"],
+      padding: 40,
+    },
+  },
+};
+
+const LOCATIONS: MapItem[] = [
+  {
+    // TODO: Chill Out
+    ...STANDS.chillout,
+    ...getStandSize(20, 25),
+    pos: { x: units(59), y: units(47) },
+  },
+
+  // Streamer cluster
+  ...calculate(
+    [
+      {
+        ...ATTRACTIONS.streamerLounge,
+        ...getStandSize(10, 10),
+        pos: { x: units(50.5), y: units(108) },
+      },
+      {
+        ...ATTRACTIONS.streamers,
+        ...getStandSize(10, 6),
+      },
+    ],
+    "down",
+  ),
+  ...calculate(
+    [
+      {
+        ...STANDS.dicetrolls,
+        ...getStandSize(6, 3),
+        pos: { x: units(28), y: units(103.5) },
+      },
+      {
+        ...STANDS.lundheim,
+        ...getStandSize(6, 3),
+      },
+      {
+        ...STANDS.aheadXR,
+        ...getStandSize(8, 8),
+      },
+    ],
+    "right",
+  ),
+  ...calculate(
+    [
+      {
+        ...STANDS.achievements,
+        ...getStandSize(3, 6),
+        pos: { x: units(25.25), y: units(97.5) },
+      },
+      {
+        ...STANDS.samlestand,
+        ...getStandSize(3, 6),
+      },
+      {
+        ...STANDS.nummedalFHS,
+        ...getStandSize(3, 3),
+      },
+      {
+        ...STANDS.spillskolen,
+        ...getStandSize(3, 6),
+      },
+    ],
+    "down",
+  ),
+  {
+    // TODO: Crusaders REtro Museum
+    ...STANDS.crusadersRetroMuseum,
+    ...getStandSize(12, 6),
+    pos: { x: units(33), y: units(92.5) },
+  },
+  {
+    // TODO: Smash Norge
+    ...STANDS.smashNorge,
+    ...getStandSize(5, 6),
+    pos: { x: units(33), y: units(86.5) },
+  },
+  {
+    // TODO: DalaMakers
+    ...STANDS.dalaMakers,
+    ...getStandSize(5, 9),
+    pos: { x: units(33), y: units(77.5) },
+  },
+  {
+    // TODO: Telenor
+    ...STANDS.telenor,
+    ...getStandSize(7, 15),
+    pos: { x: units(38), y: units(77.5) },
+  },
+  {
+    // TODO: Hyperion
+    ...STANDS.hyperion,
+    ...getStandSize(6, 3),
+    pos: { x: units(60.5), y: units(105) },
+  },
+  {
+    // TODO: Hell Robotic
+    ...STANDS.hellRobotic,
+    ...getStandSize(12, 6),
+    pos: { x: units(49.75), y: units(92.5) },
+  },
+  {
+    // TODO: Monster Buss
+    ...STANDS.monsterBuss,
+    ...getStandSize(3, 12),
+    pos: { x: units(49.75), y: units(80.5) },
+  },
+  {
+    // TODO: Monster Stand
+    ...STANDS.monsterStand,
+    ...getStandSize(9, 9),
+    pos: { x: units(52.75), y: units(83.5) },
+  },
+  {
+    // TODO: Tech Server Skap
+    ...STANDS.techServerSkap,
+    ...getStandSize(3, 3),
+    pos: { x: units(52.75), y: units(80.5) },
+  },
+  {
+    // TODO: TikTok
+    ...STANDS.tiktok,
+    ...getStandSize(6, 3),
+    pos: { x: units(55.75), y: units(80.5) },
+  },
+  // TG Shop cluster, lower left above reception
+  ...calculate(
+    [
+      {
+        ...ATTRACTIONS.tgShop,
+        ...getStandSize(12, 12),
+        pos: { x: units(45), y: units(46) },
+      },
+      {
+        ...ATTRACTIONS.support,
+        ...getStandSize(12, 5),
+        presentation: {
+          ...ATTRACTIONS.support.presentation,
+          labelWidth: 7,
+        },
+      },
+      {
+        ...ATTRACTIONS.infodesk,
+        ...getStandSize(12, 5),
+      },
+      {
+        ...ATTRACTIONS.esportInfo,
+        ...getStandSize(12, 5),
+      },
+    ],
+    "up",
+  ),
+  {
+    ...ATTRACTIONS.reception,
+    ...getStandSize(6, 8),
+    pos: { x: units(54), y: units(13) },
+  },
+  // Left stage (stage right) cluster
+  ...calculate(
+    [
+      {
+        ...ATTRACTIONS.chillout,
+        ...getStandSize(10, 15),
+        pos: { x: units(66), y: units(93) },
+      },
+      {
+        ...STANDS.outland,
+        ...getStandSize(10, 8),
+      },
+    ],
+    "down",
+  ),
+  // Creativia cluster right of stage (stage left)
+  ...calculate(
+    [
+      {
+        ...ATTRACTIONS.tgHack,
+        ...getStandSize(9, 8),
+        pos: { x: units(155), y: units(82) },
+      },
+      {
+        ...ATTRACTIONS.creativeInfo,
+        ...getStandSize(11, 2),
+      },
+      {
+        ...STAGES.creativiaStage,
+        ...getStandSize(11, 10),
+      },
+    ],
+    "up",
+  ),
+  // Food cluster
+  {
+    ...FOOD.monkeys,
+    ...getStandSize(3, 3),
+    polygon: rotateCords({ x: 0, y: 0 }, getStandPolygon(3, 3), -40),
+    pos: { x: units(24.5), y: units(57) },
+  },
+  {
+    ...FOOD.gordita,
+    ...getStandSize(3, 6),
+    polygon: rotateCords({ x: 0, y: 0 }, getStandPolygon(3, 6), -55),
+    pos: { x: units(30), y: units(53) },
+  },
+  {
+    ...FOOD.pizzabakern,
+    ...getStandSize(8, 4),
+    pos: { x: units(32), y: units(51.5) },
+  },
+  ...calculate(
+    [
+      {
+        ...FOOD.frysehenger,
+        ...getStandSize(3, 6),
+        pos: { x: units(42), y: units(56) },
+      },
+      {
+        ...FOOD.waffleFactory,
+        ...getStandSize(3, 6),
+      },
+    ],
+    "up",
+  ),
+  // Stages
+  {
+    ...STAGES.mainStage,
+    width: 280,
+    height: 250,
+    pos: { x: units(82), y: units(83) },
+  },
+  {
+    ...STAGES.eSportStage,
+    width: 280,
+    height: 190,
+    pos: { x: units(82), y: units(101) },
+  },
+  // Toilets and showers
+  // toilets - top
+  {
+    ...ATTRACTIONS.toilet,
+    ...getStandSize(10, 6),
+    pos: { x: units(89), y: units(123) },
+  },
+  {
+    ...ATTRACTIONS.toilet,
+    ...getStandSize(10, 6),
+    pos: { x: units(116), y: units(123) },
+  },
+  // toilets - right
+  {
+    ...ATTRACTIONS.toilet,
+    ...getStandSize(6, 10),
+    pos: { x: units(203), y: units(85) },
+  },
+  {
+    ...ATTRACTIONS.toilet,
+    ...getStandSize(6, 10),
+    pos: { x: units(203), y: units(65) },
+  },
+  // toilets - left
+  {
+    ...ATTRACTIONS.toilet,
+    ...getStandSize(6, 10),
+    pos: { x: units(4), y: units(85) },
+  },
+  {
+    ...ATTRACTIONS.toilet,
+    ...getStandSize(6, 10),
+    pos: { x: units(4), y: units(65) },
+  },
+  // toilets and showers - bottom
+  {
+    ...ATTRACTIONS.toilet,
+    ...getStandSize(6, 6),
+    pos: { x: units(137), y: units(29) },
+    presentation: {
+      ...ATTRACTIONS.toilet.presentation,
+      stickyLabel: false,
+    },
+  },
+  {
+    ...ATTRACTIONS.toilet,
+    ...getStandSize(6, 6),
+    pos: { x: units(54), y: units(23) },
+    presentation: {
+      ...ATTRACTIONS.toilet.presentation,
+      stickyLabel: false,
+    },
+  },
+  {
+    ...ATTRACTIONS.showers,
+    ...getStandSize(60, 6),
+    pos: { x: units(73), y: units(31) },
+  },
+  // Security and medic
+  {
+    ...ATTRACTIONS.security,
+    ...getStandSize(10, 6),
+    pos: { x: units(146), y: units(35) },
+  },
+  {
+    ...ATTRACTIONS.medic,
+    ...getStandSize(10, 6),
+    pos: { x: units(56), y: units(32) },
+  },
+  // Seating and sleeping sectors
+  ...calculate(
+    [
+      {
+        ...ATTRACTIONS.sektor,
+        name: "Sektor",
+        ...getStandSize(29, 30),
+        pos: { x: units(110), y: units(82) },
+      },
+      {
+        ...ATTRACTIONS.sektor,
+        name: "Sektor",
+        ...getStandSize(10, 20),
+      },
+    ],
+    "right",
+    units(3),
+  ),
+  ...calculate(
+    [
+      {
+        ...ATTRACTIONS.sektor,
+        name: "Sektor",
+        ...getStandSize(25, 30),
+        pos: { x: units(82), y: units(47) },
+      },
+      {
+        ...ATTRACTIONS.sektor,
+        name: "Sektor",
+        ...getStandSize(29, 30),
+      },
+      {
+        ...ATTRACTIONS.sleepingArea,
+        name: "Sektor",
+        ...getStandSize(10, 30),
+      },
+      {
+        ...ATTRACTIONS.sleepingArea,
+        ...getStandSize(20, 30),
+        margin: units(12),
+      },
+    ],
+    "right",
+    units(3),
+  ),
+].map((item, index) => ({
+  ...item,
+  slug: (item as MapItem)?.slug || `${slugifyMapItemName(item.name)}-${index}`,
+}));
+
+const isItemOfTypes = (item: MapItem, types: string | string[]) =>
+  (Array.isArray(types) ? types : [types]).includes(
+    item.presentation?.type || "",
+  );
+
+function getIsItemOfTypes(types: string | string[]) {
+  return (item: MapItem) => isItemOfTypes(item, types);
+}
+
+const sortByName = (a: MapItem, b: MapItem) => a.name.localeCompare(b.name);
+const sortByType = (a: MapItem, b: MapItem) => {
+  return (a.presentation?.type || "unknown").localeCompare(
+    b.presentation?.type || "unknown",
+  );
+};
+
+const showInMenus = (item: MapItem) => item.presentation?.showInNavigation;
+
+const nav = [
+  {
+    title: "Scener",
+    items: LOCATIONS.filter(showInMenus)
+      .filter(getIsItemOfTypes("stage"))
+      .sort(sortByName),
+  },
+  {
+    title: "Praktisk",
+    items: LOCATIONS.filter(showInMenus)
+      .filter(getIsItemOfTypes(["attraction", "hygiene"]))
+      .sort(sortByName)
+      .sort(sortByType),
+  },
+  {
+    title: "Utstillere",
+    items: LOCATIONS.filter(getIsItemOfTypes(["stand", "food"]))
+      .sort(sortByName)
+      .sort(sortByType),
+  },
+].filter(({ items }) => items.length > 0);
+---
+
+<Layout
+  title="The Gathering - Hallkart"
+  footerVariant="hidden"
+  headerVariant="hidden"
+>
+  <TgMap
+    locations={LOCATIONS}
+    topOffset="0px"
+    backgroundClass="bg-black"
+    initialZoom={-1}
+  >
+    <Fragment slot="nav">
+      {
+        nav.map(({ title, items }) => (
+          <>
+            <H3 class="mb-4">{title}</H3>
+            <ul class="flex flex-row flex-wrap text-md font-bold text-white gap-2 mb-6">
+              {items.map((item) => (
+                <li>
+                  <TgMapNavItem
+                    mapItem={item}
+                    color={TYPE_COLORS[item.presentation?.type || "unknown"]}
+                  />
+                </li>
+              ))}
+            </ul>
+          </>
+        ))
+      }
+    </Fragment>
+  </TgMap>
+</Layout>
