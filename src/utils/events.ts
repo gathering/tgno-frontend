@@ -1,6 +1,7 @@
 import NodeCache from "node-cache";
 import type { Event, FetchEventsResponse, Tag } from "../types";
 import { typedFetch } from "./fetching";
+import { API_URL } from "./runtime-env";
 
 /**
  * Experimental cache, ideally we would be able to cache heavily in frontend or
@@ -120,7 +121,7 @@ export class Calendar {
         await fetchEvents({
           date: filter.date,
           tags: [...filter.locations, ...filter.categories],
-          api_url: import.meta.env.API_URL,
+          api_url: API_URL,
         })
       ).filter((event) => ["none", "end"].includes(event.facts.extendingQuery));
     }

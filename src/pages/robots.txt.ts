@@ -1,6 +1,6 @@
 export const prerender = false;
 
-import.meta.env.SITE_URL;
+import { SITE_URL } from "../utils/runtime-env";
 
 var prod_robots = `User-agent: *
 Disallow: /api/
@@ -14,7 +14,7 @@ Disallow: /`;
  * GET Request
  */
 export async function GET() {
-  if (import.meta.env.SITE_URL == "https://www.tg.no/") {
+  if (SITE_URL == "https://www.tg.no/") {
     return new Response(prod_robots, {
       status: 200,
     });

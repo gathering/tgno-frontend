@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from "astro/config";
+import { defineConfig, envField } from "astro/config";
 
 import node from "@astrojs/node";
 
@@ -9,6 +9,33 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   integrations: [],
   output: "server",
+  env: {
+    schema: {
+      API_URL: envField.string({
+        context: "server",
+        access: "secret",
+      }),
+      SITE_URL: envField.string({
+        context: "server",
+        access: "secret",
+      }),
+      MATOMO_SITE_ID: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
+      }),
+      MATOMO_INSTANCE_URL: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
+      }),
+      TZ: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
+      }),
+    },
+  },
 
   adapter: node({
     mode: "standalone",

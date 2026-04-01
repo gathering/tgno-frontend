@@ -9,6 +9,7 @@ import Schedule from "../../../components/schedule/Schedule.astro";
 import { fetchEvents } from "../../../utils/events";
 import type { Tag } from "../../../types";
 import DisplayEvent from "../../../components/schedule/DisplayEvent.astro";
+import { API_URL } from "../../../utils/runtime-env";
 
 const dateTimeNow = new Date(
   Date.now() - 2 * 60 * 60 * 1000, // 2 hours in the past
@@ -17,9 +18,9 @@ const dateTimeFuture = new Date(
   Date.now() + 4 * 60 * 60 * 1000, // 2 hours in the future
 );
 
-const startDate = `2025-04-${dateTimeNow.getDate()}`;
+const startDate = `2026-04-${dateTimeNow.getDate()}`;
 const startTime = `${dateTimeNow.getHours() - 2}:${dateTimeNow.getMinutes()}:00`;
-const endDate = `2025-04-${dateTimeFuture.getDate()}`;
+const endDate = `2026-04-${dateTimeFuture.getDate()}`;
 const endTime = `${dateTimeFuture.getHours()}:${dateTimeFuture.getMinutes()}:00`;
 
 const eventDate: DateOption = {
@@ -45,7 +46,7 @@ const getLocation = (tags: Tag[]): Tag | undefined => {
 };
 const events = await fetchEvents({
   date: eventDate,
-  api_url: import.meta.env.API_URL,
+  api_url: API_URL,
   tags: [],
 });
 ---

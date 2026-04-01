@@ -2,6 +2,7 @@
 import Hero from "./Hero.astro";
 import Button from "../Button.astro";
 import { fetchArticleById, fetchArticleIdBySlug } from "../../utils";
+import { API_URL } from "../../utils/runtime-env";
 
 interface Props {
   class?: string;
@@ -13,13 +14,13 @@ const slug = "bli-med-i-crew-for-en-dag";
 let articlePage = null;
 const id = await fetchArticleIdBySlug({
   slug,
-  api_url: import.meta.env.API_URL,
+  api_url: API_URL,
 });
 
 if (id) {
   articlePage = await fetchArticleById({
     id,
-    api_url: import.meta.env.API_URL,
+    api_url: API_URL,
   }).catch((e) => {
     console.error(e.message);
   });

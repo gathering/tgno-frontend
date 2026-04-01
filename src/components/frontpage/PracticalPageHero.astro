@@ -2,17 +2,18 @@
 import Hero from "./Hero.astro";
 import Button from "../Button.astro";
 import { fetchInfoPageByPath } from "../../utils";
+import { API_URL } from "../../utils/runtime-env";
 
 interface Props {
   class?: string;
 }
 
 const { class: classNames } = Astro.props;
-const path = "/practical/alt-om-innsjekk-og-ankomst-til-tg25/";
+const path = "/practical/alt-om-innsjekk-og-ankomst-til-tg/";
 
 const page = await fetchInfoPageByPath({
   path,
-  apiUrl: import.meta.env.API_URL,
+  apiUrl: API_URL,
 }).catch((e) => {
   console.error(e.message);
 });
@@ -38,15 +39,18 @@ const { intro, main_image, title, body, meta } = page || {};
         </div>
         <aside class="mt-6 space-x-2">
           {meta?.url ? (
-            <Button href={meta.url} theme="orange">
+            <Button href={meta.url} theme="white">
               Få full oversikt
             </Button>
           ) : null}
         </aside>
       </div>
       <Fragment slot="cta">
-        <p class="text-white">Besøke oss i påsken?</p>
-        <Button href="/tickets" theme="secondary">
+        <p class="text-black">Besøke oss i påsken?</p>
+        <Button
+          href="https://www.geekevents.org/tg26/#/shop"
+          theme="transparent"
+        >
           Kjøp dagsbillett
         </Button>
       </Fragment>

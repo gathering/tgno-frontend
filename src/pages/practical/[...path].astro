@@ -3,6 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import Main from "../../components/Main.astro";
 import { fetchInfoPageByPath } from "../../utils";
 import PracticalPage from "../../components/practical/PracticalPage.astro";
+import { API_URL } from "../../utils/runtime-env";
 
 const sectionPrefix = "/practical/";
 
@@ -23,7 +24,7 @@ if (typeof path !== "string") {
 
 const page = await fetchInfoPageByPath({
   path: path.startsWith(sectionPrefix) ? path : `/practical${path}`,
-  apiUrl: import.meta.env.API_URL,
+  apiUrl: API_URL,
 });
 
 if (!page) {

@@ -4,8 +4,9 @@ import Button from "./Button.astro";
 import HeaderNavigation from "./HeaderNavigation.astro";
 import CloseSymbol from "./icons/CloseSymbol.astro";
 import HamburgerSymbol from "./icons/HamburgerSymbol.astro";
+import { API_URL } from "../utils/runtime-env";
 
-const navigationItems = await getCachedNavigationItems(import.meta.env.API_URL);
+const navigationItems = await getCachedNavigationItems(API_URL);
 ---
 
 <script>
