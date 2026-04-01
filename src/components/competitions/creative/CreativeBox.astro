@@ -5,17 +5,19 @@ import {
   type CreativeCategory,
 } from "../../../utils";
 
+export type Action = {
+  label: string;
+  url: string;
+};
+
 export interface Props {
   children?: any;
   class?: string;
   category?: CreativeCategory;
-  action?: {
-    label: string;
-    url: string;
-  };
+  actions?: Array<Action>;
 }
 
-const { class: classNames, category, action } = Astro.props;
+const { class: classNames, category, actions } = Astro.props;
 
 const primaryColor = category
   ? getTailwindColorByCategory(category)
@@ -29,15 +31,18 @@ const primaryColor = category
     <slot />
   </span>
   {
-    action?.url && (
-      <Button
-        href={action.url}
-        variant="wide"
-        theme="transparent"
-        class="mt-auto"
-      >
-        {action.label}
-      </Button>
+    actions?.map(
+      (action) =>
+        action?.url && (
+          <Button
+            href={action.url}
+            variant="wide"
+            theme="transparent"
+            class="mt-auto"
+          >
+            {action.label}
+          </Button>
+        ),
     )
   }
 </section>

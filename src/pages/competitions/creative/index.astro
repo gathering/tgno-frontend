@@ -53,7 +53,15 @@ const competitions = [...overviewPage.competitions];
         </div>
         {
           competitions.map((competition) => (
-            <CompetitionBox {...competition} class={boxStyles} />
+            <CompetitionBox
+              {...competition}
+              details_link={
+                competition.slug
+                  ? `/competitions/creative/${competition.slug}`
+                  : undefined
+              }
+              class={boxStyles}
+            />
           ))
         }
         <CompetitionBox

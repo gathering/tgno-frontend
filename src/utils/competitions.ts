@@ -31,6 +31,7 @@ export interface CompetitionPage {
   };
   rule_sets: Array<RuleSet>;
   prizes: Array<PrizeCategory>;
+  signup_link?: string;
 }
 
 export interface CompetitionOverviewPage {
