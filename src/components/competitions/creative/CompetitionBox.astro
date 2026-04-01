@@ -1,21 +1,16 @@
 ---
 import H2 from "../../../components/H2.astro";
 import { type CompetitionPage } from "../../../utils";
-import CreativeBox from "./CreativeBox.astro";
+import CreativeBox, { type Action } from "./CreativeBox.astro";
 
 export interface Props extends Pick<
   CompetitionPage,
-  "title" | "description" | "category" | "prizes"
+  "title" | "description" | "category" | "prizes" | "signup_link"
 > {
   children?: any;
   slug?: CompetitionPage["slug"];
   class?: string;
-  action?:
-    | {
-        label: string;
-        url: string;
-      }
-    | false;
+  details_link?: string;
 }
 
 const {
@@ -24,20 +19,29 @@ const {
   class: classNames,
   category,
   description,
+  signup_link,
+  details_link,
 } = Astro.props;
 
-const url = Astro.props.slug
-  ? `/competitions/creative/${Astro.props.slug}`
-  : undefined;
+//const url = Astro.props.slug
+//  ? `/competitions/creative/${Astro.props.slug}`
+//  : undefined;
 
-const action =
-  Astro.props.action ||
-  (url && Astro.props.action !== false
+const actions = [
+  signup_link
+    ? {
+        label: "Meld deg på",
+        url: signup_link,
+      }
+    : undefined,
+
+  details_link
     ? {
         label: "Les mer",
-        url,
+        url: details_link,
       }
-    : undefined);
+    : undefined,
+].filter(Boolean) as Action[];
 
 const formatPrice = (prize: number | string) =>
   typeof prize === "string"
@@ -52,7 +56,7 @@ const hasPrices = !!prizes.length;
 const prizeGroups = prizes.every(Array.isArray) ? prizes : [prizes];
 ---
 
-<CreativeBox action={action} category={category?.name} class={classNames}>
+<CreativeBox actions={actions} category={category?.name} class={classNames}>
   <H2 text={title} color="" class="mb-0" />
   {description && <p>{description}</p>}
   {
