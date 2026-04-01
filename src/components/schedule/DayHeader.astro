@@ -1,19 +1,30 @@
 ---
-import H3 from "../H3.astro";
-
 type Props = {
   date: string;
+  large?: boolean;
+  underline?: boolean;
+  class?: string;
 };
 
-const { date } = Astro.props;
+const {
+  date,
+  large = false,
+  underline = false,
+  class: className = "",
+} = Astro.props;
 let weekday = new Date(date).toLocaleDateString("no-NO", {
   weekday: "long",
 });
 weekday = weekday.charAt(0).toUpperCase() + weekday.slice(1);
+
+const headingClass = `${large ? "text-6xl mb-4 mt-8" : "text-2xl mb-4 mt-8"} font-bold text-white ${className}`;
 ---
 
-<H3>
-  <time datetime={date} class="text-2xl mb-4 mt-8">
+<h2 class={headingClass}>
+  <time
+    datetime={date}
+    class={underline ? "underline decoration-2 underline-offset-8" : ""}
+  >
     {weekday}
   </time>
-</H3>
+</h2>

@@ -62,6 +62,7 @@ const events = await fetchEvents({
   body {
     height: 100vh;
   }
+
   [data-component="schedule"] {
     &.scroll {
       transition-behavior: normal;
@@ -91,7 +92,12 @@ const events = await fetchEvents({
                 event.strings.startDate !== events[i - 1]?.strings.startDate &&
                 i > 0 ? (
                   <>
-                    <DayHeader date={event.start} />
+                    <DayHeader
+                      date={event.start}
+                      large
+                      underline
+                      class="w-[80vw] ml-auto pl-4"
+                    />
                     <DisplayEvent
                       {...event}
                       location={getLocation(event.tags)}
