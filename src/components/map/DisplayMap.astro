@@ -1,0 +1,79 @@
+---
+import H3 from "../H3.astro";
+import type { MapItem } from "../../types";
+import TgMap from "./TgMap.astro";
+
+type NavSection = {
+  title: string;
+  items: MapItem[];
+};
+
+export type Props = {
+  locations: MapItem[];
+  nav: NavSection[];
+  initialZoom?: number;
+  topOffset?: string;
+  backgroundClass?: string;
+};
+
+const {
+  locations,
+  initialZoom = -1,
+  topOffset = "0px",
+  backgroundClass = "bg-black",
+} = Astro.props;
+
+const LEGEND_ITEMS = [
+  {
+    color: "var(--color-orange-500)",
+    label: "Scener",
+  },
+  {
+    color: "var(--color-blue-500)",
+    label: "Stands",
+  },
+  {
+    color: "var(--color-red-500)",
+    label: "Mat",
+  },
+  {
+    color: "var(--color-green-500)",
+    label: "Hygiene",
+  },
+  {
+    color: "var(--color-purple-500)",
+    label: "Attraksjoner",
+  },
+] as const;
+---
+
+<TgMap
+  locations={locations}
+  topOffset={topOffset}
+  backgroundClass={backgroundClass}
+  initialZoom={initialZoom}
+  hideLabels
+  staticNav
+>
+  <Fragment slot="nav">
+    <div>
+      <H3 class="mb-5 text-3xl">Kartforklaring</H3>
+      <ul class="space-y-4 text-white text-2xl">
+        {
+          LEGEND_ITEMS.map(({ color, label }) => (
+            <li class="flex items-start gap-4">
+              <span
+                aria-hidden="true"
+                class="mt-1 inline-block h-6 w-6 shrink-0 rounded-full border border-black"
+                style={`background-color: ${color};`}
+              />
+              <p class="leading-tight">
+                <strong class="font-bold">{label}</strong>
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </Fragment>
+</TgMap>
