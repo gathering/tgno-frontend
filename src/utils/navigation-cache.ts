@@ -30,12 +30,8 @@ export async function getCachedNavigationItems(
       path: "/schedule",
     },
     {
-      title: "Om TG",
-      path: "/about",
-      items: [
-        { title: "Bli utstiller", path: "/about/expo" },
-        { title: "Bli sponsor", path: "/about/sponsor" },
-      ],
+      title: "Kart",
+      path: "/map",
     },
     {
       title: "Praktisk",
@@ -43,6 +39,8 @@ export async function getCachedNavigationItems(
       items: [
         { title: "Arrangementsregler", path: "/event/rules" },
         { title: "Konstruksjonsregler", path: "/event/construction-rules" },
+        { title: "Bli utstiller", path: "/about/expo" },
+        { title: "Bli sponsor", path: "/about/sponsor" },
       ],
     },
     {
