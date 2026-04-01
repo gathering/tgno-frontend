@@ -5,9 +5,26 @@ import FloatingNav from "../floating-nav/FloatingNav.astro";
 
 export type Props = {
   locations: MapItem[];
+  topOffsetClass?: string;
+  topOffset?: string;
+  backgroundClass?: string;
+  initialZoom?: number;
+  hideLabels?: boolean;
+  staticNav?: boolean;
 };
 
-const { locations: ssrLocations } = Astro.props;
+const {
+  locations: ssrLocations,
+  topOffsetClass = "top-32",
+  topOffset,
+  backgroundClass = "bg-black",
+  initialZoom,
+  hideLabels = false,
+  staticNav = false,
+} = Astro.props;
+
+const resolvedTopOffset =
+  topOffset ?? (topOffsetClass === "top-0" ? "0px" : "8rem");
 ---
 
 <script>
@@ -146,6 +163,9 @@ const { locations: ssrLocations } = Astro.props;
 
     connectedCallback() {
       let locations: MapItem[] = [];
+      const initialZoom = Number.parseFloat(this.dataset.initialZoom ?? "");
+      const hasInitialZoom = Number.isFinite(initialZoom);
+      const hideLabels = this.dataset.hideLabels === "true";
       try {
         locations = JSON.parse(this.dataset.locations || "").filter(isMapItem);
       } catch (e) {
@@ -175,6 +195,9 @@ const { locations: ssrLocations } = Astro.props;
 
       map.fitBounds(this.mapBounds);
       map.setMaxBounds(this.mapBounds);
+      if (hasInitialZoom) {
+        map.setZoom(initialZoom);
+      }
 
       locations.forEach((location, index) => {
         const {
@@ -227,6 +250,7 @@ const { locations: ssrLocations } = Astro.props;
             },
           ).addTo(map);
         } else if (
+          !hideLabels &&
           !["placeholder", "unknown"].includes(presentation?.type || "")
         ) {
           const marker = L.marker(target.getBounds().getCenter(), {
@@ -319,6 +343,7 @@ const { locations: ssrLocations } = Astro.props;
     }
     .leaflet-container {
       background-color: #1d1918;
+      /* background-color: black; */
       .label {
         pointer-events: none;
         font-size: var(--text-base);
@@ -459,14 +484,30 @@ const { locations: ssrLocations } = Astro.props;
   }
 </style>
 
-<tg-map data-locations={JSON.stringify(ssrLocations)}>
+<tg-map
+  data-locations={JSON.stringify(ssrLocations)}
+  data-initial-zoom={initialZoom}
+  data-hide-labels={hideLabels}
+>
   <div class="relative z-999">
-    <FloatingNav closeOnNavigate>
-      <span slot="content">
-        <slot name="nav" />
-      </span>
-    </FloatingNav>
+    {
+      staticNav ? (
+        <div class="fixed right-6 bottom-6 z-20 w-96 max-w-[calc(100vw-3rem)] rounded-xl bg-black/85 p-6 shadow-2xl">
+          <slot name="nav" />
+        </div>
+      ) : (
+        <FloatingNav closeOnNavigate>
+          <span slot="content">
+            <slot name="nav" />
+          </span>
+        </FloatingNav>
+      )
+    }
   </div>
-  <div id="map" class="fixed bg-black top-32 right-0 bottom-0 left-0 z-10">
+  <div
+    id="map"
+    class={`fixed ${backgroundClass} right-0 bottom-0 left-0 z-10`}
+    style={`top: ${resolvedTopOffset};`}
+  >
   </div>
 </tg-map>
