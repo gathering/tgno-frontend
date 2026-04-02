@@ -1,0 +1,33 @@
+---
+import Hero from "./Hero.astro";
+import Button from "../Button.astro";
+
+interface Props {
+  class?: string;
+}
+
+const { class: classNames } = Astro.props;
+---
+
+<Hero
+  image="/images/blurry-lights.jpg"
+  backgroundVideo={[
+    { path: "/tg26/preview_video.webm", type: "video/webm" },
+    { path: "/tg26/preview_video.mp4", type: "video/mp4" },
+  ]}
+  fullVideoHref="https://www.youtube.com/watch?v=mtDVFcYip8A"
+  fullVideoText="Se TG26-teaseren på YouTube"
+  class={classNames}
+>
+  <div class="flex flex-col text-left">
+    <div class="w-full">
+      <h2 class="text-lg font-normal">Nettbutikken er åpen</h2>
+      <p class="text-4xl font-bold">Sikre deg årets merch!</p>
+    </div>
+    <aside class="mt-6 space-x-2">
+      <Button href="https://kellysprofil.no/butikk/tg" theme="white">
+        Besøk butikken</Button
+      >
+    </aside>
+  </div>
+</Hero>
