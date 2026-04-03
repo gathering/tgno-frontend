@@ -8,6 +8,7 @@ import IntroSection from "../components/frontpage/IntroSection.astro";
 import { fetchArticles } from "../utils";
 import { API_URL } from "../utils/runtime-env";
 import ShopHero from "../components/frontpage/ShopHero.astro";
+import TwitchHero from "../components/frontpage/TwitchHero.astro";
 
 const TG_THEMES = {
   "2000": "The Gathering 1900 - Follow the Flow",
@@ -72,6 +73,7 @@ const articles =
           </h2>
         </div>
         <ShopHero class="sm:min-h-[300px] mb-4" />
+        <TwitchHero class="mb-4" />
         <div class="sm:hidden mb-4">
           <NewsComp articles={articles.slice(0, 3)} />
         </div>

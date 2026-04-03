@@ -1,5 +1,4 @@
 ---
-import Hero from "./Hero.astro";
 import Button from "../Button.astro";
 
 interface Props {
@@ -7,41 +6,23 @@ interface Props {
 }
 
 const { class: classNames } = Astro.props;
-// const parent = Astro.site?.hostname || Astro.url.hostname;
 ---
 
-<Hero image="/images/live.jpg" class={classNames}>
-  <!--iframe
-    src={`https://player.twitch.tv/?channel=tgtvgame&parent=${parent}`}
-    frameborder="0"
-    allowfullscreen="true"
-    scrolling="no"
-    height="378"
-    width="620"
-    slot="overlay"
-    class="rounded-3xl"></iframe -->
-  <div class="flex flex-col text-left">
-    <div class="w-full">
-      <h2 class="text-xl font-bold">Vi er live!</h2>
-      <p class="text-lg">
-        Følg med på våre livestreams for å få med deg hva som skjer i skipet
-        akkurat nå
-      </p>
-    </div>
-    <aside class="mt-6 space-x-2">
-      <Button
-        href="https://www.twitch.tv/team/thegathering"
-        theme="orange"
-        class="hidden sm:inline">Se streamene her</Button
-      >
-      <Button href="https://m.twitch.tv/tgtv" theme="orange" class="sm:hidden"
-        >Se streamene her</Button
-      >
-      <Button href="/schedule" theme="secondary">Programmet</Button>
-    </aside>
+<div class={classNames}>
+  <div
+    class="bg-white flex flex-col sm:flex-row p-4 justify-center items-center rounded-3xl md:p-6 gap-4 md:h-full md:m-auto md:rounded-2xl relative`"
+  >
+    <p class="m-0 p-0">Se livesendingene våre</p>
+    <Button href="https://www.twitch.tv/tgtv" theme="orange" variant="wide"
+      >TGVTV</Button
+    >
+    <Button href="https://www.twitch.tv/tgtvgame" theme="orange" variant="wide"
+      >TGVTV Game</Button
+    >
+    <Button
+      href="https://www.twitch.tv/tgtvcreative"
+      theme="orange"
+      variant="wide">TGVTV Creative</Button
+    >
   </div>
-  <Fragment slot="cta">
-    <p class="text-white">Besøke oss i påsken?</p>
-    <Button href="/tickets" theme="secondary"> Kjøp dagsbillett </Button>
-  </Fragment>
-</Hero>
+</div>
