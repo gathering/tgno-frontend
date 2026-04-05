@@ -1,0 +1,38 @@
+---
+import Button from "../Button.astro";
+
+interface Props {
+  class?: string;
+}
+
+const { class: classNames } = Astro.props;
+---
+
+<div class={classNames}>
+  <div
+    class="bg-white flex flex-col sm:flex-row p-4 justify-center items-center rounded-3xl md:p-6 gap-4 md:h-full md:m-auto md:rounded-2xl relative`"
+  >
+    <p class="m-0 p-0 text-center">
+      <strong class="block sm:inline">Takk for i år!</strong> Ta med deg stemining
+      hjem på
+    </p>
+    <Button
+      href="https://www.youtube.com/@gatheringorg/featured"
+      theme="orange"
+      class="w-full sm:w-auto"
+      variant="wide">YouTube</Button
+    >
+    <Button
+      href="https://discord.gg/gathering"
+      theme="orange"
+      variant="wide"
+      class="w-full sm:w-auto">Discord</Button
+    >
+    <Button
+      href="https://www.tiktok.com/@gatheringorg"
+      theme="orange"
+      class="w-full sm:w-auto"
+      variant="wide">TikTok</Button
+    >
+  </div>
+</div>
