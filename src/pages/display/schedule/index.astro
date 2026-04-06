@@ -53,9 +53,18 @@ const events = await fetchEvents({
 
 <script>
   const container = document.querySelector("[data-component=schedule]");
+
   if (container) {
-    container.clientHeight > document.body.clientHeight;
-    container.classList.add("scroll");
+    const visibleEvents = container.querySelectorAll(
+      '[data-component="event"]:not(.has-ended)',
+    );
+
+    if (
+      visibleEvents.length > 0 &&
+      container.clientHeight > document.body.clientHeight
+    ) {
+      container.classList.add("scroll");
+    }
   }
 </script>
 <style>
@@ -108,9 +117,21 @@ const events = await fetchEvents({
                 ),
               )
             ) : (
-              <p class="text-white text-md">
-                No events found... Perhaps try removing one or more filters?
-              </p>
+              <div class="min-h-screen w-full flex flex-col items-center justify-center text-white text-center px-4">
+                <img
+                  src="/tg26/tg26_horizontal.svg"
+                  alt="TG26 logo"
+                  class="h-40 md:h-56 lg:h-64 mb-6"
+                />
+
+                <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold mb-3">
+                  Det er ingenting som skjer nå!
+                </h1>
+
+                <h2 class="text-base md:text-lg text-gray-300">
+                  Sjekk igjen senere etter oppdateringer.
+                </h2>
+              </div>
             )
           }
         </Schedule>
