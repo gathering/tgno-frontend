@@ -12,10 +12,10 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
-    "@astrojs/node": "^10.0.6",
+    "@astrojs/node": "^11.0.0",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.3.0",
-    "astro": "^6.1.10",
+    "astro": "^7.0.4",
     "astro-lazy-youtube-embed": "^0.5.5",
     "canvas-confetti": "^1.9.4",
     "leaflet": "^1.9.4",
