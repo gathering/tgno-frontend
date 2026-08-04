@@ -75,28 +75,27 @@ const matomoInstanceUrl = MATOMO_INSTANCE_URL || "//matomo.gathering.org/";
 
     <!-- Matomo -->
     <script is:inline define:vars={{ matomoInstanceUrl, matomoSiteId }}>
-      if (!matomoSiteId || !matomoInstanceUrl) {
+      if (matomoSiteId && matomoInstanceUrl) {
         // Doing this instead of conditional script tag to avoid (wrong) prettier syntax errors
-        return;
-      }
-      var _paq = (window._paq = window._paq || []);
-      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-      _paq.push(["disableCookies"]);
-      _paq.push(["trackPageView"]);
-      _paq.push(["enableLinkTracking"]);
+        var _paq = (window._paq = window._paq || []);
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(["disableCookies"]);
+        _paq.push(["trackPageView"]);
+        _paq.push(["enableLinkTracking"]);
 
-      (function () {
-        _paq.push(["setTrackerUrl", matomoInstanceUrl + "matomo.php"]);
-        _paq.push(["setSiteId", matomoSiteId]);
-        var d = document,
-          g = d.createElement("script"),
-          s = d.getElementsByTagName("script")[0];
-        g.async = true;
-        g.src = matomoInstanceUrl + "matomo.js";
-        if (s.parentNode) {
-          s.parentNode.insertBefore(g, s);
-        }
-      })();
+        (function () {
+          _paq.push(["setTrackerUrl", matomoInstanceUrl + "matomo.php"]);
+          _paq.push(["setSiteId", matomoSiteId]);
+          var d = document,
+            g = d.createElement("script"),
+            s = d.getElementsByTagName("script")[0];
+          g.async = true;
+          g.src = matomoInstanceUrl + "matomo.js";
+          if (s.parentNode) {
+            s.parentNode.insertBefore(g, s);
+          }
+        })();
+      }
     </script>
     <!-- End Matomo Code -->
     <slot name="head" />
