@@ -1,5 +1,5 @@
 ---
-import Button from "../Button.astro";
+import Countdown from "../Countdown.astro";
 
 interface Props {
   class?: string;
@@ -10,29 +10,14 @@ const { class: classNames } = Astro.props;
 
 <div class={classNames}>
   <div
-    class="bg-white flex flex-col sm:flex-row p-4 justify-center items-center rounded-3xl md:p-6 gap-4 md:h-full md:m-auto md:rounded-2xl relative`"
+    class="bg-background-secondary flex flex-col sm:flex-row p-4 justify-center items-center rounded-3xl md:p-6 gap-4 md:gap-8 md:h-full md:m-auto md:rounded-2xl"
   >
-    <p class="m-0 p-0 text-center">
-      <strong class="block sm:inline">Takk for i år!</strong> Ta med deg stemning
-      hjem på
-    </p>
-    <Button
-      href="https://www.youtube.com/@gatheringorg/featured"
-      theme="orange"
-      class="w-full sm:w-auto"
-      variant="wide">YouTube</Button
+    <Countdown
+      targetDate="2027-03-24T09:00:00+01:00"
+      confetti
+      endMessage="TG27 er i gang!"
     >
-    <Button
-      href="https://discord.gg/gathering"
-      theme="orange"
-      variant="wide"
-      class="w-full sm:w-auto">Discord</Button
-    >
-    <Button
-      href="https://www.tiktok.com/@gatheringorg"
-      theme="orange"
-      class="w-full sm:w-auto"
-      variant="wide">TikTok</Button
-    >
+      <h2 class="text-xl text-white font-bold" slot="pre">Sees i påsken!</h2>
+    </Countdown>
   </div>
 </div>

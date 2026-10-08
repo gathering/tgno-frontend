@@ -30,4 +30,16 @@ const { class: classNames } = Astro.props;
       >
     </aside>
   </div>
+  <Fragment slot="cta">
+    <div>
+      <p>Savner du stemningen?</p>
+      <p class="text-2xl font-bold">Se bildene fra TG26</p>
+    </div>
+    <Button
+      href="https://bildebank.gathering.org/index.php?/category/123"
+      theme="white"
+    >
+      Bildearkivet
+    </Button>
+  </Fragment>
 </Hero>

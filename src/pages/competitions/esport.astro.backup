@@ -1,0 +1,173 @@
+---
+import H1 from "../../components/H1.astro";
+import Layout from "../../layouts/Layout.astro";
+import Main from "../../components/Main.astro";
+import H2 from "../../components/H2.astro";
+import H3 from "../../components/H3.astro";
+import ContentContainer from "../../components/ContentContainer.astro";
+import SportsBox from "../../components/competitions/SportsBox.astro";
+import Pill from "../../components/competitions/Pill.astro";
+
+const boxStyles = "p-6 rounded-3xl sm:rounded-2xl h-full";
+---
+
+<Layout title="The Gathering - E-Sport konkurranser">
+  <Main>
+    <ContentContainer>
+      <H1 text="E-Sport konkurranser" />
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Intro block -->
+        <div class="sm:col-span-2 lg:col-span-2">
+          <section class="prose prose-strong:text-white text-white max-w-2xl">
+            <H2 text="Klar for å kjempe om premier?" />
+            <p>
+              Er du klar for å konkurrere i de mest spennende og intense
+              turneringene innen gaming? På The Gathering arrangerer vi en rekke
+              turneringer i noen av verdens mest populære spill! Uansett om du
+              er en erfaren spiller eller ny i e-sportens verden, vil våre
+              turneringer gi deg muligheten til å teste ferdighetene dine,
+              samarbeide med laget ditt, og kanskje til og med vinne fantastiske
+              premier!
+            </p>
+
+            <H3>Generelle regler</H3>
+            <p>
+              <a
+                href="https://www.tg.no/api/v2/documents/75/Generelle_regler_til_Esports_pa_TG26.pdf"
+                >Her</a
+              > finner du generelle regler for alle turneringene.
+            </p>
+
+            <H3>Praktisk informasjon</H3>
+            <p>
+              <Pill text="Egen maskin" color="orange" class="mr-2" />
+              De fleste turneringene er BYOC (Bring Your Own Computer), noe som betyr
+              at du må ta med deg din egen datamaskin for å kunne delta.
+            </p>
+            <p>
+              <Pill text="I skipet" color="blue" class="mr-2" />
+              Du må, som regel, også være på plass på The Gathering for å kunne delta
+              i turneringene.
+            </p>
+          </section>
+        </div>
+
+        <!-- Compo cards -->
+        <SportsBox
+          title="Valorant 5v5"
+          class={`${boxStyles} bg-background-secondary text-white prose lg:col-span-2`}
+          url="https://www.challengermode.com/s/TheGathering/tournaments/1d1ec5e6-ac52-47ec-d709-08de78b3a158"
+          urlText="Meld deg på her!"
+          prizes={[17500, 12500, 9000]}
+          requiresTicket
+          byoc
+        >
+          <p class="m-0 opacity-80">
+            Valorant er et 5v5 «character-based tactical shooter» spill som er
+            utviklet av Riot Games. To lag på 5 kjemper mot hverandre om å enten
+            holde gitte områder trygt fra motstanderne eller ta dem ved å plante
+            en spike og la den eksplodere.
+          </p>
+          <p>
+            Reglene finner du her: <a
+              href="https://www.tg.no/api/v2/documents/73/TG26_Valorant_Tournament_Regler.pdf"
+              target="_blank">Turneringsregler</a
+            > / <a
+              href="https://www.tg.no/api/v2/documents/75/Generelle_regler_til_Esports_pa_TG26.pdf"
+              target="_blank"
+            >
+              Generelle regler</a
+            >
+          </p>
+        </SportsBox>
+
+        <SportsBox
+          title="Counter-Strike 2 5v5"
+          class={`${boxStyles} bg-background-secondary text-white prose lg:col-span-2`}
+          url="https://www.challengermode.com/s/TheGathering/tournaments/5bb4570d-0112-405c-d704-08de78b3a158"
+          urlText="Meld deg på her!"
+          prizes={[17500, 12500, 9000]}
+          requiresTicket
+          byoc
+        >
+          <p class="m-0 opacity-80">
+            Counter-Strike 2 er det største tekniske spranget fremover i
+            Counter-Strikes historie, som legger til rette for nye funksjoner og
+            oppdateringer i årene som kommer.
+          </p>
+          <p>
+            Reglene finner du her: <a
+              href="https://www.tg.no/api/v2/documents/71/TG26_CS2_Tournament_Regler.pdf"
+              target="_blank">Turneringsregler</a
+            > / <a
+              href="https://www.tg.no/api/v2/documents/75/Generelle_regler_til_Esports_pa_TG26.pdf"
+              target="_blank"
+            >
+              Generelle regler</a
+            >
+          </p>
+        </SportsBox>
+
+        <SportsBox
+          title="League of Legends 5v5"
+          class={`${boxStyles} bg-background-secondary text-white prose lg:col-span-2`}
+          url="https://www.challengermode.com/s/TheGathering/tournaments/f53f906a-6751-44cb-4b41-08de87c8da2c"
+          urlText="Meld deg på her!"
+          prizes={[17500, 12500, 9000]}
+          requiresTicket
+          byoc
+        >
+          <p class="m-0 opacity-80">
+            League of Legends er et lagbasert strategispill der to lag med fem
+            mektige mestere møter hverandre for å ødelegge den andres base. Velg
+            blant over 140 mestere for å lage episke skuespill, sikre drap og ta
+            ned tårn mens du kjemper deg mot seier.
+          </p>
+          <p>
+            Reglene finner du her: <a
+              href="https://www.tg.no/api/v2/documents/72/TG26_LoL_Tournament_Regler.pdf"
+              target="_blank">Turneringsregler</a
+            > / <a
+              href="https://www.tg.no/api/v2/documents/75/Generelle_regler_til_Esports_pa_TG26.pdf"
+              target="_blank"
+            >
+              Generelle regler</a
+            >
+          </p>
+        </SportsBox>
+
+        <SportsBox
+          title="Rocket League 3v3"
+          class={`${boxStyles} bg-background-secondary text-white prose lg:col-span-2`}
+          url="https://www.challengermode.com/s/TheGathering/tournaments/315eb35c-825e-4c24-4707-08de7490d41a"
+          urlText="Meld deg på her!"
+          prizes={[10500, 7500, 5400]}
+          requiresTicket
+          byoc
+        >
+          <p class="m-0 opacity-80">
+            Spillet blir beskrevet som "en hybrid av fotball- og kjøretøysfylt
+            arkade med lettforståelige kontroller og flytende, fysikkdrevet
+            konkurranse". Spillere kontrollerer en rakettdrevet bil og bruker
+            den til å føre en ball inn i motstanderens mål. Spillere har
+            muligheten til å hoppe med bilen sin og treffe ballen i lufta. I
+            tillegg kan spillere plukke opp fartsøkningsmidler, ved å kjøre
+            bilen sin over markerte felt på arenaen.
+          </p>
+          <p>
+            Reglene finner du her: <a
+              href="https://www.tg.no/api/v2/documents/70/TG26_Rocket_League_Tournament_Regler.pdf"
+              target="_blank">Turneringsregler</a
+            > / <a
+              href="https://www.tg.no/api/v2/documents/75/Generelle_regler_til_Esports_pa_TG26.pdf"
+              target="_blank"
+            >
+              Generelle regler</a
+            >
+          </p>
+        </SportsBox>
+      </div>
+    </ContentContainer>
+  </Main>
+</Layout>
