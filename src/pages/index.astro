@@ -7,8 +7,8 @@ import Button from "../components/Button.astro";
 import IntroSection from "../components/frontpage/IntroSection.astro";
 import { fetchArticles } from "../utils";
 import { API_URL } from "../utils/runtime-env";
-import ShopHero from "../components/frontpage/ShopHero.astro";
-import NostalgiaHero from "../components/frontpage/NostalgiaHero.astro";
+import RememberHero from "../components/frontpage/RememberHero.astro";
+import NewyearHero from "../components/frontpage/NewyearHero.astro";
 
 const TG_THEMES = {
   "2000": "The Gathering 1900 - Follow the Flow",
@@ -74,8 +74,8 @@ const articles =
             I NORGES FETESTE PÅSKEHYTTE!
           </h2>
         </div>
-        <ShopHero class="sm:min-h-[300px] mb-4" />
-        <NostalgiaHero class="mb-4" />
+        <RememberHero class="sm:min-h-[300px] mb-4" />
+        <NewyearHero class="mb-4" />
         <div class="sm:hidden mb-4">
           <NewsComp articles={articles.slice(0, 3)} />
         </div>
