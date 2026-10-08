@@ -1,4 +1,5 @@
 ---
+import Countdown from "../Countdown.astro";
 import ResponsiveImage from "../ResponsiveImage.astro";
 import InfoBox from "./InfoBox.astro";
 
@@ -95,6 +96,17 @@ const { class: classNames } = Astro.props;
       }}
       class="rounded-2xl object-cover w-full sm:absolute sm:top-0 sm:left-0 sm:h-full"
     />
+  </div>
+  <div
+    class="sm:col-span-3 md:bg-background-secondary p-4 rounded-2xl flex justify-center content-center items-center gap-2 min-[540px]:gap-10 flex-col min-[540px]:flex-row"
+  >
+    <Countdown
+      targetDate="2027-03-24T09:00:00+01:00"
+      confetti
+      endMessage="TG27 er i gang!"
+    >
+      <h2 class="text-xl text-white font-bold" slot="pre">Sees i påsken!</h2>
+    </Countdown>
   </div>
   <div class="sm:col-span-2 relative">
     <ResponsiveImage
