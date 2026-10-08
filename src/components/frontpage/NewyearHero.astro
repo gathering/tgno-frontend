@@ -1,0 +1,102 @@
+---
+import Button from "../Button.astro";
+
+interface Props {
+  class?: string;
+}
+
+const { class: classNames } = Astro.props;
+
+const tgStart = new Date("2027-03-24T00:00:00+01:00").getTime();
+const daysLeft = Math.max(0, Math.ceil((tgStart - Date.now()) / 86_400_000));
+---
+
+<div class={classNames}>
+  <div
+    class="flex flex-col items-center gap-5 rounded-3xl bg-white p-5
+           xl:flex-row xl:gap-6 xl:rounded-2xl xl:p-6"
+  >
+    <div class="min-w-0 flex-1 text-center xl:text-left">
+      <h2 class="m-0 text-2xl font-bold leading-tight text-black">
+        Nå starter vi nedtellingen igjen!
+      </h2>
+
+      <p class="mb-0 mt-2 text-sm text-neutral-600">
+        Start TG-stemningen allerede nå. Vi er aktive på Discord året rundt.
+      </p>
+    </div>
+
+    <div
+      class="shrink-0 rounded-xl border border-orange-200
+             bg-orange-50 px-5 py-2 text-center"
+    >
+      <span
+        data-tg-countdown
+        data-target={tgStart}
+        class="block text-4xl font-extrabold leading-none text-orange-500"
+      >
+        {daysLeft}
+      </span>
+
+      <span class="mt-1 block text-sm text-neutral-700"> dager til TG27 </span>
+    </div>
+
+    <div
+      class="flex w-full shrink-0 flex-wrap justify-center gap-3
+             xl:w-auto xl:border-l xl:border-neutral-200 xl:pl-5"
+    >
+      <Button
+        href="https://www.youtube.com/@gatheringorg/featured"
+        theme="orange"
+        variant="wide"
+        class="w-full sm:w-auto"
+      >
+        YouTube
+      </Button>
+
+      <Button
+        href="https://discord.gg/gathering"
+        theme="orange"
+        variant="wide"
+        class="w-full sm:w-auto"
+      >
+        Discord
+      </Button>
+
+      <Button
+        href="https://www.tiktok.com/@gatheringorg"
+        theme="orange"
+        variant="wide"
+        class="w-full sm:w-auto"
+      >
+        TikTok
+      </Button>
+
+      <Button
+        href="https://kellysprofil.no/butikk/tg"
+        theme="orange"
+        variant="wide"
+        class="w-full sm:w-auto"
+      >
+        TG26 Merch
+      </Button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function updateCountdown() {
+    document
+      .querySelectorAll<HTMLElement>("[data-tg-countdown]")
+      .forEach((element) => {
+        const target = Number(element.dataset.target);
+        const days = Math.max(0, Math.ceil((target - Date.now()) / 86_400_000));
+
+        element.textContent = String(days);
+      });
+  }
+
+  updateCountdown();
+  document.addEventListener("astro:page-load", updateCountdown);
+  setInterval(updateCountdown, 60_000);
+</script>
