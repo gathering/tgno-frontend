@@ -26,14 +26,6 @@ export async function getCachedNavigationItems(
       path: "/news",
     },
     {
-      title: "Program",
-      path: "/schedule",
-    },
-    {
-      title: "Kart",
-      path: "/map",
-    },
-    {
       title: "Praktisk",
       path: "/practical",
       items: [
@@ -45,19 +37,10 @@ export async function getCachedNavigationItems(
     },
     {
       title: "Billetter",
-      path: "/tickets",
       items: [
         { title: "Vilkår", path: "/tickets/terms-and-conditions" },
         { title: "Arrangementsregler", path: "/event/rules" },
         { title: "Konstruksjonsregler", path: "/event/construction-rules" },
-      ],
-    },
-    {
-      title: "Konkurranser",
-      items: [
-        { title: "Kreative", path: "/competitions/creative" },
-        { title: "Esport", path: "/competitions/esport" },
-        { title: "Cosplay", path: "/competitions/creative/cosplay" },
       ],
     },
     { title: "Kontakt oss", path: "/contact" },

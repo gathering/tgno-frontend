@@ -1,120 +1,23 @@
 ---
-import H2 from "../../../components/H2.astro";
-import Main from "../../../components/Main.astro";
 import Layout from "../../../layouts/Layout.astro";
-import DayHeader from "../../../components/schedule/DayHeader.astro";
-import ContentContainer from "../../../components/ContentContainer.astro";
-import type { DateOption } from "../../../utils/events";
-import Schedule from "../../../components/schedule/Schedule.astro";
-import { fetchEvents } from "../../../utils/events";
-import type { Tag } from "../../../types";
-import DisplayEvent from "../../../components/schedule/DisplayEvent.astro";
-import { API_URL } from "../../../utils/runtime-env";
-
-const dateTimeNow = new Date(
-  Date.now() - 2 * 60 * 60 * 1000, // 2 hours in the past
-);
-const dateTimeFuture = new Date(
-  Date.now() + 4 * 60 * 60 * 1000, // 2 hours in the future
-);
-
-const startDate = `2026-04-${dateTimeNow.getDate()}`;
-const startTime = `${dateTimeNow.getHours() - 2}:${dateTimeNow.getMinutes()}:00`;
-const endDate = `2026-04-${dateTimeFuture.getDate()}`;
-const endTime = `${dateTimeFuture.getHours()}:${dateTimeFuture.getMinutes()}:00`;
-
-const eventDate: DateOption = {
-  start: `${startDate}T${startTime}`,
-  end: `${endDate}T${endTime}`,
-  name: "today",
-  type: "date",
-  slug: "today",
-};
-
-const getLocation = (tags: Tag[]): Tag | undefined => {
-  const tag = tags.find((tag) => tag.type === "location");
-  if (!tag) return undefined;
-
-  const colors = {
-    hovedscenen: "purple",
-    kreativiascenen: "blue",
-    esportscenen: "orange",
-    lounge: "green",
-  };
-  // @ts-ignore-next-line
-  return { ...tag, color: colors[tag.slug] || "gray" };
-};
-const events = await fetchEvents({
-  date: eventDate,
-  api_url: API_URL,
-  tags: [],
-});
 ---
-
-<script>
-  const container = document.querySelector("[data-component=schedule]");
-  if (container) {
-    container.clientHeight > document.body.clientHeight;
-    container.classList.add("scroll");
-  }
-</script>
-<style>
-  body {
-    height: 100vh;
-  }
-
-  [data-component="schedule"] {
-    &.scroll {
-      transition-behavior: normal;
-      transition-duration: 20s;
-      transition-timing-function: linear;
-      transition-delay: 5s;
-      transition-property: transform;
-      transform: translateY(-52%);
-    }
-  }
-</style>
 
 <Layout
   title="The Gathering - Program"
-  description="Her finner du programmet for hva som skjer innenfor E-Sport, Kreativia, konserter og mer under The Gathering 2025."
-  type="website"
   headerVariant="hidden"
   footerVariant="hidden"
 >
-  <Main display>
-    <ContentContainer variant="wide">
-      <section data-component="schedule" class="my-8">
-        <Schedule>
-          {
-            events.length ? (
-              events.map((event, i) =>
-                event.strings.startDate !== events[i - 1]?.strings.startDate &&
-                i > 0 ? (
-                  <>
-                    <DayHeader
-                      date={event.start}
-                      large
-                      underline
-                      class="w-[80vw] ml-auto pl-4"
-                    />
-                    <DisplayEvent
-                      {...event}
-                      location={getLocation(event.tags)}
-                    />
-                  </>
-                ) : (
-                  <DisplayEvent {...event} location={getLocation(event.tags)} />
-                ),
-              )
-            ) : (
-              <p class="text-white text-md">
-                No events found... Perhaps try removing one or more filters?
-              </p>
-            )
-          }
-        </Schedule>
-      </section>
-    </ContentContainer>
-  </Main>
+  <main
+    class="min-h-screen flex items-center justify-center text-center text-white p-8"
+  >
+    <div class="max-w-3xl">
+      <h1 class="text-4xl sm:text-6xl font-bold mb-4">Program</h1>
+      <h2 class="text-2xl sm:text-4xl font-bold mb-6">
+        Informasjonen er ikke klar ennå
+      </h2>
+      <p class="text-xl opacity-80">
+        Programmet for TG27 publiseres her når det er klart.
+      </p>
+    </div>
+  </main>
 </Layout>
