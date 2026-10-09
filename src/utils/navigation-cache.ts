@@ -26,14 +26,6 @@ export async function getCachedNavigationItems(
       path: "/news",
     },
     {
-      title: "Program",
-      path: "/schedule",
-    },
-    {
-      title: "Kart",
-      path: "/map",
-    },
-    {
       title: "Praktisk",
       path: "/practical",
       items: [
@@ -45,7 +37,6 @@ export async function getCachedNavigationItems(
     },
     {
       title: "Billetter",
-      path: "/tickets",
       items: [
         { title: "Vilkår", path: "/tickets/terms-and-conditions" },
         { title: "Arrangementsregler", path: "/event/rules" },
