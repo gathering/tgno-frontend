@@ -16,6 +16,17 @@ updates:
     open-pull-requests-limit: 4
 
     groups:
+      # Security updates: one PR for all non-major fixes (direct and transitive).
+      # Majors fall outside the group and get their own PR.
+      security-patches:
+        applies-to: security-updates
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      # Packages that are released in lockstep or have peer dependencies on each
+      # other are grouped for all update types, so majors move together.
       astro:
         patterns:
           - "astro"
@@ -25,13 +36,13 @@ updates:
         patterns:
           - "tailwindcss"
           - "@tailwindcss/*"
-      typescript:
-        patterns:
-          - "typescript"
-          - "@types/*"
+      # Everything else: minor/patch only. Majors get individual PRs.
       catch-all:
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
 
     labels:
       - "dependencies"
