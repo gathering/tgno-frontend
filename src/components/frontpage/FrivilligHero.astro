@@ -1,0 +1,39 @@
+---
+import Hero from "./Hero.astro";
+import Button from "../Button.astro";
+
+interface Props {
+  class?: string;
+}
+
+const { class: classNames } = Astro.props;
+---
+
+<Hero
+  image="/images/blurry-lights.jpg"
+  backgroundVideo={[
+    { path: "/tg26/preview_video.webm", type: "video/webm" },
+    { path: "/tg26/preview_video.mp4", type: "video/mp4" },
+  ]}
+  fullVideoHref="https://www.youtube.com/watch?v=mtDVFcYip8A"
+  fullVideoText="Se TG26-teaseren på YouTube"
+  class={classNames}
+>
+  <div class="flex flex-col text-left">
+    <div class="w-full">
+      <h2 class="text-4xl font-bold">Vi søker frivillige!</h2>
+      <p class="text-lg font-normal">
+        Arrangementet er helt avhengig av frivillige for å kunne gjennomføres.
+        Bli med på laget og få en opplevelse for livet.
+      </p>
+    </div>
+    <aside class="mt-2 space-x-2">
+      <Button
+        href="https://bildebank.gathering.org/index.php?/category/123"
+        theme="white"
+      >
+        Bildearkivet</Button
+      >
+    </aside>
+  </div>
+</Hero>
