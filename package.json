@@ -28,7 +28,7 @@
     "@types/jquery": "^3.5.34",
     "@types/leaflet": "^1.9.22",
     "husky": "^9.1.7",
-    "lint-staged": "^16.4.0",
+    "lint-staged": "^17.6.0",
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "^0.14.1"
   },
