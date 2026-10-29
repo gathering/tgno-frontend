@@ -13,6 +13,10 @@ updates:
       time: "16:00"
       timezone: "CET"
 
+    # Wait a few days after a release before proposing it. Does not delay security updates.
+    cooldown:
+      default-days: 3
+
     open-pull-requests-limit: 4
 
     groups:
