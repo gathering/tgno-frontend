@@ -1,3 +1,10 @@
+# A preview of each pull request on sys-k8s-prod, at
+# https://tgno-pr<number>.preview.tg.no.
+#
+# This builds the image and adds the label "preview". Argo CD on the cluster
+# lists the open pull requests with that label every two minutes, and runs
+# the image tagged with the pull request's head commit. The platform side is
+# docs/previews.md in gathering/sys-k8s-apps.
 name: Build and deploy Preview Environment
 
 on:
@@ -9,10 +16,6 @@ on:
       - ready_for_review
 
 env:
-  TAG: preview-pr${{ github.event.number }}
-  ARGOCD_APP_NAME: tgno-preview-pr${{ github.event.number }}
-  KUSTOMIZE_REPO: https://github.com/gathering/k8s-iac.git
-  KUSTOMIZE_PATH: tgno/preview-frontend
   DOMAIN: tgno-pr${{ github.event.number }}.preview.tg.no
 
 concurrency:
@@ -20,13 +23,27 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Build docker image and push it to registry
   build:
-    if: github.event.pull_request.draft == false
+    # Not for drafts. Not for a fork or Dependabot, whose tokens cannot push
+    # the image.
+    if: >-
+      github.event.pull_request.draft == false
+      && github.event.pull_request.head.repo.full_name == github.repository
+      && github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
-    outputs:
-      digest: ${{ steps.docker_build_push.outputs.digest }}
+    permissions:
+      contents: read
+      packages: write
+      pull-requests: write
     steps:
+      # The tag the cluster looks for: pr-<number>-<head commit, 8
+      # characters>. github.sha is the merge commit GitHub makes, which the
+      # cluster does not know.
+      - name: Name the tag
+        run: echo "TAG=pr-${NUMBER}-${SHA::8}" >> "$GITHUB_ENV"
+        env:
+          NUMBER: ${{ github.event.number }}
+          SHA: ${{ github.event.pull_request.head.sha }}
       - uses: actions/checkout@v4
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -51,32 +68,19 @@ jobs:
             ghcr.io/${{ github.repository }}:${{ env.TAG }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-  setup-preview-environment:
-    needs: build
-    if: github.event.pull_request.draft == false
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - run: pip install requests
-      - run: >
-          python tools/create-preview.py
-          --argocd-url ${{ secrets.ARGOCD_URL }}
-          --argocd-user ${{ secrets.ARGOCD_USERNAME }}
-          --argocd-password ${{ secrets.ARGOCD_PASSWORD }}
-          --name ${{ env.ARGOCD_APP_NAME }}
-          --host ${{ env.DOMAIN }}
-          --kustomize-path ${{ env.KUSTOMIZE_PATH }}
-          --image ghcr.io/${{ github.repository }}@${{needs.build.outputs.digest}}
+      # Only once the image is there, so a new preview never waits for it.
+      # Later pushes keep the label, and the preview moves to the new image
+      # a few minutes after it is pushed.
+      - name: Add the label preview
+        run: gh pr edit "$NUMBER" --repo "$GITHUB_REPOSITORY" --add-label preview
+        env:
+          NUMBER: ${{ github.event.number }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: setup-preview-environment
           message: |
-            ### Preview Environment created
-            ${{ github.sha }} live at https://${{ env.DOMAIN }}
+            ### Preview Environment
+            ${{ github.event.pull_request.head.sha }} is live at https://${{ env.DOMAIN }} within a few minutes.
 
-            ghcr.io/${{ github.repository }}:${{ env.TAG }} (${{needs.build.outputs.digest}})
-            [ArgoCD Application](https://${{ secrets.ARGOCD_URL }}/applications/${{ env.ARGOCD_APP_NAME }})
+            ghcr.io/${{ github.repository }}:${{ env.TAG }} (${{ steps.docker_build_push.outputs.digest }})

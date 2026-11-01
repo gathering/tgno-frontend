@@ -1,3 +1,7 @@
+# Ends the preview of a pull request that closes or goes back to draft
+# (setup-preview.yaml). A closed pull request drops out on the cluster by
+# itself. A draft keeps its label, so it is taken off here. Then the images
+# of the pull request are deleted.
 name: Cleanup Preview Environment
 
 on:
@@ -6,47 +10,42 @@ on:
       - closed
       - converted_to_draft
 
-env:
-  ARGOCD_APP_NAME: tgno-preview-pr${{ github.event.number }}
-  TAG: preview-pr${{ github.event.number }}
-
 concurrency:
   group: preview-${{ github.event.number }}
   cancel-in-progress: true
 
 jobs:
   cleanup-preview-environment:
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      pull-requests: write
     steps:
-      - uses: actions/checkout@v4
-      - name: Login to ArgoCD
-        uses: clowdhaus/argo-cd-action@v2.2.0
-        with:
-          command: login
-          options: >-
-            ${{ secrets.ARGOCD_URL }}
-            --username ${{ secrets.ARGOCD_USERNAME }}
-            --password ${{ secrets.ARGOCD_PASSWORD }}
-            --grpc-web
-            --skip-test-tls
-      - name: Delete ArgoCD Application
-        uses: clowdhaus/argo-cd-action@v2.2.0
-        with:
-          command: app delete
-          options: >-
-            ${{ env.ARGOCD_APP_NAME }}
-            --cascade
-            --yes
-            --grpc-web
-        continue-on-error: true
-      - name: Remove Docker Tag
-        uses: rafalkk/remove-dockertag-action@v1
-        with:
-          tag_name: preview-pr${{ github.event.number }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-        continue-on-error: true
-      - name: Allow failures
-        run: true
+      - name: Remove the label preview
+        if: github.event.action == 'converted_to_draft'
+        run: gh pr edit "$NUMBER" --repo "$GITHUB_REPOSITORY" --remove-label preview
+        env:
+          NUMBER: ${{ github.event.number }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Every image of this pull request: pr-<number>-<commit>, one for each
+      # push, and preview-pr<number> from the old cluster. A version that
+      # also has another tag is left alone.
+      - name: Delete the pull request's images
+        run: |
+          versions="/orgs/${GITHUB_REPOSITORY_OWNER}/packages/container/${GITHUB_REPOSITORY#*/}/versions"
+          gh api --paginate "$versions?per_page=100" --jq '
+            .[] | select((.metadata.container.tags | length) > 0
+              and all(.metadata.container.tags[];
+                startswith("pr-\(env.NUMBER)-") or . == "preview-pr\(env.NUMBER)"))
+            | .id' |
+          while read -r id; do
+            echo "Deleting version $id"
+            gh api --method DELETE "$versions/$id"
+          done
+        env:
+          NUMBER: ${{ github.event.number }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: setup-preview-environment
