@@ -1,8 +1,5 @@
-# Ends the preview (setup-preview.yaml) of a pull request that closes or goes
-# back to draft: the label comes off, which ends the preview on the
-# cluster, and the images of the pull request are deleted. A closed pull
-# request would drop out by itself. Without the label, one that is reopened
-# gets its preview once the new image is there, as a new one does.
+# Ends a PR's preview when it closes or goes back to draft: removes the
+# label, which stops the preview, and deletes the PR's images.
 name: Clean up the preview
 
 on:
@@ -13,8 +10,7 @@ on:
 
 jobs:
   cleanup-preview-environment:
-    # Not for a fork, whose token cannot remove the label or delete images.
-    # It has no images, and a label only if someone added it by hand.
+    # Not for forks: their token cannot do either
     if: github.event.pull_request.head.repo.full_name == github.repository
     concurrency:
       group: preview-${{ github.event.number }}
@@ -24,24 +20,21 @@ jobs:
       packages: write
       pull-requests: write
     steps:
-      # Only if it is there: removing a label the pull request does not
-      # have is an error. The labels are those of the event.
+      # Removing a label the PR does not have is an error
       - name: Remove the label preview
         if: contains(github.event.pull_request.labels.*.name, 'preview')
         run: gh api --method DELETE "repos/$GITHUB_REPOSITORY/issues/$NUMBER/labels/preview" --silent
         env:
           NUMBER: ${{ github.event.number }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # Every image of this pull request: pr-<number>-<commit>, one for each
-      # push, and preview-pr<number> from the old cluster, until its images
-      # are gone. A version that also has another tag is left alone. The
-      # list is read in full before anything is deleted, since a deletion
-      # moves the pages after it.
-      - name: Delete the pull request's images
+      # Tags pr-<number>-*, and preview-pr<number> from the old cluster.
+      # Images with any other tag stay. The full list is read before
+      # deleting, since deleting shifts the pages.
+      - name: Delete the PR's images
         shell: bash
         run: |
           versions="/orgs/${GITHUB_REPOSITORY_OWNER}/packages/container/${GITHUB_REPOSITORY#*/}/versions"
-          # An assignment, so that a listing that fails fails the step
+          # An assignment, so a failed listing fails the step
           ids=$(gh api --paginate "$versions?per_page=100" --jq '
             .[] | select((.metadata.container.tags | length) > 0
               and all(.metadata.container.tags[];
@@ -54,8 +47,7 @@ jobs:
         env:
           NUMBER: ${{ github.event.number }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # Only updates a comment that is there: a pull request that never had
-      # a preview gets none.
+      # Only if the PR had a preview comment
       - uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3.0.5
         with:
           header: setup-preview-environment
