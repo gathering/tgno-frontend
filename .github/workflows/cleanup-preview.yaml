@@ -1,9 +1,9 @@
-# Ends the preview of a pull request that closes or goes back to draft
-# (setup-preview.yaml): the label comes off, which ends the preview on the
+# Ends the preview (setup-preview.yaml) of a pull request that closes or goes
+# back to draft: the label comes off, which ends the preview on the
 # cluster, and the images of the pull request are deleted. A closed pull
 # request would drop out by itself. Without the label, one that is reopened
 # gets its preview once the new image is there, as a new one does.
-name: Cleanup Preview Environment
+name: Clean up the preview
 
 on:
   pull_request:
@@ -13,6 +13,8 @@ on:
 
 jobs:
   cleanup-preview-environment:
+    # Not for a fork, whose token cannot remove the label or delete images.
+    # It has no images, and a label only if someone added it by hand.
     if: github.event.pull_request.head.repo.full_name == github.repository
     concurrency:
       group: preview-${{ github.event.number }}
@@ -23,21 +25,18 @@ jobs:
       pull-requests: write
     steps:
       # Only if it is there: removing a label the pull request does not
-      # have is an error.
+      # have is an error. The labels are those of the event.
       - name: Remove the label preview
-        shell: bash
-        run: |
-          labels="repos/$GITHUB_REPOSITORY/issues/$NUMBER/labels"
-          if gh api "$labels" --jq '.[].name' | grep -qx preview; then
-            gh api --method DELETE "$labels/preview" --silent
-          fi
+        if: contains(github.event.pull_request.labels.*.name, 'preview')
+        run: gh api --method DELETE "repos/$GITHUB_REPOSITORY/issues/$NUMBER/labels/preview" --silent
         env:
           NUMBER: ${{ github.event.number }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Every image of this pull request: pr-<number>-<commit>, one for each
-      # push, and preview-pr<number> from the old cluster. A version that
-      # also has another tag is left alone. The list is read in full before
-      # anything is deleted, since a deletion moves the pages after it.
+      # push, and preview-pr<number> from the old cluster, until its images
+      # are gone. A version that also has another tag is left alone. The
+      # list is read in full before anything is deleted, since a deletion
+      # moves the pages after it.
       - name: Delete the pull request's images
         shell: bash
         run: |
@@ -55,7 +54,8 @@ jobs:
         env:
           NUMBER: ${{ github.event.number }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # Only on a pull request that had a preview, and so the comment
+      # Only updates a comment that is there: a pull request that never had
+      # a preview gets none.
       - uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: setup-preview-environment

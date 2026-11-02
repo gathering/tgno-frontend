@@ -3,8 +3,9 @@
 #
 # This builds the image and adds the label "preview". Argo CD on the cluster
 # lists the open pull requests with that label every two minutes, and runs
-# the image tagged with the pull request's head commit. The platform side is
-# docs/previews.md in gathering/sys-k8s-apps.
+# the image tagged with the pull request's head commit. A comment on the pull
+# request links to the preview, and says when a build failed. The platform
+# side is docs/previews.md in gathering/sys-k8s-apps.
 name: Build the preview image
 
 on:
@@ -31,8 +32,11 @@ jobs:
       github.event.pull_request.draft == false
       && github.event.pull_request.head.repo.full_name == github.repository
       && github.event.pull_request.user.login != 'dependabot[bot]'
-    # On the job, not the workflow: a run whose job is skipped then takes no
-    # place in the group, and cancels no cleanup.
+    # On the job, not the workflow: a run whose job is skipped, such as a
+    # push to a draft, then cancels no cleanup. A build that runs does cancel
+    # a cleanup still running, when a pull request is reopened or marked
+    # ready right after. That is fine: the build labels it again, and the
+    # older images go at the next cleanup.
     concurrency:
       group: preview-${{ github.event.number }}
       cancel-in-progress: true
@@ -96,14 +100,28 @@ jobs:
 
             ghcr.io/${{ github.repository }}:${{ env.TAG }} (${{ steps.docker_build_push.outputs.digest }})
             [Argo CD Application](${{ env.ARGOCD_APP }}) · [Grafana dashboard](${{ env.GRAFANA_APP }})
-      # The cluster has already moved to the new commit and waits for its
-      # image. The pod of the commit before keeps serving.
+      # A build that failed, on a pull request with a preview. The cluster
+      # has already moved to the new commit and waits for its image, and the
+      # pod of the commit before keeps serving. The labels are those of the
+      # event, before this run.
       - uses: marocchino/sticky-pull-request-comment@v2
-        if: failure()
+        if: >-
+          failure() && steps.docker_build_push.outcome != 'success'
+          && contains(github.event.pull_request.labels.*.name, 'preview')
         with:
           header: setup-preview-environment
           message: |
             ### Preview Environment
-            The build of ${{ github.event.pull_request.head.sha }} failed. A preview that is running stays on the commit before it until a build succeeds.
+            The build of ${{ github.event.pull_request.head.sha }} failed. The preview stays on the commit before it until a build succeeds.
 
             [Argo CD Application](${{ env.ARGOCD_APP }}) · [Grafana dashboard](${{ env.GRAFANA_APP }})
+      # A build that failed before there was a preview
+      - uses: marocchino/sticky-pull-request-comment@v2
+        if: >-
+          failure() && steps.docker_build_push.outcome != 'success'
+          && !contains(github.event.pull_request.labels.*.name, 'preview')
+        with:
+          header: setup-preview-environment
+          message: |
+            ### Preview Environment
+            The build of ${{ github.event.pull_request.head.sha }} failed, so there is no preview yet.
