@@ -5,7 +5,7 @@
 # lists the open pull requests with that label every two minutes, and runs
 # the image tagged with the pull request's head commit. The platform side is
 # docs/previews.md in gathering/sys-k8s-apps.
-name: Build and deploy Preview Environment
+name: Build the preview image
 
 on:
   pull_request:
@@ -18,18 +18,20 @@ on:
 env:
   DOMAIN: tgno-pr${{ github.event.number }}.preview.tg.no
 
-concurrency:
-  group: preview-${{ github.event.number }}
-  cancel-in-progress: true
-
 jobs:
   build:
-    # Not for drafts. Not for a fork or Dependabot, whose tokens cannot push
-    # the image.
+    # Not for drafts. Not for a fork, whose token cannot push the image. Not
+    # for Dependabot's pull requests: they are many, and each preview takes a
+    # certificate from Let's Encrypt's weekly limit for tg.no.
     if: >-
       github.event.pull_request.draft == false
       && github.event.pull_request.head.repo.full_name == github.repository
-      && github.actor != 'dependabot[bot]'
+      && github.event.pull_request.user.login != 'dependabot[bot]'
+    # On the job, not the workflow: a run whose job is skipped then takes no
+    # place in the group, and cancels no cleanup.
+    concurrency:
+      group: preview-${{ github.event.number }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -64,15 +66,20 @@ jobs:
           build-args: |
             APP_ENV=development
           push: true
+          # One manifest per tag. With provenance, the tag is an index whose
+          # parts are untagged versions that cleanup-preview.yaml cannot
+          # tell from those of latest, and would leave behind.
+          provenance: false
           tags: |
             ghcr.io/${{ github.repository }}:${{ env.TAG }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       # Only once the image is there, so a new preview never waits for it.
       # Later pushes keep the label, and the preview moves to the new image
-      # a few minutes after it is pushed.
+      # a few minutes after it is pushed. The REST call needs only
+      # pull-requests: write, where gh pr edit also reads the PR's projects.
       - name: Add the label preview
-        run: gh pr edit "$NUMBER" --repo "$GITHUB_REPOSITORY" --add-label preview
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/issues/$NUMBER/labels" -f 'labels[]=preview' --silent
         env:
           NUMBER: ${{ github.event.number }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -81,6 +88,6 @@ jobs:
           header: setup-preview-environment
           message: |
             ### Preview Environment
-            ${{ github.event.pull_request.head.sha }} is live at https://${{ env.DOMAIN }} within a few minutes.
+            ${{ github.event.pull_request.head.sha }} will be at https://${{ env.DOMAIN }} a few minutes after this build.
 
             ghcr.io/${{ github.repository }}:${{ env.TAG }} (${{ steps.docker_build_push.outputs.digest }})

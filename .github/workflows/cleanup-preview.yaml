@@ -10,44 +10,55 @@ on:
       - closed
       - converted_to_draft
 
-concurrency:
-  group: preview-${{ github.event.number }}
-  cancel-in-progress: true
-
 jobs:
   cleanup-preview-environment:
     if: github.event.pull_request.head.repo.full_name == github.repository
+    concurrency:
+      group: preview-${{ github.event.number }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     permissions:
       packages: write
       pull-requests: write
     steps:
+      # Only if it is there: removing a label the pull request does not
+      # have is an error.
       - name: Remove the label preview
         if: github.event.action == 'converted_to_draft'
-        run: gh pr edit "$NUMBER" --repo "$GITHUB_REPOSITORY" --remove-label preview
+        shell: bash
+        run: |
+          labels="repos/$GITHUB_REPOSITORY/issues/$NUMBER/labels"
+          if gh api "$labels" --jq '.[].name' | grep -qx preview; then
+            gh api --method DELETE "$labels/preview" --silent
+          fi
         env:
           NUMBER: ${{ github.event.number }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Every image of this pull request: pr-<number>-<commit>, one for each
       # push, and preview-pr<number> from the old cluster. A version that
-      # also has another tag is left alone.
+      # also has another tag is left alone. The list is read in full before
+      # anything is deleted, since a deletion moves the pages after it.
       - name: Delete the pull request's images
+        shell: bash
         run: |
           versions="/orgs/${GITHUB_REPOSITORY_OWNER}/packages/container/${GITHUB_REPOSITORY#*/}/versions"
-          gh api --paginate "$versions?per_page=100" --jq '
+          # An assignment, so that a listing that fails fails the step
+          ids=$(gh api --paginate "$versions?per_page=100" --jq '
             .[] | select((.metadata.container.tags | length) > 0
               and all(.metadata.container.tags[];
                 startswith("pr-\(env.NUMBER)-") or . == "preview-pr\(env.NUMBER)"))
-            | .id' |
-          while read -r id; do
+            | .id')
+          for id in $ids; do
             echo "Deleting version $id"
             gh api --method DELETE "$versions/$id"
           done
         env:
           NUMBER: ${{ github.event.number }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Only on a pull request that had a preview, and so the comment
       - uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: setup-preview-environment
+          only_update: true
           message: |
             ### Preview Environment deleted
