@@ -36,6 +36,11 @@ updates:
         patterns:
           - "tailwindcss"
           - "@tailwindcss/*"
+      # Two copies of @opentelemetry/instrumentation stop the server spans
+      # without an error, so these always move together.
+      opentelemetry:
+        patterns:
+          - "@opentelemetry/*"
       # Everything else: minor/patch only. Majors get individual PRs.
       catch-all:
         patterns:
