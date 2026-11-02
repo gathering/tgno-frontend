@@ -1,4 +1,7 @@
-name: Build and deploy Preview Environment
+# Builds the preview image and adds the label "preview". Argo CD on
+# sys-k8s-prod then deploys the PR at https://tgno-pr<number>.preview.tg.no.
+# See docs/previews.md in gathering/sys-k8s-apps.
+name: Build the preview image
 
 on:
   pull_request:
@@ -9,74 +12,94 @@ on:
       - ready_for_review
 
 env:
-  TAG: preview-pr${{ github.event.number }}
-  ARGOCD_APP_NAME: tgno-preview-pr${{ github.event.number }}
-  KUSTOMIZE_REPO: https://github.com/gathering/k8s-iac.git
-  KUSTOMIZE_PATH: tgno/preview-frontend
   DOMAIN: tgno-pr${{ github.event.number }}.preview.tg.no
-
-concurrency:
-  group: preview-${{ github.event.number }}
-  cancel-in-progress: true
+  ARGOCD_APP: https://argocd.sys-k8s-prod.gathering.systems/applications/argocd/systemstotte-tgno-pr${{ github.event.number }}
+  GRAFANA_APP: https://grafana.gathering.systems/d/app/app?var-cluster=sys-k8s-prod&var-team=systemstotte&var-app=tgno&var-instance=pr${{ github.event.number }}
 
 jobs:
-  # Build docker image and push it to registry
   build:
-    if: github.event.pull_request.draft == false
+    # No drafts or forks. No Dependabot: too many PRs for the certificate
+    # limit.
+    if: >-
+      github.event.pull_request.draft == false
+      && github.event.pull_request.head.repo.full_name == github.repository
+      && github.event.pull_request.user.login != 'dependabot[bot]'
+    # On the job, so a skipped run does not cancel a cleanup
+    concurrency:
+      group: preview-${{ github.event.number }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
-    outputs:
-      digest: ${{ steps.docker_build_push.outputs.digest }}
+    permissions:
+      contents: read
+      packages: write
+      pull-requests: write
     steps:
-      - uses: actions/checkout@v4
+      # The tag Argo CD looks for: the PR's head commit, not github.sha
+      - name: Name the tag
+        run: echo "TAG=pr-${NUMBER}-${SHA::8}" >> "$GITHUB_ENV"
+        env:
+          NUMBER: ${{ github.event.number }}
+          SHA: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4.4.0
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
       - name: Log in to the Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@81c6f93d4bc991e510b342a00b419b3bb4efc5c6 # v4.7.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build astro image for amd64
         id: docker_build_push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
           context: .
           platforms: linux/amd64
           build-args: |
             APP_ENV=development
           push: true
+          # One image per tag, so the cleanup can delete all of it
+          provenance: false
           tags: |
             ghcr.io/${{ github.repository }}:${{ env.TAG }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-  setup-preview-environment:
-    needs: build
-    if: github.event.pull_request.draft == false
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - run: pip install requests
-      - run: >
-          python tools/create-preview.py
-          --argocd-url ${{ secrets.ARGOCD_URL }}
-          --argocd-user ${{ secrets.ARGOCD_USERNAME }}
-          --argocd-password ${{ secrets.ARGOCD_PASSWORD }}
-          --name ${{ env.ARGOCD_APP_NAME }}
-          --host ${{ env.DOMAIN }}
-          --kustomize-path ${{ env.KUSTOMIZE_PATH }}
-          --image ghcr.io/${{ github.repository }}@${{needs.build.outputs.digest}}
-      - uses: marocchino/sticky-pull-request-comment@v2
+      # After the push, so a new preview never waits for its image
+      - name: Add the label preview
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/issues/$NUMBER/labels" -f 'labels[]=preview' --silent
+        env:
+          NUMBER: ${{ github.event.number }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3.0.5
         with:
           header: setup-preview-environment
           message: |
-            ### Preview Environment created
-            ${{ github.sha }} live at https://${{ env.DOMAIN }}
+            ### Preview Environment
+            ${{ github.event.pull_request.head.sha }} will be at https://${{ env.DOMAIN }} a few minutes after this build.
 
-            ghcr.io/${{ github.repository }}:${{ env.TAG }} (${{needs.build.outputs.digest}})
-            [ArgoCD Application](https://${{ secrets.ARGOCD_URL }}/applications/${{ env.ARGOCD_APP_NAME }})
+            ghcr.io/${{ github.repository }}:${{ env.TAG }} (${{ steps.docker_build_push.outputs.digest }})
+            [Argo CD Application](${{ env.ARGOCD_APP }}) · [Grafana dashboard](${{ env.GRAFANA_APP }})
+      # Failed with a preview running: it stays on the last good commit
+      - uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3.0.5
+        if: >-
+          failure() && steps.docker_build_push.outcome != 'success'
+          && contains(github.event.pull_request.labels.*.name, 'preview')
+        with:
+          header: setup-preview-environment
+          message: |
+            ### Preview Environment
+            The build of ${{ github.event.pull_request.head.sha }} failed. The preview stays on the commit before it until a build succeeds.
+
+            [Argo CD Application](${{ env.ARGOCD_APP }}) · [Grafana dashboard](${{ env.GRAFANA_APP }})
+      # Failed before there was a preview
+      - uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3.0.5
+        if: >-
+          failure() && steps.docker_build_push.outcome != 'success'
+          && !contains(github.event.pull_request.labels.*.name, 'preview')
+        with:
+          header: setup-preview-environment
+          message: |
+            ### Preview Environment
+            The build of ${{ github.event.pull_request.head.sha }} failed, so there is no preview yet.
