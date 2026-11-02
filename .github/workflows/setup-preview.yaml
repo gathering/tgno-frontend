@@ -91,7 +91,7 @@ jobs:
         env:
           NUMBER: ${{ github.event.number }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: marocchino/sticky-pull-request-comment@v2
+      - uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3.0.5
         with:
           header: setup-preview-environment
           message: |
@@ -104,7 +104,7 @@ jobs:
       # has already moved to the new commit and waits for its image, and the
       # pod of the commit before keeps serving. The labels are those of the
       # event, before this run.
-      - uses: marocchino/sticky-pull-request-comment@v2
+      - uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3.0.5
         if: >-
           failure() && steps.docker_build_push.outcome != 'success'
           && contains(github.event.pull_request.labels.*.name, 'preview')
@@ -116,7 +116,7 @@ jobs:
 
             [Argo CD Application](${{ env.ARGOCD_APP }}) · [Grafana dashboard](${{ env.GRAFANA_APP }})
       # A build that failed before there was a preview
-      - uses: marocchino/sticky-pull-request-comment@v2
+      - uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3.0.5
         if: >-
           failure() && steps.docker_build_push.outcome != 'success'
           && !contains(github.event.pull_request.labels.*.name, 'preview')
