@@ -1,2 +1,4 @@
 allowBuilds:
   esbuild: true
+  # Its postinstall only prints a version warning
+  protobufjs: false
