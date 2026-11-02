@@ -17,6 +17,8 @@ on:
 
 env:
   DOMAIN: tgno-pr${{ github.event.number }}.preview.tg.no
+  # The preview's Application in prod's Argo CD, for those who can log in
+  ARGOCD_APP: https://argocd.sys-k8s-prod.gathering.systems/applications/argocd/systemstotte-tgno-pr${{ github.event.number }}
 
 jobs:
   build:
@@ -91,3 +93,15 @@ jobs:
             ${{ github.event.pull_request.head.sha }} will be at https://${{ env.DOMAIN }} a few minutes after this build.
 
             ghcr.io/${{ github.repository }}:${{ env.TAG }} (${{ steps.docker_build_push.outputs.digest }})
+            [Argo CD Application](${{ env.ARGOCD_APP }})
+      # The cluster has already moved to the new commit and waits for its
+      # image. The pod of the commit before keeps serving.
+      - uses: marocchino/sticky-pull-request-comment@v2
+        if: failure()
+        with:
+          header: setup-preview-environment
+          message: |
+            ### Preview Environment
+            The build of ${{ github.event.pull_request.head.sha }} failed. A preview that is running stays on the commit before it until a build succeeds.
+
+            [Argo CD Application](${{ env.ARGOCD_APP }})

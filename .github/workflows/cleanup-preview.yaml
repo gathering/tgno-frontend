@@ -1,7 +1,8 @@
 # Ends the preview of a pull request that closes or goes back to draft
-# (setup-preview.yaml). A closed pull request drops out on the cluster by
-# itself. A draft keeps its label, so it is taken off here. Then the images
-# of the pull request are deleted.
+# (setup-preview.yaml): the label comes off, which ends the preview on the
+# cluster, and the images of the pull request are deleted. A closed pull
+# request would drop out by itself. Without the label, one that is reopened
+# gets its preview once the new image is there, as a new one does.
 name: Cleanup Preview Environment
 
 on:
@@ -24,7 +25,6 @@ jobs:
       # Only if it is there: removing a label the pull request does not
       # have is an error.
       - name: Remove the label preview
-        if: github.event.action == 'converted_to_draft'
         shell: bash
         run: |
           labels="repos/$GITHUB_REPOSITORY/issues/$NUMBER/labels"
