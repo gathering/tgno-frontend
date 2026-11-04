@@ -1,0 +1,56 @@
+---
+import Hero from "../Hero.astro";
+import Button from "../../Button.astro";
+import { fetchArticleById, fetchArticleIdBySlug } from "../../../utils";
+import { API_URL } from "../../../utils/runtime-env";
+
+interface Props {
+  class?: string;
+}
+
+const { class: classNames } = Astro.props;
+
+const slug = "bli-med-i-crew-for-en-dag";
+let articlePage = null;
+const id = await fetchArticleIdBySlug({ slug, api_url: API_URL });
+
+if (id) {
+  articlePage = await fetchArticleById({ id, api_url: API_URL }).catch((e) => {
+    console.error(e.message);
+  });
+}
+
+const { intro, title, body } = articlePage || {};
+const articleUrl = articlePage ? `/news/${articlePage.meta.slug}` : null;
+---
+
+<Hero
+  image="/images/blurry-lights.jpg"
+  backgroundVideo={[
+    { path: "/tg26/preview_video.webm", type: "video/webm" },
+    { path: "/tg26/preview_video.mp4", type: "video/mp4" },
+  ]}
+  fullVideoHref="https://www.youtube.com/watch?v=mtDVFcYip8A"
+  fullVideoText="Se TG26-teaseren på YouTube"
+  class={classNames}
+>
+  <div class="flex flex-col text-left">
+    <div class="w-full">
+      <h2 class="text-4xl font-bold">
+        {articlePage ? title : "Vi søker frivillige!"}
+      </h2>
+      <p class="text-lg font-normal">
+        {
+          articlePage
+            ? intro || body
+            : "Arrangementet er helt avhengig av frivillige for å kunne gjennomføres. Bli med på laget og få en opplevelse for livet."
+        }
+      </p>
+    </div>
+    <aside class="mt-2 space-x-2">
+      <Button href={articleUrl ?? "https://wannabe.tg.no/"} theme="white">
+        {articlePage ? "Få full oversikt" : "Søk her"}
+      </Button>
+    </aside>
+  </div>
+</Hero>

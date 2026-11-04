@@ -1,6 +1,6 @@
 ---
-import Hero from "./Hero.astro";
-import Button from "../Button.astro";
+import Hero from "../Hero.astro";
+import Button from "../../Button.astro";
 
 interface Props {
   class?: string;
@@ -21,12 +21,15 @@ const { class: classNames } = Astro.props;
 >
   <div class="flex flex-col text-left">
     <div class="w-full">
-      <h2 class="text-lg font-normal">Billettsalget har åpnet</h2>
-      <p class="text-4xl font-bold">Sikre deg din billett i dag!</p>
+      <h2 class="text-lg font-normal">Savner du stemningen?</h2>
+      <p class="text-4xl font-bold">Se bildene fra TG26</p>
     </div>
     <aside class="mt-6 space-x-2">
-      <Button href="https://www.geekevents.org/tg26/#/shop" theme="white">
-        Kjøp billett på Geekevents</Button
+      <Button
+        href="https://bildebank.gathering.org/index.php?/category/123"
+        theme="white"
+      >
+        Bildearkivet</Button
       >
     </aside>
   </div>
