@@ -1,8 +1,8 @@
 ---
-import Hero from "./Hero.astro";
-import Button from "../Button.astro";
-import { fetchInfoPageByPath } from "../../utils";
-import { API_URL } from "../../utils/runtime-env";
+import Hero from "../Hero.astro";
+import Button from "../../Button.astro";
+import { fetchInfoPageByPath } from "../../../utils";
+import { API_URL } from "../../../utils/runtime-env";
 
 interface Props {
   class?: string;
@@ -18,26 +18,27 @@ const page = await fetchInfoPageByPath({
   console.error(e.message);
 });
 
-const { intro, main_image, title, body, meta } = page || {};
+const { intro, title, body, meta } = page || {};
 ---
 
 {
   page ? (
     <Hero
-      image={main_image?.sizes.large.url || "/images/tg19-lights.jpg"}
-      imageHref={meta?.url}
-      class={`${classNames} min-h-[30vh] sm:min-h-[600px]`}
+      image="/images/blurry-lights.jpg"
+      backgroundVideo={[
+        { path: "/tg26/preview_video.webm", type: "video/webm" },
+        { path: "/tg26/preview_video.mp4", type: "video/mp4" },
+      ]}
+      fullVideoHref="https://www.youtube.com/watch?v=mtDVFcYip8A"
+      fullVideoText="Se TG26-teaseren på YouTube"
+      class={classNames}
     >
       <div class="flex flex-col text-left">
-        <div class="w-full p-2">
-          <h2 class="text-4xl font-bold text-pretty mb-2">{title}</h2>
-          {intro ? (
-            <p class="text-lg font-normal text-pretty">{intro}</p>
-          ) : (
-            <p>{body}</p>
-          )}
+        <div class="w-full">
+          <h2 class="text-4xl font-bold">{title}</h2>
+          {intro ? <p class="text-lg font-normal">{intro}</p> : <p>{body}</p>}
         </div>
-        <aside class="mt-6 space-x-2">
+        <aside class="mt-2 space-x-2">
           {meta?.url ? (
             <Button href={meta.url} theme="white">
               Få full oversikt

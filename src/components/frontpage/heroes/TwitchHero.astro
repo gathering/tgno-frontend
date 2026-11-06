@@ -1,0 +1,47 @@
+---
+import Hero from "../Hero.astro";
+import Button from "../../Button.astro";
+
+interface Props {
+  class?: string;
+}
+
+const { class: classNames } = Astro.props;
+---
+
+<Hero
+  image="/images/blurry-lights.jpg"
+  backgroundVideo={[
+    { path: "/tg26/preview_video.webm", type: "video/webm" },
+    { path: "/tg26/preview_video.mp4", type: "video/mp4" },
+  ]}
+  fullVideoHref="https://www.youtube.com/watch?v=mtDVFcYip8A"
+  fullVideoText="Se TG26-teaseren på YouTube"
+  class={classNames}
+>
+  <div class="flex flex-col text-left">
+    <div class="w-full">
+      <h2 class="text-4xl font-bold">Se livesendingene våre</h2>
+    </div>
+    <aside class="mt-2 flex flex-col sm:flex-row gap-2">
+      <Button
+        href="https://www.twitch.tv/tgtv"
+        theme="white"
+        variant="wide"
+        class="w-full sm:w-auto">TGTV</Button
+      >
+      <Button
+        href="https://www.twitch.tv/tgtvgame"
+        theme="white"
+        variant="wide"
+        class="w-full sm:w-auto">TGTV Game</Button
+      >
+      <Button
+        href="https://www.twitch.tv/tgtvcreative"
+        theme="white"
+        variant="wide"
+        class="w-full sm:w-auto">TGTV Creative</Button
+      >
+    </aside>
+  </div>
+</Hero>
