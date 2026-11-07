@@ -19,7 +19,7 @@
     "@opentelemetry/instrumentation": "^0.300.0",
     "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.4.2",
+    "astro": "^7.4.4",
     "astro-lazy-youtube-embed": "^0.5.5",
     "canvas-confetti": "^1.9.4",
     "leaflet": "^1.9.4",
