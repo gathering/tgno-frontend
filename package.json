@@ -18,13 +18,13 @@
     "@opentelemetry/auto-instrumentations-node": "^0.82.0",
     "@opentelemetry/instrumentation": "^0.300.0",
     "@tailwindcss/typography": "^0.5.20",
-    "@tailwindcss/vite": "^4.3.3",
+    "@tailwindcss/vite": "^4.3.4",
     "astro": "^7.4.4",
     "astro-lazy-youtube-embed": "^0.5.5",
     "canvas-confetti": "^1.9.4",
     "leaflet": "^1.9.4",
     "node-cache": "^5.1.2",
-    "tailwindcss": "^4.3.3",
+    "tailwindcss": "^4.3.4",
     "typescript": "^6.0.3"
   },
   "devDependencies": {
