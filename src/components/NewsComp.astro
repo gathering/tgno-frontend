@@ -8,39 +8,35 @@ const { articles } = Astro.props;
 ---
 
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-5 lg:px-28 mb-10">
-  {
-    articles.map(({ title, meta, main_image, tags = [] }) => (
-      <a href={`/news/${meta.slug}`}>
-        <article class="overflow-hidden flex flex-row p-4">
-          <div class="flex-1">
-            <div class="text-sm text-orange-500">
-              {tags
-                .map((tag) => {
-                  return tag.name.charAt(0).toUpperCase() + tag.name.slice(1);
-                })
-                .join(", ")}
-            </div>
-            <h3 class="text-xl text-white font-bold mt-2 text-pretty">
-              {title}
-            </h3>
-            <time
-              datetime={meta.first_published_at}
-              class="text-sm text-gray-500"
-            >
-              {new Date(
-                meta.custom_published_at
-                  ? meta.custom_published_at
-                  : meta.first_published_at,
-              ).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </time>
+  {articles.map(({ title, meta, main_image, tags = [] }) => (
+    <a href={`/news/${meta.slug}`}>
+      <article class="overflow-hidden flex flex-row p-4">
+        <div class="flex-1">
+          <div class="text-sm text-orange-500">
+            {tags
+              .map((tag) => {
+                return tag.name.charAt(0).toUpperCase() + tag.name.slice(1);
+              })
+              .join(", ")}
           </div>
-          <TeaserImage image={main_image} />
-        </article>
-      </a>
-    ))
-  }
+          <h3 class="text-xl text-white font-bold mt-2 text-pretty">{title}</h3>
+          <time
+            datetime={meta.first_published_at}
+            class="text-sm text-gray-500"
+          >
+            {new Date(
+              meta.custom_published_at
+                ? meta.custom_published_at
+                : meta.first_published_at,
+            ).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </time>
+        </div>
+        <TeaserImage image={main_image} />
+      </article>
+    </a>
+  ))}
 </div>

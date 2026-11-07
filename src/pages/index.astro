@@ -111,15 +111,16 @@ const articles =
               i Hamar, på en av verdens største festivaler som feirer data,
               kreativitet og spillkultur.
             </p>
-            <Button href="/about" theme="orange" class="mt-4"> Les mer </Button>
+            <Button href="/about" theme="orange" class="mt-4">
+              {" "}
+              Les mer{" "}
+            </Button>
           </InfoBox>
         </div>
         <div class="sm:col-span-1">
           <InfoBox class="bg-sky-600 text-white">
             <h3 class="text-3xl font-bold">Visste du at?</h3>
-            <p>
-              {randomFact}
-            </p>
+            <p>{randomFact}</p>
           </InfoBox>
         </div>
         <div class="sm:col-span-2 sm:order-last">
@@ -133,15 +134,13 @@ const articles =
               theme="orange"
               class="mt-4"
             >
-              Bildearkivet</Button
-            >
+              Bildearkivet
+            </Button>
           </InfoBox>
         </div>
         <div class="sm:col-span-1">
           <InfoBox class="bg-orange-500 text-white">
-            <p class="text-3xl font-bold">
-              {randomTheme}
-            </p>
+            <p class="text-3xl font-bold">{randomTheme}</p>
             <p>var temaet for TG {randomYear}</p>
           </InfoBox>
         </div>
@@ -156,26 +155,34 @@ const articles =
           href="https://archive.tg.no/all/*/https://www.tg.no/"
           class="w-full"
           theme="white"
-          variant="standalone">TG.no arkivet</Button
+          variant="standalone"
         >
+          TG.no arkivet
+        </Button>
         <Button
           href="https://archive.gathering.org"
           class="w-full"
           theme="white"
-          variant="standalone">Gathering.org arkivet</Button
+          variant="standalone"
         >
+          Gathering.org arkivet
+        </Button>
         <Button
           href="https://tech.gathering.org"
           class="w-full"
           theme="white"
-          variant="standalone">Tech-bloggen</Button
+          variant="standalone"
         >
+          Tech-bloggen
+        </Button>
         <Button
           href="https://ftp.gathering.org/"
           class="w-full"
           theme="white"
-          variant="standalone">FTPen</Button
+          variant="standalone"
         >
+          FTPen
+        </Button>
       </div>
     </div>
   </Main>

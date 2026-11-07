@@ -30,34 +30,32 @@ const { intro, main_image, title, body } = articlePage || {};
 const articleUrl = `/news/${articlePage?.meta.slug}`;
 ---
 
-{
-  articlePage ? (
-    <Hero
-      image={main_image?.sizes.large.url || "/images/tg19-lights.jpg"}
-      imageHref={articleUrl}
-      class={`${classNames} min-h-[30vh] sm:min-h-[600px]`}
-    >
-      <div class="flex flex-col text-left">
-        <div class="w-full p-2">
-          <h2 class="text-4xl font-bold text-pretty mb-2">{title}</h2>
-          {intro ? (
-            <p class="text-lg font-normal text-pretty">{intro}</p>
-          ) : (
-            <p>{body}</p>
-          )}
-        </div>
-        <aside class="mt-6 space-x-2">
-          <Button href={articleUrl} theme="orange">
-            Få full oversikt
-          </Button>
-        </aside>
+{articlePage ? (
+  <Hero
+    image={main_image?.sizes.large.url || "/images/tg19-lights.jpg"}
+    imageHref={articleUrl}
+    class={`${classNames} min-h-[30vh] sm:min-h-[600px]`}
+  >
+    <div class="flex flex-col text-left">
+      <div class="w-full p-2">
+        <h2 class="text-4xl font-bold text-pretty mb-2">{title}</h2>
+        {intro ? (
+          <p class="text-lg font-normal text-pretty">{intro}</p>
+        ) : (
+          <p>{body}</p>
+        )}
       </div>
-      <Fragment slot="cta">
-        <p class="text-white">Besøke oss i påsken?</p>
-        <Button href="/tickets" theme="secondary">
-          Kjøp dagsbillett
+      <aside class="mt-6 space-x-2">
+        <Button href={articleUrl} theme="orange">
+          Få full oversikt
         </Button>
-      </Fragment>
-    </Hero>
-  ) : null
-}
+      </aside>
+    </div>
+    <Fragment slot="cta">
+      <p class="text-white">Besøke oss i påsken?</p>
+      <Button href="/tickets" theme="secondary">
+        Kjøp dagsbillett
+      </Button>
+    </Fragment>
+  </Hero>
+) : null}

@@ -29,64 +29,47 @@ const videoClass = `max-sm:min-h-[200px] sm:absolute sm:left-0 sm:top-0 w-full s
 <section
   class={`relative rounded-3xl sm:grid sm:grid-cols-5 gap-4 sm:p-4 space-y-4 sm:space-y-0 ${classNames}`}
 >
-  {
-    hasVideo ? (
-      <div class="relative sm:contents">
-        <video
-          autoplay
-          muted
-          loop
-          playsinline
-          class={videoClass}
-          poster={image}
+  {hasVideo ? (
+    <div class="relative sm:contents">
+      <video autoplay muted loop playsinline class={videoClass} poster={image}>
+        {backgroundVideo.map((video) => (
+          <source src={video.path} type={video.type} />
+        ))}
+      </video>
+      {fullVideoHref && (
+        <a
+          href={fullVideoHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 px-4 py-2 bg-black/60 hover:bg-black/80 text-white text-xs rounded-full backdrop-blur-sm z-10"
         >
-          {backgroundVideo.map((video) => (
-            <source src={video.path} type={video.type} />
-          ))}
-        </video>
-        {fullVideoHref && (
-          <a
-            href={fullVideoHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 px-4 py-2 bg-black/60 hover:bg-black/80 text-white text-xs rounded-full backdrop-blur-sm z-10"
-          >
-            {fullVideoText}
-          </a>
-        )}
-      </div>
-    ) : imageHref ? (
-      <a href={imageHref} class="flex">
-        <img src={image} alt="Hero Image" class={imageClass} />
-      </a>
-    ) : (
+          {fullVideoText}
+        </a>
+      )}
+    </div>
+  ) : imageHref ? (
+    <a href={imageHref} class="flex">
       <img src={image} alt="Hero Image" class={imageClass} />
-    )
-  }
-  {
-    hideMobileImage ? (
-      <div class="z-10 relative rounded-3xl flex flex-col col-span-3">
-        <slot name="overlay" />
-      </div>
-    ) : null
-  }
+    </a>
+  ) : (
+    <img src={image} alt="Hero Image" class={imageClass} />
+  )}
+  {hideMobileImage ? (
+    <div class="z-10 relative rounded-3xl flex flex-col col-span-3">
+      <slot name="overlay" />
+    </div>
+  ) : null}
 
-  <div
-    class="z-10 relative flex flex-col justify-end col-span-2 space-y-4 sm:col-start-4"
-  >
-    <div
-      class="w-full bg-orange-500 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:rounded-2xl"
-    >
+  <div class="z-10 relative flex flex-col justify-end col-span-2 space-y-4 sm:col-start-4">
+    <div class="w-full bg-orange-500 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:rounded-2xl">
       <slot />
     </div>
-    {
-      showCta ? (
-        <div class="w-full bg-sky-400 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:rounded-2xl">
-          <div class="flex space-x-2 items-center justify-between">
-            <slot name="cta" />
-          </div>
+    {showCta ? (
+      <div class="w-full bg-sky-400 text-white p-4 rounded-3xl flex flex-col space-y-2 sm:rounded-2xl">
+        <div class="flex space-x-2 items-center justify-between">
+          <slot name="cta" />
         </div>
-      ) : null
-    }
+      </div>
+    ) : null}
   </div>
 </section>

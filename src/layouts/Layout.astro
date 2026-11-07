@@ -63,15 +63,13 @@ const matomoInstanceUrl = MATOMO_INSTANCE_URL || "//matomo.gathering.org/";
 
     <title>{title}</title>
 
-    {
-      jsonLd ? (
-        <script
-          is:inline
-          type="application/ld+json"
-          set:html={JSON.stringify(jsonLd)}
-        />
-      ) : null
-    }
+    {jsonLd ? (
+      <script
+        is:inline
+        type="application/ld+json"
+        set:html={JSON.stringify(jsonLd)}
+      />
+    ) : null}
 
     <!-- Matomo -->
     <script is:inline define:vars={{ matomoInstanceUrl, matomoSiteId }}>

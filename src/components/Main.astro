@@ -9,14 +9,12 @@ const { display = false } = Astro.props;
 ---
 
 <main class={!display ? "px-5 xl:mx-auto" : ""}>
-  {
-    !display ? (
-      <div class="max-w-7xl">
-        <slot />
-        <SponsorsContainer />
-      </div>
-    ) : (
+  {!display ? (
+    <div class="max-w-7xl">
       <slot />
-    )
-  }
+      <SponsorsContainer />
+    </div>
+  ) : (
+    <slot />
+  )}
 </main>

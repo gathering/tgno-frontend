@@ -121,63 +121,59 @@ const itemsWithParent: Array<
     <TextContainer href={path} data-part="main-link" class="mr-3 w-max">
       {title}
     </TextContainer>
-    {
-      expandable ? (
-        <button
-          type="button"
-          data-part="trigger"
-          aria-controls={`nav-item-sub-${key}`}
-          aria-expanded="false"
-          class="block p-1 ml-auto rounded group-[.interaction-mode-click]:bg-neutral-800"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="block h-3 w-3 m-1.5 group-[.expanded]:scale-y-[-1] transition-transform duration-100 ease-out"
-            aria-hidden="false"
-            aria-haspopup="menu"
-          >
-            <>
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M6 9l6 6l6 -6" />
-            </>
-          </svg>
-        </button>
-      ) : null
-    }
-  </div>
-  {
-    expandable ? (
-      <ul
-        class:list={[
-          "hidden min-w-max w-full flex-col space-y-1 px-2 py-3",
-          hamburger
-            ? "mt-3 bg-neutral-800"
-            : "z-10 mt-0 pt-10 rounded-b-md absolute top-0 bg-background-secondary",
-          subAlignment === "left" ? "left-0" : "right-0",
-        ]}
-        id={`nav-item-sub-${key}`}
-        aria-role="menu"
-        data-part="sub-menu"
+    {expandable ? (
+      <button
+        type="button"
+        data-part="trigger"
+        aria-controls={`nav-item-sub-${key}`}
+        aria-expanded="false"
+        class="block p-1 ml-auto rounded group-[.interaction-mode-click]:bg-neutral-800"
       >
-        {itemsWithParent.map((subItem) => (
-          <li class={`${subItem.touchOnly ? "hidden" : ""}`}>
-            <a
-              href={subItem.path}
-              class={`block rounded-md px-2 py-1 text-sm font-medium ${subItem.path === Astro.url.pathname ? "text-orange-500" : "text-neutral-300"} hover:bg-orange-500 hover:text-white`}
-            >
-              {subItem.title}
-            </a>
-          </li>
-        ))}
-      </ul>
-    ) : null
-  }
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="block h-3 w-3 m-1.5 group-[.expanded]:scale-y-[-1] transition-transform duration-100 ease-out"
+          aria-hidden="false"
+          aria-haspopup="menu"
+        >
+          <>
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M6 9l6 6l6 -6" />
+          </>
+        </svg>
+      </button>
+    ) : null}
+  </div>
+  {expandable ? (
+    <ul
+      class:list={[
+        "hidden min-w-max w-full flex-col space-y-1 px-2 py-3",
+        hamburger
+          ? "mt-3 bg-neutral-800"
+          : "z-10 mt-0 pt-10 rounded-b-md absolute top-0 bg-background-secondary",
+        subAlignment === "left" ? "left-0" : "right-0",
+      ]}
+      id={`nav-item-sub-${key}`}
+      aria-role="menu"
+      data-part="sub-menu"
+    >
+      {itemsWithParent.map((subItem) => (
+        <li class={`${subItem.touchOnly ? "hidden" : ""}`}>
+          <a
+            href={subItem.path}
+            class={`block rounded-md px-2 py-1 text-sm font-medium ${subItem.path === Astro.url.pathname ? "text-orange-500" : "text-neutral-300"} hover:bg-orange-500 hover:text-white`}
+          >
+            {subItem.title}
+          </a>
+        </li>
+      ))}
+    </ul>
+  ) : null}
 </li>

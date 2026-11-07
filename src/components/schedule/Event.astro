@@ -178,47 +178,43 @@ if (isCancelled) {
   data-active="false"
 >
   <div class={`flex flex-row block pb-4 pt-2 border-t border-white`}>
-    <aside class="w-24 mr-4 date">
-      {strings.startDateLong}
-    </aside>
+    <aside class="w-24 mr-4 date">{strings.startDateLong}</aside>
     <section class="ml-4 w-full">
-      {
-        location || related_url ? (
-          <div class="flex flex-row mb-1 mt-2">
-            <div class="text-md flex flex-row flex-wrap gap-2">
-              {location ? (
-                <a
-                  href={location.url}
-                  class={`rounded-md flex flex-row py-1 px-2 ${location.color ? "bg-" + location.color + "-500 text-black" : "text-white border-white"} ${location.url ? "hover:bg-white hover:text-background-secondary" : ""} ${location.active ? "" : ""}`}
-                >
-                  {location.name}
-                  {location.active && location.url ? <CloseSymbol /> : null}
-                </a>
-              ) : null}
-            </div>
-            {related_url ? (
+      {location || related_url ? (
+        <div class="flex flex-row mb-1 mt-2">
+          <div class="text-md flex flex-row flex-wrap gap-2">
+            {location ? (
               <a
-                href={related_url}
-                target="_blank"
-                class="rounded-md h-fit p-1 ml-auto hover:bg-white hover:text-background-secondary"
+                href={location.url}
+                class={`rounded-md flex flex-row py-1 px-2 ${location.color ? "bg-" + location.color + "-500 text-black" : "text-white border-white"} ${location.url ? "hover:bg-white hover:text-background-secondary" : ""} ${location.active ? "" : ""}`}
               >
-                <ExternalLinkSymbol />
+                {location.name}
+                {location.active && location.url ? <CloseSymbol /> : null}
               </a>
             ) : null}
-            <slot />
           </div>
-        ) : null
-      }
+          {related_url ? (
+            <a
+              href={related_url}
+              target="_blank"
+              class="rounded-md h-fit p-1 ml-auto hover:bg-white hover:text-background-secondary"
+            >
+              <ExternalLinkSymbol />
+            </a>
+          ) : null}
+          <slot />
+        </div>
+      ) : null}
       <section
         class={`text-md ${description ? "group-[.collapsed]:cursor-pointer" : ""}`}
-        {...isExpandable
+        {...(isExpandable
           ? {
               "data-part": "event-details-trigger",
               "aria-controls": `event-${id}-details`,
               "data-mode": "expand-only",
               "aria-expanded": "false",
             }
-          : {}}
+          : {})}
       >
         <h3 class="font-semibold text-pretty mb-1 pt-1 flex flex-row">
           <span class="w-3 -ml-5 mr-2 text-red-600 live-symbol hidden">
@@ -232,36 +228,30 @@ if (isCancelled) {
           </span>
           {duration}
         </time>
-        {
-          description && (
-            <div
-              class="mt-3 sm:mb-8 pb-2 group-[.collapsed]:hidden w-full"
-              data-part="event-details"
-              id={`event-${id}-details`}
-              aria-role="details"
-            >
-              <p>{description}</p>
-            </div>
-          )
-        }
+        {description && (
+          <div
+            class="mt-3 sm:mb-8 pb-2 group-[.collapsed]:hidden w-full"
+            data-part="event-details"
+            id={`event-${id}-details`}
+            aria-role="details"
+          >
+            <p>{description}</p>
+          </div>
+        )}
       </section>
-      <aside
-        class="flex flex-col relative gap-3 pb-5 w-full rounded-b-xl group-[.collapsed]:bg-transparent group-[.collapsed]:text-white mt-3 sm:mt-0"
-      >
-        {
-          isExpandable && (
-            <button
-              class="flex w-full sm:w-auto sm:absolute sm:bottom-1 sm:right-1 py-2 px-4 gap-2 justify-center text-sm sm:text-base bg-neutral-900 rounded-md ml-auto cursor-pointer"
-              data-part="event-details-trigger"
-              aria-controls={`event-${id}-details`}
-              aria-expanded="false"
-            >
-              <span class="hidden group-[.collapsed]:flex">Les mer</span>
-              <span class="flex group-[.collapsed]:hidden">Lukk</span>
-              <ArrowSymbol class="transition-transform duration-300 rotate-180 group-[.collapsed]:rotate-0" />
-            </button>
-          )
-        }
+      <aside class="flex flex-col relative gap-3 pb-5 w-full rounded-b-xl group-[.collapsed]:bg-transparent group-[.collapsed]:text-white mt-3 sm:mt-0">
+        {isExpandable && (
+          <button
+            class="flex w-full sm:w-auto sm:absolute sm:bottom-1 sm:right-1 py-2 px-4 gap-2 justify-center text-sm sm:text-base bg-neutral-900 rounded-md ml-auto cursor-pointer"
+            data-part="event-details-trigger"
+            aria-controls={`event-${id}-details`}
+            aria-expanded="false"
+          >
+            <span class="hidden group-[.collapsed]:flex">Les mer</span>
+            <span class="flex group-[.collapsed]:hidden">Lukk</span>
+            <ArrowSymbol class="transition-transform duration-300 rotate-180 group-[.collapsed]:rotate-0" />
+          </button>
+        )}
       </aside>
     </section>
   </div>

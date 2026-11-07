@@ -16,31 +16,27 @@ const { title, faq = [], intro, body, main_image } = Astro.props;
   <section class="mb-4">
     <H1 text={title} />
     {intro ? <Intro text={intro} /> : null}
-    {
-      main_image && (
-        <div class="flex md:max-h-[50vh] md:min-h-[600px] mb-8">
-          <img
-            src={main_image.sizes.large.url}
-            srcset={Object.values(main_image.sizes)
-              .sort((a, b) => a.width - b.width)
-              .map((size) => `${size.url} ${size.width}w`)
-              .join(", ")}
-            alt={main_image.alt}
-            class="w-full rounded-3xl md:object-cover object-center"
-          />
-        </div>
-      )
-    }
+    {main_image && (
+      <div class="flex md:max-h-[50vh] md:min-h-[600px] mb-8">
+        <img
+          src={main_image.sizes.large.url}
+          srcset={Object.values(main_image.sizes)
+            .sort((a, b) => a.width - b.width)
+            .map((size) => `${size.url} ${size.width}w`)
+            .join(", ")}
+          alt={main_image.alt}
+          class="w-full rounded-3xl md:object-cover object-center"
+        />
+      </div>
+    )}
     <BodyText htmlBody={body} />
   </section>
-  {
-    !!faq.length ? (
-      <section class="flex flex-col gap-4 mb-4 mt-8">
-        <H2 text="Vanlige spørsmål" class="sm:col-span-2 lg:col-span-3" />
-        {faq.map((item) => (
-          <FaqItem {...item} />
-        ))}
-      </section>
-    ) : null
-  }
+  {!!faq.length ? (
+    <section class="flex flex-col gap-4 mb-4 mt-8">
+      <H2 text="Vanlige spørsmål" class="sm:col-span-2 lg:col-span-3" />
+      {faq.map((item) => (
+        <FaqItem {...item} />
+      ))}
+    </section>
+  ) : null}
 </ContentContainer>

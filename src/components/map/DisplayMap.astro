@@ -59,20 +59,18 @@ const LEGEND_ITEMS = [
     <div>
       <H3 class="mb-5 text-3xl">Kartforklaring</H3>
       <ul class="space-y-4 text-white text-2xl">
-        {
-          LEGEND_ITEMS.map(({ color, label }) => (
-            <li class="flex items-start gap-4">
-              <span
-                aria-hidden="true"
-                class="mt-1 inline-block h-6 w-6 shrink-0 rounded-full border border-black"
-                style={`background-color: ${color};`}
-              />
-              <p class="leading-tight">
-                <strong class="font-bold">{label}</strong>
-              </p>
-            </li>
-          ))
-        }
+        {LEGEND_ITEMS.map(({ color, label }) => (
+          <li class="flex items-start gap-4">
+            <span
+              aria-hidden="true"
+              class="mt-1 inline-block h-6 w-6 shrink-0 rounded-full border border-black"
+              style={`background-color: ${color};`}
+            />
+            <p class="leading-tight">
+              <strong class="font-bold">{label}</strong>
+            </p>
+          </li>
+        ))}
       </ul>
     </div>
   </Fragment>

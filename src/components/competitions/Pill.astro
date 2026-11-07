@@ -18,5 +18,6 @@ const colorStyles = colors[Astro.props.color || "orange"];
 
 <span
   class=`${colorStyles} border rounded-md px-2 py-1 text-xs font-bold ${Astro.props.class || ""}`
-  >{Astro.props.text}</span
 >
+  {Astro.props.text}
+</span>
