@@ -21,52 +21,46 @@ const getColors = ({ active, color }: { active?: boolean; color?: string }) => {
 <div class="flex flex-col gap-4 max-w-2xl text-white mb-8">
   <h3>Dag</h3>
   <div class="flex flex-row flex-wrap gap-2">
-    {
-      navigation.dates.map((date, index) => (
-        <a
-          href={date.url}
-          class={`${TAG_STYLES} ${getColors(date)} hover:bg-white hover:text-background-secondary`}
-        >
-          {date.name}
-          {date.active && index > 0 ? <CloseSymbol /> : null}
-        </a>
-      ))
-    }
+    {navigation.dates.map((date, index) => (
+      <a
+        href={date.url}
+        class={`${TAG_STYLES} ${getColors(date)} hover:bg-white hover:text-background-secondary`}
+      >
+        {date.name}
+        {date.active && index > 0 ? <CloseSymbol /> : null}
+      </a>
+    ))}
   </div>
-  {
-    navigation.locations.length > 0 && (
-      <>
-        <h3>Sted</h3>
-        <div class="flex flex-row flex-wrap gap-2">
-          {navigation.locations.map((location) => (
-            <a
-              href={location.url}
-              class={`${TAG_STYLES} ${getColors(location)} hover:bg-white hover:text-background-secondary`}
-            >
-              {location.name}
-              {location.active ? <CloseSymbol /> : null}
-            </a>
-          ))}
-        </div>
-      </>
-    )
-  }
-  {
-    navigation.categories.length > 0 && (
-      <>
-        <h3>Kategori</h3>
-        <div class="flex flex-row flex-wrap gap-2">
-          {navigation.categories.map((category) => (
-            <a
-              href={category.url}
-              class={`${TAG_STYLES} ${getColors(category)} hover:bg-white hover:text-background-secondary`}
-            >
-              {category.name}
-              {category.active ? <CloseSymbol /> : null}
-            </a>
-          ))}
-        </div>
-      </>
-    )
-  }
+  {navigation.locations.length > 0 && (
+    <>
+      <h3>Sted</h3>
+      <div class="flex flex-row flex-wrap gap-2">
+        {navigation.locations.map((location) => (
+          <a
+            href={location.url}
+            class={`${TAG_STYLES} ${getColors(location)} hover:bg-white hover:text-background-secondary`}
+          >
+            {location.name}
+            {location.active ? <CloseSymbol /> : null}
+          </a>
+        ))}
+      </div>
+    </>
+  )}
+  {navigation.categories.length > 0 && (
+    <>
+      <h3>Kategori</h3>
+      <div class="flex flex-row flex-wrap gap-2">
+        {navigation.categories.map((category) => (
+          <a
+            href={category.url}
+            class={`${TAG_STYLES} ${getColors(category)} hover:bg-white hover:text-background-secondary`}
+          >
+            {category.name}
+            {category.active ? <CloseSymbol /> : null}
+          </a>
+        ))}
+      </div>
+    </>
+  )}
 </div>

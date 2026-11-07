@@ -64,16 +64,14 @@ const lastItemIndex = navigationItems.length - 1;
   data-component="header-navigation"
   data-prioritized={prioritized ? "true" : "false"}
 >
-  {
-    navigationItems.map(({ title, path, items }, index) => (
-      <NavItemComponent
-        title={title}
-        path={path}
-        items={items}
-        hamburger={hamburger}
-        interactionMode={hamburger ? "click" : "hover"}
-        subAlignment={index === lastItemIndex ? "right" : "left"}
-      />
-    ))
-  }
+  {navigationItems.map(({ title, path, items }, index) => (
+    <NavItemComponent
+      title={title}
+      path={path}
+      items={items}
+      hamburger={hamburger}
+      interactionMode={hamburger ? "click" : "hover"}
+      subAlignment={index === lastItemIndex ? "right" : "left"}
+    />
+  ))}
 </ul>

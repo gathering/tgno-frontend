@@ -26,8 +26,6 @@ const { class: className, htmlBody: body } = Astro.props;
   }
 </style>
 
-{
-  body ? (
-    <div class={`prose richtext-container ${className}`} set:html={body} />
-  ) : null
-}
+{body ? (
+  <div class={`prose richtext-container ${className}`} set:html={body} />
+) : null}

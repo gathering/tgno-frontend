@@ -37,50 +37,46 @@ const gridStyles = singleColumn
   : "grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-5 lg:px-28";
 ---
 
-<section
-  class="flex flex-col items-center text-white sm:p-8 rounded-3xl border-solid sm:border-4 border-background-secondary"
->
+<section class="flex flex-col items-center text-white sm:p-8 rounded-3xl border-solid sm:border-4 border-background-secondary">
   <div class={gridStyles}>
-    {
-      articles.map((article, index) => (
-        <a
-          href={`/news/${article.meta.slug}`}
-          class={`${index > 10 ? "hidden md:block" : ""}`}
-        >
-          <article class="overflow-hidden flex flex-row pb-4 sm:p-4">
-            <div class="flex-1">
-              <div class="text-sm text-orange-500">
-                {article.tags
-                  .map((tag) => {
-                    return tag.name.charAt(0).toUpperCase() + tag.name.slice(1);
-                  })
-                  .join(", ")}
-              </div>
-              <h3 class="text-xl text-white font-bold mt-2 text-pretty">
-                {article.title}
-              </h3>
-              <time
-                datetime={article.meta.first_published_at}
-                class="text-sm text-gray-500"
-              >
-                {new Date(
-                  article.meta.custom_published_at
-                    ? article.meta.custom_published_at
-                    : article.meta.first_published_at,
-                ).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </time>
+    {articles.map((article, index) => (
+      <a
+        href={`/news/${article.meta.slug}`}
+        class={`${index > 10 ? "hidden md:block" : ""}`}
+      >
+        <article class="overflow-hidden flex flex-row pb-4 sm:p-4">
+          <div class="flex-1">
+            <div class="text-sm text-orange-500">
+              {article.tags
+                .map((tag) => {
+                  return tag.name.charAt(0).toUpperCase() + tag.name.slice(1);
+                })
+                .join(", ")}
             </div>
-            <TeaserImage image={article.main_image} />
-          </article>
-        </a>
-      ))
-    }
+            <h3 class="text-xl text-white font-bold mt-2 text-pretty">
+              {article.title}
+            </h3>
+            <time
+              datetime={article.meta.first_published_at}
+              class="text-sm text-gray-500"
+            >
+              {new Date(
+                article.meta.custom_published_at
+                  ? article.meta.custom_published_at
+                  : article.meta.first_published_at,
+              ).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </time>
+          </div>
+          <TeaserImage image={article.main_image} />
+        </article>
+      </a>
+    ))}
   </div>
-  <Button href="/news" theme="secondary" class="w-full sm:w-fit text-center"
-    >Les alle</Button
-  >
+  <Button href="/news" theme="secondary" class="w-full sm:w-fit text-center">
+    Les alle
+  </Button>
 </section>

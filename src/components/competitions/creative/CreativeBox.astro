@@ -30,19 +30,17 @@ const primaryColor = category
   <span>
     <slot />
   </span>
-  {
-    actions?.map(
-      (action) =>
-        action?.url && (
-          <Button
-            href={action.url}
-            variant="wide"
-            theme="transparent"
-            class="mt-auto"
-          >
-            {action.label}
-          </Button>
-        ),
-    )
-  }
+  {actions?.map(
+    (action) =>
+      action?.url && (
+        <Button
+          href={action.url}
+          variant="wide"
+          theme="transparent"
+          class="mt-auto"
+        >
+          {action.label}
+        </Button>
+      ),
+  )}
 </section>

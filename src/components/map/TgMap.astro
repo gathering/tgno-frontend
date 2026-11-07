@@ -490,24 +490,21 @@ const resolvedTopOffset =
   data-hide-labels={hideLabels}
 >
   <div class="relative z-999">
-    {
-      staticNav ? (
-        <div class="fixed right-6 bottom-6 z-20 w-96 max-w-[calc(100vw-3rem)] rounded-xl bg-black/85 p-6 shadow-2xl">
+    {staticNav ? (
+      <div class="fixed right-6 bottom-6 z-20 w-96 max-w-[calc(100vw-3rem)] rounded-xl bg-black/85 p-6 shadow-2xl">
+        <slot name="nav" />
+      </div>
+    ) : (
+      <FloatingNav closeOnNavigate>
+        <span slot="content">
           <slot name="nav" />
-        </div>
-      ) : (
-        <FloatingNav closeOnNavigate>
-          <span slot="content">
-            <slot name="nav" />
-          </span>
-        </FloatingNav>
-      )
-    }
+        </span>
+      </FloatingNav>
+    )}
   </div>
   <div
     id="map"
     class={`fixed ${backgroundClass} right-0 bottom-0 left-0 z-10`}
     style={`top: ${resolvedTopOffset};`}
-  >
-  </div>
+  ></div>
 </tg-map>
