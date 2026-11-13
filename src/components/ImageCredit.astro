@@ -1,0 +1,13 @@
+---
+type Props = {
+  credit: string;
+};
+
+const { credit } = Astro.props;
+---
+
+<p
+  class="absolute bottom-2 right-2 z-10 max-w-[80%] truncate rounded bg-white px-1.5 py-0.5 text-[10px] leading-tight text-black"
+>
+  Foto: {credit}
+</p>
