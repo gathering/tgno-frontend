@@ -9,6 +9,10 @@ const { class: className, htmlBody: body } = Astro.props;
 
 <style>
   .richtext-container {
+    ul,
+    ol {
+      display: flow-root;
+    }
     .richtext-image {
       &.left {
         float: left;
