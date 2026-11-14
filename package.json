@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.12",
-    "@astrojs/node": "^11.1.9",
+    "@astrojs/node": "^11.1.12",
     "@opentelemetry/api": "^1.10.0",
     "@opentelemetry/auto-instrumentations-node": "^0.82.0",
     "@opentelemetry/instrumentation": "^0.300.0",
