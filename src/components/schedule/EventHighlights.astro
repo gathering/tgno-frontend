@@ -1,0 +1,126 @@
+---
+import { fetchEvents, DEFAULT_DATE_OPTION } from "../../utils/events";
+import { API_URL } from "../../utils/runtime-env";
+import type { Event } from "../../types";
+
+type Props = {
+  /** Tag slugs events must match, e.g. ["promotert"] (meta), ["esport"] (category) */
+  tags: string[];
+  heading?: string;
+  /** Max number of cards, defaults to 3 */
+  limit?: number;
+  /** Link to the main schedule, optionally pre-filtered */
+  scheduleUrl?: string;
+  class?: string;
+};
+
+const {
+  tags,
+  heading = "Høydepunkter",
+  limit = 3,
+  scheduleUrl = "/schedule",
+  class: classNames = "",
+} = Astro.props;
+
+const events: Event[] = (
+  await fetchEvents({
+    date: DEFAULT_DATE_OPTION,
+    tags,
+    api_url: API_URL,
+  }).catch((e) => {
+    console.error(e.message);
+    return [] as Event[];
+  })
+).sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
+
+type Status = "ongoing" | "upcoming" | "inactive";
+const now = Date.now();
+const statusOf = (event: Event): Status => {
+  if (
+    event.cancelled ||
+    event.tags.some((tag) => tag.slug === "cancelled") ||
+    new Date(event.end).getTime() <= now
+  ) {
+    return "inactive";
+  }
+  return new Date(event.start).getTime() <= now ? "ongoing" : "upcoming";
+};
+const STATUS_ORDER: Record<Status, number> = {
+  ongoing: 0,
+  upcoming: 1,
+  inactive: 2,
+};
+const STATUS_ACCENT: Record<Status, string> = {
+  ongoing: "bg-orange-500",
+  upcoming: "bg-sky-600",
+  inactive: "bg-neutral-400",
+};
+const STATUS_LABEL: Record<Status, string> = {
+  ongoing: "Pågår nå",
+  upcoming: "Kommer",
+  inactive: "Avsluttet",
+};
+const STATUS_STYLE: Record<Status, string> = {
+  ongoing: "bg-orange-500 text-white",
+  upcoming: "bg-sky-600 text-white",
+  inactive: "bg-neutral-300 text-neutral-700",
+};
+
+// Ongoing first, then upcoming, with finished events only filling up leftovers
+const allItems = events
+  .map((event) => ({ event, status: statusOf(event) }))
+  .sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status]);
+
+// Hide the whole section unless something is ongoing or upcoming
+const items = allItems.some(({ status }) => status !== "inactive")
+  ? allItems.slice(0, limit)
+  : [];
+
+const locationOf = (event: Event) =>
+  event.tags.find((tag) => tag.type === "location");
+---
+
+{
+  items.length > 0 && (
+    <section class={classNames} aria-label={heading}>
+      <div class="flex flex-row items-baseline justify-between mb-3 gap-4">
+        <h2 class="text-2xl sm:text-4xl font-bold text-white">{heading}</h2>
+        <a
+          href={scheduleUrl}
+          class="text-white underline hover:text-orange-500 focus:text-orange-500 whitespace-nowrap"
+        >
+          Se hele programmet →
+        </a>
+      </div>
+      <ul class="grid gap-2 sm:grid-cols-3">
+        {items.map(({ event, status }) => {
+          const location = locationOf(event);
+          return (
+            <li
+              class={`flex flex-row overflow-hidden rounded-xl bg-white text-neutral-900 hover:shadow-lg ${status === "inactive" ? "opacity-60" : ""}`}
+            >
+              <div
+                aria-hidden="true"
+                class={`w-2 shrink-0 ${STATUS_ACCENT[status]}`}
+              />
+              <a href={scheduleUrl} class="flex flex-col gap-1 py-3 px-4 grow">
+                <span
+                  class={`self-start rounded-full px-2 py-0.5 text-xs font-semibold ${STATUS_STYLE[status]}`}
+                >
+                  {STATUS_LABEL[status]}
+                </span>
+                <span class="text-sm text-neutral-600">
+                  {event.strings.startDate} · {event.strings.duration}
+                  {location ? ` · ${location.name}` : ""}
+                </span>
+                <h3 class="font-semibold text-lg text-pretty line-clamp-2">
+                  {event.title}
+                </h3>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  )
+}

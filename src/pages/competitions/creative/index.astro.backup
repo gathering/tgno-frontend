@@ -1,6 +1,7 @@
 ---
 import H1 from "../../../components/H1.astro";
 import Layout from "../../../layouts/Layout.astro";
+import EventHighlights from "../../../components/schedule/EventHighlights.astro";
 import Main from "../../../components/Main.astro";
 import H2 from "../../../components/H2.astro";
 import H3 from "../../../components/H3.astro";
@@ -28,6 +29,11 @@ const competitions = [...overviewPage.competitions];
   <Main>
     <ContentContainer>
       <H1 text={overviewPage.title} />
+      <EventHighlights
+        tags={["kreativia"]}
+        scheduleUrl="/schedule?categories=kreativia"
+        class="mb-6"
+      />
       <div
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
       >

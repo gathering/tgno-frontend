@@ -7,6 +7,7 @@ import Button from "../components/Button.astro";
 import IntroSection from "../components/frontpage/IntroSection.astro";
 import { fetchArticles } from "../utils";
 import { API_URL } from "../utils/runtime-env";
+import EventHighlights from "../components/schedule/EventHighlights.astro";
 import FrivilligHero from "../components/frontpage/FrivilligHero.astro";
 
 const TG_THEMES = {
@@ -79,6 +80,11 @@ const articles =
         </div>
         <IntroSection class="mb-4" />
       </div>
+      <EventHighlights
+        tags={["promotert"]}
+        heading="Dette skjer på TG"
+        class="sm:col-start-2 sm:col-span-7"
+      />
       <div class="sm:col-start-2 sm:col-span-7">
         <h2 class="text-2xl sm:text-6xl font-bold text-white text-center">
           <a

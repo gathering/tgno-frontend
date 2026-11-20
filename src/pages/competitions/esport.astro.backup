@@ -1,6 +1,7 @@
 ---
 import H1 from "../../components/H1.astro";
 import Layout from "../../layouts/Layout.astro";
+import EventHighlights from "../../components/schedule/EventHighlights.astro";
 import Main from "../../components/Main.astro";
 import H2 from "../../components/H2.astro";
 import H3 from "../../components/H3.astro";
@@ -15,6 +16,11 @@ const boxStyles = "p-6 rounded-3xl sm:rounded-2xl h-full";
   <Main>
     <ContentContainer>
       <H1 text="E-Sport konkurranser" />
+      <EventHighlights
+        tags={["esport"]}
+        scheduleUrl="/schedule?categories=esport"
+        class="mb-6"
+      />
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Intro block -->
