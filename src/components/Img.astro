@@ -1,0 +1,25 @@
+---
+import ImageCredit from "./ImageCredit.astro";
+
+type Props = {
+  src: string;
+  alt: string;
+  srcset?: string;
+  sizes?: string;
+  class?: string;
+  credit?: string;
+};
+
+const { credit, class: classNames = "", ...imgProps } = Astro.props;
+---
+
+{
+  credit ? (
+    <div class="relative w-full h-full">
+      <img {...imgProps} class={`block ${classNames}`} />
+      <ImageCredit credit={credit} />
+    </div>
+  ) : (
+    <img {...imgProps} class={classNames} />
+  )
+}
